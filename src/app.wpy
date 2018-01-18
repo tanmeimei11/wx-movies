@@ -1,0 +1,99 @@
+<style lang="less">
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+</style>
+
+<script>
+import wepy from 'wepy'
+import { token } from './utils/config.js'
+// 支付宝小程序 ES next 语法转换: async await
+// import 'wepy-async-function'
+
+export default class extends wepy.app {
+  constructor () {
+    super()
+    // 修复小程序请求并发问题。
+    this.use('requestfix')
+    // 使用wepy.xxx的方式请求小程序原生API都将Promise化。
+    this.use('promisify')
+
+    this.intercept('httpRequest', {
+      config (p) {
+        p.headers = this.createAuthHeader()
+        p.data = p.data || {}
+        p.data['privateKey'] = this.globalData.xToken || token
+        return p
+      }
+    })
+  }
+
+  async onLaunch(opts) {
+    /**
+     * try
+     *   收集微信机型数据
+     * catch|finally
+     *   none 不提供机型标识信息
+     */
+    try {
+      const { model, platform, version, system, SDKVersion } = wepy.getSystemInfoSync()
+      const meta = { model, platform, version, system, SDKVersion }
+      this.globalData.AntApp = Object.keys(meta).map(key => `${key}=${meta[key]}`).join(';')
+    } finally { /* none */ }
+  }
+
+  /**
+   * 构造权限头部
+   */
+  createAuthHeader() {
+    const { AntApp, xToken, xAries } = this.globalData
+    const headers = { 'AntApp': AntApp }
+
+    if (xToken) {
+      headers['tg_auth'] = xToken
+      headers['_aries'] = xAries
+    }
+
+    return headers
+  }
+
+  globalData = {
+    /** 收集微信机型数据 */
+    AntApp: '',
+    /** 用户唯一标识符 */
+    xToken: null,
+    /** 设备失效期 */
+    xAries: null
+  }
+
+  config = {
+    pages: ['pages/self/self', 'pages/detail/detail', 'pages/detail/detail', 'pages/index/index', 'pages/seat/seat', 'pages/result/result'],
+    tabBar: {
+      'textColor': '#4A4A4A',
+      'selectedColor': '#EF5B4C',
+      'backgroundColor': '#F5F5F9',
+      items: [{
+        'pagePath': 'pages/index/index',
+        'icon': 'image/icon_index.png',
+        'activeIcon': 'image/icon_index_on.png',
+        'name': '首页'
+      }, {
+        'pagePath': 'pages/seat/seat',
+        'icon': 'image/icon_seat.png',
+        'activeIcon': 'image/icon_seat_on.png',
+        'name': '选座'
+      }, {
+        'pagePath': 'pages/self/self',
+        'icon': 'image/icon_self.png',
+        'activeIcon': 'image/icon_self_on.png',
+        'name': '我的'
+      }]
+    }
+  }
+}
+</script>

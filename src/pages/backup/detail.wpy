@@ -1,0 +1,42 @@
+
+<template>
+  <view class="container">
+    <view class="userinfo" @tap="handleViewTap">
+      <image class="userinfo-avatar" src="{{ userInfo.avatarUrl }}" background-size="cover"/>
+      <view class="userinfo-nickname">{{ userInfo.nickName }}</view>
+    </view>
+
+
+      <view class="title" slot="title">测试组件</view>
+
+      <text class="testcounter">计数组件1: </text>
+      <view class="counterview">
+        <counter1 @index-emit.user="counterEmit" />
+      </view>
+
+      <text class="testcounter">计数组件2: </text>
+
+      <view class="counterview">
+        <counter2 :num.sync="mynum"></counter2>
+      </view>
+    </panel>
+
+    <panel>
+      <view class="title" slot="title">测试组件Repeat</view>
+      <repeat for="{{groupList}}" index="index" item="item" key="key">
+        <group :grouplist="item" :indexa="index"></group>
+      </repeat>
+    </panel>
+
+    <panel>
+      <view class="title" slot="title">测试列表</view>
+      <list></list>
+    </panel>
+
+    <toast />
+  </view>
+</template>
+<style lang="less" src="./detail.less">
+</style>
+<script src="./detail.js">
+</script>

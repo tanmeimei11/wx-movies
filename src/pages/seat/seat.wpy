@@ -1,0 +1,82 @@
+<style lang="less">
+  .seat {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: url('http://inimg01.jiuyan.info/in/2018/01/17/E9F43CE7-48B0-8137-5600-9D7EB0EAD664.jpg') no-repeat;
+    background-size: cover;
+    background-position: top;
+    .mask{
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: url('http://inimg02.jiuyan.info/in/2018/01/17/EE45BB67-260E-B1A9-4195-B79F4B4C0C3D.png') no-repeat;
+      background-size: cover;
+      background-position: top;
+    }
+  }
+</style>
+<template>
+  <view class="seat fake">
+      <view class="mask" @tap="test"></view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import auth from '@/api/auth'
+  import axios from '@/utils/axios'
+
+  export default class result extends wepy.page {
+    config = {
+      navigationBarTitleText: '选座'
+    }
+    components = {
+    }
+
+    mixins = []
+
+    data = {
+    }
+
+    computed = {
+    }
+
+    methods = {
+      async test () {
+        await auth.ready()
+        axios.get('http://qacrowdfunding.in66.com')
+      }
+    }
+
+    events = {
+    }
+
+    async onLoad() {
+      // await this.slesp()
+      // console.log('0')
+      // let self = this
+      // this.$parent.getUserInfo(function (userInfo) {
+      //   if (userInfo) {
+      //     self.userInfo = userInfo
+      //   }
+      //   self.normalTitle = '标题已被修改'
+
+      //   self.setTimeoutTitle = '标题三秒后会被修改'
+      //   setTimeout(() => {
+      //     self.setTimeoutTitle = '到三秒了'
+      //     self.$apply()
+      //   }, 3000)
+
+      //   self.$apply()
+      // })
+    }
+    async slesp (params) {
+      // return new Promise((resolve) => {
+      //   setTimeout(() => {
+      //     resolve()
+      //   }, 3000)
+      // })
+    }
+  }
+</script>

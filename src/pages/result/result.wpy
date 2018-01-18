@@ -1,0 +1,201 @@
+<style lang="less">
+  .result {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(-180deg, #FF8467 0%, #E35650 100%);
+  }
+
+  .txt {
+    margin-top: 72rpx;
+    font-size: 44rpx;
+    display: flex;
+    flex-direction: column;
+    height: 100rpx;
+    align-items: center;
+    justify-content: center;
+    view{
+      color: #fff;
+      text-align: center;
+      border-radius: 50%;
+      line-height: 50rpx;
+    }
+    view:nth-child(1):before{
+      content: '';
+      display: inline-block;
+      vertical-align: middle;
+      width: 48rpx;
+      height: 55rpx;
+      margin-right: 14rpx;
+      background: url('http://inimg01.jiuyan.info/in/2018/01/16/3FCE52B0-F4A0-CBDF-8D0C-55DCA3CDA729.png') no-repeat;
+      background-size: contain;
+      background-position: top;
+    }
+    .tips{
+      margin-top: 8rpx;
+      font-size: 30rpx;
+      color: #fff;
+      opacity: 0.7;
+    }
+  }
+  .content{
+    margin: 164rpx auto 48rpx;
+    width: 594rpx;
+    height: 726rpx;
+    background: #fff;
+    border-radius: 12rpx;
+    position: relative;
+    .card{
+      width: 526rpx;
+      height: 310rpx;
+      position: absolute;
+      top: -93rpx;
+      left: 34rpx;
+      background: url('http://inimg01.jiuyan.info/in/2018/01/16/AA1C60AD-7C3D-6E04-D462-37BA0E44C213.png') no-repeat;
+      background-size: contain;
+      background-position: center;
+      .yuan{
+        width: 105rpx;
+        height: 109rpx;
+        position: absolute;
+        top: 69rpx;
+        left: 50rpx;
+        background: url('http://inimg01.jiuyan.info/in/2018/01/16/77A3BF31-4DBB-BF3E-86A1-B59B78435D1A.png') no-repeat;
+        background-size: contain;
+        background-position: center;
+      }
+      .cardname{
+        font-size: 24rpx;
+        color: #cb953e;
+        position: absolute;
+        top: 13rpx;
+        left: 362rpx;
+      }
+      .cardinfo{
+        font-size: 36rpx;
+        color: #fff;
+        position: absolute;
+        top: 190rpx;
+        left: 53rpx;
+      }
+    }
+    /* .icon{
+      width: 200rpx;
+      height: 200rpx;
+      position: absolute;
+      top: 306rpx;
+      left: 197rpx;
+      background: url('http://inimg02.jiuyan.info/in/2018/01/16/6CC87130-75B9-66C6-9579-81440AE5FC80.png') no-repeat;
+      background-size: contain;
+      background-position: center;
+    } */
+    .follow{
+      position: absolute;
+      top: 286rpx;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      .title{
+        font-size: 36rpx;
+        color: rgba(0,0,0,0.87);
+        line-height: 36rpx;
+      }
+      .get{
+        margin-top: 10rpx;
+        font-size: 28rpx;
+        line-height: 32rpx;
+        color: #b0b0b0;
+      }
+      .icon{
+        margin: 28rpx auto 8rpx;
+        width: 124rpx;
+        height: 124rpx;
+        background: url('http://inimg02.jiuyan.info/in/2018/01/17/A8F8059C-235A-E923-3FD5-D2010866F774.png') no-repeat;
+        background-size: contain;
+        background-position: center;
+      }
+      .btn{
+        margin-top: 28rpx;
+        color: #fff;
+        background-image: linear-gradient(90deg, #FC7E70 0%, #FB655C 100%);
+      }
+    }
+    .getinfo{
+      position: absolute;
+      top: 538rpx;
+      left: 0;
+      width: 100%;
+      font-size: 28rpx;
+      color: #333;
+      text-align: center;
+    }
+  }
+  .btn{
+    width: 400rpx;
+    height: 88rpx;
+    margin: 0 auto;
+    line-height: 88rpx;
+    font-size: 32rpx;
+    color: #a8433d;
+    text-align: center;
+    background-image: linear-gradient(-44deg, #FBD262 0%, #FAEABD 100%);
+    border-radius: 65rpx;
+  }
+</style>
+<template>
+  <view class="result">
+    <view class="txt">
+      <view>支付完成</view>
+      <!-- <view class="tips">分享朋友圈 抽免单机会</view> -->
+    </view>
+    <view class="content">
+      <view class="card">
+        <view class="yuan"></view>
+        <text class="cardname">电影戏精卡</text>
+        <text class="cardinfo">三个月电影免费看</text>
+      </view>
+      <!-- <view class="icon"></view>
+      <text class="getinfo">请关注小程序了解最近进展</text> -->
+      <view class="follow">
+        <view class="title">关注in同城趴生活号</view>
+        <view class="get">获取最新信息</view>
+        <view class="icon"></view>
+        <view>in同城趴</view>
+        <view class="btn">关注
+          <!-- <lifestyle publicId="123333"> -->
+        </view>
+      </view>
+    </view>
+    <!-- <view class="btn">保存至相册</view> -->
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class result extends wepy.page {
+    config = {
+      navigationBarTitleText: '支付完成'
+    }
+    components = {
+    }
+
+    mixins = []
+
+    data = {
+    }
+
+    computed = {
+    }
+
+    methods = {
+    }
+
+    events = {
+    }
+
+    async onLoad() {
+      // console.log(my.canIUse('lifestyle'))
+    }
+  }
+</script>
