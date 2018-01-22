@@ -1,5 +1,5 @@
 <template>
-  <form @Submit="formSubmit" report-submit>
+  <form @submit="formSubmit" report-submit>
     <button class="report-button" formType="submit">
       <slot />
     </button>
