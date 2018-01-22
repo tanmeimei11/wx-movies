@@ -28,11 +28,11 @@ function getQueryParams ( str ) {
  */
 export default class http {
   static async request ( config ) {
-    tips.loading();
+    !config.ignoreLoading && tips.loading();
     this._fixRequest( config ); // 支付宝小程序特有
     console.log( config );
     const myres = await wepy.request( config );
-    tips.loaded();
+    !config.ignoreLoading && tips.loaded();
     if ( this.isSuccess( myres ) ) {
       return myres.data.data;
     } else {

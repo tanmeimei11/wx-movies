@@ -232,6 +232,7 @@
   import compose from '@/utils/compose'
   import util from '@/utils/util'
   import images from './image.js'
+  import auth from '@/api/auth'
 
   export default class result extends wepy.page {
     config = {
@@ -322,6 +323,7 @@
     }
     events = {}
     async onLoad() {
+      await auth.ready()
       var getContractID = await Result.getContractID();
       this.contractID = getContractID.contract_id;
       this.qrinfo = getContractID
