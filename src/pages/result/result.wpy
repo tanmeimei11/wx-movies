@@ -244,19 +244,11 @@
       }
     }
     events = {}
-<<<<<<< HEAD
     async onLoad() {
       var getContractID = await Result.getContractID()
       // this.contractID = getContractID.contract_id
       this.$apply()
       console.log(this.contractID)
-=======
-    async onLoad () {
-      var getContractID = await Result.getContractID();
-      this.contractID = getContractID.contract_id;
-      this.$apply();
-      console.log( this.contractID );
->>>>>>> 670b8041c0d9adcce0b7c8d672f0ffa74eef6f9e
     }
   }
 </script>
