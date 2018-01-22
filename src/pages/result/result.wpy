@@ -96,7 +96,7 @@
     } */
     .follow{
       position: absolute;
-      top: 286rpx;
+      top: 297rpx;
       left: 0;
       width: 100%;
       text-align: center;
@@ -129,6 +129,31 @@
         color: #fff;
         background-image: linear-gradient(90deg, #FD9C6C 0%, #F95557 100%);
       }
+      .qrcode{
+        width: 300rpx;
+        height: 300rpx;
+        margin: 0 auto;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+      }
+      .user{
+        margin: 34rpx auto;
+        font-size: 28rpx;
+        color: #333;
+        line-height: 40rpx;
+        view{
+          display: inline-block;
+          vertical-align: middle;
+        }
+        .avatar{
+          width: 40rpx;
+          height: 40rpx;
+          background-repeat: no-repeat;
+          background-size: contain;
+          background-position: center;
+        }
+      }
     }
     .getinfo{
       position: absolute;
@@ -146,7 +171,7 @@
     margin: 0 auto;
     line-height: 88rpx;
     font-size: 32rpx;
-    color: #a8433d;
+    color: #fff;
     text-align: center;
     background-image: linear-gradient(90deg, #FD9C6C 0%, #F95557 100%);
     border-radius: 65rpx;
@@ -168,7 +193,7 @@
   <view class="result">
     <view class="txt">
       <view>支付完成</view>
-      <!-- <view class="tips">分享朋友圈 抽免单机会</view> -->
+      <view class="tips">分享朋友圈 抽免单机会</view>
     </view>
     <view class="content">
       <view class="card">
@@ -179,16 +204,21 @@
       <!-- <view class="icon"></view>
       <text class="getinfo">请关注小程序了解最近进展</text> -->
       <view class="follow">
-        <view class="title">请关注in同城趴生活号</view>
+        <!-- <view class="title">请关注in同城趴生活号</view>
         <view class="get">获取开始选座提醒</view>
         <view class="icon"></view>
         <view class="name">in同城趴</view>
-        <view class="btn" a:if="{{contractID}}">关注
+        <view class="btn" wx:if="{{contractID}}">关注
           <lifestyle publicId="{{contractID}}" @tap="alert" class="lifestyle"></lifestyle>  
+        </view> -->
+        <view class="qrcode" style="background-image: url(https://inimg07.jiuyan.info/in/2017/11/07/D2BBB9D0-B9BD-A49A-85F5-FF91D3D5BF45.jpg);"></view>
+        <view class="user">
+          <view class="avatar" style="background-image: url(https://inimg07.jiuyan.info/in/2017/11/07/D2BBB9D0-B9BD-A49A-85F5-FF91D3D5BF45.jpg);"></view>
+          <view>试试水试试是</view>
         </view>
       </view>
     </view>
-    <!-- <view class="btn">保存至相册</view> -->
+    <view class="btn">保存至相册</view>
   </view>
 </template>
 
@@ -203,7 +233,7 @@
     components = {}
     mixins = []
     data = {
-      contractID: '2018011801960713'
+      contractID: ''
     }
     computed = {}
     methods = {
@@ -214,7 +244,7 @@
     events = {}
     async onLoad() {
       var getContractID = await Result.getContractID()
-      this.contractID = getContractID.contract_id
+      // this.contractID = getContractID.contract_id
       this.$apply()
       console.log(this.contractID)
     }
