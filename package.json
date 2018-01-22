@@ -5,7 +5,7 @@
   "main": "dist/app.js",
   "scripts": {
     "dev": "wepy build --watch",
-    "build": "cross-env NODE_ENV=production wepy buil --no-cache",
+    "build": "cross-env NODE_ENV=production wepy build --no-cache",
     "upload": "node assets/qiniu"
   },
   "author": "",
