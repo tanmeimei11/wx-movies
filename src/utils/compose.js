@@ -23,7 +23,10 @@ module.exports = {
                 })
             }).then(res => {
                 wx.hideLoading()
-                this.toastSucc('保存成功')
+                wx.showToast({
+                  title: '保存成功',
+                  duration: 2000
+                })
             })
     },
     getImgFromBack() {
