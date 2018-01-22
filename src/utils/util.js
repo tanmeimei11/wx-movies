@@ -136,8 +136,8 @@ function get(key, isforce, gps) {
  */
 function reGet(scope, authRes, isforce, gps) {
     authPromisify.showModal({
-        title: gps ? '请在设置中打开地理位置授权' : '请在设置中打开用户信息授权',
-        content: gps ? '未获取您的地理位置将无法使用离我最近功能' : '未获取您的公开信息（昵称、头像等）将无法使用鼓励金和报名活动',
+        title: '无法保存至相册',
+        content: '未授权将无法保存二维码到相册',
         confirmText: '去设置',
         showCancel: true
     }).then((a) => {

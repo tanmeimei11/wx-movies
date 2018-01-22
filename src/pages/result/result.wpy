@@ -200,7 +200,7 @@
       <view class="result">
         <view class="txt">
           <view>支付完成</view>
-          <!-- <view class="tips">分享朋友圈 抽免单机会</view> -->
+          <view class="tips">分享朋友圈 抽免单机会</view>
         </view>
         <view class="content">
           <view class="card">
@@ -214,13 +214,14 @@
             <view class="qrcode" style="background-image: url({{qrinfo.qrcode}});"></view>
             <view class="user">
               <view class="avatar" style="background-image: url({{qrinfo.avatar}});"></view>
-              <view>试试水试试是</view>
+              <view>{{qrinfo.nickname}}</view>
             </view>
           </view>
         </view>
         <view class="btn" @tap="compose">保存至相册</view>
       </view>
     </view>
+    <canvas style="width: 750px; height: 1205px;position:absolute;top:-2000px;left:-2000px;" canvas-id="firstCanvas"></canvas>
   </report>
 </template>
 
@@ -252,23 +253,28 @@
         console.log(1111);
       },
       compose () {
-        // this.loadingIn('加载中')
+        wx.showLoading({
+          title: '加载中',
+          mask: true
+        })
         var _images = this.openShareMoneyModalData.images.images
         _images.qr.src = this.qrinfo.qrcode
         _images.avatar.src = this.qrinfo.avatar
-        console.log(_images)
         util.loadImages(_images)
           .then(() => {
             var ctx = wx.createCanvasContext('firstCanvas')
             var _avatar = _images.avatar
+            console.log(_avatar)
             var _qr = _images.qr
             var _qrContain = _images.qrContain
             var _body = _images.body
-            return util.drawImageInCenter(ctx, _avatar.local, _avatar.x, _avatar.y, _avatar.w, _avatar.h)
+            // ctx.drawImage(_body.local, _body.x, _body.y, _body.w, _body.h)
+            return util.drawImageInCenter(ctx, _body.local, _body.x, _body.y, _body.w, _body.h)
               .then(() => {
+                return util.drawImageInCenter(ctx, _avatar.local, _avatar.x, _avatar.y, _avatar.w, _avatar.h)
+              }).then(() => {
                 return util.drawImageInCenter(ctx, _qr.local, _qr.x, _qr.y, _qr.w, _qr.h)
               }).then(() => {
-                ctx.drawImage(_body.local, _body.x, _body.y, _body.w, _body.h)
                 return util.drawImageInCenter(ctx, _qrContain.local, _qrContain.x, _qrContain.y, _qrContain.w, _qrContain.h)
               }).then(() => {
                 ctx.draw(true)
@@ -276,18 +282,31 @@
                   // 画文字
                   ctx.setTextAlign('center')
                   ctx.setFillStyle('white')
-                  ctx.setFontSize(42)
-                  ctx.fillText('扫码领取本周20个红包', 375, 315)
-                  ctx.setFontSize(36)
-
-                  ctx.setFillStyle('#FEE1DD')
-                  ctx.fillText('红包直接抵扣现金', 375, 375)
+                  ctx.setFontSize(44)
+                  ctx.fillText(this.qrinfo.title, 375, 79)
+                  ctx.setFontSize(28)
+                  ctx.setFillStyle('white')
+                  ctx.setGlobalAlpha(0.7)
+                  ctx.fillText(this.qrinfo.subtitle, 375, 140)
+                  ctx.setTextAlign('left')
+                  ctx.setFillStyle('black')
+                  ctx.setGlobalAlpha(0.7)
+                  console.log(this.qrinfo.nickname)
+                  ctx.fillText(this.qrinfo.nickname, 336, 960)
                   ctx.draw(true)
+                  // wx.canvasToTempFilePath({
+                  //   canvasId: 'firstCanvas',
+                  //   complete: function(res) {
+                  //     console.log(res)
+                  //     compose.saveImage(res.tempFilePath)
+                  //   }
+                  // })
                   return util.wxPromisify(wx.canvasToTempFilePath)({
                     canvasId: 'firstCanvas',
                   }).then(res => {
-                    this.saveImage(res.tempFilePath)
+                    compose.saveImage(res.tempFilePath)
                   }, () => {
+                    console.log('fail')
                     // this.getImgFromBack()
                   }).catch(error => {
                     console.error('error')
@@ -296,7 +315,7 @@
                 }, 100)
               })
           }).catch((error) => {
-            this.loadingOut()
+            wx.hideLoading()
             this.toastFail('保存失败')
           })
       }
