@@ -1,13 +1,14 @@
 <style lang="less">
-  page{
+  page {
     background: #19033b;
   }
-  .result {
-    position: absolute;
+
+  .container {
+    /* position: absolute;
     width: 100%;
-    height: 100%;
+    height: 100%; */
     background: url('http://inimg05.jiuyan.info/in/2018/01/20/03C3B4F8-DCA2-0A83-2F29-B51B0B494A76.jpg') no-repeat;
-    background-size: contain;
+    background-size: cover;
     background-position: top;
   }
 
@@ -19,13 +20,13 @@
     height: 100rpx;
     align-items: center;
     justify-content: center;
-    view{
+    view {
       color: #fff;
       text-align: center;
       border-radius: 50%;
       line-height: 50rpx;
     }
-    view:nth-child(1):before{
+    view:nth-child(1):before {
       content: '';
       display: inline-block;
       vertical-align: middle;
@@ -36,21 +37,22 @@
       background-size: contain;
       background-position: top;
     }
-    .tips{
+    .tips {
       margin-top: 8rpx;
       font-size: 30rpx;
       color: #fff;
       opacity: 0.7;
     }
   }
-  .content{
+
+  .content {
     margin: 130rpx auto 48rpx;
     width: 594rpx;
     height: 726rpx;
     background: #fff;
     border-radius: 12rpx;
     position: relative;
-    .card{
+    .card {
       width: 526rpx;
       height: 310rpx;
       position: absolute;
@@ -59,7 +61,7 @@
       background: url('http://inimg05.jiuyan.info/in/2018/01/20/2DA09EFC-0C64-7D16-217F-CDFB83064A8C.png') no-repeat;
       background-size: contain;
       background-position: center;
-      .yuan{
+      .yuan {
         width: 105rpx;
         height: 109rpx;
         position: absolute;
@@ -69,14 +71,14 @@
         background-size: contain;
         background-position: center;
       }
-      .cardname{
+      .cardname {
         font-size: 24rpx;
         color: #cb953e;
         position: absolute;
         top: 13rpx;
         left: 362rpx;
       }
-      .cardinfo{
+      .cardinfo {
         font-size: 36rpx;
         color: #fff;
         position: absolute;
@@ -94,25 +96,25 @@
       background-size: contain;
       background-position: center;
     } */
-    .follow{
+    .follow {
       position: absolute;
-      top: 286rpx;
+      top: 297rpx;
       left: 0;
       width: 100%;
       text-align: center;
-      .title{
+      .title {
         font-size: 36rpx;
         font-weight: bold;
-        color: rgba(0,0,0,0.87);
+        color: rgba(0, 0, 0, 0.87);
         line-height: 36rpx;
       }
-      .get{
+      .get {
         margin-top: 10rpx;
         font-size: 28rpx;
         line-height: 32rpx;
         color: #b0b0b0;
       }
-      .icon{
+      .icon {
         margin: 28rpx auto 8rpx;
         width: 124rpx;
         height: 124rpx;
@@ -120,17 +122,44 @@
         background-size: contain;
         background-position: center;
       }
-      .name{
+      .name {
         font-size: 24rpx;
         color: #333;
       }
-      .btn{
+      .btn {
         margin-top: 28rpx;
         color: #fff;
         background-image: linear-gradient(90deg, #FD9C6C 0%, #F95557 100%);
       }
+      .qrcode {
+        width: 300rpx;
+        height: 300rpx;
+        margin: 0 auto;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+      }
+      .user {
+        margin: 34rpx auto;
+        font-size: 28rpx;
+        color: #333;
+        line-height: 40rpx;
+        view {
+          display: inline-block;
+          vertical-align: middle;
+        }
+        .avatar {
+          width: 40rpx;
+          height: 40rpx;
+          margin-right: 10rpx;
+          background-repeat: no-repeat;
+          background-size: contain;
+          background-position: center;
+          border-radius: 50%;
+        }
+      }
     }
-    .getinfo{
+    .getinfo {
       position: absolute;
       top: 538rpx;
       left: 0;
@@ -140,18 +169,19 @@
       text-align: center;
     }
   }
-  .btn{
+
+  .btn {
     width: 400rpx;
     height: 88rpx;
     margin: 0 auto;
     line-height: 88rpx;
     font-size: 32rpx;
-    color: #a8433d;
+    color: #fff;
     text-align: center;
     background-image: linear-gradient(90deg, #FD9C6C 0%, #F95557 100%);
     border-radius: 65rpx;
     position: relative;
-    .lifestyle{
+    .lifestyle {
       display: block;
       position: absolute;
       top: 0;
@@ -166,31 +196,31 @@
 </style>
 <template>
   <report>
-  <view class="result">
-    <view class="txt">
-      <view>支付完成</view>
-      <!-- <view class="tips">分享朋友圈 抽免单机会</view> -->
-    </view>
-    <view class="content">
-      <view class="card">
-        <view class="yuan"></view>
-        <!-- <text class="cardname">in同城趴·电影王卡</text> -->
-        <text class="cardinfo">三个月电影免费看</text>
-      </view>
-      <!-- <view class="icon"></view>
-      <text class="getinfo">请关注小程序了解最近进展</text> -->
-      <view class="follow">
-        <view class="title">请关注in同城趴生活号</view>
-        <view class="get">获取开始选座提醒</view>
-        <view class="icon"></view>
-        <view class="name">in同城趴</view>
-        <view class="btn" a:if="{{contractID}}">关注
-          <lifestyle publicId="{{contractID}}" @tap="alert" class="lifestyle"></lifestyle>  
+    <view class="container">
+      <view class="result">
+        <view class="txt">
+          <view>支付完成</view>
+          <!-- <view class="tips">分享朋友圈 抽免单机会</view> -->
         </view>
+        <view class="content">
+          <view class="card">
+            <view class="yuan"></view>
+            <!-- <text class="cardname">in同城趴·电影王卡</text> -->
+            <text class="cardinfo">三个月电影免费看</text>
+          </view>
+          <!-- <view class="icon"></view>
+          <text class="getinfo">请关注小程序了解最近进展</text> -->
+          <view class="follow">
+            <view class="qrcode" style="background-image: url({{qrinfo.qrcode}});"></view>
+            <view class="user">
+              <view class="avatar" style="background-image: url({{qrinfo.avatar}});"></view>
+              <view>试试水试试是</view>
+            </view>
+          </view>
+        </view>
+        <view class="btn" @tap="compose">保存至相册</view>
       </view>
     </view>
-    <!-- <view class="btn">保存至相册</view> -->
-  </view>
   </report>
 </template>
 
@@ -198,6 +228,10 @@
   import wepy from 'wepy';
   import Result from '@/api/result';
   import report from '@/components/report-submit';
+  import compose from '@/utils/compose'
+  import util from '@/utils/util'
+  import images from './image.js'
+
   export default class result extends wepy.page {
     config = {
       navigationBarTitleText: '支付完成'
@@ -205,20 +239,74 @@
     components = { report }
     mixins = []
     data = {
-      contractID: '2018011801960713'
+      contractID: '2018011801960713',
+      qrinfo: {},
+      openShareMoneyModalData: {
+          isShow: false,
+          images: images,
+      }
     }
     computed = {}
     methods = {
-      alert () {
-        console.log( 1111 );
+      alert() {
+        console.log(1111);
+      },
+      compose () {
+        // this.loadingIn('加载中')
+        var _images = this.openShareMoneyModalData.images.images
+        _images.qr.src = this.qrinfo.qrcode
+        _images.avatar.src = this.qrinfo.avatar
+        console.log(_images)
+        util.loadImages(_images)
+          .then(() => {
+            var ctx = wx.createCanvasContext('firstCanvas')
+            var _avatar = _images.avatar
+            var _qr = _images.qr
+            var _qrContain = _images.qrContain
+            var _body = _images.body
+            return util.drawImageInCenter(ctx, _avatar.local, _avatar.x, _avatar.y, _avatar.w, _avatar.h)
+              .then(() => {
+                return util.drawImageInCenter(ctx, _qr.local, _qr.x, _qr.y, _qr.w, _qr.h)
+              }).then(() => {
+                ctx.drawImage(_body.local, _body.x, _body.y, _body.w, _body.h)
+                return util.drawImageInCenter(ctx, _qrContain.local, _qrContain.x, _qrContain.y, _qrContain.w, _qrContain.h)
+              }).then(() => {
+                ctx.draw(true)
+                setTimeout(() => {
+                  // 画文字
+                  ctx.setTextAlign('center')
+                  ctx.setFillStyle('white')
+                  ctx.setFontSize(42)
+                  ctx.fillText('扫码领取本周20个红包', 375, 315)
+                  ctx.setFontSize(36)
+
+                  ctx.setFillStyle('#FEE1DD')
+                  ctx.fillText('红包直接抵扣现金', 375, 375)
+                  ctx.draw(true)
+                  return util.wxPromisify(wx.canvasToTempFilePath)({
+                    canvasId: 'firstCanvas',
+                  }).then(res => {
+                    this.saveImage(res.tempFilePath)
+                  }, () => {
+                    // this.getImgFromBack()
+                  }).catch(error => {
+                    console.error('error')
+                    // this.getImgFromBack()
+                  })
+                }, 100)
+              })
+          }).catch((error) => {
+            this.loadingOut()
+            this.toastFail('保存失败')
+          })
       }
     }
     events = {}
-    async onLoad () {
+    async onLoad() {
       var getContractID = await Result.getContractID();
       this.contractID = getContractID.contract_id;
+      this.qrinfo = getContractID
       this.$apply();
-      console.log( this.contractID );
     }
   }
 </script>
