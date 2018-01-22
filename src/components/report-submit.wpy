@@ -1,0 +1,38 @@
+<template>
+  <form @Submit="formSubmit" report-submit>
+    <button class="report-button" formType="submit">
+      <slot />
+    </button>
+  </form>
+</template>
+
+<style>
+.report-button {
+  background: transparent;
+  border: none;
+  height: auto;
+  border-radius: 0;
+}
+</style>
+
+<script>
+import wepy from 'wepy'
+import axios from '@/utils/axios'
+import config from '@/utils/config'
+import tips from '@/utils/tips'
+
+export default class ReportSubmit extends wepy.component {
+  methods = {
+    formSubmit (e) {
+      tips.setLoading()
+      axios.request({
+        url: config.DOMAIN + '/tmpl/formid/submit',
+        method: 'POST',
+        data: {
+          formId: e.detail.formId
+        }
+      })
+    }
+  }
+}
+</script>

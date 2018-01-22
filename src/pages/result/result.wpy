@@ -1,9 +1,14 @@
 <style lang="less">
+  page{
+    background: #19033b;
+  }
   .result {
     position: absolute;
     width: 100%;
     height: 100%;
-    background-image: linear-gradient(-180deg, #FF8467 0%, #E35650 100%);
+    background: url('http://inimg05.jiuyan.info/in/2018/01/20/03C3B4F8-DCA2-0A83-2F29-B51B0B494A76.jpg') no-repeat;
+    background-size: contain;
+    background-position: top;
   }
 
   .txt {
@@ -39,7 +44,7 @@
     }
   }
   .content{
-    margin: 164rpx auto 48rpx;
+    margin: 130rpx auto 48rpx;
     width: 594rpx;
     height: 726rpx;
     background: #fff;
@@ -51,7 +56,7 @@
       position: absolute;
       top: -93rpx;
       left: 34rpx;
-      background: url('http://inimg01.jiuyan.info/in/2018/01/16/AA1C60AD-7C3D-6E04-D462-37BA0E44C213.png') no-repeat;
+      background: url('http://inimg05.jiuyan.info/in/2018/01/20/2DA09EFC-0C64-7D16-217F-CDFB83064A8C.png') no-repeat;
       background-size: contain;
       background-position: center;
       .yuan{
@@ -97,6 +102,7 @@
       text-align: center;
       .title{
         font-size: 36rpx;
+        font-weight: bold;
         color: rgba(0,0,0,0.87);
         line-height: 36rpx;
       }
@@ -114,10 +120,14 @@
         background-size: contain;
         background-position: center;
       }
+      .name{
+        font-size: 24rpx;
+        color: #333;
+      }
       .btn{
         margin-top: 28rpx;
         color: #fff;
-        background-image: linear-gradient(90deg, #FC7E70 0%, #FB655C 100%);
+        background-image: linear-gradient(90deg, #FD9C6C 0%, #F95557 100%);
       }
     }
     .getinfo{
@@ -138,8 +148,20 @@
     font-size: 32rpx;
     color: #a8433d;
     text-align: center;
-    background-image: linear-gradient(-44deg, #FBD262 0%, #FAEABD 100%);
+    background-image: linear-gradient(90deg, #FD9C6C 0%, #F95557 100%);
     border-radius: 65rpx;
+    position: relative;
+    .lifestyle{
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: #000;
+      transform-origin: 0 0;
+      width: 100%!important;
+      height: 100%!important;
+      /* opacity: 0; */
+    }
   }
 </style>
 <template>
@@ -151,18 +173,18 @@
     <view class="content">
       <view class="card">
         <view class="yuan"></view>
-        <text class="cardname">电影戏精卡</text>
+        <!-- <text class="cardname">in同城趴·电影王卡</text> -->
         <text class="cardinfo">三个月电影免费看</text>
       </view>
       <!-- <view class="icon"></view>
       <text class="getinfo">请关注小程序了解最近进展</text> -->
       <view class="follow">
-        <view class="title">关注in同城趴生活号</view>
-        <view class="get">获取最新信息</view>
+        <view class="title">请关注in同城趴生活号</view>
+        <view class="get">获取开始选座提醒</view>
         <view class="icon"></view>
-        <view>in同城趴</view>
-        <view class="btn">关注
-          <!-- <lifestyle publicId="123333"> -->
+        <view class="name">in同城趴</view>
+        <view class="btn" a:if="{{contractID}}">关注
+          <lifestyle publicId="{{contractID}}" @tap="alert" class="lifestyle"></lifestyle>  
         </view>
       </view>
     </view>
@@ -172,30 +194,29 @@
 
 <script>
   import wepy from 'wepy'
+  import Result from '@/api/result'
 
   export default class result extends wepy.page {
     config = {
-      navigationBarTitleText: '支付完成'
+      navigationBarTitleText:  '支付完成'
     }
-    components = {
-    }
-
+    components = {}
     mixins = []
-
     data = {
+      contractID: '2018011801960713'
     }
-
-    computed = {
-    }
-
+    computed = {}
     methods = {
+      alert() {
+        console.log(1111);
+      }
     }
-
-    events = {
-    }
-
+    events = {}
     async onLoad() {
-      // console.log(my.canIUse('lifestyle'))
+      var getContractID = await Result.getContractID()
+      this.contractID = getContractID.contract_id
+      this.$apply()
+      console.log(this.contractID)
     }
   }
 </script>

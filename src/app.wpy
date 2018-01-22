@@ -13,7 +13,7 @@
 import wepy from 'wepy'
 import { token } from './utils/config.js'
 // 支付宝小程序 ES next 语法转换: async await
-// import 'wepy-async-function'
+import 'wepy-async-function'
 
 export default class extends wepy.app {
   constructor () {
@@ -23,9 +23,11 @@ export default class extends wepy.app {
     // 使用wepy.xxx的方式请求小程序原生API都将Promise化。
     this.use('promisify')
 
-    this.intercept('httpRequest', {
+    this.intercept('request', {
       config (p) {
-        p.headers = this.createAuthHeader()
+        p.header = this.createAuthHeader()
+        p.header['Content-Type'] = 'application/x-www-form-urlencoded'
+
         p.data = p.data || {}
         p.data['privateKey'] = this.globalData.xToken || token
         return p
@@ -34,6 +36,8 @@ export default class extends wepy.app {
   }
 
   async onLaunch(opts) {
+    // 渠道埋点
+    this.globalData.from = opts.qrcode_from || ''
     /**
      * try
      *   收集微信机型数据
@@ -43,7 +47,7 @@ export default class extends wepy.app {
     try {
       const { model, platform, version, system, SDKVersion } = wepy.getSystemInfoSync()
       const meta = { model, platform, version, system, SDKVersion }
-      this.globalData.AntApp = Object.keys(meta).map(key => `${key}=${meta[key]}`).join(';')
+      this.globalData.WechatApp = Object.keys(meta).map(key => `${key}=${meta[key]}`).join(';')
     } finally { /* none */ }
   }
 
@@ -51,20 +55,24 @@ export default class extends wepy.app {
    * 构造权限头部
    */
   createAuthHeader() {
-    const { AntApp, xToken, xAries } = this.globalData
-    const headers = { 'AntApp': AntApp }
-
+    const { WechatApp, xToken, xAries, from } = this.globalData
+    const header = { 'WechatApp': WechatApp }
+    console.log(xToken)
     if (xToken) {
-      headers['tg_auth'] = xToken
-      headers['_aries'] = xAries
+      header['tg_auth'] = xToken
+      header['_aries'] = xAries
     }
 
-    return headers
+    if (from) {
+      header['from'] = from
+    }
+
+    return header
   }
 
   globalData = {
     /** 收集微信机型数据 */
-    AntApp: '',
+    WechatApp: '',
     /** 用户唯一标识符 */
     xToken: null,
     /** 设备失效期 */
@@ -72,26 +80,26 @@ export default class extends wepy.app {
   }
 
   config = {
-    pages: ['pages/self/self', 'pages/detail/detail', 'pages/detail/detail', 'pages/index/index', 'pages/seat/seat', 'pages/result/result'],
+    pages: ['pages/index/index', 'pages/self/self','pages/detail/detail','pages/seat/seat', 'pages/result/result'],
     tabBar: {
-      'textColor': '#4A4A4A',
-      'selectedColor': '#EF5B4C',
+      'color': '#4A4A4A',
+      'selectedColor': '#D0A661',
       'backgroundColor': '#F5F5F9',
-      items: [{
+      list: [{
         'pagePath': 'pages/index/index',
-        'icon': 'image/icon_index.png',
-        'activeIcon': 'image/icon_index_on.png',
-        'name': '首页'
+        'iconPath': 'image/icon_index.png',
+        'selectedIconPath': 'image/icon_index_on.png',
+        'text': '首页'
       }, {
         'pagePath': 'pages/seat/seat',
-        'icon': 'image/icon_seat.png',
-        'activeIcon': 'image/icon_seat_on.png',
-        'name': '选座'
+        'iconPath': 'image/icon_seat.png',
+        'selectedIconPath': 'image/icon_seat_on.png',
+        'text': '选座'
       }, {
         'pagePath': 'pages/self/self',
-        'icon': 'image/icon_self.png',
-        'activeIcon': 'image/icon_self_on.png',
-        'name': '我的'
+        'iconPath': 'image/icon_self.png',
+        'selectedIconPath': 'image/icon_self_on.png',
+        'text': '我的'
       }]
     }
   }

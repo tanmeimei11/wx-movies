@@ -29,7 +29,7 @@ const qiniuYun = ({ path, name }) => new Promise(resolve => https.get(qnTokenUrl
 
 const handler = async argv => {
   const spinner = ora('开始查找文件').start()
-  const files = shelljs.ls('assets/*.png')
+  const files = shelljs.ls(['assets/*.jpg', 'assets/*.png'])
 
   spinner.info(`找到[${files.length}]个文件`)
   files.forEach(async file => {
@@ -42,7 +42,7 @@ const handler = async argv => {
     spinner.start(`开始上传 ${blueName}`)
     try {
       let qiniuData = JSON.parse(shelljs.cat(qiniuPath))
-      const qiniuUrl = utils.hasUpload(name,qiniuData,hash) ? qiniuData[`${name}`].qiniuUrl : await qiniuYun({ path, name })
+      const qiniuUrl = utils.hasUpload(name, qiniuData, hash) ? qiniuData[`${name}`].qiniuUrl : await qiniuYun({ path, name })
       qiniuData = JSON.parse(shelljs.cat(qiniuPath))
       qiniuData[name] = { hash, qiniuUrl }
       fs.appendFileSync(qiniuPath, JSON.stringify(qiniuData, null, '\t'), { flag: 'w' })

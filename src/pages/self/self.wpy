@@ -8,10 +8,10 @@
       </view>
       <view class="s-card">
          <view class="title">{{cardInfos[0].title}}</view>
-         <view class="tips">{{cardInfos[0].desc}}</view>
-         <view class="apply" wx:if="{{cardInfos[0].isApply}}" @tap="apply">立即申请</view>
+         <!-- <view class="tips">{{cardInfos[0].desc}}</view> -->
+         <view class="apply" wx:if="{{cardInfos[0].isApply}}" @tap="apply">立即抢购</view>
          <view class="time" wx:else>{{cardInfos[0].time}}</view>
-         <view class="num" wx:if="{{cardInfos[0].isApply}}">{{cardInfos[0].num}}</view>
+         <view class="num" wx:if="{{!cardInfos[0].isApply}}">{{cardInfos[0].num}}</view>
       </view>
     </view>
     <view class="c-bg"></view>

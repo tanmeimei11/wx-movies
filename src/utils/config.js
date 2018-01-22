@@ -1,7 +1,6 @@
 module.exports = {
   _v: '0.0.1',
-  // DOMAIN: 'https://qacrowdfunding.in66.com',
-  // DOMAIN: 'https://devcrowdfunding.in66.com',
+  // DOMAIN: 'https://crowdfunding.in66.com',
   DOMAIN: 'http://qacrowd-zf.in66.com/',
   isMock: false,
   isTrack: false,
@@ -13,5 +12,5 @@ module.exports = {
   // payUrl: 'https://love.in66.com/api/payment/signature',
   businessParty: 'incrowdfunding',
   paymentChannel: 'newalipay', // wechatpay weapppay
-  token: '58a14b2caf54b0d458ff928d00e07a68'
-}
+  token: ''
+};
