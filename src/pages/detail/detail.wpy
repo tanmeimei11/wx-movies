@@ -1,5 +1,5 @@
 <template>
-  <!-- <report> -->
+  <report>
     <view class="container">
      <view class="c-bg">
        <view class="logo"></view>
@@ -9,9 +9,6 @@
        <view class="s-inner" style="width:{{cardNumInfo.percent}}">
           <view class="s-inner-num">{{cardNumInfo.num}}</view>
        </view>
-       <!-- <view class="s-title">{{cardNumInfo.title}}</view> -->
-       <!-- <view class="s-desc">{{cardNumInfo.desc}}</view> -->
-       <!-- <view class="s-num">{{cardNumInfo.num}}</view> -->
      </view>
       <view class="pay-btn" @tap="pay">{{detailStatus.is_buy === '1' ? '已购买' : '99元立即抢'}}</view>
      </view>
@@ -62,7 +59,7 @@
           </view>
       </view>
   </view>
-  <!-- </report> -->
+  </report>
 </template>
 <style lang="less" src="./detail.less">
 </style>

@@ -2,12 +2,13 @@ import wepy from 'wepy';
 import auth from '@/api/auth';
 import Self from '@/api/self';
 import tips from '@/utils/tips';
+import report from '@/components/report-submit';
 
 export default class Index extends wepy.page {
   config = {
     navigationBarTitleText: '我的电影卡'
   }
-  components = {}
+  components = { report }
 
   data = {
     btninfo: {},
