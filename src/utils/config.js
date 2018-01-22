@@ -11,6 +11,6 @@ module.exports = {
   payUrl: 'http://qainlove.in66.com/api/payment/signature',
   // payUrl: 'https://love.in66.com/api/payment/signature',
   businessParty: 'incrowdfunding',
-  paymentChannel: 'newalipay', // wechatpay weapppay
+  paymentChannel: 'weapppay', // wechatpay weapppay
   token: ''
 };
