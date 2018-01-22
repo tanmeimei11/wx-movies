@@ -91,6 +91,8 @@ export default class Index extends wepy.page {
   async onShow () {
     if ( !this.data.isNotQun ) {
       this.init();
+    } else {
+      this.data.isNotQun = false;
     }
   }
   async onLoad ( options ) {

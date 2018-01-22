@@ -18,7 +18,7 @@
         </view>
       </view>
      <view class="c-bg">
-       <view class="logo"></view>
+       <!-- <view class="logo"></view> -->
        <!-- 卡数量 -->
       <view class="c-card-num-wrap">
         <view class="s-outer"></view>
