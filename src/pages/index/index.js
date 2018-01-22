@@ -1,11 +1,12 @@
 import wepy from 'wepy';
 import Index from '@/api/index';
+import report from '@/components/report-submit';
 
 export default class index extends wepy.page {
   config = {
     navigationBarTitleText: 'in同城趴·电影'
   }
-  components = {}
+  components = { report }
 
   mixins = []
 

@@ -190,6 +190,7 @@
   }
 </style>
 <template>
+  <report>
   <view class="result">
     <view class="txt">
       <view>支付完成</view>
@@ -220,33 +221,42 @@
     </view>
     <view class="btn">保存至相册</view>
   </view>
+  </report>
 </template>
 
 <script>
-  import wepy from 'wepy'
-  import Result from '@/api/result'
-
+  import wepy from 'wepy';
+  import Result from '@/api/result';
+  import report from '@/components/report-submit';
   export default class result extends wepy.page {
     config = {
-      navigationBarTitleText:  '支付完成'
+      navigationBarTitleText: '支付完成'
     }
-    components = {}
+    components = { report }
     mixins = []
     data = {
       contractID: ''
     }
     computed = {}
     methods = {
-      alert() {
-        console.log(1111);
+      alert () {
+        console.log( 1111 );
       }
     }
     events = {}
+<<<<<<< HEAD
     async onLoad() {
       var getContractID = await Result.getContractID()
       // this.contractID = getContractID.contract_id
       this.$apply()
       console.log(this.contractID)
+=======
+    async onLoad () {
+      var getContractID = await Result.getContractID();
+      this.contractID = getContractID.contract_id;
+      this.$apply();
+      console.log( this.contractID );
+>>>>>>> 670b8041c0d9adcce0b7c8d672f0ffa74eef6f9e
     }
   }
 </script>

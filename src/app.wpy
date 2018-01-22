@@ -7,37 +7,53 @@
   justify-content: space-between;
   box-sizing: border-box;
 }
+button{
+  padding:0;
+  margin:0;
+  position: relative;
+  // min-height: 100%;
+  
+}
+// page{
+//  min-height: 100%;
+//  position: relative;
+// }
+// form{
+//   min-height: 100%;
+//  position: relative;
+  
+// }
 </style>
 
 <script>
-import wepy from 'wepy'
-import { token } from './utils/config.js'
+import wepy from 'wepy';
+import { token } from './utils/config.js';
 // 支付宝小程序 ES next 语法转换: async await
-import 'wepy-async-function'
+import 'wepy-async-function';
 
 export default class extends wepy.app {
   constructor () {
-    super()
+    super();
     // 修复小程序请求并发问题。
-    this.use('requestfix')
+    this.use( 'requestfix' );
     // 使用wepy.xxx的方式请求小程序原生API都将Promise化。
-    this.use('promisify')
+    this.use( 'promisify' );
 
-    this.intercept('request', {
-      config (p) {
-        p.header = this.createAuthHeader()
-        p.header['Content-Type'] = 'application/x-www-form-urlencoded'
+    this.intercept( 'request', {
+      config ( p ) {
+        p.header = this.createAuthHeader();
+        p.header['Content-Type'] = 'application/x-www-form-urlencoded';
 
-        p.data = p.data || {}
-        p.data['privateKey'] = this.globalData.xToken || token
-        return p
+        p.data = p.data || {};
+        p.data['privateKey'] = this.globalData.xToken || token;
+        return p;
       }
-    })
+    } );
   }
 
-  async onLaunch(opts) {
+  async onLaunch ( opts ) {
     // 渠道埋点
-    this.globalData.from = opts.qrcode_from || ''
+    this.globalData.from = opts.qrcode_from || '';
     /**
      * try
      *   收集微信机型数据
@@ -45,29 +61,29 @@ export default class extends wepy.app {
      *   none 不提供机型标识信息
      */
     try {
-      const { model, platform, version, system, SDKVersion } = wepy.getSystemInfoSync()
-      const meta = { model, platform, version, system, SDKVersion }
-      this.globalData.WechatApp = Object.keys(meta).map(key => `${key}=${meta[key]}`).join(';')
+      const { model, platform, version, system, SDKVersion } = wepy.getSystemInfoSync();
+      const meta = { model, platform, version, system, SDKVersion };
+      this.globalData.WechatApp = Object.keys( meta ).map( key => `${key}=${meta[key]}` ).join( ';' );
     } finally { /* none */ }
   }
 
   /**
    * 构造权限头部
    */
-  createAuthHeader() {
-    const { WechatApp, xToken, xAries, from } = this.globalData
-    const header = { 'WechatApp': WechatApp }
-    console.log(xToken)
-    if (xToken) {
-      header['tg_auth'] = xToken
-      header['_aries'] = xAries
+  createAuthHeader () {
+    const { WechatApp, xToken, xAries, from } = this.globalData;
+    const header = { 'WechatApp': WechatApp };
+    console.log( xToken );
+    if ( xToken ) {
+      header['tg_auth'] = xToken;
+      header['_aries'] = xAries;
     }
 
-    if (from) {
-      header['from'] = from
+    if ( from ) {
+      header['from'] = from;
     }
 
-    return header
+    return header;
   }
 
   globalData = {
@@ -80,7 +96,7 @@ export default class extends wepy.app {
   }
 
   config = {
-    pages: ['pages/index/index', 'pages/self/self','pages/detail/detail','pages/seat/seat', 'pages/result/result'],
+    pages: ['pages/index/index', 'pages/self/self', 'pages/detail/detail', 'pages/seat/seat', 'pages/result/result'],
     tabBar: {
       'color': '#4A4A4A',
       'selectedColor': '#D0A661',

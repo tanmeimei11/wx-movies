@@ -1,14 +1,16 @@
 <template>
-  <view class="index">
-    <view class="content">
-      <view class="txt">
-        <view class="bg"></view>
-        <text>{{texts.desc01}}</text>
-        <text>{{texts.desc02}}</text>
+  <report>
+    <view class="index">
+      <view class="content">
+        <view class="txt">
+          <view class="bg"></view>
+          <text>{{texts.desc01}}</text>
+          <text>{{texts.desc02}}</text>
+        </view>
+        <view class="btn" @tap="toDetail">{{btnon ? '立即抢购' : texts.cf_start_desc}}</view>
       </view>
-      <view class="btn" @tap="toDetail">{{btnon ? '立即抢购' : texts.cf_start_desc}}</view>
     </view>
-  </view>
+  </report>
 </template>
 <style lang="less" src="./index.less">
 </style>
