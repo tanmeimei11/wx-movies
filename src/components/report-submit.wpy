@@ -39,8 +39,7 @@ export default class ReportSubmit extends wepy.component {
         method: 'POST',
         data: {
           formId: e.detail.formId
-        },
-        ignoreLoading: true
+        }
       })
     }
   }

@@ -62,12 +62,12 @@
       background-size: contain;
       background-position: center;
       .yuan {
-        width: 105rpx;
+        width: 216rpx;
         height: 109rpx;
         position: absolute;
         top: 69rpx;
         left: 50rpx;
-        background: url('https://inimg01.jiuyan.info/in/2018/01/16/77A3BF31-4DBB-BF3E-86A1-B59B78435D1A.png') no-repeat;
+        background: url('https://inimg01.jiuyan.info/in/2018/01/22/6FE37B16-C842-3833-7D02-6A33CD942AB3.jpg') no-repeat;
         background-size: contain;
         background-position: center;
       }
