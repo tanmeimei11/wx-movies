@@ -66,10 +66,12 @@ export default class Detail extends Pagebase {
   /**
    * 创建订单接口
    */
-  static async creatOrder () {
+  static async creatOrder ( shareTicketInfo ) {
+    var _data = shareTicketInfo || {};
     return await this.request( {
       url: '/mnp/order/create',
       data: {
+        ..._data,
         product_id: 159,
         pay_channel: paymentChannel
       }

@@ -1,23 +1,35 @@
 <template>
   <report>
     <view class="container">
+      <!-- 客服 -->
       <view class="contact">
         <contact-button session-from="wx_movie_contract"></contact-button>
+      </view>
+      <!-- 已购买 -->
+      <view class="buy-wrap"  wx:if="{{detailStatus.is_buy=='1'}}">
+        <view class="btn btn-origin" @tap="backIndex">返回首页</view>
+        <view class="btn btn-cut btn-already">已购买</view>
+      </view>
+      <!-- 购买 -->
+      <view class="buy-wrap" wx:else>
+        <view class="btn btn-origin" @tap="pay">129元购买</view>
+        <view class="btn btn-cut" @tap="sharePay">分享立享109元购买
+          <button class="btn-cut-btn" open-type="share"></button>
+        </view>
       </view>
      <view class="c-bg">
        <view class="logo"></view>
        <!-- 卡数量 -->
-     <view class="c-card-num-wrap">
-       <view class="s-outer"></view>
-       <view class="s-inner" style="width:{{cardNumInfo.percent}}">
-          <view class="s-inner-num">{{cardNumInfo.num}}</view>
-       </view>
-     </view>
-      <view class="pay-btn" @tap="pay">{{detailStatus.is_buy === '1' ? '已购买' : '99元立即抢'}}</view>
+      <view class="c-card-num-wrap">
+        <view class="s-outer"></view>
+        <view class="s-inner" style="width:{{cardNumInfo.percent}}">
+            <view class="s-inner-num">{{cardNumInfo.num}}</view>
+        </view>
+      </view>
+      <!-- <view class="pay-btn" @tap="pay">{{detailStatus.is_buy === '1' ? '已购买' : '99元立即抢'}}</view> -->
      </view>
     <!-- 电影部分 -->
     <view class="c-part">
-
       <view class="c-one-part">
         <view class="s-mid-title ciname">{{detailText.desc01}}</view>
         <image class="s-img-1" mode="aspectFill" src="{{cinemas.img}}"></image>

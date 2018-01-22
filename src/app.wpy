@@ -52,7 +52,7 @@ export default class extends wepy.app {
 
   async onLaunch ( opts ) {
     // 渠道埋点
-    this.globalData.from = opts.qrcode_from || '';
+    this.globalData.qrcode_from = opts.qrcode_from || '';
     /**
      * try
      *   收集微信机型数据
@@ -70,7 +70,7 @@ export default class extends wepy.app {
    * 构造权限头部
    */
   createAuthHeader () {
-    const { WechatApp, xToken, xAries, from } = this.globalData;
+    const { WechatApp, xToken, xAries, qrcode_from } = this.globalData;
     const header = { 'WechatApp': WechatApp };
     console.log( xToken );
     if ( xToken ) {
@@ -78,8 +78,8 @@ export default class extends wepy.app {
       header['_aries'] = xAries;
     }
 
-    if ( from ) {
-      header['from'] = from;
+    if ( qrcode_from ) {
+      header['qrcode_from'] = qrcode_from;
     }
 
     return header;

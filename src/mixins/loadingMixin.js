@@ -22,7 +22,7 @@ export default class LoadingMixin extends wepy.mixin {
   toastFail ( text, duration ) {
     wepy.showToast( {
       title: text,
-      image: '../../images/toast-fail.png',
+      image: '../../image/toast-fail.png',
       mask: true,
       duration: duration || 2000
     } );
