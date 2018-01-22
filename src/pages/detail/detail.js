@@ -3,14 +3,15 @@ import auth from '@/api/auth';
 import Detail from '@/api/detail';
 import tips from '@/utils/tips';
 import report from '@/components/report-submit';
-// import loadingMixin from '@/mixins/loadingMixin'
+import shareConnectMixin from '@/mixins/shareConnectMixin';
+import loadingMixin from '@/mixins/loadingMixin';
 
 export default class Index extends wepy.page {
   config = {
     navigationBarTitleText: 'in同城趴·电影王卡'
   }
   components = { report }
-  mixins = []
+  mixins = [shareConnectMixin, loadingMixin]
   data = {
     cardNumInfo: {
       title: '专享优惠 名额有限',
@@ -74,9 +75,22 @@ export default class Index extends wepy.page {
   }
 
   events = {}
-
+  onShareAppMessage ( res ) {
+    return {
+      title: '一起来加入本群相册吧！',
+      path: '/pages/detail/detail',
+      imageUrl: 'https://inimg02.jiuyan.info/in/2018/01/13/156D8D56-6C5B-AD0D-F6E6-4FD1A272AA13.jpg',
+      success: this.shareCallBack( res )
+    };
+  }
   async onShow () {
     this.init();
+  }
+  async onLoad ( options ) {
+    this.initOptions( options );
+    this.setShare();
+    await auth.ready();
+    await this.getIdFromQrcode(); // 两个小时没有购买之后 推送
   }
 
   async init () {
@@ -99,6 +113,27 @@ export default class Index extends wepy.page {
     this.rules[2].desc = statusRes.desc.desc12;
     this.$apply();
   }
+  initOptions ( options ) {
+    this.$parent.globalData.from = options.from;
+    this.data.shareId = options.share_uid || '';
+    this.data.from = options.from;
+  }
+  setShare () {
+    wepy.showShareMenu( {
+      withShareTicket: true // 要求小程序返回分享目标信息
+    } );
+  }
+  getIdFromQrcode () {
+    if ( !this.data.shareId ) {
+      return;
+    }
+    Detail.request( {
+      url: '/index/qrscan',
+      data: {
+        share_uid: this.data.shareId
+      }
+    } );
+  }
   /**
    *  支付
    */
@@ -118,16 +153,17 @@ export default class Index extends wepy.page {
         return;
       }
       var getOrderRes = await Detail.getOrderDetail( createRes );
-      var tradePayRes = await wepy.tradePay( {
-        orderStr: getOrderRes.sign
-      } );
+      console.log( getOrderRes.sign );
+      var tradePayRes = wepy.requestPayment( getOrderRes.sign );
+      if ( tradePayRes ) {
 
-      // 支付成功
-      if ( tradePayRes.resultCode === '9000' ) {
-        this.paySucc();
-      } else {
-        this.payFail();
       }
+      // 支付成功
+      // if ( tradePayRes.resultCode === '9000' ) {
+      //   this.paySucc();
+      // } else {
+      //   this.payFail();
+      // }
     } catch ( e ) {
 
     }
