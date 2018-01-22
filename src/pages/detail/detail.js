@@ -71,20 +71,29 @@ export default class Index extends wepy.page {
   methods = {
     async pay () {
       await this.pay();
+    },
+    backIndex () {
+      wepy.reLaunch( {
+        url: '/pages/index/index'
+      } );
     }
   }
 
   events = {}
   onShareAppMessage ( res ) {
     return {
-      title: '一起来加入本群相册吧！',
+      title: '惊天福利！3个月杭州15大影院任意看 仅需109元！！！',
       path: '/pages/detail/detail',
-      imageUrl: 'https://inimg02.jiuyan.info/in/2018/01/13/156D8D56-6C5B-AD0D-F6E6-4FD1A272AA13.jpg',
+      imageUrl: 'https://inimg01.jiuyan.info/in/2018/01/22/3B9691ED-096C-0D31-E2B9-F455D216E6AD.jpg',
       success: this.shareCallBack( res )
     };
   }
   async onShow () {
-    this.init();
+    if ( !this.data.isNotQun ) {
+      this.init();
+    } else {
+      this.data.isNotQun = false;
+    }
   }
   async onLoad ( options ) {
     this.initOptions( options );
@@ -114,9 +123,9 @@ export default class Index extends wepy.page {
     this.$apply();
   }
   initOptions ( options ) {
-    this.$parent.globalData.from = options.from;
+    this.$parent.globalData.qrcode_from = options.qrcode_from;
     this.data.shareId = options.share_uid || '';
-    this.data.from = options.from;
+    this.data.qrcode_from = options.qrcode_from;
   }
   setShare () {
     wepy.showShareMenu( {
@@ -137,7 +146,7 @@ export default class Index extends wepy.page {
   /**
    *  支付
    */
-  async pay () {
+  async pay ( shareTicketInfo ) {
     if ( !auth._readyStatus ) {
       await auth.ready();
       await this.changeDetailStatus();
@@ -147,23 +156,14 @@ export default class Index extends wepy.page {
       return;
     }
     try {
-      var createRes = await Detail.creatOrder();
+      var createRes = await Detail.creatOrder( shareTicketInfo );
       if ( createRes.code === '4000032129' || createRes.code === '4000031814' ) {
         tips.error( createRes.msg );
         return;
       }
       var getOrderRes = await Detail.getOrderDetail( createRes );
-      console.log( getOrderRes.sign );
-      var tradePayRes = wepy.requestPayment( getOrderRes.sign );
-      if ( tradePayRes ) {
-
-      }
-      // 支付成功
-      // if ( tradePayRes.resultCode === '9000' ) {
-      //   this.paySucc();
-      // } else {
-      //   this.payFail();
-      // }
+      await wepy.requestPayment( getOrderRes.sign );
+      this.paySucc();
     } catch ( e ) {
 
     }
