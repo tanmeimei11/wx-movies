@@ -27,7 +27,7 @@ export default class Index extends wepy.page {
       title: 'in同城趴·电影王卡',
       desc: '可任意次数兑换观影券',
       time: '',
-      isApply: false,
+      isApply: true,
       num: ''
     }]
   }
@@ -53,14 +53,8 @@ export default class Index extends wepy.page {
     this.$apply();
   }
 
-  events = {}
-
-  // async onLoad () {
-  //   await auth.ready();
-  //   this.init();
-  // }
   async onShow () {
     await auth.ready();
-    this.init();
+    await this.init();
   }
 }
