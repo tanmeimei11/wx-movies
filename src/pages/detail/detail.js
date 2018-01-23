@@ -65,13 +65,22 @@ export default class Index extends wepy.page {
     detailStatus: {
       is_buy: '0'
     },
+    isPay: false,
     detailText: {}
   }
   computed = {}
   methods = {
     async pay () {
       // tips.loading();
-      await this.pay();
+      try {
+        if ( !this.isPay ) {
+          this.isPay = true;
+          await this.pay();
+          this.isPay = false;
+        }
+      } catch ( e ) {
+        this.isPay = false;
+      }
     },
     backIndex () {
       wepy.reLaunch( {
