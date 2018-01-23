@@ -70,6 +70,7 @@ export default class Index extends wepy.page {
   computed = {}
   methods = {
     async pay () {
+      // tips.loading();
       await this.pay();
     },
     backIndex () {
