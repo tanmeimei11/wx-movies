@@ -84,7 +84,21 @@ var drawImageInCenter = function (ctx, url, x = 0, y = 0, targetW = 0, targetH =
     })
 }
 
-
+var stringLength = function (str) {
+    if (!str) {
+        return 0
+    }
+    var strList = str.split('')
+    var length = 0
+    Object.keys(strList).forEach((idx) => {
+        if(str.charCodeAt(idx) > 127 || str.charCodeAt(idx) == 94){
+            length += 2
+        } else {
+            length ++
+        }
+    })
+    return length
+}
 
 /**
  * 方法promise化
@@ -165,5 +179,6 @@ module.exports = {
     wxPromisify,
     get,
     loadImages,
-    drawImageInCenter
+    drawImageInCenter,
+    stringLength
   }

@@ -259,24 +259,24 @@
           mask: true
         })
         var _images = this.openShareMoneyModalData.images.images
+        var stringlength = util.stringLength(this.qrinfo.nickname)*10
         _images.qr.src = this.qrinfo.qrcode
         _images.avatar.src = this.qrinfo.avatar
         util.loadImages(_images)
           .then(() => {
             var ctx = wx.createCanvasContext('firstCanvas')
             var _avatar = _images.avatar
-            console.log(_avatar)
             var _qr = _images.qr
             var _qrContain = _images.qrContain
             var _body = _images.body
             // ctx.drawImage(_body.local, _body.x, _body.y, _body.w, _body.h)
             return util.drawImageInCenter(ctx, _body.local, _body.x, _body.y, _body.w, _body.h)
               .then(() => {
-                return util.drawImageInCenter(ctx, _avatar.local, _avatar.x, _avatar.y, _avatar.w, _avatar.h)
+                return util.drawImageInCenter(ctx, _avatar.local, 325 - stringlength/2, _avatar.y, _avatar.w, _avatar.h)
               }).then(() => {
                 return util.drawImageInCenter(ctx, _qr.local, _qr.x, _qr.y, _qr.w, _qr.h)
               }).then(() => {
-                return util.drawImageInCenter(ctx, _qrContain.local, _qrContain.x, _qrContain.y, _qrContain.w, _qrContain.h)
+                return util.drawImageInCenter(ctx, _qrContain.local, 325 - stringlength/2, _qrContain.y, _qrContain.w, _qrContain.h)
               }).then(() => {
                 ctx.draw(true)
                 setTimeout(() => {
@@ -292,16 +292,8 @@
                   ctx.setTextAlign('left')
                   ctx.setFillStyle('black')
                   ctx.setGlobalAlpha(0.7)
-                  console.log(this.qrinfo.nickname)
-                  ctx.fillText(this.qrinfo.nickname, 336, 960)
+                  ctx.fillText(this.qrinfo.nickname, 375 - stringlength/2, 960)
                   ctx.draw(true)
-                  // wx.canvasToTempFilePath({
-                  //   canvasId: 'firstCanvas',
-                  //   complete: function(res) {
-                  //     console.log(res)
-                  //     compose.saveImage(res.tempFilePath)
-                  //   }
-                  // })
                   return util.wxPromisify(wx.canvasToTempFilePath)({
                     canvasId: 'firstCanvas',
                   }).then(res => {
@@ -321,6 +313,7 @@
           })
       }
     }
+    
     events = {}
     async onLoad() {
       await auth.ready()
