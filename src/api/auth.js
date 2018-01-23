@@ -32,6 +32,8 @@ export default class auth extends base {
         const rst = await wepy.showModal({ title: '授权提示', content: '请开启“用户信息”权限', showCancel: true, cancelText: '拒绝', confirmText: '授权' })
         if (rst.confirm) wepy.openSetting()
       }
+    } finally {
+      throw new Error('未授权授权')
     }
   }
 }
