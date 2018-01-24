@@ -119,6 +119,7 @@ export default class Index extends wepy.page {
     this.setShare();
     track( 'page_enter' );
     await auth.ready();
+    track( 'page_entry' );
     await this.getIdFromQrcode(); // 两个小时没有购买之后 推送
   }
   async init () {
