@@ -13,6 +13,8 @@ export default class auth extends base {
     return this._readyStatus ? Promise.resolve() : await this.login();
   }
 
+  static _count = 0
+
   /**
    * 授权登录
    * 授权弹窗如果取消 PromiseStatus:pending
@@ -28,10 +30,14 @@ export default class auth extends base {
       this._readyStatus = true;
       console.log( `code: ${code}\ntoken: ${token}` );
     } catch (e) {
-      if (e.errMsg === 'getUserInfo:fail auth deny') {
+      if (e.errMsg.indexOf('getUserInfo:fail') >= 0 && this._count === 0) {
+        this._count ++
         const rst = await wepy.showModal({ title: '授权提示', content: '请开启“用户信息”权限', showCancel: true, cancelText: '拒绝', confirmText: '授权' })
+        this._count --
         if (rst.confirm) wepy.openSetting()
       }
+
+      throw new Error('未授权授权')
     }
   }
 }

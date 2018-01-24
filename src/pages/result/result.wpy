@@ -1,13 +1,14 @@
 <style lang="less">
-  page{
+  page {
     background: #19033b;
   }
-  .result {
-    position: absolute;
+
+  .container {
+    /* position: absolute;
     width: 100%;
-    height: 100%;
-    background: url('http://inimg05.jiuyan.info/in/2018/01/20/03C3B4F8-DCA2-0A83-2F29-B51B0B494A76.jpg') no-repeat;
-    background-size: contain;
+    height: 100%; */
+    background: url('https://inimg05.jiuyan.info/in/2018/01/20/03C3B4F8-DCA2-0A83-2F29-B51B0B494A76.jpg') no-repeat;
+    background-size: cover;
     background-position: top;
   }
 
@@ -19,64 +20,65 @@
     height: 100rpx;
     align-items: center;
     justify-content: center;
-    view{
+    view {
       color: #fff;
       text-align: center;
       border-radius: 50%;
       line-height: 50rpx;
     }
-    view:nth-child(1):before{
+    view:nth-child(1):before {
       content: '';
       display: inline-block;
       vertical-align: middle;
       width: 48rpx;
       height: 55rpx;
       margin-right: 14rpx;
-      background: url('http://inimg01.jiuyan.info/in/2018/01/16/3FCE52B0-F4A0-CBDF-8D0C-55DCA3CDA729.png') no-repeat;
+      background: url('https://inimg01.jiuyan.info/in/2018/01/16/3FCE52B0-F4A0-CBDF-8D0C-55DCA3CDA729.png') no-repeat;
       background-size: contain;
       background-position: top;
     }
-    .tips{
+    .tips {
       margin-top: 8rpx;
       font-size: 30rpx;
       color: #fff;
       opacity: 0.7;
     }
   }
-  .content{
+
+  .content {
     margin: 130rpx auto 48rpx;
     width: 594rpx;
     height: 726rpx;
     background: #fff;
     border-radius: 12rpx;
     position: relative;
-    .card{
+    .card {
       width: 526rpx;
       height: 310rpx;
       position: absolute;
       top: -93rpx;
       left: 34rpx;
-      background: url('http://inimg05.jiuyan.info/in/2018/01/20/2DA09EFC-0C64-7D16-217F-CDFB83064A8C.png') no-repeat;
+      background: url('https://inimg05.jiuyan.info/in/2018/01/20/2DA09EFC-0C64-7D16-217F-CDFB83064A8C.png') no-repeat;
       background-size: contain;
       background-position: center;
-      .yuan{
-        width: 105rpx;
+      .yuan {
+        width: 216rpx;
         height: 109rpx;
         position: absolute;
         top: 69rpx;
         left: 50rpx;
-        background: url('http://inimg01.jiuyan.info/in/2018/01/16/77A3BF31-4DBB-BF3E-86A1-B59B78435D1A.png') no-repeat;
+        background: url('https://inimg01.jiuyan.info/in/2018/01/22/6FE37B16-C842-3833-7D02-6A33CD942AB3.jpg') no-repeat;
         background-size: contain;
         background-position: center;
       }
-      .cardname{
+      .cardname {
         font-size: 24rpx;
         color: #cb953e;
         position: absolute;
         top: 13rpx;
         left: 362rpx;
       }
-      .cardinfo{
+      .cardinfo {
         font-size: 36rpx;
         color: #fff;
         position: absolute;
@@ -90,46 +92,46 @@
       position: absolute;
       top: 306rpx;
       left: 197rpx;
-      background: url('http://inimg02.jiuyan.info/in/2018/01/16/6CC87130-75B9-66C6-9579-81440AE5FC80.png') no-repeat;
+      background: url('https://inimg02.jiuyan.info/in/2018/01/16/6CC87130-75B9-66C6-9579-81440AE5FC80.png') no-repeat;
       background-size: contain;
       background-position: center;
     } */
-    .follow{
+    .follow {
       position: absolute;
       top: 297rpx;
       left: 0;
       width: 100%;
       text-align: center;
-      .title{
+      .title {
         font-size: 36rpx;
         font-weight: bold;
-        color: rgba(0,0,0,0.87);
+        color: rgba(0, 0, 0, 0.87);
         line-height: 36rpx;
       }
-      .get{
+      .get {
         margin-top: 10rpx;
         font-size: 28rpx;
         line-height: 32rpx;
         color: #b0b0b0;
       }
-      .icon{
+      .icon {
         margin: 28rpx auto 8rpx;
         width: 124rpx;
         height: 124rpx;
-        background: url('http://inimg02.jiuyan.info/in/2018/01/17/A8F8059C-235A-E923-3FD5-D2010866F774.png') no-repeat;
+        background: url('https://inimg02.jiuyan.info/in/2018/01/17/A8F8059C-235A-E923-3FD5-D2010866F774.png') no-repeat;
         background-size: contain;
         background-position: center;
       }
-      .name{
+      .name {
         font-size: 24rpx;
         color: #333;
       }
-      .btn{
+      .btn {
         margin-top: 28rpx;
         color: #fff;
         background-image: linear-gradient(90deg, #FD9C6C 0%, #F95557 100%);
       }
-      .qrcode{
+      .qrcode {
         width: 300rpx;
         height: 300rpx;
         margin: 0 auto;
@@ -137,25 +139,27 @@
         background-size: contain;
         background-position: center;
       }
-      .user{
+      .user {
         margin: 34rpx auto;
         font-size: 28rpx;
         color: #333;
         line-height: 40rpx;
-        view{
+        view {
           display: inline-block;
           vertical-align: middle;
         }
-        .avatar{
+        .avatar {
           width: 40rpx;
           height: 40rpx;
+          margin-right: 10rpx;
           background-repeat: no-repeat;
           background-size: contain;
           background-position: center;
+          border-radius: 50%;
         }
       }
     }
-    .getinfo{
+    .getinfo {
       position: absolute;
       top: 538rpx;
       left: 0;
@@ -165,7 +169,8 @@
       text-align: center;
     }
   }
-  .btn{
+
+  .btn {
     width: 400rpx;
     height: 88rpx;
     margin: 0 auto;
@@ -176,7 +181,7 @@
     background-image: linear-gradient(90deg, #FD9C6C 0%, #F95557 100%);
     border-radius: 65rpx;
     position: relative;
-    .lifestyle{
+    .lifestyle {
       display: block;
       position: absolute;
       top: 0;
@@ -191,36 +196,32 @@
 </style>
 <template>
   <report>
-  <view class="result">
-    <view class="txt">
-      <view>支付完成</view>
-      <view class="tips">分享朋友圈 抽免单机会</view>
-    </view>
-    <view class="content">
-      <view class="card">
-        <view class="yuan"></view>
-        <!-- <text class="cardname">in同城趴·电影王卡</text> -->
-        <text class="cardinfo">三个月电影免费看</text>
-      </view>
-      <!-- <view class="icon"></view>
-      <text class="getinfo">请关注小程序了解最近进展</text> -->
-      <view class="follow">
-        <!-- <view class="title">请关注in同城趴生活号</view>
-        <view class="get">获取开始选座提醒</view>
-        <view class="icon"></view>
-        <view class="name">in同城趴</view>
-        <view class="btn" wx:if="{{contractID}}">关注
-          <lifestyle publicId="{{contractID}}" @tap="alert" class="lifestyle"></lifestyle>  
-        </view> -->
-        <view class="qrcode" style="background-image: url(https://inimg07.jiuyan.info/in/2017/11/07/D2BBB9D0-B9BD-A49A-85F5-FF91D3D5BF45.jpg);"></view>
-        <view class="user">
-          <view class="avatar" style="background-image: url(https://inimg07.jiuyan.info/in/2017/11/07/D2BBB9D0-B9BD-A49A-85F5-FF91D3D5BF45.jpg);"></view>
-          <view>试试水试试是</view>
+    <view class="container">
+      <view class="result">
+        <view class="txt">
+          <view>支付完成</view>
+          <view class="tips">分享朋友圈 抽免单机会</view>
         </view>
+        <view class="content">
+          <view class="card">
+            <view class="yuan"></view>
+            <!-- <text class="cardname">in同城趴·电影王卡</text> -->
+            <text class="cardinfo">三个月电影免费看</text>
+          </view>
+          <!-- <view class="icon"></view>
+          <text class="getinfo">请关注小程序了解最近进展</text> -->
+          <view class="follow">
+            <view class="qrcode" style="background-image: url({{qrinfo.qrcode}});"></view>
+            <view class="user">
+              <view class="avatar" style="background-image: url({{qrinfo.avatar}});"></view>
+              <view>{{qrinfo.nickname}}</view>
+            </view>
+          </view>
+        </view>
+        <view class="btn" @tap="compose">保存至相册</view>
       </view>
     </view>
-    <view class="btn">保存至相册</view>
-  </view>
+    <canvas style="width: 750px; height: 1205px;position:absolute;top:-2000px;left:-2000px;" canvas-id="firstCanvas"></canvas>
   </report>
 </template>
 
@@ -228,6 +229,11 @@
   import wepy from 'wepy';
   import Result from '@/api/result';
   import report from '@/components/report-submit';
+  import compose from '@/utils/compose'
+  import util from '@/utils/util'
+  import images from './image.js'
+  import auth from '@/api/auth'
+
   export default class result extends wepy.page {
     config = {
       navigationBarTitleText: '支付完成'
@@ -235,20 +241,86 @@
     components = { report }
     mixins = []
     data = {
-      contractID: ''
+      contractID: '2018011801960713',
+      qrinfo: {},
+      openShareMoneyModalData: {
+          isShow: false,
+          images: images,
+      }
     }
     computed = {}
     methods = {
-      alert () {
-        console.log( 1111 );
+      alert() {
+        console.log(1111);
+      },
+      compose () {
+        wx.showLoading({
+          title: '加载中',
+          mask: true
+        })
+        var _images = this.openShareMoneyModalData.images.images
+        var stringlength = util.stringLength(this.qrinfo.nickname)*10
+        _images.qr.src = this.qrinfo.qrcode
+        _images.avatar.src = this.qrinfo.avatar
+        util.loadImages(_images)
+          .then(() => {
+            var ctx = wx.createCanvasContext('firstCanvas')
+            var _avatar = _images.avatar
+            var _qr = _images.qr
+            var _qrContain = _images.qrContain
+            var _body = _images.body
+            // ctx.drawImage(_body.local, _body.x, _body.y, _body.w, _body.h)
+            return util.drawImageInCenter(ctx, _body.local, _body.x, _body.y, _body.w, _body.h)
+              .then(() => {
+                return util.drawImageInCenter(ctx, _avatar.local, 325 - stringlength/2, _avatar.y, _avatar.w, _avatar.h)
+              }).then(() => {
+                return util.drawImageInCenter(ctx, _qr.local, _qr.x, _qr.y, _qr.w, _qr.h)
+              }).then(() => {
+                return util.drawImageInCenter(ctx, _qrContain.local, 325 - stringlength/2, _qrContain.y, _qrContain.w, _qrContain.h)
+              }).then(() => {
+                ctx.draw(true)
+                setTimeout(() => {
+                  // 画文字
+                  ctx.setTextAlign('center')
+                  ctx.setFillStyle('white')
+                  ctx.setFontSize(44)
+                  ctx.fillText(this.qrinfo.title, 375, 100)
+                  ctx.setFontSize(28)
+                  ctx.setFillStyle('white')
+                  ctx.setGlobalAlpha(0.7)
+                  ctx.fillText(this.qrinfo.subtitle, 375, 150)
+                  ctx.setTextAlign('left')
+                  ctx.setFillStyle('black')
+                  ctx.setGlobalAlpha(0.7)
+                  ctx.fillText(this.qrinfo.nickname, 375 - stringlength/2, 960)
+                  ctx.draw(true)
+                  return util.wxPromisify(wx.canvasToTempFilePath)({
+                    canvasId: 'firstCanvas',
+                  }).then(res => {
+                    compose.saveImage(res.tempFilePath)
+                  }, () => {
+                    console.log('fail')
+                    // this.getImgFromBack()
+                  }).catch(error => {
+                    console.error('error')
+                    // this.getImgFromBack()
+                  })
+                }, 100)
+              })
+          }).catch((error) => {
+            wx.hideLoading()
+            this.toastFail('保存失败')
+          })
       }
     }
+    
     events = {}
     async onLoad() {
-      var getContractID = await Result.getContractID()
-      // this.contractID = getContractID.contract_id
-      this.$apply()
-      console.log(this.contractID)
+      await auth.ready()
+      var getContractID = await Result.getContractID();
+      this.contractID = getContractID.contract_id;
+      this.qrinfo = getContractID
+      this.$apply();
     }
   }
 </script>

@@ -3,14 +3,15 @@ import auth from '@/api/auth';
 import Detail from '@/api/detail';
 import tips from '@/utils/tips';
 import report from '@/components/report-submit';
-// import loadingMixin from '@/mixins/loadingMixin'
+import shareConnectMixin from '@/mixins/shareConnectMixin';
+import loadingMixin from '@/mixins/loadingMixin';
 
 export default class Index extends wepy.page {
   config = {
     navigationBarTitleText: 'in同城趴·电影王卡'
   }
   components = { report }
-  mixins = []
+  mixins = [shareConnectMixin, loadingMixin]
   data = {
     cardNumInfo: {
       title: '专享优惠 名额有限',
@@ -64,19 +65,51 @@ export default class Index extends wepy.page {
     detailStatus: {
       is_buy: '0'
     },
+    isPay: false,
     detailText: {}
   }
   computed = {}
   methods = {
     async pay () {
-      await this.pay();
+      // tips.loading();
+      try {
+        if ( !this.isPay ) {
+          this.isPay = true;
+          await this.pay();
+          this.isPay = false;
+        }
+      } catch ( e ) {
+        this.isPay = false;
+      }
+    },
+    backIndex () {
+      wepy.reLaunch( {
+        url: '/pages/index/index'
+      } );
     }
   }
 
   events = {}
-
+  onShareAppMessage ( res ) {
+    return {
+      title: '惊天福利！3个月杭州15大影院任意看 仅需109元！！！',
+      path: '/pages/detail/detail',
+      imageUrl: 'https://inimg01.jiuyan.info/in/2018/01/22/3B9691ED-096C-0D31-E2B9-F455D216E6AD.jpg',
+      success: this.shareCallBack( res )
+    };
+  }
   async onShow () {
-    this.init();
+    if ( !this.data.isNotQun ) {
+      this.init();
+    } else {
+      this.data.isNotQun = false;
+    }
+  }
+  async onLoad ( options ) {
+    this.initOptions( options );
+    this.setShare();
+    await auth.ready();
+    await this.getIdFromQrcode(); // 两个小时没有购买之后 推送
   }
 
   async init () {
@@ -99,10 +132,31 @@ export default class Index extends wepy.page {
     this.rules[2].desc = statusRes.desc.desc12;
     this.$apply();
   }
+  initOptions ( options ) {
+    this.$parent.globalData.qrcode_from = options.qrcode_from;
+    this.data.shareId = options.share_uid || '';
+    this.data.qrcode_from = options.qrcode_from;
+  }
+  setShare () {
+    wepy.showShareMenu( {
+      withShareTicket: true // 要求小程序返回分享目标信息
+    } );
+  }
+  getIdFromQrcode () {
+    if ( !this.data.shareId ) {
+      return;
+    }
+    Detail.request( {
+      url: '/index/qrscan',
+      data: {
+        share_uid: this.data.shareId
+      }
+    } );
+  }
   /**
    *  支付
    */
-  async pay () {
+  async pay ( shareTicketInfo ) {
     if ( !auth._readyStatus ) {
       await auth.ready();
       await this.changeDetailStatus();
@@ -112,22 +166,14 @@ export default class Index extends wepy.page {
       return;
     }
     try {
-      var createRes = await Detail.creatOrder();
+      var createRes = await Detail.creatOrder( shareTicketInfo );
       if ( createRes.code === '4000032129' || createRes.code === '4000031814' ) {
         tips.error( createRes.msg );
         return;
       }
       var getOrderRes = await Detail.getOrderDetail( createRes );
-      var tradePayRes = await wepy.tradePay( {
-        orderStr: getOrderRes.sign
-      } );
-
-      // 支付成功
-      if ( tradePayRes.resultCode === '9000' ) {
-        this.paySucc();
-      } else {
-        this.payFail();
-      }
+      await wepy.requestPayment( getOrderRes.sign );
+      this.paySucc();
     } catch ( e ) {
 
     }
