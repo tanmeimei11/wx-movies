@@ -2,7 +2,7 @@
   <report>
     <view class="container">
       <!-- 客服 -->
-      <view class="contact">
+      <view class="contact" @tap="trackContact">
         <contact-button session-from="wx_movie_contract"></contact-button>
       </view>
       <!-- 已购买 -->
@@ -12,7 +12,7 @@
       </view>
       <!-- 购买 -->
       <view class="buy-wrap" wx:else>
-        <view class="btn btn-origin" @tap="pay">129元购买</view>
+        <view class="btn btn-origin" @tap="normalPay">129元购买</view>
         <view class="btn btn-cut" @tap="sharePay">分享立享109元购买
           <button class="btn-cut-btn" open-type="share"></button>
         </view>

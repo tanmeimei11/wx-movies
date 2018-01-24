@@ -72,7 +72,6 @@ export default class extends wepy.app {
   createAuthHeader () {
     const { WechatApp, xToken, xAries, qrcode_from } = this.globalData;
     const header = { 'WechatApp': WechatApp };
-    console.log( xToken );
     if ( xToken ) {
       header['tg_auth'] = xToken;
       header['_aries'] = xAries;

@@ -5,6 +5,7 @@ import tips from '@/utils/tips';
 import report from '@/components/report-submit';
 import shareConnectMixin from '@/mixins/shareConnectMixin';
 import loadingMixin from '@/mixins/loadingMixin';
+import track from '@/utils/track';
 
 export default class Index extends wepy.page {
   config = {
@@ -70,11 +71,11 @@ export default class Index extends wepy.page {
   }
   computed = {}
   methods = {
-    async pay () {
-      // tips.loading();
+    async normalPay () {
       try {
         if ( !this.isPay ) {
           this.isPay = true;
+          track( 'page_buy' );
           await this.pay();
           this.isPay = false;
         }
@@ -86,10 +87,14 @@ export default class Index extends wepy.page {
       wepy.reLaunch( {
         url: '/pages/index/index'
       } );
+    },
+    sharePay () {
+      track( 'page_share_buy' );
+    },
+    trackContact () {
+      track( 'page_custom_service' );
     }
   }
-
-  events = {}
   onShareAppMessage ( res ) {
     return {
       title: '惊天福利！3个月杭州15大影院任意看 仅需109元！！！',
@@ -97,6 +102,9 @@ export default class Index extends wepy.page {
       imageUrl: 'https://inimg01.jiuyan.info/in/2018/01/22/3B9691ED-096C-0D31-E2B9-F455D216E6AD.jpg',
       success: this.shareCallBack( res )
     };
+  }
+  onReachBottom () {
+    track( 'page_slide_to_end' );
   }
   async onShow () {
     if ( !this.data.isNotQun ) {
@@ -106,12 +114,12 @@ export default class Index extends wepy.page {
     }
   }
   async onLoad ( options ) {
+    track( 'page_enter' );
     this.initOptions( options );
     this.setShare();
     await auth.ready();
     await this.getIdFromQrcode(); // 两个小时没有购买之后 推送
   }
-
   async init () {
     var res = await Detail.getDetailData();
     this.cinemas = Detail.initCinemas( res.cinemas, res.all_cinema_addr_img );
