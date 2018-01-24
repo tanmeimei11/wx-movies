@@ -115,6 +115,7 @@ export default class Index extends wepy.page {
     }
   }
   async onLoad ( options ) {
+    track( 'page_screen' );
     this.initOptions( options );
     this.setShare();
     track( 'page_enter' );

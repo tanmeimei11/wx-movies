@@ -40,6 +40,9 @@ export default class extends wepy.app {
 
     this.intercept( 'request', {
       config ( p ) {
+        if(/google-analytics/.test(p.url)){
+          return  p
+        }
         p.header = this.createAuthHeader();
         p.header['Content-Type'] = 'application/x-www-form-urlencoded';
 
