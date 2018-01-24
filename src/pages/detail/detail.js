@@ -67,7 +67,8 @@ export default class Index extends wepy.page {
       is_buy: '0'
     },
     isPay: false,
-    detailText: {}
+    detailText: {},
+    qrcode_from: ''
   }
   computed = {}
   methods = {
@@ -114,9 +115,9 @@ export default class Index extends wepy.page {
     }
   }
   async onLoad ( options ) {
-    track( 'page_enter' );
     this.initOptions( options );
     this.setShare();
+    track( 'page_enter' );
     await auth.ready();
     await this.getIdFromQrcode(); // 两个小时没有购买之后 推送
   }
@@ -129,7 +130,7 @@ export default class Index extends wepy.page {
     this.cardNumInfo.percent = initCardNumRes.percent;
     this.$apply();
     await auth.ready();
-    var statusRes = await Detail.getDetailStatus();
+    var statusRes = await Detail.getDetailStatus( this.data.qrcode_from );
     this.detailStatus = statusRes;
     this.detailText = statusRes.desc;
     this.rules[0].title = statusRes.desc.desc07;

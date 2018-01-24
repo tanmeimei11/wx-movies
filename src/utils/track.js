@@ -1,6 +1,6 @@
 import wepy from 'wepy';
 const trackPrefix = 'h5_tcpa_movie_';
-const trackUrl = '';
+const trackUrl = 'https://stats1.jiuyan.info/onepiece/router.html';
 
 /**
  * 埋点请求
@@ -13,6 +13,8 @@ export default async function track ( action, params ) {
     url: trackUrl,
     data: {
       action: `${trackPrefix}${action}`,
+      token: wepy.$instance.globalData.xToken,
+      from: wepy.$instance.globalData.qrcode_from,
       ...params
     }
   } );

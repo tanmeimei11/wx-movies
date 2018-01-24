@@ -6,10 +6,13 @@ export default class Detail extends Pagebase {
   /**
    *  获取众筹状态接口
    */
-  static async getDetailStatus () {
+  static async getDetailStatus ( qrcode_from ) {
     return await this.request( {
       url: '/mnp/product/cfStatus',
-      data: { product_id: 159 }
+      data: {
+        product_id: 159,
+        qrcode_from: qrcode_from || ''
+      }
     } );
   }
   /**
