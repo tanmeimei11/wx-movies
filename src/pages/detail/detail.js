@@ -65,6 +65,22 @@ export default class Index extends wepy.page {
           '· 此次活动为in同城趴电影王卡预购活动，当预购人数不足4万人时将在活动结束后3-10个工作日内全额退款。',
           '· 活动最终解释权归九言科技所有'
         ]
+      },
+      {
+        class: 'bold',
+        title: '温馨提示：',
+        desc: [
+          '· 此次活动为in同城趴电影王卡预购活动，当预购人数不足4万人时将在活动结束后3-10个工作日内全额退款。',
+          '· 活动最终解释权归九言科技所有'
+        ]
+      },
+      {
+        class: 'bold',
+        title: '温馨提示：',
+        desc: [
+          '· 此次活动为in同城趴电影王卡预购活动，当预购人数不足4万人时将在活动结束后3-10个工作日内全额退款。',
+          '· 活动最终解释权归九言科技所有'
+        ]
       }
     ],
     detailStatus: {
@@ -80,6 +96,9 @@ export default class Index extends wepy.page {
     gotoBottom () {
       this.toView = 'details';
       this.$apply();
+    },
+    scroll: function(e) {
+      console.log(e)
     },
 
     async normalPay () {
@@ -119,7 +138,7 @@ export default class Index extends wepy.page {
       title: this.shareInfo.share_txt,
       path: `/pages/index/index?shareUserId=${this.shareInfo.qrcode_from}`,
       imageUrl: 'https://inimg01.jiuyan.info/in/2018/01/22/3B9691ED-096C-0D31-E2B9-F455D216E6AD.jpg',
-      success: this.shareCallBack( res )
+      // success: this.shareCallBack( res )
     };
   }
   onReachBottom () {
@@ -156,12 +175,12 @@ export default class Index extends wepy.page {
     var statusRes = await Detail.getDetailStatus( this.data.qrcode_from );
     this.detailStatus = statusRes;
     this.detailText = statusRes.desc;
-    // this.rules[0].title = statusRes.desc.desc07;
-    // this.rules[0].desc = statusRes.desc.desc08;
-    // this.rules[1].title = statusRes.desc.desc09;
-    // this.rules[1].desc = statusRes.desc.desc10;
-    // this.rules[2].title = statusRes.desc.desc11;
-    // this.rules[2].desc = statusRes.desc.desc12;
+    this.rules[0].title = statusRes.desc.desc07;
+    this.rules[0].desc = statusRes.desc.desc08;
+    this.rules[1].title = statusRes.desc.desc09;
+    this.rules[1].desc = statusRes.desc.desc10;
+    this.rules[2].title = statusRes.desc.desc11;
+    this.rules[2].desc = statusRes.desc.desc12;
     var shareInfo = await Detail.getShareInfo()
     this.shareInfo = shareInfo
     this.$apply();

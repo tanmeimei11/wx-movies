@@ -153,6 +153,9 @@
           method: 'POST'
         })
         tips.modal(res.msg)
+        if (res.succ) {
+          this.$emit('init')
+        }
       },
       compose () {
         console.log(this.shareInfo)
