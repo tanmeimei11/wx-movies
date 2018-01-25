@@ -7,5 +7,7 @@ module.exports = {
   [`${DOMAIN}/index/info`]: 'info',
   [`${DOMAIN}/mnp/product/cfStatus`]: 'cfStatus',
   [`${DOMAIN}/mnp/order/result`]: 'result',
+  [`${DOMAIN}/mnp/share/wechat/img`]: 'wechatimg',
+  [`${DOMAIN}/mnp/account/withdraw`]: 'withdraw',
   [`${payUrl}`]: 'signature'
 };

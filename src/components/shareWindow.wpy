@@ -1,0 +1,220 @@
+<template>
+  <view class="shareWindow">
+    <view class="bg" @tap="close"></view>
+    <view class="window">
+      <view class="title">
+        <view class="title1">邀好友购买  得现金</view>
+        <view class="title2">一人10元，二人20，上不封顶</view>
+      </view>
+      <view class="close" @tap="close"></view>
+      <view class="content">
+        <view class="txt1">当前可提现金额</view>
+        <view class="cash">￥{{shareInfo.amount}}</view>
+        <view class="apply" @tap="apply">申请提现 ></view>
+        <view class="shareBtn">转发给好友/群
+          <button class="btn-cut-btn" open-type="share"></button>
+        </view>
+        <view class="compose" @tap="compose">生成朋友圈分享图</view>
+      </view>
+    </view>
+    <canvas style="width: 750px; height: 1205px;position:absolute;top:-2000px;left:-2000px;" canvas-id="firstCanvas"></canvas>
+  </view>
+</template>
+
+<style type="less">
+  .shareWindow{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1001;
+    .bg{
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+    }
+    .window{
+      position: absolute;
+      top: 44%;
+      left: 95rpx;
+      width: 560rpx;
+      height: 724rpx;
+      transform: translateY(-50%);
+      border-radius: 8rpx;
+      background: #fff;
+      overflow: hidden;
+      text-align: center;
+      .title{
+        width: 560rpx;
+        height: 189rpx;
+        background-image: linear-gradient(90deg, #ff815b 0%, #f85c53 100%);
+        color: #fff;
+        overflow: hidden;
+        .title1{
+          font-size: 36rpx;
+          margin-top: 50rpx;
+        }
+        .title2{
+          font-size: 28rpx;
+          margin-top: 12rpx;
+        }
+      }
+      .close{
+        position: absolute;
+        top: 14rpx;
+        right: 14rpx;
+        width: 44rpx;
+        height: 44rpx;
+        background: url('http://inimg01.jiuyan.info/in/2018/01/25/88885A4C-2E29-52C0-1EBB-E54CA1877F53.png') no-repeat;
+        background-position: center;
+        background-size: contain;
+      }
+      .content{
+        .txt1{
+          font-size: 28rpx;
+          color: #b0b0b0;
+          margin-top: 56rpx;
+        }
+        .cash{
+          margin-top: 5rpx;
+          color: #333;
+          font-size: 72rpx;
+          line-height: 88rpx;
+        }
+        .apply{
+          margin-top: 28rpx;
+          color: #ef5b4c;
+          font-size: 30rpx;
+        }
+        .shareBtn{
+          position: relative;
+          margin: 50rpx auto 0;
+          width: 460rpx;
+          height: 80rpx;
+          background-image: linear-gradient(90deg, #FD9C6C 0%, #F95557 100%);
+          border-radius: 100rpx;
+          line-height: 80rpx;
+          color: #fff;
+          font-size: 28rpx;
+          .btn-cut-btn{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+          }
+        }
+        .compose{
+          width: 460rpx;
+          height: 80rpx;
+          margin-top: 20rpx;
+          background: #F9F9F9;
+          border: 1rpx solid #E0E0E0;
+          border-radius: 100rpx;;
+          line-height: 80rpx;
+          margin: 20rpx auto 0;
+          font-size: 28rpx;
+          color: #333;
+          box-sizing: border-box;
+        }
+      }
+    }
+  }
+</style>
+
+<script>
+  import wepy from 'wepy'
+  import compose from '@/utils/compose'
+  import util from '@/utils/util'
+  import images from '@/utils/image'
+  import { request } from '@/utils/request';
+  import tips from '@/utils/tips';
+
+  export default class shareWindow extends wepy.component {
+    props = {
+      shareInfo: Object
+    }
+    data = {
+      qrinfo: this.shareInfo,
+      images: images,
+    }
+    methods = {
+      close() {
+        this.$emit('closeShareWindow')
+      },
+      async apply () {
+        var res = await request({
+          url: '/mnp/account/withdraw',
+          method: 'POST'
+        })
+        tips.modal(res.msg)
+      },
+      compose () {
+        console.log(this.shareInfo)
+        wx.showLoading({
+          title: '加载中',
+          mask: true
+        })
+        var _images = this.images.images
+        var stringlength = (util.stringLength(this.shareInfo.nickname) + 16)*10
+        _images.qr.src = this.shareInfo.share_qrcode_url
+        _images.avatar.src = this.shareInfo.avatar
+        util.loadImages(_images)
+          .then(() => {
+            var ctx = wx.createCanvasContext('firstCanvas')
+            var _avatar = _images.avatar
+            var _qr = _images.qr
+            var _qrContain = _images.qrContain
+            var _body = _images.body
+            // ctx.drawImage(_body.local, _body.x, _body.y, _body.w, _body.h)
+            return util.drawImageInCenter(ctx, _body.local, _body.x, _body.y, _body.w, _body.h)
+              .then(() => {
+                return util.drawImageInCenter(ctx, _avatar.local, 325 - stringlength/2, _avatar.y, _avatar.w, _avatar.h)
+              }).then(() => {
+                return util.drawImageInCenter(ctx, _qr.local, _qr.x, _qr.y, _qr.w, _qr.h)
+              }).then(() => {
+                return util.drawImageInCenter(ctx, _qrContain.local, 325 - stringlength/2, _qrContain.y, _qrContain.w, _qrContain.h)
+              }).then(() => {
+                ctx.draw(true)
+                setTimeout(() => {
+                  // 画文字
+                  ctx.setTextAlign('center')
+                  ctx.setFillStyle('white')
+                  ctx.setFontSize(44)
+                  ctx.fillText(this.shareInfo.title, 375, 100)
+                  ctx.setFontSize(28)
+                  ctx.setFillStyle('white')
+                  ctx.setGlobalAlpha(0.7)
+                  ctx.fillText(this.shareInfo.subtitle, 375, 150)
+                  ctx.setTextAlign('left')
+                  ctx.setFillStyle('white')
+                  ctx.setGlobalAlpha(0.7)
+                  ctx.fillText(this.shareInfo.nickname + '  邀您查看详情', 375 - stringlength/2, 1119)
+                  ctx.draw(true)
+                  return util.wxPromisify(wx.canvasToTempFilePath)({
+                    canvasId: 'firstCanvas',
+                  }).then(res => {
+                    console.log(res)
+                    compose.saveImage(res.tempFilePath)
+                  }, () => {
+                    console.log('fail')
+                    // this.getImgFromBack()
+                  }).catch(error => {
+                    console.error('error')
+                    // this.getImgFromBack()
+                  })
+                }, 100)
+              })
+          }).catch((error) => {
+            wx.hideLoading()
+            // this.toastFail('保存失败')
+          })
+      }
+    }
+  }
+</script>

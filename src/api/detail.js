@@ -49,6 +49,14 @@ export default class Detail extends Pagebase {
     };
   }
   /**
+   * 获取分享信息
+   */
+  static async getShareInfo () {
+    return await this.request({
+      url: '/mnp/share/wechat/img'
+    });
+  }
+  /**
    *
    * 初始化电影
    * @static

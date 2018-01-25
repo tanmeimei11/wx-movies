@@ -13,9 +13,7 @@
       <!-- 购买 -->
       <view class="buy-wrap" wx:else>
         <view class="btn btn-origin" @tap="normalPay">129元购买</view>
-        <view class="btn btn-cut" @tap="sharePay">分享立享109元购买
-          <button class="btn-cut-btn" open-type="share"></button>
-        </view>
+        <view class="btn btn-cut" @tap="sharePay">分享立享109元购买 </view>
       </view>
      <view class="c-bg">
        <!-- <view class="logo"></view> -->
@@ -74,6 +72,7 @@
           </view>
       </view>
   </view>
+  <shareWindow :shareInfo.sync="shareInfo" wx:if="{{showShareWindow}}" @closeShareWindow.user="closeShareWindow" ></shareWindow>
   </report>
 </template>
 <style lang="less" src="./detail.less">
