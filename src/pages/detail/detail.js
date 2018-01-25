@@ -15,6 +15,7 @@ export default class Index extends wepy.page {
   components = { report, shareWindow }
   mixins = [shareConnectMixin, loadingMixin]
   data = {
+    toView: '',
     showShareWindow: true,
     cardNumInfo: {
       title: '专享优惠 名额有限',
@@ -75,6 +76,11 @@ export default class Index extends wepy.page {
   }
   computed = {}
   methods = {
+    gotoBottom () {
+      this.toView = 'details';
+      this.$apply();
+    },
+
     async normalPay () {
       try {
         if ( !this.isPay ) {

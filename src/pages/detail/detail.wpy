@@ -1,81 +1,106 @@
 <template>
   <report>
-    <view class="container">
+    <scroll-view class="container" scroll-y scroll-with-animation scroll-into-view="{{toView}}">
+      <!-- 活动规则 -->
+      <view class="anch" @tap="gotoBottom">活动规则</view>
       <!-- 客服 -->
       <view class="contact" @tap="trackContact">
         <contact-button session-from="wx_movie_contract"></contact-button>
       </view>
       <!-- 已购买 -->
       <view class="buy-wrap"  wx:if="{{detailStatus.is_buy=='1'}}">
-        <view class="btn btn-origin" @tap="backIndex">返回首页</view>
-        <view class="btn btn-cut btn-already">已购买</view>
+        <view class="btn btn-origin disable">已购买</view>
+        <view class="btn btn-cut" @tap="sharePay">分享得现金
+          <button class="btn-cut-btn" open-type="share"></button>
+        </view>
       </view>
       <!-- 购买 -->
       <view class="buy-wrap" wx:else>
         <view class="btn btn-origin" @tap="normalPay">129元购买</view>
         <view class="btn btn-cut" @tap="sharePay">分享立享109元购买 </view>
       </view>
-     <view class="c-bg">
-       <!-- <view class="logo"></view> -->
-       <!-- 卡数量 -->
-      <view class="c-card-num-wrap">
-        <view class="s-outer"></view>
-        <view class="s-inner" style="width:{{cardNumInfo.percent}}">
-            <view class="s-inner-num">{{cardNumInfo.num}}</view>
-        </view>
-      </view>
-      <!-- <view class="pay-btn" @tap="pay">{{detailStatus.is_buy === '1' ? '已购买' : '99元立即抢'}}</view> -->
-     </view>
-    <!-- 电影部分 -->
-    <view class="c-part">
-      <view class="c-one-part">
-        <view class="s-mid-title ciname">{{detailText.desc01}}</view>
-        <image class="s-img-1" mode="aspectFill" src="{{cinemas.img}}"></image>
-        <view class="s-info-wrap">
-          <view class="cinemas-wrap"  wx:for="{{cinemas.list}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
-            <view class="name">{{item.name}}</view>
-            <view class="addr">{{item.address}}</view>
+      <view class="c-bg">
+        <!-- <view class="logo"></view> -->
+        <view class="front_back">
+          <view class="front">
+            <view>{{detailText.desc01[0]}}</view>
+            <view>{{detailText.desc01[1]}}</view>
+          </view>
+          <view class="back">
+            <view>{{detailText.desc02[0]}}</view>
+            <view>{{detailText.desc02[1]}}</view>
           </view>
         </view>
+        <!-- 卡数量 -->
+        <view class="c-card-num-wrap">
+          <view class="s-outer"></view>
+          <view class="s-inner" style="width:{{cardNumInfo.percent}}">
+              <!-- <view class="s-inner-num">{{cardNumInfo.num}}</view> -->
+          </view>
+        </view>
+        <view class="progress">
+          <view>{{detailText.desc03}}</view>
+          <view>已售 {{detailStatus.current_person_count}}</view>
+        </view>
+        <!-- <view class="pay-btn" @tap="pay">{{detailStatus.is_buy === '1' ? '已购买' : '99元立即抢'}}</view> -->
       </view>
-
-      <view class="c-one-part movie">
-        <view class="s-mid-title movie">{{detailText.desc02}}</view>
-        <view class="s-title">{{detailText.desc03}}</view>
-        <view class="s-desc">{{detailText.desc04}}</view>
-        <image class="s-img-movie" src="https://inimg01.jiuyan.info/in/2018/01/20/4FABB17C-5A99-5E78-F584-A13CFB942E6B.jpg"></image>
-        <view class="s-title">2018热门电影</view>
-        <view class="s-info-wrap">
-          <view class="movies-wrap"  >
-            <view class="movie" wx:for="{{movies}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
-              <image class="movie-paper" src="{{item.url}}"></image>
-              <view class="movie-name">{{item.name}}</view>
+      <!-- 电影部分 -->
+      <view class="c-part">
+        <view class="c-one-part">
+          <view class="s-mid-title ciname">{{detailText.desc07}}</view>
+          <view class="s-title">{{detailText.desc08[0]}}</view>
+          <view class="s-desc">{{detailText.desc08[1]}}</view>
+          <image class="s-img-1" mode="aspectFill" src="{{cinemas.img}}"></image>
+          <view class="s-info-wrap">
+            <view class="cinemas-wrap"  wx:for="{{cinemas.list}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
+              <view class="name">{{item.name}}</view>
+              <view class="addr">{{item.address}}</view>
             </view>
           </view>
         </view>
-        <view class="s-tips">(页面仅展示部分电影，更多电影无限畅看)</view>
+
+        <view class="c-one-part movie">
+          <view class="s-mid-title movie">{{detailText.desc09}}</view>
+          <view class="s-title">{{detailText.desc10[0]}}</view>
+          <view class="s-desc">{{detailText.desc10[1]}}</view>
+          <image class="s-img-movie" src="https://inimg01.jiuyan.info/in/2018/01/20/4FABB17C-5A99-5E78-F584-A13CFB942E6B.jpg"></image>
+          <view class="s-mid-title movie1">{{detailText.desc11}}</view>
+          <view class="s-title">{{detailText.desc12[0]}}</view>
+          <view class="s-desc">{{detailText.desc12[1]}}</view>
+          <view class="s-info-wrap">
+            <view class="movies-wrap"  >
+              <view class="movie" wx:for="{{movies}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
+                <image class="movie-paper" src="{{item.url}}"></image>
+                <view class="movie-name">{{item.name}}</view>
+              </view>
+            </view>
+          </view>
+          <view class="s-tips">(页面仅展示部分电影，更多电影无限畅看)</view>
+        </view>
+
+        <view class="c-one-part look">
+          <view class="s-mid-title">{{detailText.desc13}}</view>
+          <view class="s-desc">{{detailText.desc14[0]}}</view>
+          <view class="s-desc">{{detailText.desc14[1]}}</view>
+          <image class="s-img-1" mode="aspectFill" src="https://inimg01.jiuyan.info/in/2018/01/20/5C6F0180-3C30-D9F7-C4CF-0AE422636EC1.jpg"></image>
+
+          <view class="s-mid-title movie2">限时优惠限时专享！</view>
+          <view class="s-desc">白金享受！白菜价格！</view>
+          <view class="s-desc">全杭州只卖五万张！手慢只能迎风流泪后悔！</view>
+        </view>
       </view>
 
-      <view class="c-one-part look">
-        <view class="s-mid-title">{{detailText.desc05}}</view>
-        <view class="s-desc">{{detailText.desc06[0]}}</view>
-        <view class="s-desc">{{detailText.desc06[1]}}</view>
-        <image class="s-img-1" mode="aspectFill" src="https://inimg01.jiuyan.info/in/2018/01/20/5C6F0180-3C30-D9F7-C4CF-0AE422636EC1.jpg"></image>
-      </view>
-    </view>
-
-     <view class="c-last">
+      <view class="c-last" id="details">
         <view class="s-mid-title rule">详情介绍</view>
           <view class="s-rules"  wx:for="{{rules}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
             <view class="title {{item.class}}">{{item.title}}</view>
             <view class="desc" wx:for="{{item.desc}}" wx:for-index="idx1" wx:for-item="item1" wx:key="idx">{{item1}}</view>
           </view>
       </view>
-  </view>
-  <shareWindow :shareInfo.sync="shareInfo" wx:if="{{showShareWindow}}" @closeShareWindow.user="closeShareWindow" ></shareWindow>
+    </scroll-view>
+    <shareWindow :shareInfo.sync="shareInfo" wx:if="{{showShareWindow}}" @closeShareWindow.user="closeShareWindow" ></shareWindow>
+
   </report>
 </template>
-<style lang="less" src="./detail.less">
-</style>
-<script src="./detail.js">
-</script>
+<style lang="less" src="./detail.less"></style>
+<script src="./detail.js"></script>
