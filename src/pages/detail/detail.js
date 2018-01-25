@@ -14,6 +14,7 @@ export default class Index extends wepy.page {
   components = { report }
   mixins = [shareConnectMixin, loadingMixin]
   data = {
+    toView: '',
     cardNumInfo: {
       title: '专享优惠 名额有限',
       desc: '为保障用户观影体验 限量发售五万张',
@@ -72,6 +73,12 @@ export default class Index extends wepy.page {
   }
   computed = {}
   methods = {
+    gotoBottom () {
+      console.log(123)
+      this.toView = 'details';
+      this.$apply();
+    },
+
     async normalPay () {
       try {
         if ( !this.isPay ) {
