@@ -20,7 +20,7 @@
       /* position: absolute; */
       width: 750rpx;
       height: 100%;
-      background: url('https://inimg02.jiuyan.info/in/2018/01/17/EE45BB67-260E-B1A9-4195-B79F4B4C0C3D.png') no-repeat;
+      background: url('https://inimg01.jiuyan.info/in/2018/01/25/64D66B04-2594-323C-E068-B10C5209CDC5.jpg') no-repeat;
       background-size: contain;
       background-position: bottom;
     }
