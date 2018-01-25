@@ -3,6 +3,7 @@ import auth from '@/api/auth';
 import Detail from '@/api/detail';
 import tips from '@/utils/tips';
 import report from '@/components/report-submit';
+import shareWindow from '@/components/shareWindow';
 import shareConnectMixin from '@/mixins/shareConnectMixin';
 import loadingMixin from '@/mixins/loadingMixin';
 import track from '@/utils/track';
@@ -11,10 +12,11 @@ export default class Index extends wepy.page {
   config = {
     navigationBarTitleText: 'in同城趴·电影王卡'
   }
-  components = { report }
+  components = { report, shareWindow }
   mixins = [shareConnectMixin, loadingMixin]
   data = {
     toView: '',
+    showShareWindow: true,
     cardNumInfo: {
       title: '专享优惠 名额有限',
       desc: '为保障用户观影体验 限量发售五万张',
@@ -69,12 +71,12 @@ export default class Index extends wepy.page {
     },
     isPay: false,
     detailText: {},
-    qrcode_from: ''
+    qrcode_from: '',
+    shareInfo: {}
   }
   computed = {}
   methods = {
     gotoBottom () {
-      console.log(123)
       this.toView = 'details';
       this.$apply();
     },
@@ -96,8 +98,16 @@ export default class Index extends wepy.page {
         url: '/pages/index/index'
       } );
     },
-    sharePay () {
+    async sharePay () {
       track( 'page_share_buy' );
+      // await tips.loading()
+      this.showShareWindow = true;
+      // var shareInfo = await Detail.getShareInfo()
+      // this.shareInfo = shareInfo
+      // this.$apply()
+    },
+    closeShareWindow () {
+      this.showShareWindow = false;
     },
     trackContact () {
       track( 'page_custom_service' );
@@ -106,7 +116,7 @@ export default class Index extends wepy.page {
   onShareAppMessage ( res ) {
     return {
       title: '惊天福利！3个月杭州15大影院任意看 仅需109元！！！',
-      path: '/pages/detail/detail',
+      path: `/pages/detail/detail?shareUserId=${this.shareInfo.from_user_id}`,
       imageUrl: 'https://inimg01.jiuyan.info/in/2018/01/22/3B9691ED-096C-0D31-E2B9-F455D216E6AD.jpg',
       success: this.shareCallBack( res )
     };
@@ -142,12 +152,14 @@ export default class Index extends wepy.page {
     var statusRes = await Detail.getDetailStatus( this.data.qrcode_from );
     this.detailStatus = statusRes;
     this.detailText = statusRes.desc;
-    this.rules[0].title = statusRes.desc.desc07;
-    this.rules[0].desc = statusRes.desc.desc08;
-    this.rules[1].title = statusRes.desc.desc09;
-    this.rules[1].desc = statusRes.desc.desc10;
-    this.rules[2].title = statusRes.desc.desc11;
-    this.rules[2].desc = statusRes.desc.desc12;
+    // this.rules[0].title = statusRes.desc.desc07;
+    // this.rules[0].desc = statusRes.desc.desc08;
+    // this.rules[1].title = statusRes.desc.desc09;
+    // this.rules[1].desc = statusRes.desc.desc10;
+    // this.rules[2].title = statusRes.desc.desc11;
+    // this.rules[2].desc = statusRes.desc.desc12;
+    var shareInfo = await Detail.getShareInfo()
+    this.shareInfo = shareInfo
     this.$apply();
   }
   initOptions ( options ) {
