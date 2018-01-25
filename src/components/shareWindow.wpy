@@ -3,8 +3,8 @@
     <view class="bg" @tap="close"></view>
     <view class="window">
       <view class="title">
-        <view class="title1">邀好友购买  得现金</view>
-        <view class="title2">一人10元，二人20，上不封顶</view>
+        <view class="title1">{{shareInfo.toast_title}}</view>
+        <view class="title2">{{shareInfo.toast_subtitle}}</view>
       </view>
       <view class="close" @tap="close"></view>
       <view class="content">
@@ -14,7 +14,7 @@
         <view class="shareBtn">转发给好友/群
           <button class="btn-cut-btn" open-type="share"></button>
         </view>
-        <view class="compose" @tap="compose">生成朋友圈分享图</view>
+        <view class="compose" @tap="compose" wx:if="{{shareInfo.is_show}}">生成朋友圈分享图</view>
       </view>
     </view>
     <canvas style="width: 750px; height: 1205px;position:absolute;top:-2000px;left:-2000px;" canvas-id="firstCanvas"></canvas>

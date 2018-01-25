@@ -200,7 +200,6 @@
       <view class="result">
         <view class="txt">
           <view>支付完成</view>
-          <view class="tips">分享朋友圈 抽免单机会</view>
         </view>
         <view class="content">
           <view class="card">
@@ -218,10 +217,9 @@
             </view>
           </view>
         </view>
-        <view class="btn" @tap="compose">保存至相册</view>
+        <!-- <view class="btn" @tap="compose">保存至相册</view> -->
       </view>
     </view>
-    <canvas style="width: 750px; height: 1205px;position:absolute;top:-2000px;left:-2000px;" canvas-id="firstCanvas"></canvas>
   </report>
 </template>
 
@@ -229,10 +227,10 @@
   import wepy from 'wepy';
   import Result from '@/api/result';
   import report from '@/components/report-submit';
-  import compose from '@/utils/compose'
-  import util from '@/utils/util'
-  import images from './image.js'
-  import auth from '@/api/auth'
+  // import compose from '@/utils/compose'
+  // import util from '@/utils/util'
+  // import images from './image.js'
+  // import auth from '@/api/auth'
 
   export default class result extends wepy.page {
     config = {
@@ -242,75 +240,12 @@
     mixins = []
     data = {
       contractID: '2018011801960713',
-      qrinfo: {},
-      openShareMoneyModalData: {
-          isShow: false,
-          images: images,
-      }
+      qrinfo: {}
     }
     computed = {}
     methods = {
       alert() {
         console.log(1111);
-      },
-      compose () {
-        wx.showLoading({
-          title: '加载中',
-          mask: true
-        })
-        var _images = this.openShareMoneyModalData.images.images
-        var stringlength = util.stringLength(this.qrinfo.nickname)*10
-        _images.qr.src = this.qrinfo.qrcode
-        _images.avatar.src = this.qrinfo.avatar
-        util.loadImages(_images)
-          .then(() => {
-            var ctx = wx.createCanvasContext('firstCanvas')
-            var _avatar = _images.avatar
-            var _qr = _images.qr
-            var _qrContain = _images.qrContain
-            var _body = _images.body
-            // ctx.drawImage(_body.local, _body.x, _body.y, _body.w, _body.h)
-            return util.drawImageInCenter(ctx, _body.local, _body.x, _body.y, _body.w, _body.h)
-              .then(() => {
-                return util.drawImageInCenter(ctx, _avatar.local, 325 - stringlength/2, _avatar.y, _avatar.w, _avatar.h)
-              }).then(() => {
-                return util.drawImageInCenter(ctx, _qr.local, _qr.x, _qr.y, _qr.w, _qr.h)
-              }).then(() => {
-                return util.drawImageInCenter(ctx, _qrContain.local, 325 - stringlength/2, _qrContain.y, _qrContain.w, _qrContain.h)
-              }).then(() => {
-                ctx.draw(true)
-                setTimeout(() => {
-                  // 画文字
-                  ctx.setTextAlign('center')
-                  ctx.setFillStyle('white')
-                  ctx.setFontSize(44)
-                  ctx.fillText(this.qrinfo.title, 375, 100)
-                  ctx.setFontSize(28)
-                  ctx.setFillStyle('white')
-                  ctx.setGlobalAlpha(0.7)
-                  ctx.fillText(this.qrinfo.subtitle, 375, 150)
-                  ctx.setTextAlign('left')
-                  ctx.setFillStyle('black')
-                  ctx.setGlobalAlpha(0.7)
-                  ctx.fillText(this.qrinfo.nickname, 375 - stringlength/2, 960)
-                  ctx.draw(true)
-                  return util.wxPromisify(wx.canvasToTempFilePath)({
-                    canvasId: 'firstCanvas',
-                  }).then(res => {
-                    compose.saveImage(res.tempFilePath)
-                  }, () => {
-                    console.log('fail')
-                    // this.getImgFromBack()
-                  }).catch(error => {
-                    console.error('error')
-                    // this.getImgFromBack()
-                  })
-                }, 100)
-              })
-          }).catch((error) => {
-            wx.hideLoading()
-            this.toastFail('保存失败')
-          })
       }
     }
     
@@ -321,6 +256,7 @@
       this.contractID = getContractID.contract_id;
       this.qrinfo = getContractID
       this.$apply();
+      console.log(getContractID)
     }
   }
 </script>

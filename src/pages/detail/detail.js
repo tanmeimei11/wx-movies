@@ -110,7 +110,7 @@ export default class Index extends wepy.page {
   onShareAppMessage ( res ) {
     return {
       title: '惊天福利！3个月杭州15大影院任意看 仅需109元！！！',
-      path: `/pages/detail/detail?shareUserId=${this.shareInfo.from_user_id}`,
+      path: `/pages/detail/detail?shareUserId=${this.shareInfo.qrcode_from}`,
       imageUrl: 'https://inimg01.jiuyan.info/in/2018/01/22/3B9691ED-096C-0D31-E2B9-F455D216E6AD.jpg',
       success: this.shareCallBack( res )
     };

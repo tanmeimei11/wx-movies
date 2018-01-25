@@ -11,7 +11,7 @@ var images = {
       src: "https://inimg01.jiuyan.info/in/2017/02/28/85929FBE-BB9D-91D5-7BA3-068EE42A6000-1JyqzdYV.jpg",
       local: "",
       x: 225,
-      y: 594,
+      y: 604,
       w: 300,
       h: 300,
     },
