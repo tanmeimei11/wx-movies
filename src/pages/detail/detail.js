@@ -15,8 +15,9 @@ export default class Index extends wepy.page {
   components = { report, shareWindow }
   mixins = [shareConnectMixin, loadingMixin]
   data = {
+    shareUserId: '',
     toView: '',
-    showShareWindow: true,
+    showShareWindow: false,
     cardNumInfo: {
       title: '专享优惠 名额有限',
       desc: '为保障用户观影体验 限量发售五万张',
@@ -115,8 +116,8 @@ export default class Index extends wepy.page {
   }
   onShareAppMessage ( res ) {
     return {
-      title: '惊天福利！3个月杭州15大影院任意看 仅需109元！！！',
-      path: `/pages/detail/detail?shareUserId=${this.shareInfo.qrcode_from}`,
+      title: this.shareInfo.share_txt,
+      path: `/pages/index/index?shareUserId=${this.shareInfo.qrcode_from}`,
       imageUrl: 'https://inimg01.jiuyan.info/in/2018/01/22/3B9691ED-096C-0D31-E2B9-F455D216E6AD.jpg',
       success: this.shareCallBack( res )
     };
@@ -132,6 +133,9 @@ export default class Index extends wepy.page {
     }
   }
   async onLoad ( options ) {
+    if (options.shareUserId) {
+      this.shareUserId = options.shareUserId
+    }
     track( 'page_screen' );
     this.initOptions( options );
     this.setShare();
@@ -196,14 +200,15 @@ export default class Index extends wepy.page {
       return;
     }
     try {
-      var createRes = await Detail.creatOrder( shareTicketInfo );
+      var createRes = await Detail.creatOrder( shareTicketInfo, this.shareUserId );
       if ( createRes.code === '4000032129' || createRes.code === '4000031814' ) {
         tips.error( createRes.msg );
         return;
       }
       var getOrderRes = await Detail.getOrderDetail( createRes );
+      console.log(createRes.order_no)
       await wepy.requestPayment( getOrderRes.sign );
-      this.paySucc();
+      this.paySucc(createRes.order_no);
     } catch ( e ) {
 
     }
@@ -219,9 +224,9 @@ export default class Index extends wepy.page {
   /**
    *  支付成功
    */
-  paySucc () {
+  paySucc (order_no) {
     wepy.navigateTo( {
-      url: '../result/result'
+      url: `../result/result?orderNo=${orderNo}`
     } );
   }
   payFail () {

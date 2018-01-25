@@ -58,7 +58,7 @@
       position: absolute;
       top: -93rpx;
       left: 34rpx;
-      background: url('https://inimg05.jiuyan.info/in/2018/01/20/2DA09EFC-0C64-7D16-217F-CDFB83064A8C.png') no-repeat;
+      background: url('https://inimg01.jiuyan.info/in/2018/01/25/31F09241-BE48-CDC5-AED9-94D5FC27EF25.png') no-repeat;
       background-size: contain;
       background-position: center;
       .yuan {
@@ -96,12 +96,34 @@
       background-size: contain;
       background-position: center;
     } */
-    .follow {
+    .follow, .succ {
       position: absolute;
-      top: 297rpx;
+      top: 287rpx;
       left: 0;
-      width: 100%;
+      width: 526rpx;
       text-align: center;
+      padding: 0 34rpx;
+      text-align: left;
+      .text{
+        font-size: 32rpx;
+        color: #666;
+      }
+      input{
+        width: 526rpx;
+        height: 70rpx;
+        background: #f7f7f7;
+        border: none;
+        border-radius: 8rpx;
+        font-size: 28rpx;
+        color: #333;
+        padding-left: 20rpx;
+        margin-top: 12rpx;
+      }
+      .tips{
+        font-size: 20rpx;
+        color: #b0b0b0;
+        margin-top: 10rpx;
+      }
       .title {
         font-size: 36rpx;
         font-weight: bold;
@@ -127,9 +149,20 @@
         color: #333;
       }
       .btn {
-        margin-top: 28rpx;
+        width: 400rpx;
+        height: 88rpx;
+        margin: 90rpx auto 0;
+        line-height: 88rpx;
+        font-size: 32rpx;
         color: #fff;
+        text-align: center;
         background-image: linear-gradient(90deg, #FD9C6C 0%, #F95557 100%);
+        border-radius: 65rpx;
+        position: relative;
+        opacity: 0.3;
+        &.on{
+          opacity: 1
+        }
       }
       .qrcode {
         width: 300rpx;
@@ -159,6 +192,17 @@
         }
       }
     }
+    .succ{
+      text-align: center;
+      .succIcon{
+        width: 140rpx;
+        height: 140rpx;
+        margin: 20rpx auto;
+        background: url('http://inimg05.jiuyan.info/in/2018/01/25/D6FF7CFF-69FB-C5F2-401F-5160DEFFAA83.png') no-repeat;
+        background-position: center;
+        background-size: contain;
+      }
+    }
     .getinfo {
       position: absolute;
       top: 538rpx;
@@ -170,29 +214,6 @@
     }
   }
 
-  .btn {
-    width: 400rpx;
-    height: 88rpx;
-    margin: 0 auto;
-    line-height: 88rpx;
-    font-size: 32rpx;
-    color: #fff;
-    text-align: center;
-    background-image: linear-gradient(90deg, #FD9C6C 0%, #F95557 100%);
-    border-radius: 65rpx;
-    position: relative;
-    .lifestyle {
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
-      background: #000;
-      transform-origin: 0 0;
-      width: 100%!important;
-      height: 100%!important;
-      /* opacity: 0; */
-    }
-  }
 </style>
 <template>
   <report>
@@ -209,12 +230,20 @@
           </view>
           <!-- <view class="icon"></view>
           <text class="getinfo">请关注小程序了解最近进展</text> -->
-          <view class="follow">
-            <view class="qrcode" style="background-image: url({{qrinfo.qrcode}});"></view>
+          <view class="follow" wx:if="{{!succ}}">
+            <view class="text">请留下你的联系方式</view>
+            <input bindinput="bindKeyInput" placeholder="输入手机号" type="number" maxlength="11"/>
+            <view class="tips">＊开放选座后将及时提醒你</view>
+            <view class="btn {{isFull ? 'on' : ''}}" @tap="submit">确认提交</view>
+            <!-- <view class="qrcode" style="background-image: url({{qrinfo.qrcode}});"></view>
             <view class="user">
               <view class="avatar" style="background-image: url({{qrinfo.avatar}});"></view>
               <view>{{qrinfo.nickname}}</view>
-            </view>
+            </view> -->
+          </view>
+          <view class="succ" wx:if="{{succ}}">
+            <view class="succIcon"></view>
+            <view class="succTxt">提交成功</view>
           </view>
         </view>
         <!-- <view class="btn" @tap="compose">保存至相册</view> -->
@@ -230,7 +259,9 @@
   // import compose from '@/utils/compose'
   // import util from '@/utils/util'
   // import images from './image.js'
-  // import auth from '@/api/auth'
+  import tips from '@/utils/tips';
+  import auth from '@/api/auth';
+  import { request } from '@/utils/request';
 
   export default class result extends wepy.page {
     config = {
@@ -239,6 +270,10 @@
     components = { report }
     mixins = []
     data = {
+      succ: false,
+      isFull: false,
+      num: '',
+      orderNo: '',
       contractID: '2018011801960713',
       qrinfo: {}
     }
@@ -246,17 +281,38 @@
     methods = {
       alert() {
         console.log(1111);
+      },
+      bindKeyInput(e) {
+        this.num = e.detail.value
+        if (e.detail.value.length === 11) {
+          this.isFull = true
+        }
+      },
+      async submit() {
+        console.log(Result)
+        if (this.isFull) {
+          var res = await request({
+            url: '/mnp/account/withdraw',
+            method: 'POST',
+            data: {
+              orderNo: this.orderNo, 
+              phone: this.num
+            }
+          })
+          if (res.succ) {
+            this.succ = true
+            this.$apply()
+          } else {
+            tips.error('网络错误')
+          }
+        }
       }
     }
     
     events = {}
-    async onLoad() {
+    async onLoad(option) {
+      this.orderNo = option.orderNo
       await auth.ready()
-      var getContractID = await Result.getContractID();
-      this.contractID = getContractID.contract_id;
-      this.qrinfo = getContractID
-      this.$apply();
-      console.log(getContractID)
     }
   }
 </script>

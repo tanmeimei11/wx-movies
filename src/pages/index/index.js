@@ -31,7 +31,12 @@ export default class index extends wepy.page {
   events = {
   }
 
-  async onLoad () {
+  async onLoad (option) {
+    if (option.shareUserId) {
+      wepy.navigateTo( {
+        url: `/pages/detail/detail?shareUserId=${option.shareUserId}`
+      });
+    }
     var InfoRes = await Index.getIndexInfo();
     this.texts = InfoRes;
     this.btnon = InfoRes.cf_start !== 'false';

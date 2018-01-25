@@ -8,7 +8,7 @@ export default class Detail extends Pagebase {
    */
   static async getDetailStatus ( qrcode_from ) {
     return await this.request( {
-      url: '/mnp/product/cfStatus',
+      url: '/mnp/product/cfStatus2',
       data: {
         product_id: 159,
         qrcode_from: qrcode_from || ''
@@ -77,14 +77,15 @@ export default class Detail extends Pagebase {
   /**
    * 创建订单接口
    */
-  static async creatOrder ( shareTicketInfo ) {
+  static async creatOrder ( shareTicketInfo, shareUserId ) {
     var _data = shareTicketInfo || {};
     return await this.request( {
       url: '/mnp/order/create',
       data: {
         ..._data,
         product_id: 159,
-        pay_channel: paymentChannel
+        pay_channel: paymentChannel,
+        qrcode_from: shareUserId
       }
     } );
   }
