@@ -109,12 +109,8 @@ export default class Index extends wepy.page {
     return {
       title: this.shareInfo.share_txt,
       path: `/pages/index/index?directTo=detail&qrcode_from=${this.shareInfo.qrcode_from}`,
-      imageUrl: 'https://inimg01.jiuyan.info/in/2018/01/22/3B9691ED-096C-0D31-E2B9-F455D216E6AD.jpg',
-      success: this.showQR( this.shareInfo.qrcode_from )
+      imageUrl: 'http://inimg07.jiuyan.info/in/2018/01/26/20A52317-E4EB-3657-E024-F2EF040B2E86.jpg'
     };
-  }
-  showQR (e) {
-    console.log(e)
   }
   onReachBottom () {
     track( 'page_slide_to_end' );

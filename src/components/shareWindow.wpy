@@ -14,7 +14,7 @@
         <view class="shareBtn" @tap="shareCode">转发给好友/群
           <button class="btn-cut-btn" open-type="share"></button>
         </view>
-        <view class="compose" @tap="compose" wx:if="{{shareInfo.is_show}}">生成朋友圈分享图</view>
+        <view class="compose" @tap.stop="compose" wx:if="{{shareInfo.is_show}}">生成朋友圈分享图</view>
       </view>
     </view>
     <canvas style="width: 750px; height: 1205px;position:absolute;top:-2000px;left:-2000px;" canvas-id="firstCanvas"></canvas>
@@ -231,9 +231,11 @@
                     compose.saveImage(res.tempFilePath)
                   }, () => {
                     console.log('fail')
+                    wx.hideLoading()
                     // this.getImgFromBack()
                   }).catch(error => {
                     console.error('error')
+                    wx.hideLoading()
                     // this.getImgFromBack()
                   })
                 }, 100)

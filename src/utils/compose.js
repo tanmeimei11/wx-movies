@@ -28,22 +28,6 @@ module.exports = {
                   duration: 2000
                 })
             })
-    },
-    getImgFromBack() {
-        request({
-            url: '/bounty/edpacket_img ',
-        }).then(res => {
-            if (res.succ && res.data) {
-                this.saveImage(res.data)
-            }
-        }).catch(() => {
-            wx.hideLoading()
-            wx.showToast({
-                title: '当前微信版本不支持, 请升级版本',
-                image: '../../images/toast-fail.png',
-                duration: 2000
-            })
-        })
     }
 }
 

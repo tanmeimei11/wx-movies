@@ -52,7 +52,7 @@
           <view class="s-mid-title movie">{{detailText.desc09}}</view>
           <view class="s-title">{{detailText.desc10[0]}}</view>
           <view class="s-desc">{{detailText.desc10[1]}}</view>
-          <image class="s-img-movie" src="https://inimg01.jiuyan.info/in/2018/01/20/4FABB17C-5A99-5E78-F584-A13CFB942E6B.jpg"></image>
+          <image class="s-img-movie" src="https://inimg05.jiuyan.info/in/2018/01/26/6FF859BD-2789-FF95-2D40-464F0AA8BBC1.png"></image>
           <view class="s-mid-title movie1">{{detailText.desc11}}</view>
           <view class="s-title">{{detailText.desc12[0]}}</view>
           <view class="s-desc">{{detailText.desc12[1]}}</view>
@@ -69,13 +69,13 @@
 
         <view class="c-one-part look">
           <view class="s-mid-title">{{detailText.desc13}}</view>
-          <view class="s-desc">{{detailText.desc14[0]}}</view>
+          <view class="s-title">{{detailText.desc14[0]}}</view>
           <view class="s-desc">{{detailText.desc14[1]}}</view>
           <image class="s-img-1" mode="aspectFill" src="https://inimg01.jiuyan.info/in/2018/01/20/5C6F0180-3C30-D9F7-C4CF-0AE422636EC1.jpg"></image>
 
-          <view class="s-mid-title movie2">限时优惠限时专享！</view>
-          <view class="s-desc">白金享受！白菜价格！</view>
-          <view class="s-desc">全杭州只卖五万张！手慢只能迎风流泪后悔！</view>
+          <view class="s-mid-title movie2">{{detailText.desc15}}</view>
+          <view class="s-title">{{detailText.desc16[0]}}</view>
+          <view class="s-desc">{{detailText.desc16[1]}}</view>
         </view>
       </view>
 
