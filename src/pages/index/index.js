@@ -32,9 +32,12 @@ export default class index extends wepy.page {
   }
 
   async onLoad (option) {
-    if (option.shareUserId) {
+    if (option.qrcode_from){
+      this.$parent.globalData.qrcode_from = option.qrcode_from
+    }
+    if (option.directTo === 'detail') {
       wepy.navigateTo( {
-        url: `/pages/detail/detail?shareUserId=${option.shareUserId}`
+        url: `/pages/detail/detail`
       });
     }
     var InfoRes = await Index.getIndexInfo();

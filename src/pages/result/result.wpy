@@ -291,18 +291,21 @@
       async submit() {
         console.log(Result)
         if (this.isFull) {
+          tips.loading()
           var res = await request({
-            url: '/mnp/account/withdraw',
+            url: '/mnp/card/add_phone',
             method: 'POST',
             data: {
-              orderNo: this.orderNo, 
+              order_no: this.orderNo, 
               phone: this.num
             }
           })
           if (res.succ) {
+            tips.loaded()
             this.succ = true
             this.$apply()
           } else {
+            tips.loaded()
             tips.error('网络错误')
           }
         }

@@ -9,9 +9,9 @@
       <view class="close" @tap="close"></view>
       <view class="content">
         <view class="txt1">当前可提现金额</view>
-        <view class="cash">￥{{shareInfo.amount}}</view>
+        <view class="cash">￥{{amount}}</view>
         <view class="apply" @tap="apply">申请提现 ></view>
-        <view class="shareBtn">转发给好友/群
+        <view class="shareBtn" @tap="shareCode">转发给好友/群
           <button class="btn-cut-btn" open-type="share"></button>
         </view>
         <view class="compose" @tap="compose" wx:if="{{shareInfo.is_show}}">生成朋友圈分享图</view>
@@ -141,9 +141,21 @@
     }
     data = {
       qrinfo: this.shareInfo,
+      amount: '',
       images: images,
     }
+
+    watch = {
+      shareInfo (curVal, oldVal) {
+        console.log(`旧值：${oldVal}，新值：${curVal}`)
+        this.amount = curVal.amount
+        this.$apply()
+      }
+    }
     methods = {
+      shareCode() {
+        this.$emit('shareCode')
+      },
       close() {
         this.$emit('closeShareWindow')
       },
@@ -152,9 +164,22 @@
           url: '/mnp/account/withdraw',
           method: 'POST'
         })
-        tips.modal(res.msg)
+        // tips.modal(res.msg).then((res)=>{
+        //   console.log(res)
+        // }
+        wx.showModal({
+          title: '提示',
+          content: res.msg,
+          showCancel: false,
+          success: res=> {
+            if (res.confirm) {
+              this.amount = '0.00'
+              this.$apply()
+            }
+          }
+        })
         if (res.succ) {
-          this.$emit('init')
+          this.$emit('initShare')
         }
       },
       compose () {
@@ -164,7 +189,7 @@
           mask: true
         })
         var _images = this.images.images
-        var stringlength = (util.stringLength(this.shareInfo.nickname) + 16)*10
+        var stringlength = (util.stringLength(this.shareInfo.nickname) + 13)*10
         _images.qr.src = this.shareInfo.share_qrcode_url
         _images.avatar.src = this.shareInfo.avatar
         util.loadImages(_images)
@@ -197,7 +222,7 @@
                   ctx.setTextAlign('left')
                   ctx.setFillStyle('white')
                   ctx.setGlobalAlpha(0.7)
-                  ctx.fillText(this.shareInfo.nickname + '  邀您查看详情', 375 - stringlength/2, 1119)
+                  ctx.fillText(this.shareInfo.nickname + '  邀请你购买', 375 - stringlength/2, 1119)
                   ctx.draw(true)
                   return util.wxPromisify(wx.canvasToTempFilePath)({
                     canvasId: 'firstCanvas',

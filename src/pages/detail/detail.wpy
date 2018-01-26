@@ -7,6 +7,7 @@
       <view class="contact" @tap="trackContact">
         <contact-button session-from="wx_movie_contract"></contact-button>
       </view>
+      <view class="toIndex" @tap="toIndex"></view>
       <view class="c-bg">
         <!-- <view class="logo"></view> -->
         <view class="front_back">
@@ -81,12 +82,12 @@
       <view class="c-last" id="details">
         <view class="s-mid-title rule">详情介绍</view>
           <view class="s-rules"  wx:for="{{rules}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
-            <view class="title {{item.class}}">{{item.title}}</view>
+            <view class="title bold">{{item.title}}</view>
             <view class="desc" wx:for="{{item.desc}}" wx:for-index="idx1" wx:for-item="item1" wx:key="idx">{{item1}}</view>
           </view>
       </view>
     </scroll-view>
-    <shareWindow :shareInfo.sync="shareInfo" wx:if="{{showShareWindow}}" @closeShareWindow.user="closeShareWindow" @init.user="init"></shareWindow>
+    <shareWindow :shareInfo.sync="shareInfo" wx:if="{{showShareWindow}}" @closeShareWindow.user="closeShareWindow" @initShare.user="initShare" @shareCode.user="shareCode"></shareWindow>
     <!-- 已购买 -->
     <view class="buy-wrap"  wx:if="{{detailStatus.is_buy=='1'}}">
       <view class="btn btn-origin disable">已购买</view>
@@ -94,7 +95,7 @@
     </view>
     <!-- 购买 -->
     <view class="buy-wrap" wx:else>
-      <view class="btn btn-origin" @tap="normalPay">129元购买</view>
+      <view class="btn btn-origin" @tap="normalPay">109元购买</view>
       <view class="btn btn-cut" @tap="sharePay">分享得现金</view>
     </view>
 

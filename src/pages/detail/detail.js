@@ -15,7 +15,6 @@ export default class Index extends wepy.page {
   components = { report, shareWindow }
   mixins = [shareConnectMixin, loadingMixin]
   data = {
-    shareUserId: '',
     toView: '',
     showShareWindow: false,
     cardNumInfo: {
@@ -40,49 +39,7 @@ export default class Index extends wepy.page {
         URL: ''
       }
     ],
-    rules: [
-      {
-        class: 'pre',
-        title: '【in同城趴电影王卡—功能介绍】',
-        desc: [
-          '1.本卡功能：使用本卡，可以在指定影院，通过“in同城趴电影”小程序免费选座，不限次数。',
-          '2.使用时间：周一至周四任意时段，法定节假日除外。',
-          '3.有效期限：本卡有效期3个月，即从2018年3月1日至2018年5月31日'
-        ]
-      },
-      {
-        class: 'pre',
-        title: '【in同城趴电影王卡—使用方式】',
-        desc: [
-          '1.选座：点击“in同城趴电影”小程序［选座］功能进行影院选择及选座。',
-          '2.验票：到达选择影厅后点击小程序［我的］出示二维码验证身份。'
-        ]
-      },
-      {
-        class: 'bold',
-        title: '温馨提示：',
-        desc: [
-          '· 此次活动为in同城趴电影王卡预购活动，当预购人数不足4万人时将在活动结束后3-10个工作日内全额退款。',
-          '· 活动最终解释权归九言科技所有'
-        ]
-      },
-      {
-        class: 'bold',
-        title: '温馨提示：',
-        desc: [
-          '· 此次活动为in同城趴电影王卡预购活动，当预购人数不足4万人时将在活动结束后3-10个工作日内全额退款。',
-          '· 活动最终解释权归九言科技所有'
-        ]
-      },
-      {
-        class: 'bold',
-        title: '温馨提示：',
-        desc: [
-          '· 此次活动为in同城趴电影王卡预购活动，当预购人数不足4万人时将在活动结束后3-10个工作日内全额退款。',
-          '· 活动最终解释权归九言科技所有'
-        ]
-      }
-    ],
+    rules: [],
     detailStatus: {
       is_buy: '0'
     },
@@ -93,7 +50,15 @@ export default class Index extends wepy.page {
   }
   computed = {}
   methods = {
+    toIndex () {
+      console.log(11)
+      wepy.switchTab( {
+        url: `/pages/index/index`
+      } );
+    },
     gotoBottom () {
+      this.toView = '';
+      this.$apply();
       this.toView = 'details';
       this.$apply();
     },
@@ -105,7 +70,7 @@ export default class Index extends wepy.page {
       try {
         if ( !this.isPay ) {
           this.isPay = true;
-          track( 'page_buy' );
+          track( 'page_buy' , {"from":this.$parent.globalData.qrcode_from});
           await this.pay();
           this.isPay = false;
         }
@@ -118,8 +83,10 @@ export default class Index extends wepy.page {
         url: '/pages/index/index'
       } );
     },
+    shareCode() {
+      track( 'page_share_buy' , {"from":this.$parent.globalData.qrcode_from});
+    },
     async sharePay () {
-      track( 'page_share_buy' );
       // await tips.loading()
       this.showShareWindow = true;
       // var shareInfo = await Detail.getShareInfo()
@@ -131,15 +98,23 @@ export default class Index extends wepy.page {
     },
     trackContact () {
       track( 'page_custom_service' );
+    },
+    async initShare () {
+      var shareInfo = await Detail.getShareInfo()
+      this.shareInfo = shareInfo
+      this.$apply();
     }
   }
   onShareAppMessage ( res ) {
     return {
       title: this.shareInfo.share_txt,
-      path: `/pages/index/index?shareUserId=${this.shareInfo.qrcode_from}`,
+      path: `/pages/index/index?directTo=detail&qrcode_from=${this.shareInfo.qrcode_from}`,
       imageUrl: 'https://inimg01.jiuyan.info/in/2018/01/22/3B9691ED-096C-0D31-E2B9-F455D216E6AD.jpg',
-      // success: this.shareCallBack( res )
+      success: this.showQR( this.shareInfo.qrcode_from )
     };
+  }
+  showQR (e) {
+    console.log(e)
   }
   onReachBottom () {
     track( 'page_slide_to_end' );
@@ -152,16 +127,12 @@ export default class Index extends wepy.page {
     }
   }
   async onLoad ( options ) {
-    if (options.shareUserId) {
-      this.shareUserId = options.shareUserId
-    }
     track( 'page_screen' );
     this.initOptions( options );
     this.setShare();
-    track( 'page_enter' );
+    track( 'page_enter' , {"from":this.$parent.globalData.qrcode_from});
     await auth.ready();
-    track( 'page_entry' );
-    await this.getIdFromQrcode(); // 两个小时没有购买之后 推送
+    track( 'page_entry' , {"from":this.$parent.globalData.qrcode_from});
   }
   async init () {
     var res = await Detail.getDetailData();
@@ -172,38 +143,39 @@ export default class Index extends wepy.page {
     this.cardNumInfo.percent = initCardNumRes.percent;
     this.$apply();
     await auth.ready();
-    var statusRes = await Detail.getDetailStatus( this.data.qrcode_from );
+    var statusRes = await Detail.getDetailStatus();
     this.detailStatus = statusRes;
     this.detailText = statusRes.desc;
-    this.rules[0].title = statusRes.desc.desc07;
-    this.rules[0].desc = statusRes.desc.desc08;
-    this.rules[1].title = statusRes.desc.desc09;
-    this.rules[1].desc = statusRes.desc.desc10;
-    this.rules[2].title = statusRes.desc.desc11;
-    this.rules[2].desc = statusRes.desc.desc12;
+    this.rules[0] = {
+      title: statusRes.desc.desc17,
+      desc: statusRes.desc.desc18
+    }
+    this.rules[1] = {
+      title: statusRes.desc.desc19,
+      desc: statusRes.desc.desc20
+    }
+    this.rules[2] = {
+      title: statusRes.desc.desc21,
+      desc: statusRes.desc.desc22
+    }
+    this.rules[3] = {
+      title: statusRes.desc.desc23,
+      desc: statusRes.desc.desc24
+    }
     var shareInfo = await Detail.getShareInfo()
     this.shareInfo = shareInfo
     this.$apply();
   }
   initOptions ( options ) {
-    this.$parent.globalData.qrcode_from = options.qrcode_from;
+    if (options.qrcode_from) {
+      this.$parent.globalData.qrcode_from = options.qrcode_from;
+    }
     this.data.shareId = options.share_uid || '';
     this.data.qrcode_from = options.qrcode_from;
   }
   setShare () {
     wepy.showShareMenu( {
       withShareTicket: true // 要求小程序返回分享目标信息
-    } );
-  }
-  getIdFromQrcode () {
-    if ( !this.data.shareId ) {
-      return;
-    }
-    Detail.request( {
-      url: '/index/qrscan',
-      data: {
-        share_uid: this.data.shareId
-      }
     } );
   }
   /**
@@ -219,13 +191,12 @@ export default class Index extends wepy.page {
       return;
     }
     try {
-      var createRes = await Detail.creatOrder( shareTicketInfo, this.shareUserId );
+      var createRes = await Detail.creatOrder( shareTicketInfo );
       if ( createRes.code === '4000032129' || createRes.code === '4000031814' ) {
         tips.error( createRes.msg );
         return;
       }
       var getOrderRes = await Detail.getOrderDetail( createRes );
-      console.log(createRes.order_no)
       await wepy.requestPayment( getOrderRes.sign );
       this.paySucc(createRes.order_no);
     } catch ( e ) {
@@ -245,7 +216,7 @@ export default class Index extends wepy.page {
    */
   paySucc (order_no) {
     wepy.navigateTo( {
-      url: `../result/result?orderNo=${orderNo}`
+      url: `../result/result?orderNo=${order_no}`
     } );
   }
   payFail () {

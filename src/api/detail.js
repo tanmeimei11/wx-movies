@@ -6,12 +6,11 @@ export default class Detail extends Pagebase {
   /**
    *  获取众筹状态接口
    */
-  static async getDetailStatus ( qrcode_from ) {
+  static async getDetailStatus ( ) {
     return await this.request( {
       url: '/mnp/product/cfStatus2',
       data: {
-        product_id: 159,
-        qrcode_from: qrcode_from || ''
+        product_id: 159
       }
     } );
   }
@@ -77,15 +76,16 @@ export default class Detail extends Pagebase {
   /**
    * 创建订单接口
    */
-  static async creatOrder ( shareTicketInfo, shareUserId ) {
+  static async creatOrder ( shareTicketInfo ) {
     var _data = shareTicketInfo || {};
+    console.log(wepy.$instance.globalData.qrcode_from)
     return await this.request( {
       url: '/mnp/order/create',
       data: {
         ..._data,
         product_id: 159,
         pay_channel: paymentChannel,
-        qrcode_from: shareUserId
+        qrcode_from: wepy.$instance.globalData.qrcode_from || ''
       }
     } );
   }

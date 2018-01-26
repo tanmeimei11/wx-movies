@@ -54,6 +54,7 @@ export default class extends wepy.app {
   }
 
   async onLaunch ( opts ) {
+    console.log(opts)
     // 渠道埋点
     this.globalData.qrcode_from = opts.qrcode_from || '';
     /**

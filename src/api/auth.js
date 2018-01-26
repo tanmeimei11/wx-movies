@@ -24,7 +24,9 @@ export default class auth extends base {
       tips.setLoading();
       const { code } = await wepy.login();
       const { encryptedData, iv } = await wepy.getUserInfo({ lang: 'zh_CN' })
-      const { tg_auth: token, _aries } = await this.post( `${this.baseUrl}/api/login`, { data: { code, encryptedData, iv } } );
+      // console.log( encryptedData )
+      // const { qr } = wepy.$instance.globalData.qrcode_from
+      const { tg_auth: token, _aries } = await this.post( `${this.baseUrl}/api/login`, { data: { code, encryptedData, iv, qrcode_from: wepy.$instance.globalData.qrcode_from } } );
       wepy.$instance.globalData.xToken = token;
       wepy.$instance.globalData.xAries = _aries;
       this._readyStatus = true;
