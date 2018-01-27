@@ -13,7 +13,7 @@
     /* position: absolute;
     width: 100%;
     height: 100%; */
-    background: url('https://inimg02.jiuyan.info/in/2018/01/25/C12A35B6-C5C8-503C-13EC-B1403694288F.jpg') no-repeat;
+    background: url('https://inimg02.jiuyan.info/in/2018/01/27/7E13DF45-19C0-0D75-3D8A-A7009B0931FC.jpg') no-repeat;
     background-size: contain;
     background-position: top;
     .mask{
