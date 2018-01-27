@@ -51,9 +51,9 @@ export default class Detail extends Pagebase {
    * 获取分享信息
    */
   static async getShareInfo () {
-    return await this.request({
+    return await this.request( {
       url: '/mnp/share/wechat/img'
-    });
+    } );
   }
   /**
    *
@@ -78,7 +78,7 @@ export default class Detail extends Pagebase {
    */
   static async creatOrder ( shareTicketInfo ) {
     var _data = shareTicketInfo || {};
-    console.log(wepy.$instance.globalData.qrcode_from)
+    console.log( wepy.$instance.globalData.qrcode_from );
     return await this.request( {
       url: '/mnp/order/create',
       data: {

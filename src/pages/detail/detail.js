@@ -51,7 +51,7 @@ export default class Index extends wepy.page {
   computed = {}
   methods = {
     toIndex () {
-      console.log(11)
+      console.log( 11 );
       wepy.switchTab( {
         url: `/pages/index/index`
       } );
@@ -62,15 +62,15 @@ export default class Index extends wepy.page {
       this.toView = 'details';
       this.$apply();
     },
-    scroll: function(e) {
-      console.log(e)
+    scroll: function ( e ) {
+      console.log( e );
     },
 
     async normalPay () {
       try {
         if ( !this.isPay ) {
           this.isPay = true;
-          track( 'page_buy' , {"from":this.$parent.globalData.qrcode_from});
+          track( 'page_buy', {'from': this.$parent.globalData.qrcode_from} );
           await this.pay();
           this.isPay = false;
         }
@@ -83,8 +83,8 @@ export default class Index extends wepy.page {
         url: '/pages/index/index'
       } );
     },
-    shareCode() {
-      track( 'page_share_buy' , {"from":this.$parent.globalData.qrcode_from});
+    shareCode () {
+      track( 'page_share_buy', {'from': this.$parent.globalData.qrcode_from} );
     },
     async sharePay () {
       // await tips.loading()
@@ -100,8 +100,8 @@ export default class Index extends wepy.page {
       track( 'page_custom_service' );
     },
     async initShare () {
-      var shareInfo = await Detail.getShareInfo()
-      this.shareInfo = shareInfo
+      var shareInfo = await Detail.getShareInfo();
+      this.shareInfo = shareInfo;
       this.$apply();
     }
   }
@@ -126,9 +126,9 @@ export default class Index extends wepy.page {
     track( 'page_screen' );
     this.initOptions( options );
     this.setShare();
-    track( 'page_enter' , {"from":this.$parent.globalData.qrcode_from});
+    track( 'page_enter', {'from': this.$parent.globalData.qrcode_from} );
     await auth.ready();
-    track( 'page_entry' , {"from":this.$parent.globalData.qrcode_from});
+    track( 'page_entry', {'from': this.$parent.globalData.qrcode_from} );
   }
   async init () {
     var res = await Detail.getDetailData();
@@ -141,34 +141,50 @@ export default class Index extends wepy.page {
     await auth.ready();
     var statusRes = await Detail.getDetailStatus();
     this.detailStatus = statusRes;
-    this.detailText = statusRes.desc;
-    this.rules[0] = {
-      title: statusRes.desc.desc17,
-      desc: statusRes.desc.desc18
-    }
-    this.rules[1] = {
-      title: statusRes.desc.desc19,
-      desc: statusRes.desc.desc20
-    }
-    this.rules[2] = {
-      title: statusRes.desc.desc21,
-      desc: statusRes.desc.desc22
-    }
-    this.rules[3] = {
-      title: statusRes.desc.desc23,
-      desc: statusRes.desc.desc24
-    }
-    var shareInfo = await Detail.getShareInfo()
-    this.shareInfo = shareInfo
+    this.detailText = this.initBuyText( statusRes.desc );
+    this.rules = this.initRulesText( statusRes.desc );
+    this.shareInfo = await Detail.getShareInfo();
     this.$apply();
   }
+  /**
+   * 初始化购买状态
+   * @param {*} statusRes
+   */
+  initDetailStatus ( statusRes ) {
+    return statusRes;
+  }
+  /**
+   * 初始化购买文案
+   * @param {*} desc
+   */
+  initBuyText ( desc ) {
+    return desc;
+  }
+  /**
+   * 初始化 规则信息
+   * @param {*} desc
+   */
+  initRulesText ( desc ) {
+    var _r = [ 0, 1, 2, 3 ];
+    return _r.map( ( item ) => {
+      return {
+        title: desc[`desc${item * 2 + 17}`],
+        desc: desc[`desc${item * 2 + 17 + 1}`]
+      };
+    } );
+  }
+  /**
+   * 初始化连接上的参数
+   * @param {*} options
+   */
   initOptions ( options ) {
-    if (options.qrcode_from) {
-      this.$parent.globalData.qrcode_from = options.qrcode_from;
-    }
+    this.$parent.globalData.qrcode_from = options.qrcode_from || '';
     this.data.shareId = options.share_uid || '';
     this.data.qrcode_from = options.qrcode_from;
   }
+  /**
+   * 设置分享的shareticket
+   */
   setShare () {
     wepy.showShareMenu( {
       withShareTicket: true // 要求小程序返回分享目标信息
@@ -186,6 +202,7 @@ export default class Index extends wepy.page {
     if ( this.detailStatus.is_buy === '1' ) {
       return;
     }
+
     try {
       var createRes = await Detail.creatOrder( shareTicketInfo );
       if ( createRes.code === '4000032129' || createRes.code === '4000031814' ) {
@@ -194,7 +211,7 @@ export default class Index extends wepy.page {
       }
       var getOrderRes = await Detail.getOrderDetail( createRes );
       await wepy.requestPayment( getOrderRes.sign );
-      this.paySucc(createRes.order_no);
+      this.paySucc( createRes.order_no );
     } catch ( e ) {
 
     }
@@ -210,9 +227,9 @@ export default class Index extends wepy.page {
   /**
    *  支付成功
    */
-  paySucc (order_no) {
+  paySucc ( orderNo ) {
     wepy.navigateTo( {
-      url: `../result/result?orderNo=${order_no}`
+      url: `../result/result?orderNo=${orderNo}`
     } );
   }
   payFail () {
