@@ -134,15 +134,14 @@ export default class Index extends wepy.page {
     var res = await Detail.getDetailData();
     this.cinemas = Detail.initCinemas( res.cinemas, res.all_cinema_addr_img );
     this.movies = Detail.initMovies( res.movies );
+    this.detailText = this.initBuyText( res );
+    this.rules = this.initRulesText( res.desc );
     var initCardNumRes = Detail.initCardNum( res );
     this.cardNumInfo.num = initCardNumRes.num;
     this.cardNumInfo.percent = initCardNumRes.percent;
     this.$apply();
     await auth.ready();
-    var statusRes = await Detail.getDetailStatus();
-    this.detailStatus = statusRes;
-    this.detailText = this.initBuyText( statusRes.desc );
-    this.rules = this.initRulesText( statusRes.desc );
+    this.detailStatus = await Detail.getDetailStatus();
     this.shareInfo = await Detail.getShareInfo();
     this.$apply();
   }
@@ -157,8 +156,11 @@ export default class Index extends wepy.page {
    * 初始化购买文案
    * @param {*} desc
    */
-  initBuyText ( desc ) {
-    return desc;
+  initBuyText ( res ) {
+    return {
+      ...res.desc,
+      current_person_count: res.current_person_count
+    };
   }
   /**
    * 初始化 规则信息

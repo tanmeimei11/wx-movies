@@ -29,7 +29,7 @@
         </view>
         <view class="progress">
           <view>{{detailText.desc03}}</view>
-          <view>已售 {{detailStatus.current_person_count}}</view>
+          <view>已售 {{detailText.current_person_count}}</view>
         </view>
         <!-- <view class="pay-btn" @tap="pay">{{detailStatus.is_buy === '1' ? '已购买' : '99元立即抢'}}</view> -->
       </view>
