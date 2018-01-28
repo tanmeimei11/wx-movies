@@ -78,7 +78,7 @@ export default class Detail extends Pagebase {
    */
   static async creatOrder ( shareTicketInfo ) {
     var _data = shareTicketInfo || {};
-    console.log( wepy.$instance.globalData.qrcode_from );
+    console.log( wepy.$instance.globalData );
     return await this.request( {
       url: '/mnp/order/create',
       data: {

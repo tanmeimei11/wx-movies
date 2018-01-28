@@ -31,14 +31,14 @@ export default class index extends wepy.page {
   events = {
   }
 
-  async onLoad (option) {
-    if (option.qrcode_from){
-      this.$parent.globalData.qrcode_from = option.qrcode_from
+  async onLoad ( option ) {
+    if ( option.qrcode_from ) {
+      this.$parent.globalData.qrcode_from = option.qrcode_from;
     }
-    if (option.directTo === 'detail') {
+    if ( option.directTo === 'detail' ) {
       wepy.navigateTo( {
         url: `/pages/detail/detail`
-      });
+      } );
     }
     var InfoRes = await Index.getIndexInfo();
     this.texts = InfoRes;

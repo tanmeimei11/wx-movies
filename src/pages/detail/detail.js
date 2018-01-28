@@ -180,9 +180,11 @@ export default class Index extends wepy.page {
    * @param {*} options
    */
   initOptions ( options ) {
-    this.$parent.globalData.qrcode_from = options.qrcode_from || '';
+    if ( options.qrcode_from ) {
+      this.$parent.globalData.qrcode_from = options.qrcode_from;
+      this.data.qrcode_from = options.qrcode_from;
+    }
     this.data.shareId = options.share_uid || '';
-    this.data.qrcode_from = options.qrcode_from;
   }
   /**
    * 设置分享的shareticket
