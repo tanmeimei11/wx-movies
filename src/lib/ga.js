@@ -238,10 +238,11 @@ Tracker.prototype._do_send = function () {
 
   var payloadData = payloads.join( '\r\n' );
 
-  var apiUrl = 'https://www.google-analytics.com/collect';
+  // var apiUrl = 'https://www.google-analytics.com/collect';
+  var apiUrl = 'https://cf-proxy.in66.com/collect';
   if ( payloads.length > 1 ) {
     // 使用批量上报接口
-    apiUrl = 'https://www.google-analytics.com/batch';
+    apiUrl = 'https://cf-proxy.in66.com/batch';
   } else {
     // console.log(["ga.queue.send.collect", payloadData]);
   }

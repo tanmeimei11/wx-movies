@@ -1,6 +1,7 @@
 import wepy from 'wepy';
 import Index from '@/api/index';
 import report from '@/components/report-submit';
+import track from '@/utils/track';
 
 export default class index extends wepy.page {
   config = {
@@ -22,6 +23,8 @@ export default class index extends wepy.page {
       if ( !this.btnon ) {
         return;
       }
+
+      track( 'immediately_buy' );
       wepy.navigateTo( {
         url: '/pages/detail/detail'
       } );

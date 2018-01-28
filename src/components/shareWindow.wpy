@@ -134,6 +134,7 @@
   import images from '@/utils/image';
   import { request } from '@/utils/request';
   import tips from '@/utils/tips';
+  import track  from '@/utils/track';
 
   export default class shareWindow extends wepy.component {
     props = {
@@ -160,6 +161,7 @@
         this.$emit( 'closeShareWindow' );
       },
       async apply () {
+        track('page_share_apply_withdrawal')
         var res = await request( {
           url: '/mnp/account/withdraw',
           method: 'POST'
@@ -184,6 +186,7 @@
       },
       compose () {
         console.log( this.shareInfo );
+        track('page_share_moments_photo')
         wx.showLoading( {
           title: '加载中',
           mask: true

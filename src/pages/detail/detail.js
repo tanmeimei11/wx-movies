@@ -57,6 +57,7 @@ export default class Index extends wepy.page {
       } );
     },
     gotoBottom () {
+      track( 'page_rule' );
       this.toView = '';
       this.$apply();
       this.toView = 'details';
@@ -87,11 +88,8 @@ export default class Index extends wepy.page {
       track( 'page_share_buy' );
     },
     async sharePay () {
-      // await tips.loading()
       this.showShareWindow = true;
-      // var shareInfo = await Detail.getShareInfo()
-      // this.shareInfo = shareInfo
-      // this.$apply()
+      track( 'page_share_get_cash' );
     },
     closeShareWindow () {
       this.showShareWindow = false;
@@ -213,11 +211,14 @@ export default class Index extends wepy.page {
         tips.error( createRes.msg );
         return;
       }
+
       var getOrderRes = await Detail.getOrderDetail( createRes );
+      track( 'page_wx_pay_start' );
       await wepy.requestPayment( getOrderRes.sign );
+      track( 'page_pay_successful' );
       this.paySucc( createRes.order_no );
     } catch ( e ) {
-
+      track( 'page_pay_failed' );
     }
   }
   /**
