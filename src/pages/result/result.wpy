@@ -256,6 +256,7 @@
   import wepy from 'wepy';
   import Result from '@/api/result';
   import report from '@/components/report-submit';
+  import track from '@/utils/track';
   // import compose from '@/utils/compose'
   // import util from '@/utils/util'
   // import images from './image.js'
@@ -279,43 +280,45 @@
     }
     computed = {}
     methods = {
-      alert() {
-        console.log(1111);
+      alert () {
+        console.log( 1111 );
       },
-      bindKeyInput(e) {
-        this.num = e.detail.value
-        if (e.detail.value.length === 11) {
-          this.isFull = true
+      bindKeyInput ( e ) {
+        this.num = e.detail.value;
+        if ( e.detail.value.length === 11 ) {
+          this.isFull = true;
         }
       },
-      async submit() {
-        console.log(Result)
-        if (this.isFull) {
-          tips.loading()
-          var res = await request({
+      async submit () {
+        console.log( Result );
+        if ( this.isFull ) {
+          tips.loading();
+          track( 'result_page_submit' );
+          var res = await request( {
             url: '/mnp/card/add_phone',
             method: 'POST',
             data: {
-              order_no: this.orderNo, 
+              order_no: this.orderNo,
               phone: this.num
             }
-          })
-          if (res.succ) {
-            tips.loaded()
-            this.succ = true
-            this.$apply()
+          } );
+          if ( res.succ ) {
+            tips.loaded();
+            this.succ = true;
+            this.$apply();
           } else {
-            tips.loaded()
-            tips.error('网络错误')
+            tips.loaded();
+            tips.error( '网络错误' );
           }
         }
       }
     }
-    
+  
     events = {}
-    async onLoad(option) {
-      this.orderNo = option.orderNo
-      await auth.ready()
+    async onLoad ( option ) {
+      track( 'result_page' );
+      this.orderNo = option.orderNo;
+      await auth.ready();
     }
   }
 </script>

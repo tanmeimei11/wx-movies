@@ -70,7 +70,7 @@ export default class Index extends wepy.page {
       try {
         if ( !this.isPay ) {
           this.isPay = true;
-          track( 'page_buy', {'from': this.$parent.globalData.qrcode_from} );
+          track( 'page_buy' );
           await this.pay();
           this.isPay = false;
         }
@@ -84,7 +84,7 @@ export default class Index extends wepy.page {
       } );
     },
     shareCode () {
-      track( 'page_share_buy', {'from': this.$parent.globalData.qrcode_from} );
+      track( 'page_share_buy' );
     },
     async sharePay () {
       // await tips.loading()
@@ -126,9 +126,9 @@ export default class Index extends wepy.page {
     track( 'page_screen' );
     this.initOptions( options );
     this.setShare();
-    track( 'page_enter', {'from': this.$parent.globalData.qrcode_from} );
+    track( 'page_enter' );
     await auth.ready();
-    track( 'page_entry', {'from': this.$parent.globalData.qrcode_from} );
+    track( 'page_entry' );
   }
   async init () {
     var res = await Detail.getDetailData();

@@ -128,10 +128,10 @@
 </style>
 
 <script>
-  import wepy from 'wepy'
-  import compose from '@/utils/compose'
-  import util from '@/utils/util'
-  import images from '@/utils/image'
+  import wepy from 'wepy';
+  import compose from '@/utils/compose';
+  import util from '@/utils/util';
+  import images from '@/utils/image';
   import { request } from '@/utils/request';
   import tips from '@/utils/tips';
 
@@ -142,108 +142,112 @@
     data = {
       qrinfo: this.shareInfo,
       amount: '',
-      images: images,
+      images: images
     }
 
     watch = {
-      shareInfo (curVal, oldVal) {
-        console.log(`旧值：${oldVal}，新值：${curVal}`)
-        this.amount = curVal.amount
-        this.$apply()
+      shareInfo ( curVal, oldVal ) {
+        console.log( `旧值：${oldVal}，新值：${curVal}` );
+        this.amount = curVal.amount;
+        this.$apply();
       }
     }
     methods = {
-      shareCode() {
-        this.$emit('shareCode')
+      shareCode () {
+        this.$emit( 'shareCode' );
       },
-      close() {
-        this.$emit('closeShareWindow')
+      close () {
+        this.$emit( 'closeShareWindow' );
       },
       async apply () {
-        var res = await request({
+        var res = await request( {
           url: '/mnp/account/withdraw',
           method: 'POST'
-        })
+        } );
         // tips.modal(res.msg).then((res)=>{
         //   console.log(res)
         // }
-        wx.showModal({
+        wx.showModal( {
           title: '提示',
           content: res.msg,
           showCancel: false,
-          success: res=> {
-            if (res.confirm) {
-              this.amount = '0.00'
-              this.$apply()
+          success: res => {
+            if ( res.confirm ) {
+              this.amount = '0.00';
+              this.$apply();
             }
           }
-        })
-        if (res.succ) {
-          this.$emit('initShare')
+        } );
+        if ( res.succ ) {
+          this.$emit( 'initShare' );
         }
       },
       compose () {
-        console.log(this.shareInfo)
-        wx.showLoading({
+        console.log( this.shareInfo );
+        wx.showLoading( {
           title: '加载中',
           mask: true
-        })
-        var _images = this.images.images
-        var stringlength = (util.stringLength(this.shareInfo.nickname) + 13)*10
-        _images.qr.src = this.shareInfo.share_qrcode_url
-        _images.avatar.src = this.shareInfo.avatar
-        util.loadImages(_images)
-          .then(() => {
-            var ctx = wx.createCanvasContext('firstCanvas')
-            var _avatar = _images.avatar
-            var _qr = _images.qr
-            var _qrContain = _images.qrContain
-            var _body = _images.body
+        } );
+        var _images = this.images.images;
+        var stringlength = ( util.stringLength( this.shareInfo.nickname ) + 13 ) * 10;
+        _images.qr.src = this.shareInfo.share_qrcode_url;
+        _images.avatar.src = this.shareInfo.avatar;
+        util.loadImages( _images )
+          .then( () => {
+            var ctx = wx.createCanvasContext( 'firstCanvas' );
+            var _avatar = _images.avatar;
+            var _qr = _images.qr;
+            var _qrContain = _images.qrContain;
+            var _body = _images.body;
             // ctx.drawImage(_body.local, _body.x, _body.y, _body.w, _body.h)
-            return util.drawImageInCenter(ctx, _body.local, _body.x, _body.y, _body.w, _body.h)
-              .then(() => {
-                return util.drawImageInCenter(ctx, _avatar.local, 325 - stringlength/2, _avatar.y, _avatar.w, _avatar.h)
-              }).then(() => {
-                return util.drawImageInCenter(ctx, _qr.local, _qr.x, _qr.y, _qr.w, _qr.h)
-              }).then(() => {
-                return util.drawImageInCenter(ctx, _qrContain.local, 325 - stringlength/2, _qrContain.y, _qrContain.w, _qrContain.h)
-              }).then(() => {
-                ctx.draw(true)
-                setTimeout(() => {
+            return util.drawImageInCenter( ctx, _body.local, _body.x, _body.y, _body.w, _body.h )
+              .then( () => {
+                return util.drawImageInCenter( ctx, _avatar.local, 325 - stringlength / 2, _avatar.y, _avatar.w, _avatar.h );
+              } ).then( () => {
+                return util.drawImageInCenter( ctx, _qr.local, _qr.x, _qr.y, _qr.w, _qr.h );
+              } ).then( () => {
+                return util.drawImageInCenter( ctx, _qrContain.local, 325 - stringlength / 2, _qrContain.y, _qrContain.w, _qrContain.h );
+              } ).then( () => {
+                ctx.draw( true );
+                // setTimeout( () => {
                   // 画文字
-                  ctx.setTextAlign('center')
-                  ctx.setFillStyle('white')
-                  ctx.setFontSize(44)
-                  ctx.fillText(this.shareInfo.title, 375, 100)
-                  ctx.setFontSize(28)
-                  ctx.setFillStyle('white')
-                  ctx.setGlobalAlpha(0.7)
-                  ctx.fillText(this.shareInfo.subtitle, 375, 150)
-                  ctx.setTextAlign('left')
-                  ctx.setFillStyle('white')
-                  ctx.setGlobalAlpha(0.7)
-                  ctx.fillText(this.shareInfo.nickname + '  邀请你购买', 375 - stringlength/2, 1119)
-                  ctx.draw(true)
-                  return util.wxPromisify(wx.canvasToTempFilePath)({
-                    canvasId: 'firstCanvas',
-                  }).then(res => {
-                    console.log(res)
-                    compose.saveImage(res.tempFilePath)
-                  }, () => {
-                    console.log('fail')
-                    wx.hideLoading()
+                ctx.setFillStyle( '#FFFFFF' );
+                ctx.setFontSize( 44 );
+                ctx.setTextAlign( 'center' );
+                ctx.setGlobalAlpha( 1 );
+                ctx.fillText( this.shareInfo.title, 375, 100 );
+                ctx.setFontSize( 28 );
+                ctx.setFillStyle( '#FFFFFF' );
+                ctx.setTextAlign( 'center' );
+                ctx.setGlobalAlpha( 0.7 );
+                ctx.fillText( this.shareInfo.subtitle, 375, 150 );
+                ctx.setFillStyle( '#FFFFFF' );
+                ctx.setGlobalAlpha( 0.7 );
+                ctx.setTextAlign( 'left' );
+                ctx.fillText( this.shareInfo.nickname + '  邀请你购买', 375 - stringlength / 2, 1119 );
+                ctx.draw( true );
+                return util.wxPromisify( wx.canvasToTempFilePath )( {
+                  canvasId: 'firstCanvas'
+                } ).then( res => {
+                  console.log( res );
+                  console.log( 'succ save image' );
+                  compose.saveImage( res.tempFilePath );
+                }, () => {
+                  console.log( 'fail' );
+                  wx.hideLoading();
                     // this.getImgFromBack()
-                  }).catch(error => {
-                    console.error('error')
-                    wx.hideLoading()
+                } ).catch( error => {
+                  console.log( 'error' );
+                  console.error( error );
+                  wx.hideLoading();
                     // this.getImgFromBack()
-                  })
-                }, 100)
-              })
-          }).catch((error) => {
-            wx.hideLoading()
+                } );
+                // }, 100 );
+              } );
+          } ).catch( ( error ) => {
+            wx.hideLoading();
             // this.toastFail('保存失败')
-          })
+          } );
       }
     }
   }
