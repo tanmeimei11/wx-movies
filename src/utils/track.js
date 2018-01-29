@@ -1,6 +1,6 @@
 import wepy from 'wepy';
 import {GoogleAnalytics, HitBuilders} from '@/lib/ga.js';
-const trackPrefix = 'h5_tcpa_movie_';
+const trackPrefix = 'h5_test_tcpa_movie_';
 const trackUrl = 'https://stats1.jiuyan.info/onepiece/router.html';
 var GAtracker = null;
 

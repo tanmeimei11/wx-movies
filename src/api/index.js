@@ -8,4 +8,12 @@ export default class Index extends Pagebase {
       url: '/index/info'
     } );
   }
+  /**
+   *  获取弹窗数据接口
+   */
+  static async getResearchInfo () {
+    return await this.request( {
+      url: '/info/research'
+    } );
+  }
 }
