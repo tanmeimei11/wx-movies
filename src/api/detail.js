@@ -17,9 +17,10 @@ export default class Detail extends Pagebase {
   /**
    *  获取详情页数据接口
    */
-  static async getDetailData () {
+  static async getDetailData (data) {
     return await this.request( {
-      url: '/info/cinemas'
+      url: '/info/cinemas',
+      data: data
     } );
   }
   static initCardNum ( data ) {

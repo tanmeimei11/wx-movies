@@ -16,6 +16,7 @@ export default class Index extends wepy.page {
   mixins = [shareConnectMixin, loadingMixin]
   data = {
     toView: '',
+    detailCode: {},
     showShareWindow: false,
     cardNumInfo: {
       title: '专享优惠 名额有限',
@@ -129,7 +130,7 @@ export default class Index extends wepy.page {
     track( 'page_entry' );
   }
   async init () {
-    var res = await Detail.getDetailData();
+    var res = await Detail.getDetailData(this.detailCode);
     this.cinemas = Detail.initCinemas( res.cinemas, res.all_cinema_addr_img );
     this.movies = Detail.initMovies( res.movies );
     this.detailText = this.initBuyText( res );
@@ -178,6 +179,8 @@ export default class Index extends wepy.page {
    * @param {*} options
    */
   initOptions ( options ) {
+    console.log(options)
+    this.detailCode = options
     if ( options.qrcode_from ) {
       this.$parent.globalData.qrcode_from = options.qrcode_from;
       this.data.qrcode_from = options.qrcode_from;

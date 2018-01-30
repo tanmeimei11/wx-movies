@@ -5,7 +5,7 @@
             <image mode="widthFix" src="{{researchInfo.img_url}}"></image>
             <!-- <image mode="widthFix" src="https://inimg05.jiuyan.info/in/2018/01/26/D79557A6-9FBD-C33A-2298-C262E84FA7CA.png"></image> -->
             <view class="close" @tap.stop="close"></view>
-            <contact-button session-from="{{researchInfo.action.session_from}}" class="custom" wx:if="{{researchInfo.action.session_from}}"></contact-button>
+            <contact-button session-from="{{researchInfo.action.session_from}}" class="custom" wx:if="{{researchInfo.action.action_type === 'contact'}}"></contact-button>
           </view>
         </view>
       </template>
@@ -31,10 +31,13 @@
             top: 44%;
             left: 95rpx;
             width: 560rpx;
-            height: 300rpx;
+            /* height: 300rpx; */
             transform: translateY(-50%);
             z-index: 100;
             overflow: hidden;
+            image{
+              width: 100%;
+            }
             contact-button {
               position: absolute;
               top: 0;
