@@ -3,8 +3,8 @@ module.exports = {
   'succ': true,
   'data': {
     'desc': {
-      'desc01':'',
-      'desc06':['',''],
+      'desc01': '',
+      'desc06': ['', '']
     },
     'texts': [
       '全面覆盖杭州15大影院'     // 文字列表
@@ -36,7 +36,9 @@ module.exports = {
     ],
     'all_cinema_addr_img': 'https://inimg01.jiuyan.info/in/2018/01/18/0DB172F7-09B5-212A-F0B4-DA26F44762AB.png', // 所有影院位置的图
     'total_person_count': '50000',
-    'current_person_count': '12345'
+    'current_person_count': '12345',
+    pay_price: '109',
+    pay_notice: '＊可购买多张转赠给他人使用，瑞机说啥就说睡觉还是交换机的环境'
   },
   'code': '0',
   'msg': ''

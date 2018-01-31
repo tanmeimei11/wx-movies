@@ -8,7 +8,7 @@
         <contact-button session-from="wx_movie_contract"></contact-button>
       </view>
       <view class="toIndex" @tap="toIndex"></view>
-      <view class="c-bg">
+      <view class="c-bg" style="{{bgStyle}}">
         <!-- <view class="logo"></view> -->
         <!-- <view class="front_back">
           <view class="front">
@@ -34,7 +34,7 @@
         <!-- <view class="pay-btn" @tap="pay">{{detailStatus.is_buy === '1' ? '已购买' : '99元立即抢'}}</view> -->
       </view>
       <!-- 电影部分 -->
-      <view class="c-part">
+      <view class="c-part" style="background-image:url({{partBg}})">
         <view class="c-one-part">
           <view class="s-mid-title ciname">{{detailText.desc07}}</view>
           <view class="s-title">{{detailText.desc08[0]}}</view>

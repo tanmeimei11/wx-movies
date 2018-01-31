@@ -66,7 +66,11 @@ export default class Index extends wepy.page {
     receiveFaildInfo: {
       show: false
     },
-    cardId: '' // 分享进来的转赠卡的卡片id
+    cardId: '', // 分享进来的转赠卡的卡片id
+    bgImages: [], // 背景图
+    partBg: '',
+    shareImage: '',
+    bgStyle: ''
   }
   events = {
     closeBuyMutiModal () {
@@ -159,7 +163,8 @@ export default class Index extends wepy.page {
     return {
       title: this.shareInfo.share_txt,
       path: `/pages/index/index?directTo=detail&qrcode_from=${this.shareInfo.qrcode_from}`,
-      imageUrl: 'http://inimg07.jiuyan.info/in/2018/01/26/20A52317-E4EB-3657-E024-F2EF040B2E86.jpg'
+      imageUrl: this.shareInfo.share_img
+      // 'http://inimg07.jiuyan.info/in/2018/01/26/20A52317-E4EB-3657-E024-F2EF040B2E86.jpg'
     };
   }
   onReachBottom () {
@@ -191,6 +196,9 @@ export default class Index extends wepy.page {
       basePrice: res.pay_price,
       baseDesc: res.pay_notice
     };
+    this.bgImages = res.bg_imgs;
+    this.bgStyle = `background-image:url(${this.bgImages[0]}),url(${this.bgImages[1]}),url(${this.bgImages[2]})`;
+    this.partBg = res.bg_img_01;
     var initCardNumRes = Detail.initCardNum( res );
     this.cardNumInfo.num = initCardNumRes.num;
     this.cardNumInfo.percent = initCardNumRes.percent;
