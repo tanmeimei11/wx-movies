@@ -71,7 +71,7 @@ page{
     background-size: contain;
     background-position: center;
     color:#fff;
-    .toOthers{
+    .shareToOthers{
       opacity: 0.9;
       display: flex;
       align-items: center;
@@ -86,23 +86,46 @@ page{
       position: absolute;
       top:293rpx;
       left:450rpx;
+      &.shared{
+        border: 2rpx solid #fff;
+        background: transparent;
+        color: #fff;
+      }
+      .btn-cut-btn{
+        opacity: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
     }
-    .getOthers{
+    .getOthers,.toOthers{
       position: absolute;
       bottom: 40rpx;
-      right: 40rpx;
+      right: 30rpx;
       font-size: 20rpx;
       color: #fff;
+      .icon{
+        background-image: url(https://inimg01.jiuyan.info/in/2018/01/31/1799E012-BB02-F447-BD8C-E3301BC776A4.png);
+        margin-right: 4rpx;
+      }
       .name{
         width: 120rpx;
-        margin: 6rpx;
         opacity: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: inline-block;
+        margin: 0;
+        margin-left: 6rpx;
       }
       text{
         opacity: 0.8;
+        margin: 6rpx;
         vertical-align: middle;
       }
-      .avatar{
+      .avatar,.icon{
         vertical-align: middle;
         border-radius: 50%;
         display: inline-block;

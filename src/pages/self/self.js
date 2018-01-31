@@ -2,6 +2,7 @@ import wepy from 'wepy';
 import auth from '@/api/auth';
 import Self from '@/api/self';
 import tips from '@/utils/tips';
+import { request } from '@/utils/request';
 import report from '@/components/report-submit';
 
 export default class self extends wepy.page {
@@ -12,7 +13,8 @@ export default class self extends wepy.page {
 
   data = {
     num: '',
-    isShowMobile: true,
+    type: '',
+    isShowMobile: false,
     isFull: false,
     btninfo: {},
     cards: [],
@@ -41,7 +43,6 @@ export default class self extends wepy.page {
       }
     },
     async submit () {
-      console.log( Result );
       if ( this.isFull ) {
         tips.loading();
         var res = await request( {
@@ -53,13 +54,19 @@ export default class self extends wepy.page {
         } );
         if ( res.succ ) {
           tips.loaded();
-          this.succ = true;
-          this.$apply();
+          await tips.success( this.type + '成功' );
+          this.isShowMobile = false
+          this.$apply()
         } else {
           tips.loaded();
           tips.error( '网络错误' );
         }
       }
+    },
+    open (e) {
+      console.log(e)
+      this.isShowMobile = true
+      this.type = e.currentTarget.dataset.type
     },
     close () {
       this.isShowMobile = false
@@ -93,7 +100,7 @@ export default class self extends wepy.page {
   }
 
   async onShow () {
-    await auth.ready();
+    // await auth.ready();
     await this.init();
   }
 }

@@ -40,8 +40,9 @@ export default class Self extends Pagebase {
         desc: item.desc,
         time: this.getCardTime( item.start_date, item.end_date ),
         num: `NO.${item.card_no}`,
-        can_reward: item.can_reward,
-        reward_form_info: item.reward_form_info
+        reward_from_info: item.reward_from_info,
+        reward_to_info: item.reward_to_info,
+        reward_btn: item.reward_btn
       };
     } );
   }
