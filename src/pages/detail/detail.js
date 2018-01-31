@@ -54,7 +54,8 @@ export default class Index extends wepy.page {
     BuyMutiModalInfo: {  // 购买多张的信息
       show: false,
       number: 1,
-      basePrice: 109
+      basePrice: '',
+      baseDesc: ''
     },
     receiveGiftInfo: {
       btnStatus: false,
@@ -63,7 +64,7 @@ export default class Index extends wepy.page {
       cardInfo: {}
     },
     receiveFaildInfo: {
-      show: true
+      show: false
     },
     cardId: '' // 分享进来的转赠卡的卡片id
   }
@@ -84,8 +85,7 @@ export default class Index extends wepy.page {
     },
     async receive () {
       try {
-        var m = await Detail.receiveCard( this.cardId, this.receiveGiftInfo.phoneNum );
-        console.log( m );
+        await Detail.receiveCard( this.cardId, this.receiveGiftInfo.phoneNum );
         wepy.switchTab( {
           url: `/pages/self/self`
         } );
@@ -186,6 +186,11 @@ export default class Index extends wepy.page {
     this.movies = Detail.initMovies( res.movies );
     this.detailText = this.initBuyText( res );
     this.rules = this.initRulesText( res.desc );
+    this.BuyMutiModalInfo = {
+      ...this.BuyMutiModalInfo,
+      basePrice: res.pay_price,
+      baseDesc: res.pay_notice
+    };
     var initCardNumRes = Detail.initCardNum( res );
     this.cardNumInfo.num = initCardNumRes.num;
     this.cardNumInfo.percent = initCardNumRes.percent;

@@ -1,7 +1,7 @@
 <template>
   <view class="c-modal c-receive-faild-modal">
     <view class="c-wrap">
-      <view class="s-close"  @tap="close"></view>
+      <view class="s-close" @tap="close"></view>
       <view class="s-header"></view>
       <view class="s-text">来晚了，电影王卡已被领取</view>
       <view class="s-btn" @tap="close">我知道了</view>
@@ -50,6 +50,7 @@
 }
 .c-receive-faild-modal {
   .c-wrap{
+    padding-top:30rpx;
     padding-bottom: 50rpx;
   }
   .s-close {
@@ -64,12 +65,13 @@
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
-    padding: 60rpx 0 24rpx;
+    padding: 30rpx 0 24rpx;
     
     
   }
   .s-text {
       color:#333333;
+      font-weight: bold;
       font-size: 36rpx;
     }
   .s-btn {
