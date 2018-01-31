@@ -10,13 +10,22 @@
           <!-- <view class="title">{{cardInfos.title}}</view> -->
           <view class="time">{{cardInfos.time}}</view>
           <view class="num">{{cardInfos.num}}</view>
-          <view class="toOthers" wx:if="{{cardInfos.can_reward}}" @tap="toOthers">
-            <button class="btn-cut-btn" open-type="share"></button>转赠他人
-          </view>
-          <view class="getOthers" wx:else>
-            <view class="avatar" style="background-image:url({{cardInfos.reward_form_info.avatar}})"></view>
-            <text class="name">{{cardInfos.reward_form_info.nick_name}}</text>
+          <view class="getOthers" wx:if="{{cardInfos.reward_from_info}}">
+            <view class="avatar" style="background-image:url({{cardInfos.reward_from_info.avatar}})"></view>
+            <text class="name">{{cardInfos.reward_from_info.nick_name}}</text>
             <text>转赠</text>
+          </view>
+          <view class="toOthers" wx:elif="{{cardInfos.reward_to_info}}">
+              <view class="icon"></view>
+              <text>送给</text>
+              <view class="avatar" style="background-image:url({{cardInfos.reward_to_info.avatar}})"></view>
+              <text class="name">{{cardInfos.reward_to_info.nick_name}}</text>
+          </view>
+          <view class="shareToOthers {{shared ? 'shared' : ''}}" wx:else>
+            <view wx:if="{{!shared}}">
+              <button class="btn-cut-btn" open-type="share"></button>{{cardInfos.reward_btn}}
+            </view>
+            <view class="shared" wx:else>等待接受</view>
           </view>
         </view>
       </view>

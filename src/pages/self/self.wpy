@@ -6,22 +6,24 @@
           <image class="s-avatar" mode="aspectFill" src="{{userInfo.avatar}}"></image>
           <view class="s-name">{{userInfo.name}}</view>
         </view>
-        <view class="s-mobilebtn" wx:if="{{!userInfo.phone}}">绑定手机号</view>
-        <view class="s-mobile" wx:else>{{userInfo.phone}}</view>
+        <view class="s-mobilebtn" wx:if="{{userInfo.avatar && !userInfo.phone}}" data-type="绑定" @tap="open">绑定手机号</view>
+        <view class="s-mobile" wx:if="{{userInfo.avatar && userInfo.phone}}" @tap="open" data-type="修改">{{userInfo.phone}}</view>
       </view>
       <view class="c-bg"></view>
       <view class="c-rules">
         <view class="title"></view>
-        <view class="cards" wx:for="{{cards}}" wx:for-index="idx" wx:for-item="item" wx:key="idx" @tap="toCard" data-index="{{idx}}">
+        <view class="cards {{(item.reward_from_info || item.reward_to_info) ? 'send' : 'unsend'}}" wx:for="{{cards}}" wx:for-index="idx" wx:for-item="item" wx:key="idx" @tap="toCard" data-index="{{idx}}">
           <view class="id">NO.{{item.card_no}}</view>
+          <view class="icon"></view>
         </view>
+        <view class="btn" wx:if="{{cards.length === 0}}" @tap="apply">去购买</view>
       </view>
     </view>
     <view class="changeMobile" wx:if="{{isShowMobile}}">
         <view class="bg" @tap="close"></view>
         <view class="window">
           <view class="close" @tap="close"></view>
-          <view class="bind">绑定手机号</view>
+          <view class="bind">{{type}}手机号</view>
           <input bindinput="bindKeyInput" placeholder="输入手机号" type="number" maxlength="11" placeholder-style="color: #E0E0E0"/>
           <view class="btn {{isFull ? 'on' : ''}}" @tap.stop="submit">确认</view>
         </view>
