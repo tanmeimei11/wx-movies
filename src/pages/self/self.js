@@ -100,7 +100,7 @@ export default class self extends wepy.page {
   }
 
   async onShow () {
-    // await auth.ready();
+    await auth.ready();
     await this.init();
   }
 }
