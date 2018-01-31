@@ -4,6 +4,9 @@ import Detail from '@/api/detail';
 import tips from '@/utils/tips';
 import report from '@/components/report-submit';
 import shareWindow from '@/components/shareWindow';
+import receiveGiftModal from '@/components/detail/receiveGiftModal';
+import buyMutiModal from '@/components/detail/buyMutiModal';
+import receiveFaildModal from '@/components/detail/receiveFaildModal';
 import shareConnectMixin from '@/mixins/shareConnectMixin';
 import loadingMixin from '@/mixins/loadingMixin';
 import track from '@/utils/track';
@@ -12,7 +15,7 @@ export default class Index extends wepy.page {
   config = {
     navigationBarTitleText: 'in同城趴·电影王卡'
   }
-  components = { report, shareWindow }
+  components = { report, shareWindow, receiveGiftModal, buyMutiModal, receiveFaildModal }
   mixins = [shareConnectMixin, loadingMixin]
   data = {
     toView: '',
@@ -47,12 +50,69 @@ export default class Index extends wepy.page {
     isPay: false,
     detailText: {},
     qrcode_from: '',
-    shareInfo: {}
+    shareInfo: {},
+    BuyMutiModalInfo: {  // 购买多张的信息
+      show: false,
+      number: 1,
+      basePrice: 109
+    },
+    receiveGiftInfo: {
+      btnStatus: false,
+      phoneNum: '',
+      show: false,
+      cardInfo: {}
+    },
+    receiveFaildInfo: {
+      show: true
+    },
+    cardId: '' // 分享进来的转赠卡的卡片id
+  }
+  events = {
+    closeBuyMutiModal () {
+      this.BuyMutiModalInfo.show = false;
+    },
+    changeBuyNum ( num ) {
+      this.BuyMutiModalInfo.number = num;
+    },
+    changeReceBtnStatus ( val, phoneNum ) {
+      console.log( val, phoneNum );
+      this.receiveGiftInfo.btnStatus = val;
+      phoneNum && ( this.receiveGiftInfo.phoneNum = phoneNum );
+    },
+    closeRecevieFaild () {
+      this.receiveFaildInfo.show = false;
+    },
+    async receive () {
+      try {
+        var m = await Detail.receiveCard( this.cardId, this.receiveGiftInfo.phoneNum );
+        console.log( m );
+        wepy.switchTab( {
+          url: `/pages/self/self`
+        } );
+      } catch ( e ) {
+        // 接收失败
+        console.log( e );
+      }
+    },
+    async payOrder () {
+      try {
+        if ( !this.isPay ) {
+          this.isPay = true;
+          track( 'page_buy' );
+          await this.pay();
+          this.isPay = false;
+        }
+      } catch ( e ) {
+        this.isPay = false;
+      }
+    }
   }
   computed = {}
   methods = {
+    openBuyMutiModal () {
+      this.BuyMutiModalInfo.show = true;
+    },
     toIndex () {
-      console.log( 11 );
       wepy.switchTab( {
         url: `/pages/index/index`
       } );
@@ -69,16 +129,7 @@ export default class Index extends wepy.page {
     },
 
     async normalPay () {
-      try {
-        if ( !this.isPay ) {
-          this.isPay = true;
-          track( 'page_buy' );
-          await this.pay();
-          this.isPay = false;
-        }
-      } catch ( e ) {
-        this.isPay = false;
-      }
+      this.openBuyMutiModal();
     },
     backIndex () {
       wepy.reLaunch( {
@@ -130,7 +181,7 @@ export default class Index extends wepy.page {
     track( 'page_entry' );
   }
   async init () {
-    var res = await Detail.getDetailData(this.detailCode);
+    var res = await Detail.getDetailData( this.detailCode );
     this.cinemas = Detail.initCinemas( res.cinemas, res.all_cinema_addr_img );
     this.movies = Detail.initMovies( res.movies );
     this.detailText = this.initBuyText( res );
@@ -142,6 +193,16 @@ export default class Index extends wepy.page {
     await auth.ready();
     this.detailStatus = await Detail.getDetailStatus();
     this.shareInfo = await Detail.getShareInfo();
+    if ( this.cardId ) {
+      this.receiveGiftInfo.cardInfo = await Detail.getCardInfo( this.cardId );
+      var _info = this.receiveGiftInfo.cardInfo;
+      if ( !_info.is_owner && _info.can_get ) {
+        this.receiveGiftInfo.show = true;
+        return;
+      } else if ( !_info.is_owner && !_info.can_get ) {
+        this.receiveFaildInfo.show = true;
+      }
+    }
     this.$apply();
   }
   /**
@@ -179,13 +240,13 @@ export default class Index extends wepy.page {
    * @param {*} options
    */
   initOptions ( options ) {
-    console.log(options)
-    this.detailCode = options
+    this.detailCode = options;
     if ( options.qrcode_from ) {
       this.$parent.globalData.qrcode_from = options.qrcode_from;
       this.data.qrcode_from = options.qrcode_from;
     }
     this.data.shareId = options.share_uid || '';
+    this.cardId = options.card_id || '';
   }
   /**
    * 设置分享的shareticket
@@ -209,7 +270,7 @@ export default class Index extends wepy.page {
     }
 
     try {
-      var createRes = await Detail.creatOrder( shareTicketInfo );
+      var createRes = await Detail.creatOrder( shareTicketInfo, this.BuyMutiModalInfo.number );
       if ( createRes.code === '4000032129' || createRes.code === '4000031814' ) {
         tips.error( createRes.msg );
         return;
