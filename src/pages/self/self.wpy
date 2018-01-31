@@ -1,4 +1,3 @@
-
 <template>
   <report>
     <view class="container">
@@ -7,19 +6,25 @@
           <image class="s-avatar" mode="aspectFill" src="{{userInfo.avatar}}"></image>
           <view class="s-name">{{userInfo.name}}</view>
         </view>
-        <view class="s-card {{cardInfos[0].isApply ? '' : 'have'}}">
-          <!-- <view class="title">{{cardInfos[0].title}}</view> -->
-          <view class="apply" wx:if="{{cardInfos[0].isApply}}" @tap="apply">立即抢购</view>
-          <view class="time" wx:else>{{cardInfos[0].time}}</view>
-          <view class="num" wx:if="{{!cardInfos[0].isApply}}">{{cardInfos[0].num}}</view>
-        </view>
+        <view class="s-mobilebtn" wx:if="{{!userInfo.phone}}">绑定手机号</view>
+        <view class="s-mobile" wx:else>{{userInfo.phone}}</view>
       </view>
       <view class="c-bg"></view>
       <view class="c-rules">
-        <view class="rule" wx:for="{{rules}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
-          {{item}}
+        <view class="title"></view>
+        <view class="cards" wx:for="{{cards}}" wx:for-index="idx" wx:for-item="item" wx:key="idx" @tap="toCard" data-index="{{idx}}">
+          <view class="id">NO.{{item.card_no}}</view>
         </view>
       </view>
+    </view>
+    <view class="changeMobile" wx:if="{{isShowMobile}}">
+        <view class="bg" @tap="close"></view>
+        <view class="window">
+          <view class="close" @tap="close"></view>
+          <view class="bind">绑定手机号</view>
+          <input bindinput="bindKeyInput" placeholder="输入手机号" type="number" maxlength="11" placeholder-style="color: #E0E0E0"/>
+          <view class="btn {{isFull ? 'on' : ''}}" @tap.stop="submit">确认</view>
+        </view>
     </view>
   </report>
 </template>

@@ -6,7 +6,7 @@ export default class Self extends Pagebase {
    */
   static async getMyInfo () {
     return await this.request( {
-      url: '/mnp/user/my'
+      url: '/mnp/user/my2'
     } );
   }
 
@@ -39,7 +39,9 @@ export default class Self extends Pagebase {
         title: item.name,
         desc: item.desc,
         time: this.getCardTime( item.start_date, item.end_date ),
-        num: `NO.${item.card_no}`
+        num: `NO.${item.card_no}`,
+        can_reward: item.can_reward,
+        reward_form_info: item.reward_form_info
       };
     } );
   }
