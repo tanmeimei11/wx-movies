@@ -27,7 +27,7 @@ export default class cards extends wepy.page {
     return {
       title: '送你一张in同城趴电影王卡',
       path: `/pages/detail/detail${path}`,
-      imageUrl: 'http://inimg07.jiuyan.info/in/2018/01/26/20A52317-E4EB-3657-E024-F2EF040B2E86.jpg',
+      // imageUrl: 'http://inimg07.jiuyan.info/in/2018/01/26/20A52317-E4EB-3657-E024-F2EF040B2E86.jpg',
       success: ()=> {
         this.shared = true
         this.$apply()
