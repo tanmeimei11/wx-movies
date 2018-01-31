@@ -7,31 +7,40 @@ page{
 }
 .c-bg{
   width: 100%;
-  height: 435rpx;
+  height: 420rpx;
   background-image: url('https://inimg01.jiuyan.info/in/2018/01/21/1CA7FDC3-D2FC-4C76-5691-7C6510909D74.jpg');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
 }
 .c-rules{
-  width:651rpx;
-  padding-left: 75rpx;
+  width:670rpx;
   color: #B0B0B0;
-  margin-top: 138rpx;
+  margin: 50rpx auto;
   font-size: 24rpx;
-  .rule{
-    position: relative;
-    margin-bottom: 10rpx;
+  .title{
+    width: 670rpx;
+    height: 40rpx;
+    background: url('https://inimg05.jiuyan.info/in/2018/01/31/9DA88B9D-8FF7-49D0-D83D-AE2561DA45EA.png') no-repeat;
+    background-size: contain;
+    background-position: center;
   }
-  .rule:before{
-    content:'';
-    position: absolute;
-    left:-20rpx;
-    top:10rpx;
-    width:12rpx;
-    height: 12rpx;
-    border-radius: 50%;
-    background-color: #FFB67C;
+  .cards{
+    position: relative;
+    width: 100%;
+    height: 180rpx;
+    margin-top: 30rpx;
+    background: url('https://inimg07.jiuyan.info/in/2018/01/31/8ABAB597-0100-4098-7AC1-ADCEA294A44D.png') no-repeat;
+    background-size: contain;
+    background-position: center;
+    .id{
+      position: absolute;
+      top: 115rpx;
+      left: 40rpx;
+      font-size: 20rpx;
+      color: #fff;
+      opacity: 0.8;
+    }
   }
 }
 .c-cards{
@@ -42,24 +51,48 @@ page{
   .s-avatar-wrap {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
     width: 100%;
     box-sizing: border-box;
-    padding: 40rpx 0rpx;
+    padding: 65rpx 0rpx 45rpx;
     .s-avatar {
-      width: 60rpx;
-      height: 60rpx;
+      width: 120rpx;
+      height: 120rpx;
       border-radius: 50%;
-      margin-right: 18rpx;
     }
     .s-name {
-      width: 250rpx;
-      flex: 1;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      margin-top: 20rpx;
       font-size: 36rpx;
       color: #fff;
+      font-weight: bold;
+    }
+  }
+  .s-mobilebtn{
+    margin: auto;
+    width: 168rpx;
+    height: 54rpx;
+    background: rgba(255,255,255,0.20);
+    border: 2rpx solid #EEEEEE;
+    border-radius: 200px;
+    display: flex;
+    align-items: center;
+    color: #fff;
+    font-size: 24rpx;
+    justify-content: center;
+  }
+  .s-mobile{
+    text-align: center;
+    font-size: 28rpx;
+    color: #fff;
+    &::after{
+      content: '';
+      width: 23rpx;
+      height: 23rpx;
+      margin-left: 10rpx;
+      display: inline-block;
+      background: url('https://inimg01.jiuyan.info/in/2018/01/31/293E873F-B53A-9A01-4438-7F17B68AA459.png') no-repeat;
+      background-size: contain;
+      background-position: center;
     }
   }
   .s-card{
@@ -120,6 +153,76 @@ page{
       left:40rpx;
       font-size: 20rpx;
       color: #000;
+    }
+  }
+}
+
+.changeMobile{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1001;
+  .bg{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+  }
+  .window{
+    position: absolute;
+    top: 44%;
+    left: 95rpx;
+    width: 560rpx;
+    height: 392rpx;
+    transform: translateY(-50%);
+    border-radius: 8rpx;
+    background: #fff;
+    overflow: hidden;
+    text-align: center;
+    .close{
+      position: absolute;
+      top: 14rpx;
+      right: 14rpx;
+      width: 44rpx;
+      height: 44rpx;
+      background: url('http://inimg01.jiuyan.info/in/2018/01/25/88885A4C-2E29-52C0-1EBB-E54CA1877F53.png') no-repeat;
+      background-position: center;
+      background-size: contain;
+    }
+    .bind{
+      margin: 52rpx auto 30rpx;
+      font-size: 36rpx;
+      color: #333;
+    }
+    input{
+      text-align: left;
+      margin: 0 auto;
+      width: 460rpx;
+      height: 70rpx;
+      background: #f7f7f7;
+      border: none;
+      border-radius: 8rpx;
+      font-size: 28rpx;
+      color: #333;
+      padding-left: 20rpx;
+    }
+    .btn{
+      width: 460rpx;
+      height: 80rpx;
+      line-height: 80rpx;
+      margin: 50rpx auto 0;
+      background-image: linear-gradient(90deg, #FD9C6C 0%, #F95557 100%);
+      border-radius: 100rpx;
+      text-align: center;
+      color: #fff;
+      opacity: 0.3;
+      &.on{
+        opacity: 1;
+      }
     }
   }
 }

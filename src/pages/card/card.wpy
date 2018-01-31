@@ -1,0 +1,35 @@
+<template>
+  <report>
+    <view class="container">
+      <view class="c-cards">
+        <view class="s-avatar-wrap">
+          <image class="s-avatar" mode="aspectFill" src="{{userInfo.avatar}}"></image>
+          <view class="s-name">{{userInfo.name}}</view>
+        </view>
+        <view class="s-card">
+          <!-- <view class="title">{{cardInfos.title}}</view> -->
+          <view class="time">{{cardInfos.time}}</view>
+          <view class="num">{{cardInfos.num}}</view>
+          <view class="toOthers" wx:if="{{cardInfos.can_reward}}" @tap="toOthers">
+            <button class="btn-cut-btn" open-type="share"></button>转赠他人
+          </view>
+          <view class="getOthers" wx:else>
+            <view class="avatar" style="background-image:url({{cardInfos.reward_form_info.avatar}})"></view>
+            <text class="name">{{cardInfos.reward_form_info.nick_name}}</text>
+            <text>转赠</text>
+          </view>
+        </view>
+      </view>
+      <view class="c-bg"></view>
+      <view class="c-rules">
+        <view class="rule" wx:for="{{rules}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
+          {{item}}
+        </view>
+      </view>
+    </view>
+  </report>
+</template>
+<style lang="less" src="./card.less">
+</style>
+<script src="./card.js">
+</script>

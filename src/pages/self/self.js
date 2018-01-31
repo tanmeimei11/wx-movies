@@ -4,23 +4,24 @@ import Self from '@/api/self';
 import tips from '@/utils/tips';
 import report from '@/components/report-submit';
 
-export default class Index extends wepy.page {
+export default class self extends wepy.page {
   config = {
     navigationBarTitleText: '我的电影卡'
   }
   components = { report }
 
   data = {
+    num: '',
+    isShowMobile: true,
+    isFull: false,
     btninfo: {},
-    rules: ['使用本卡可以在指定影院，通过本小程序免费选座，不限次数。',
-      '使用本卡仅可以在每周一至周四使用，法定节假日除外（按影厅排片选座）。',
-      '本卡有效期3个月，即从2018年3月1日起至2018年5月31日止',
-      '使用本卡选座请点击小程序「选座」功能。',
-      '本卡最终解释权归九言科技所有'], // 规则文案
+    cards: [],
+    cardNum: 0,
+    rules: [], // 规则文案
     userInfo: { // 用户信息
       avatar: '',
       name: '',
-      phone: ''
+      phone: ' '
     },
     cardInfos: [{ // 卡片信息
       id: '',
@@ -33,6 +34,42 @@ export default class Index extends wepy.page {
   }
 
   methods = {
+    bindKeyInput (e) {
+      this.num = e.detail.value;
+      if ( e.detail.value.length === 11 ) {
+        this.isFull = true;
+      }
+    },
+    async submit () {
+      console.log( Result );
+      if ( this.isFull ) {
+        tips.loading();
+        var res = await request( {
+          url: '/mnp/user/update_phone',
+          method: 'POST',
+          data: {
+            phone: this.num
+          }
+        } );
+        if ( res.succ ) {
+          tips.loaded();
+          this.succ = true;
+          this.$apply();
+        } else {
+          tips.loaded();
+          tips.error( '网络错误' );
+        }
+      }
+    },
+    close () {
+      this.isShowMobile = false
+    },
+    toCard (e) {
+      this.cardNum = e.currentTarget.dataset.index
+      wepy.navigateTo( {
+        url: `/pages/card/card`
+      } );
+    },
     apply () {
       if ( this.btninfo.cf_start === 'false' ) {
         tips.error( this.btninfo.cf_start_desc );
@@ -47,8 +84,10 @@ export default class Index extends wepy.page {
   async init () {
     var myInfoRes = await Self.getMyInfo();
     this.btninfo = myInfoRes;
+    this.cards = myInfoRes.cards;
     this.cardInfos = Self.initCardInfo( myInfoRes.cards, myInfoRes.default_card );
     this.userInfo = Self.initUserInfo( myInfoRes );
+    console.log(this.userInfo)
     this.rules = Self.initRules( myInfoRes.texts );
     this.$apply();
   }
