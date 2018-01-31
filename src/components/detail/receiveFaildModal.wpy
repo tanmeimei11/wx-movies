@@ -1,0 +1,128 @@
+<template>
+  <view class="c-modal c-receive-faild-modal">
+    <view class="c-wrap">
+      <view class="s-close" @tap="close"></view>
+      <view class="s-header"></view>
+      <view class="s-text">来晚了，电影王卡已被领取</view>
+      <view class="s-btn" @tap="close">我知道了</view>
+    </view>
+  </view>
+</template>
+<style type="less">
+/* 弹窗 */
+
+.c-modal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  z-index: 10000;
+  background-color: rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.c-modal .c-wrap {
+  width: 560rpx;
+  background-color: #fff;
+  position: relative;
+  top: 50%;
+  margin: -20rpx auto 0 !important;
+  transform: translate(0, -50%);
+  border-radius: 8rpx;
+  position: relative;
+  text-align: center;
+}
+
+.c-modal .s-close {
+  width: 44rpx;
+  height: 44rpx;
+  position: absolute;
+  right: 10rpx;
+  top: 10rpx;
+  margin: 0 auto;
+  border-radius: 50%;
+  background-image: url(https://inimg01.jiuyan.info/in/2017/10/15/1C51CF46-3F39-78F7-1972-C33785B2D124.jpg);
+  background-repeat: no-repeat;
+  background-size: 28rpx 28rpx;
+  background-position: center;
+}
+.c-receive-faild-modal {
+  .c-wrap{
+    padding-top:30rpx;
+    padding-bottom: 50rpx;
+  }
+  .s-close {
+    background-image: url("https://inimg07.jiuyan.info/in/2017/11/05/071B5DFD-47BA-4F0B-F965-1D65BC5DA2D2.jpg");
+  }
+  .s-header {
+    color: #fff;
+    width: 200rpx;
+    height: 200rpx;
+    margin:0 auto;
+    background-image: url(https://inimg01.jiuyan.info/in/2018/01/31/341775EE-DB76-D919-CF70-79F83482EE0D.jpg);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 30rpx 0 24rpx;
+    
+    
+  }
+  .s-text {
+      color:#333333;
+      font-weight: bold;
+      font-size: 36rpx;
+    }
+  .s-btn {
+    width: 460rpx;
+    height: 80rpx;
+    line-height: 80rpx;
+    font-size: 28rpx;
+    text-align: center;
+    margin: 30rpx auto 0;
+    border-radius: 200rpx;
+    color: #fff;
+    background-image: linear-gradient(90deg, #fd9c6c 0%, #f95557 100%);
+    border-radius: 100px;
+    font-size: 28rpx;
+    position: relative;
+  }
+}
+</style>
+<script>
+import wepy from "wepy";
+import util from "@/utils/util";
+import { request } from "@/utils/request";
+import tips from "@/utils/tips";
+import track from "@/utils/track";
+
+export default class receiveFaildModal extends wepy.component {
+  props = {
+    receiveGiftInfo: Object
+  };
+  data = {
+    phoneNum:''
+  };
+  methods = {
+    getPhoneNum(v){
+      this.phoneNum = v.detail.value
+    },
+    receive(){
+      this.$emit('receive')
+    },
+    close(){
+      this.$emit('closeRecevieFaild')
+    }
+  };
+  watch= {
+    phoneNum (newVal,oldVal){
+      if((/\d{11}/.test(newVal)) && !this.receiveGiftInfo.btnStatus){
+        this.$emit('changeReceBtnStatus', true, newVal)
+      }else {
+        this.receiveGiftInfo.btnStatus && this.$emit('changeReceBtnStatus', false,newVal)
+      }
+    }
+  }
+}
+</script>

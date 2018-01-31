@@ -17,7 +17,7 @@ export default class Detail extends Pagebase {
   /**
    *  获取详情页数据接口
    */
-  static async getDetailData (data) {
+  static async getDetailData ( data ) {
     return await this.request( {
       url: '/info/cinemas',
       data: data
@@ -77,7 +77,7 @@ export default class Detail extends Pagebase {
   /**
    * 创建订单接口
    */
-  static async creatOrder ( shareTicketInfo ) {
+  static async creatOrder ( shareTicketInfo, buyNumber ) {
     var _data = shareTicketInfo || {};
     console.log( wepy.$instance.globalData );
     return await this.request( {
@@ -86,6 +86,7 @@ export default class Detail extends Pagebase {
         ..._data,
         product_id: 159,
         pay_channel: paymentChannel,
+        buy_num: buyNumber,
         qrcode_from: wepy.$instance.globalData.qrcode_from || ''
       }
     } );
@@ -108,6 +109,34 @@ export default class Detail extends Pagebase {
     return await this.request( {
       url: payUrl,
       data: _data
+    } );
+  }
+  /**
+   * @static 获得卡的信息
+   * @param {any} code
+   * @memberof Detail
+   */
+  static async getCardInfo ( code ) {
+    return await this.request( {
+      url: '/mnp/card/reward_info',
+      data: {
+        reward_code: code
+      }
+    } );
+  }
+  /**
+   *
+   * @param {*} code
+   * @param {*} phone
+   */
+  static async receiveCard ( code, phone ) {
+    return await this.request( {
+      url: '/mnp/card/fetch',
+      method: 'POST',
+      data: {
+        reward_code: code,
+        phone: phone
+      }
     } );
   }
 }

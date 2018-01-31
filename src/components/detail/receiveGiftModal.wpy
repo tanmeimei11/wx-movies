@@ -1,0 +1,187 @@
+<template>
+  <view class="c-modal c-receive-modal">
+    <view class="c-wrap">
+      <view class="s-close" ></view>
+      <view class="s-header">
+        <view class="nick-wrap">
+          <view class="avatar" style="background-image:url({{receiveGiftInfo.cardInfo.user_info.avatar}})"></view>
+          <text class="name">{{receiveGiftInfo.cardInfo.user_info.nick_name}}</text>
+        </view>
+        <view class="text">赠送了一张电影王卡给你</view>
+      </view>
+      <view class="s-main">
+        <!-- 手机号输入 -->
+        <view class="phone-wrap">
+          <view class="desc">请输入手机号接收礼物</view>
+          <input placeholder="输入手机号" type="number" value="{{phoneNum}}" maxlength="11" bindinput="getPhoneNum" placeholder-style="color:#B0B0B0"/>
+        </view>
+      </view>
+      <view class="s-btn {{receiveGiftInfo.btnStatus ? '':'disabled'}}" bindtap="receive">确认接收</view>
+    </view>
+  </view>
+</template>
+<style type="less">
+/* 弹窗 */
+
+.c-modal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  z-index: 10000;
+  background-color: rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.c-modal .c-wrap {
+  width: 560rpx;
+  background-color: #fff;
+  position: relative;
+  top: 50%;
+  margin: -20rpx auto 0 !important;
+  transform: translate(0, -50%);
+  border-radius: 8rpx;
+  position: relative;
+  text-align: center;
+}
+
+.c-modal .s-close {
+  width: 44rpx;
+  height: 44rpx;
+  position: absolute;
+  right: 10rpx;
+  top: 10rpx;
+  margin: 0 auto;
+  border-radius: 50%;
+  background-image: url(https://inimg01.jiuyan.info/in/2017/10/15/1C51CF46-3F39-78F7-1972-C33785B2D124.jpg);
+  background-repeat: no-repeat;
+  background-size: 28rpx 28rpx;
+  background-position: center;
+}
+.c-receive-modal {
+  .c-wrap{
+    padding-bottom: 50rpx;
+  }
+  .s-close {
+    background-image: url("https://inimg07.jiuyan.info/in/2017/11/05/071B5DFD-47BA-4F0B-F965-1D65BC5DA2D2.jpg");
+  }
+  .s-header {
+    color: #fff;
+    height: 189rpx;
+    background-image: url(http://inimg05.jiuyan.info/in/2017/11/05/83797657-FB5E-CC5A-AB81-B1412FE62751.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding-top: 50rpx;
+    box-sizing: border-box;
+    .nick-wrap {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      font-size: 24rpx;
+      justify-content: center;
+      margin-bottom: 23rpx;
+      .avatar {
+        width: 40rpx;
+        height: 40rpx;
+        overflow: hidden;
+        border-radius: 50%;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        margin-right: 10rpx;
+      }
+      .name {
+        display: inline-block;
+        max-width: 200rpx;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+    .text {
+      font-size: 28rpx;
+    }
+  }
+  .s-main{
+    text-align: left;
+    .phone-wrap{
+      width: 100%;
+      box-sizing:border-box;
+      padding: 50rpx ;
+      color: #666666;
+      font-size:28rpx;
+      .desc{
+       margin-bottom: 12rpx;
+      }
+      input{
+        height: 70rpx;
+        background-color: #F7F7F7;
+         box-sizing:border-box;
+        padding: 0 10rpx ;
+      }
+    }
+  }
+  .s-btn {
+    width: 460rpx;
+    height: 80rpx;
+    line-height: 80rpx;
+    font-size: 28rpx;
+    text-align: center;
+    margin: 0 auto 0;
+    border-radius: 200rpx;
+    color: #fff;
+    background-image: linear-gradient(90deg, #fd9c6c 0%, #f95557 100%);
+    border-radius: 100px;
+    font-size: 28rpx;
+    position: relative;
+     &.disabled{
+       pointer-events: none;
+     }
+    &.disabled:before{
+      content: '';
+      position: absolute;
+      left: 0;
+      top:0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.7)
+    }
+  }
+}
+</style>
+<script>
+import wepy from "wepy";
+import util from "@/utils/util";
+import { request } from "@/utils/request";
+import tips from "@/utils/tips";
+import track from "@/utils/track";
+
+export default class receiveGiftModal extends wepy.component {
+  props = {
+    receiveGiftInfo: Object
+  };
+  data = {
+    phoneNum:''
+  };
+  methods = {
+    getPhoneNum(v){
+      this.phoneNum = v.detail.value
+    },
+    receive(){
+      this.$emit('receive')
+    }
+  };
+  watch= {
+    phoneNum (newVal,oldVal){
+      if((/\d{11}/.test(newVal)) && !this.receiveGiftInfo.btnStatus){
+        this.$emit('changeReceBtnStatus', true, newVal)
+      }else {
+        this.receiveGiftInfo.btnStatus && this.$emit('changeReceBtnStatus', false,newVal)
+      }
+    }
+  }
+}
+</script>
