@@ -14,9 +14,9 @@ export default class self extends wepy.page {
   data = {
     num: '',
     type: '',
+    btninfo: {},
     isShowMobile: false,
     isFull: false,
-    btninfo: {},
     cards: [],
     cardNum: 0,
     rules: [], // 规则文案
@@ -90,13 +90,14 @@ export default class self extends wepy.page {
 
   async init () {
     var myInfoRes = await Self.getMyInfo();
-    this.btninfo = myInfoRes;
+    this.btninfo = myInfoRes
     this.cards = myInfoRes.cards;
-    this.cardInfos = Self.initCardInfo( myInfoRes.cards, myInfoRes.default_card );
+    console.log(myInfoRes.cards)
+    this.cardInfos = Self.initCardInfo( myInfoRes.cards);
     this.userInfo = Self.initUserInfo( myInfoRes );
-    console.log(this.userInfo)
     this.rules = Self.initRules( myInfoRes.texts );
     this.$apply();
+    console.log(this.userInfo)
   }
 
   async onShow () {

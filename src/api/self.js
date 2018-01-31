@@ -25,14 +25,6 @@ export default class Self extends Pagebase {
    * @param {*} defaultCard  默认卡
    */
   static initCardInfo ( cards, defaultCard ) {
-    if ( !cards || !cards.length ) {
-      return [{
-        title: defaultCard.name,
-        desc: defaultCard.desc,
-        num: `NO.${defaultCard.card_no}`,
-        isApply: true
-      }];
-    }
     return cards.map( ( item ) => {
       return {
         id: item.id,

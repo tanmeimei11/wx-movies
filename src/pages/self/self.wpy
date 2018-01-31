@@ -16,6 +16,7 @@
           <view class="id">NO.{{item.card_no}}</view>
           <view class="icon"></view>
         </view>
+        <view class="btn" wx:if="{{cards.length === 0}}" @tap="apply">去购买</view>
       </view>
     </view>
     <view class="changeMobile" wx:if="{{isShowMobile}}">
