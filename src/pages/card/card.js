@@ -36,15 +36,6 @@ export default class cards extends wepy.page {
   }
 
   methods = {
-    apply () {
-      if ( this.btninfo.cf_start === 'false' ) {
-        tips.error( this.btninfo.cf_start_desc );
-        return;
-      }
-      wepy.navigateTo( {
-        url: '/pages/detail/detail'
-      } );
-    }
   }
 
   async init () {
