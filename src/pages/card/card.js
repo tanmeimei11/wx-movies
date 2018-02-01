@@ -4,6 +4,7 @@ import Self from '@/api/self';
 import { request } from '@/utils/request';
 import tips from '@/utils/tips';
 import report from '@/components/report-submit';
+import track from '@/utils/track';
 
 export default class cards extends wepy.page {
   config = {
@@ -36,6 +37,9 @@ export default class cards extends wepy.page {
   }
 
   methods = {
+    track () {
+      track ( 'mycard_transfer' )
+    }
   }
 
   async init () {
