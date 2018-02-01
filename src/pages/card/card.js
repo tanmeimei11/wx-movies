@@ -3,13 +3,13 @@ import wepy from 'wepy';
 import Self from '@/api/self';
 import { request } from '@/utils/request';
 import tips from '@/utils/tips';
-// import report from '@/components/report-submit';
+import report from '@/components/report-submit';
 
 export default class cards extends wepy.page {
   config = {
     navigationBarTitleText: '我的电影卡'
   }
-  components = { }
+  components = { report }
 
   data = {
     cardInfos: {},
