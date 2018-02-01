@@ -64,7 +64,8 @@ export default class Index extends wepy.page {
       cardInfo: {}
     },
     receiveFaildInfo: {
-      show: false
+      show: false,
+      msg: ''
     },
     cardCode: '', // 分享进来的转赠卡的卡片id
     bgImages: [], // 背景图
@@ -92,13 +93,21 @@ export default class Index extends wepy.page {
     async receive () {
       try {
         track( 'page_receive_box_confirm' );
-        await Detail.receiveCard( this.cardCode, this.receiveGiftInfo.phoneNum );
+        var m = await Detail.receiveCard( this.cardCode, this.receiveGiftInfo.phoneNum );
+        console.log( m );
         wepy.switchTab( {
           url: `/pages/self/self`
         } );
       } catch ( e ) {
         // 接收失败
         console.log( e );
+        this.receiveGiftInfo.show = false;
+        this.receiveFaildInfo = {
+          show: true,
+          msg: '领取失败了'
+        };
+
+        this.$apply();
       }
     },
     async payOrder () {
@@ -117,7 +126,7 @@ export default class Index extends wepy.page {
   computed = {}
   methods = {
     openBuyMutiModal () {
-      track( 'page_buy' )
+      track( 'page_buy' );
       this.BuyMutiModalInfo.show = true;
     },
     toIndex () {

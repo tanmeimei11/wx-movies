@@ -26,13 +26,11 @@ export default class cards extends wepy.page {
   }
 
   onShareAppMessage ( res ) {
-    console.log( res.from );
     var query = '';
     var fun = () => {};
     if ( res.from === 'button' ) {
       query = `?cardCode=${this.cardCode}`;
       var that = this;
-      console.log( that );
       fun = this.shareCallBack( that );
     }
     return {
@@ -56,12 +54,9 @@ export default class cards extends wepy.page {
         this.giveGiftInfo.show = true;
       } else if ( this.cardInfos.cardStatus == 1 ) {
         var res = await Card.cancelCardGive( this.cardCode );
-        console.log( res );
+        this.cardCode = res.reward_code;
         this.changeCardInfo( res.card, res.reward_status );
       }
-    },
-    giveGift () {
-      // this.giveGiftInfo.show = true;
     }
   }
 

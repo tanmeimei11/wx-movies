@@ -10,7 +10,11 @@ export default class Pagebase {
     // mock
     if ( isMock ) {
       console.log( options.url );
-      return require( '../mock/' + mockConfig[options.url] ).data;
+      var m = require( '../mock/' + mockConfig[options.url] );
+      if ( !m.succ ) {
+        throw new Error( 'false' );
+      }
+      return m.data;
     }
     // 方法
     return await axios.request( options );
