@@ -11,9 +11,9 @@
           <view class="time">{{cardInfos.time}}</view>
           <view class="num">{{cardInfos.num}}</view>
           <view class="getOthers" wx:if="{{cardInfos.cardStatus == 3}}">
+            <text>来自</text>
             <view class="avatar" style="background-image:url({{cardInfos.reward_from_info.avatar}})"></view>
             <text class="name">{{cardInfos.reward_from_info.nick_name}}</text>
-            <text>来自</text>
           </view>
           <view class="toOthers" wx:elif="{{cardInfos.cardStatus == 2}}">
               <view class="icon"></view>
