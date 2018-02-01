@@ -75,7 +75,7 @@ export default class self extends wepy.page {
     toCard ( e ) {
       this.cardNum = e.currentTarget.dataset.index;
       wepy.navigateTo( {
-        url: `/pages/card/card`
+        url: `/pages/card/card?card_id=${e.currentTarget.dataset.id}`
       } );
     },
     apply () {

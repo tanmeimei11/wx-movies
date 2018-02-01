@@ -1,7 +1,7 @@
 import wepy from 'wepy';
 import auth from '@/api/auth';
-import { request } from '@/utils/request';
-import tips from '@/utils/tips';
+// import { request } from '@/utils/request';
+// import tips from '@/utils/tips';
 import giveGiftModal from '@/components/card/giveGiftModal';
 import report from '@/components/report-submit';
 import Card from '@/api/card';
@@ -60,6 +60,7 @@ export default class cards extends wepy.page {
 
   }
   async onLoad ( options ) {
+    console.log( options );
     await auth.ready();
     this.cardId = options.card_id;
     await this.init();

@@ -12,11 +12,11 @@
       <view class="c-bg"></view>
       <view class="c-rules">
         <view class="title"></view>
-        <view class="cards {{(item.reward_from_info || item.reward_to_info) ? 'send' : 'unsend'}}" wx:for="{{cards}}" wx:for-index="idx" wx:for-item="item" wx:key="idx" @tap="toCard" data-index="{{idx}}">
+        <view class="cards {{(item.reward_from_info || item.reward_to_info) ? 'send' : 'unsend'}}" wx:for="{{cards}}" wx:for-index="idx" wx:for-item="item" wx:key="idx" @tap="toCard" data-index="{{idx}}" data-id="{{item.id}}">
           <view class="id">NO.{{item.card_no}}</view>
           <view class="icon"></view>
         </view>
-        <view class="btn" wx:if="{{cards.length === 0}}" @tap="apply">去购买</view>
+        <view class="btn" wx:if="{{userInfo.name && cards.length === 0}}" @tap="apply">去购买</view>
       </view>
     </view>
     <view class="changeMobile" wx:if="{{isShowMobile}}">
