@@ -22,8 +22,8 @@
               <text class="name">{{cardInfos.reward_to_info.nick_name}}</text>
           </view>
           <view class="shareToOthers {{shared ? 'shared' : ''}}" wx:else>
-            <view wx:if="{{!shared}}">
-              <button class="btn-cut-btn" open-type="share"></button>{{cardInfos.reward_btn}}
+            <view wx:if="{{!shared}}" @tap="giveGift">
+             {{cardInfos.reward_btn}}
             </view>
             <view class="shared" wx:else>等待接受</view>
           </view>
@@ -35,6 +35,7 @@
           {{item}}
         </view>
       </view>
+      <giveGiftModal wx:if="{{giveGiftInfo.show}}"></giveGiftModal>
     </view>
   </report>
 </template>

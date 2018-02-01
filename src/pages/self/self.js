@@ -98,7 +98,6 @@ export default class self extends wepy.page {
     this.userInfo = Self.initUserInfo( myInfoRes );
     this.rules = Self.initRules( myInfoRes.texts );
     this.$apply();
-    console.log( this.userInfo );
   }
 
   async onShow () {
