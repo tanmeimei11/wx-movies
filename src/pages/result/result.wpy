@@ -329,6 +329,7 @@
       var res = await Result.getContractID()
       this.phone = res.phone
       if (this.phone) {
+        this.num = this.phone
         this.isFull = true
       }
       this.$apply()

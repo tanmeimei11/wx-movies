@@ -38,7 +38,7 @@ export default class cards extends wepy.page {
     return {
       title: '送你一张in同城趴电影王卡',
       path: `/pages/detail/detail${query}`,
-      // imageUrl: 'http://inimg07.jiuyan.info/in/2018/01/26/20A52317-E4EB-3657-E024-F2EF040B2E86.jpg',
+      imageUrl: 'https://inimg01.jiuyan.info/in/2018/01/25/FB5D55FB-986F-6433-18B8-BAF8C0C797E3.jpg',
       success: fun
     };
   }
