@@ -16,21 +16,23 @@ export default class cards extends wepy.page {
     cardInfos: {},
     rules: [],
     card_id: '',
+    cardCode: '',
     shared: false,
     giveGiftInfo: {
-      show: false
+      show: false,
+      tips: []
     }
   }
 
   onShareAppMessage ( res ) {
     console.log( res.from );
-    var path = '';
+    var query = '';
     if ( res.from === 'button' ) {
-      path = `?card_id=${this.card_id}`;
+      query = `?card_id=${this.cardCode}`;
     }
     return {
       title: '送你一张in同城趴电影王卡',
-      path: `/pages/detail/detail${path}`,
+      path: `/pages/detail/detail${query}`,
       // imageUrl: 'http://inimg07.jiuyan.info/in/2018/01/26/20A52317-E4EB-3657-E024-F2EF040B2E86.jpg',
       success: () => {
         this.shared = true;
@@ -39,9 +41,19 @@ export default class cards extends wepy.page {
     };
   }
 
+  events={
+    closeGiveGiftModal () {
+      this.giveGiftInfo.show = false;
+    }
+  }
+
   methods = {
-    giveGift () {
-      this.giveGiftInfo.show = true;
+    async oprateCard () {
+      if ( true ) {
+        this.giveGiftInfo.show = true;
+      } else {
+        await Card.cancelCardGive( this.cardCode );
+      }
     }
   }
 
@@ -53,18 +65,21 @@ export default class cards extends wepy.page {
     this.$apply();
   }
   async initCardInfo ( id ) {
-    this.card_id = await Card.getCardInfo( id );
-  }
-
-  async onShow () {
-
+    var res = await Card.getCardInfo( id );
+    this.cardCode = res.reward_code;
+    this.giveGiftInfo.tips = res.prompt_txt;
+    this.cardInfos = {
+      ...Card.initCardInfo( res.card ),
+      cardBtnText: res.reward_btn,
+      cardStatus: res.reward_status
+    };
   }
   async onLoad ( options ) {
-    console.log( options );
     await auth.ready();
     this.cardId = options.card_id;
     await this.init();
     await this.initCardInfo();
+    this.$apply();
   }
 
   shareCallBack () {

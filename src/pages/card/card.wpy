@@ -10,22 +10,19 @@
           <!-- <view class="title">{{cardInfos.title}}</view> -->
           <view class="time">{{cardInfos.time}}</view>
           <view class="num">{{cardInfos.num}}</view>
-          <view class="getOthers" wx:if="{{cardInfos.reward_from_info}}">
+          <view class="getOthers" wx:if="{{cardInfos.cardStatus == 2}}">
             <view class="avatar" style="background-image:url({{cardInfos.reward_from_info.avatar}})"></view>
             <text class="name">{{cardInfos.reward_from_info.nick_name}}</text>
             <text>转赠</text>
           </view>
-          <view class="toOthers" wx:elif="{{cardInfos.reward_to_info}}">
+          <view class="toOthers" wx:elif="{{cardInfos.cardStatus == 1}}">
               <view class="icon"></view>
               <text>送给</text>
               <view class="avatar" style="background-image:url({{cardInfos.reward_to_info.avatar}})"></view>
               <text class="name">{{cardInfos.reward_to_info.nick_name}}</text>
           </view>
-          <view class="shareToOthers {{shared ? 'shared' : ''}}" wx:else>
-            <view wx:if="{{!shared}}" @tap="giveGift">
-             {{cardInfos.reward_btn}}
-            </view>
-            <view class="shared" wx:else>等待接受</view>
+          <view class="shareToOthers {{cardInfos.cardStatus !== 0 ? 'shared' : ''}}" wx:else @tap="oprateCard">
+             {{cardBtnText}}
           </view>
         </view>
       </view>
@@ -35,7 +32,7 @@
           {{item}}
         </view>
       </view>
-      <giveGiftModal wx:if="{{giveGiftInfo.show}}"></giveGiftModal>
+      <giveGiftModal wx:if="{{giveGiftInfo.show}}" :giveGiftInfo.sync="giveGiftInfo"></giveGiftModal>
     </view>
   </report>
 </template>
