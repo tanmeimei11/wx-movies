@@ -41,10 +41,8 @@ export default class cards extends wepy.page {
   }
 
   methods = {
-    track () {
-      track ( 'mycard_transfer' )
-    },
     giveGift () {
+      track ( 'mycard_transfer' )
       this.giveGiftInfo.show = true;
     }
   }
