@@ -16,14 +16,15 @@ export default class index extends wepy.page {
     showResearchWindow: false,
     researchInfo: {},
     btnon: true,
-    texts: {}
+    texts: {},
+    bgImage: ''
   }
 
   computed = {}
 
   methods = {
     closeResearchWindow () {
-      this.showResearchWindow = false
+      this.showResearchWindow = false;
     },
     toDetail () {
       if ( !this.btnon ) {
@@ -49,13 +50,14 @@ export default class index extends wepy.page {
         url: `/pages/detail/detail`
       } );
     }
-    if ( option.showWin === 'research') {
-      this.showResearchWindow = true
+    if ( option.showWin === 'research' ) {
+      this.showResearchWindow = true;
       this.researchInfo = await Index.getResearchInfo();
     }
     var InfoRes = await Index.getIndexInfo();
     this.texts = InfoRes;
     this.btnon = InfoRes.cf_start !== 'false';
+    this.bgImage = InfoRes.bg_img;
     this.$apply();
   }
 }

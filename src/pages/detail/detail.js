@@ -87,6 +87,9 @@ export default class Index extends wepy.page {
     closeRecevieFaild () {
       this.receiveFaildInfo.show = false;
     },
+    closeReceiveModal () {
+      this.receiveGiftInfo.show = false;
+    },
     async receive () {
       try {
         await Detail.receiveCard( this.cardId, this.receiveGiftInfo.phoneNum );
@@ -184,6 +187,7 @@ export default class Index extends wepy.page {
     track( 'page_enter' );
     await auth.ready();
     track( 'page_entry' );
+    await this.initCardStatus();
   }
   async init () {
     var res = await Detail.getDetailData( this.detailCode );
@@ -206,17 +210,19 @@ export default class Index extends wepy.page {
     await auth.ready();
     this.detailStatus = await Detail.getDetailStatus();
     this.shareInfo = await Detail.getShareInfo();
+    this.$apply();
+  }
+  async initCardStatus () {
     if ( this.cardId ) {
       this.receiveGiftInfo.cardInfo = await Detail.getCardInfo( this.cardId );
       var _info = this.receiveGiftInfo.cardInfo;
       if ( !_info.is_owner && _info.can_get ) {
         this.receiveGiftInfo.show = true;
-        return;
       } else if ( !_info.is_owner && !_info.can_get ) {
         this.receiveFaildInfo.show = true;
+        this.receiveFaildInfo.msg = _info.msg;
       }
     }
-    this.$apply();
   }
   /**
    * 初始化购买状态
@@ -278,9 +284,9 @@ export default class Index extends wepy.page {
       await this.changeDetailStatus();
     }
 
-    if ( this.detailStatus.is_buy === '1' ) {
-      return;
-    }
+    // if ( this.detailStatus.is_buy === '1' ) {
+    //   return;
+    // }
 
     try {
       var createRes = await Detail.creatOrder( shareTicketInfo, this.BuyMutiModalInfo.number );

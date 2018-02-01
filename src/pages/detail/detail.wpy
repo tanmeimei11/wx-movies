@@ -90,17 +90,17 @@
     <shareWindow :shareInfo.sync="shareInfo" wx:if="{{showShareWindow}}" @closeShareWindow.user="closeShareWindow" @initShare.user="initShare" @shareCode.user="shareCode"></shareWindow>
 
     <receiveGiftModal :receiveGiftInfo.sync="receiveGiftInfo" wx:if="{{receiveGiftInfo.show}}"></receiveGiftModal>
-    <receiveFaildModal wx:if="{{receiveFaildInfo.show}}"></receiveFaildModal>
+    <receiveFaildModal :receiveFaildInfo.sync="receiveFaildInfo" wx:if="{{receiveFaildInfo.show}}"></receiveFaildModal>
     <buyMutiModal :BuyMutiModalInfo.sync="BuyMutiModalInfo" wx:if="{{BuyMutiModalInfo.show}}" ></buyMutiModal>
-    <!-- 已购买 -->
+    <!-- 已购买
     <view class="buy-wrap"  wx:if="{{detailStatus.is_buy=='1'}}">
       <view class="btn btn-cut" @tap="sharePay">分享得现金</view>
       <view class="btn btn-origin disable">已购买</view>
-    </view>
+    </view> -->
     <!-- 购买 -->
     <view class="buy-wrap" wx:else>
       <view class="btn btn-cut" @tap="sharePay">分享得现金</view>
-      <view class="btn btn-origin" @tap="openBuyMutiModal">{{BuyMutiModalInfo.pay_price}}元购买</view>
+      <view class="btn btn-origin" @tap="openBuyMutiModal">{{BuyMutiModalInfo.basePrice}}元购买</view>
     </view>
 
   </report>

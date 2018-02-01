@@ -17,7 +17,7 @@
         <view class="s-desc-text ">付款金额
           <text>¥{{money || BuyMutiModalInfo.basePrice}}</text>
         </view>
-        <view class="money-desc" >＊可购买多张转赠给他人使用</view>
+        <view class="money-desc" >{{BuyMutiModalInfo.baseDesc}}</view>
       </view>
       <view class="s-btn" @tap.stop="pay">立即支付</view>
     </view>

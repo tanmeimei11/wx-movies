@@ -36,7 +36,7 @@ export default class self extends wepy.page {
   }
 
   methods = {
-    bindKeyInput (e) {
+    bindKeyInput ( e ) {
       this.num = e.detail.value;
       if ( e.detail.value.length === 11 ) {
         this.isFull = true;
@@ -54,25 +54,26 @@ export default class self extends wepy.page {
         } );
         if ( res.succ ) {
           tips.loaded();
+          this.userInfo.phone = this.num;
           await tips.success( this.type + '成功' );
-          this.isShowMobile = false
-          this.$apply()
+          this.isShowMobile = false;
+          this.$apply();
         } else {
           tips.loaded();
           tips.error( '网络错误' );
         }
       }
     },
-    open (e) {
-      console.log(e)
-      this.isShowMobile = true
-      this.type = e.currentTarget.dataset.type
+    open ( e ) {
+      console.log( e );
+      this.isShowMobile = true;
+      this.type = e.currentTarget.dataset.type;
     },
     close () {
-      this.isShowMobile = false
+      this.isShowMobile = false;
     },
-    toCard (e) {
-      this.cardNum = e.currentTarget.dataset.index
+    toCard ( e ) {
+      this.cardNum = e.currentTarget.dataset.index;
       wepy.navigateTo( {
         url: `/pages/card/card`
       } );
@@ -90,14 +91,14 @@ export default class self extends wepy.page {
 
   async init () {
     var myInfoRes = await Self.getMyInfo();
-    this.btninfo = myInfoRes
+    this.btninfo = myInfoRes;
     this.cards = myInfoRes.cards;
-    console.log(myInfoRes.cards)
-    this.cardInfos = Self.initCardInfo( myInfoRes.cards);
+    console.log( myInfoRes.cards );
+    this.cardInfos = Self.initCardInfo( myInfoRes.cards );
     this.userInfo = Self.initUserInfo( myInfoRes );
     this.rules = Self.initRules( myInfoRes.texts );
     this.$apply();
-    console.log(this.userInfo)
+    console.log( this.userInfo );
   }
 
   async onShow () {

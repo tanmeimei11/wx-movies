@@ -1,7 +1,7 @@
 <template>
   <view class="c-modal c-receive-modal">
     <view class="c-wrap">
-      <view class="s-close" ></view>
+      <view class="s-close" @tap="close" ></view>
       <view class="s-header">
         <view class="nick-wrap">
           <view class="avatar" style="background-image:url({{receiveGiftInfo.cardInfo.user_info.avatar}})"></view>
@@ -172,6 +172,9 @@ export default class receiveGiftModal extends wepy.component {
     },
     receive(){
       this.$emit('receive')
+    },
+    close(){
+      this.$emit('closeReceiveModal')
     }
   };
   watch= {

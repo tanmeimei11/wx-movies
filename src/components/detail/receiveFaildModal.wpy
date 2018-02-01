@@ -3,7 +3,7 @@
     <view class="c-wrap">
       <view class="s-close" @tap="close"></view>
       <view class="s-header"></view>
-      <view class="s-text">来晚了，电影王卡已被领取</view>
+      <view class="s-text">{{receiveFaildInfo.msg}}</view>
       <view class="s-btn" @tap="close">我知道了</view>
     </view>
   </view>
@@ -99,7 +99,7 @@ import track from "@/utils/track";
 
 export default class receiveFaildModal extends wepy.component {
   props = {
-    receiveGiftInfo: Object
+    receiveFaildInfo: Object
   };
   data = {
     phoneNum:''

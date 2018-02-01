@@ -306,6 +306,12 @@
             tips.loaded();
             this.succ = true;
             this.$apply();
+            setTimeout(()=>{
+              wepy.switchTab( {
+                url: `/pages/self/self`
+              } );
+            },1000)
+           
           } else {
             tips.loaded();
             tips.error( '网络错误' );
