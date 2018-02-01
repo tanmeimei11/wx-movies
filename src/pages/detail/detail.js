@@ -80,7 +80,6 @@ export default class Index extends wepy.page {
       this.BuyMutiModalInfo.number = num;
     },
     changeReceBtnStatus ( val, phoneNum ) {
-      console.log( val, phoneNum );
       this.receiveGiftInfo.btnStatus = val;
       phoneNum && ( this.receiveGiftInfo.phoneNum = phoneNum );
     },
@@ -218,9 +217,7 @@ export default class Index extends wepy.page {
       var _info = this.receiveGiftInfo.cardInfo;
       if ( !_info.is_owner && _info.can_get ) {
         this.receiveGiftInfo.show = true;
-        if(_info.user_info.phone) {
-          this.receiveGiftInfo.phoneNum = _info.user_info.phone
-        }
+        _info.phone && ( this.receiveGiftInfo.phoneNum = _info.phone );
       } else if ( !_info.is_owner && !_info.can_get ) {
         this.receiveFaildInfo.show = true;
         this.receiveFaildInfo.msg = _info.msg;
@@ -262,6 +259,7 @@ export default class Index extends wepy.page {
    * @param {*} options
    */
   initOptions ( options ) {
+    console.log( options );
     this.detailCode = options;
     if ( options.qrcode_from ) {
       this.$parent.globalData.qrcode_from = options.qrcode_from;

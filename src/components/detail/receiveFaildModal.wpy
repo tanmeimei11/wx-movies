@@ -101,27 +101,9 @@ export default class receiveFaildModal extends wepy.component {
   props = {
     receiveFaildInfo: Object
   };
-  data = {
-    phoneNum:''
-  };
   methods = {
-    getPhoneNum(v){
-      this.phoneNum = v.detail.value
-    },
-    receive(){
-      this.$emit('receive')
-    },
     close(){
       this.$emit('closeRecevieFaild')
-    }
-  };
-  watch= {
-    phoneNum (newVal,oldVal){
-      if((/\d{11}/.test(newVal)) && !this.receiveGiftInfo.btnStatus){
-        this.$emit('changeReceBtnStatus', true, newVal)
-      }else {
-        this.receiveGiftInfo.btnStatus && this.$emit('changeReceBtnStatus', false,newVal)
-      }
     }
   }
 }
