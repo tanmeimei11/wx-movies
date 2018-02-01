@@ -328,6 +328,9 @@
       await auth.ready();
       var res = await Result.getContractID()
       this.phone = res.phone
+      if (this.phone) {
+        this.isFull = true
+      }
       this.$apply()
       console.log(res)
     }
