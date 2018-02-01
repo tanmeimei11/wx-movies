@@ -125,7 +125,7 @@ export default class giveGiftModal extends wepy.component {
   methods = {
     close(){
       this.$emit('closeGiveGiftModal')
-    }
+    },
     track(){
       track ( 'mycard_transfer_box_confirm' )
     }
