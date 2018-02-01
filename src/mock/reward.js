@@ -10,8 +10,8 @@ module.exports = {
       '朋友接收到你的卡之后将无法撤回',
       '收到的卡不能再次赠送给他人'
     ],
-    'reward_status': 0, // 转赠状态0：未赠送，1：已送出，2：已领取，3：已取消
-    'reward_btn_txt': '取消转赠', // 赠送按钮文案
+    'reward_status': 3, // 转赠状态0：未赠送，1：已送出，2：已领取，3：已取消
+    'reward_btn_txt': '转赠', // 赠送按钮文案
     'card': {
       'name': '戏精卡',
       'id': '1YSDF',
@@ -31,7 +31,13 @@ module.exports = {
         'avatar': 'http://xxxx.jpg', // 用户头像
         'nick_name': '一休'
       }
-    }
+    },
+    'btn_txt': [
+      '赠送他人',
+      '',
+      '',
+      '取消赠送'
+    ]
   },
   'timestamp': '1516094687'
 };

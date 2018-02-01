@@ -15,5 +15,7 @@ module.exports = {
   [`${DOMAIN}/mnp/card/reward_info`]: 'cardInfo',
   [`${DOMAIN}/mnp/user/update_phone`]: 'withdraw',
   [`${DOMAIN}/mnp/card/reward`]: 'reward',
+  [`${DOMAIN}/mnp/card/cancelreward`]: 'cancelGift',
+  [`${DOMAIN}/mnp/card/gifts`]: 'cancelGift',
   [`${payUrl}`]: 'signature'
 };

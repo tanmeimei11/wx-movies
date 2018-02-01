@@ -18,7 +18,7 @@ export default class Card extends Pagebase {
    */
   static async giveCard ( cardCode ) {
     return await this.request( {
-      url: '/mnp/card/cancelreward',
+      url: '/mnp/card/gifts',
       method: 'POST',
       data: {
         reward_code: cardCode
@@ -29,13 +29,15 @@ export default class Card extends Pagebase {
    *  取消赠送的卡片数据接口
    */
   static async cancelCardGive ( cardCode ) {
-    return await this.request( {
+    var res = await this.request( {
       url: '/mnp/card/cancelreward',
       method: 'POST',
       data: {
         reward_code: cardCode
       }
     } );
+
+    return res.new_reward_code;
   }
    /**
    *时间转换

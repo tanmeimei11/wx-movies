@@ -16,9 +16,8 @@ export default class cards extends wepy.page {
   data = {
     cardInfos: {},
     rules: [],
-    card_id: '',
+    cardId: '',
     cardCode: '',
-    shared: false,
     giveGiftInfo: {
       show: false,
       tips: []
@@ -28,17 +27,18 @@ export default class cards extends wepy.page {
   onShareAppMessage ( res ) {
     console.log( res.from );
     var query = '';
+    var fun = () => {};
     if ( res.from === 'button' ) {
       query = `?card_id=${this.cardCode}`;
+      var that = this;
+      console.log( that );
+      fun = this.shareCallBack( that );
     }
     return {
       title: '送你一张in同城趴电影王卡',
       path: `/pages/detail/detail${query}`,
       // imageUrl: 'http://inimg07.jiuyan.info/in/2018/01/26/20A52317-E4EB-3657-E024-F2EF040B2E86.jpg',
-      success: () => {
-        this.shared = true;
-        this.$apply();
-      }
+      success: fun
     };
   }
 
@@ -50,13 +50,13 @@ export default class cards extends wepy.page {
 
   methods = {
     async oprateCard () {
-      if ( this.cardInfos.cardStatus == 1 ) {
+      if ( this.cardInfos.cardStatus == 0 ) {
         track( 'mycard_transfer' );
         this.giveGiftInfo.show = true;
       } else if ( this.cardInfos.cardStatus == 3 ) {
-        await Card.cancelCardGive( this.cardCode );
-        this.cardInfos.cardStatus = 1;
-        this.cardInfos.cardBtnText = '转赠他人';
+        this.cardCode = await Card.cancelCardGive( this.cardCode );
+        this.changeCardStatus( 0 );
+        this.$apply();
       }
     },
     giveGift () {
@@ -77,8 +77,9 @@ export default class cards extends wepy.page {
     this.giveGiftInfo.tips = res.prompt_txt;
     this.cardInfos = Card.initCardInfo( res.card );
     this.cardInfos.cardStatus = res.reward_status;
-    this.cardInfos.cardBtnText = res.reward_btn_txt;
-    this.card_id = await Card.getCardInfo( id );
+    this.cardInfos.cartStatusText = res.btn_txt;
+    this.cardInfos.cardBtnText = res.btn_txt[ res.reward_status ];
+    // this.card_id = await Card.getCardInfo( id );
   }
 
   async onLoad ( options ) {
@@ -90,7 +91,23 @@ export default class cards extends wepy.page {
     this.$apply();
   }
 
-  shareCallBack () {
-
+  /**
+   * 转增回调
+   */
+  shareCallBack ( that ) {
+    return ( ) => {
+      if ( that.cardInfos.cardStatus == 0 ) {
+        that.changeCardStatus( 3 );
+        that.$apply();
+      }
+    };
+  }
+  /**
+   * 修改转赠状态
+   * @param {*} status
+   */
+  changeCardStatus ( status ) { // 转赠状态0：未赠送，1：已送出，2：已领取，3：已取消
+    this.cardInfos.cardStatus = status;
+    this.cardInfos.cardBtnText = this.cardInfos.cartStatusText[status];
   }
 }

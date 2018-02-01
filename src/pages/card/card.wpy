@@ -13,7 +13,7 @@
           <view class="getOthers" wx:if="{{cardInfos.cardStatus == 2}}">
             <view class="avatar" style="background-image:url({{cardInfos.reward_from_info.avatar}})"></view>
             <text class="name">{{cardInfos.reward_from_info.nick_name}}</text>
-            <text>转赠</text>
+            <text>来自</text>
           </view>
           <view class="toOthers" wx:elif="{{cardInfos.cardStatus == 1}}">
               <view class="icon"></view>
