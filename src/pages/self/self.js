@@ -100,7 +100,6 @@ export default class self extends wepy.page {
     this.userInfo = Self.initUserInfo( myInfoRes );
     this.rules = Self.initRules( myInfoRes.texts );
     this.$apply();
-    console.log( this.userInfo );
   }
   async onLoad () {
     track( 'my_page_enter' );

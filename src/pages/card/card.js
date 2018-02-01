@@ -1,22 +1,26 @@
 import wepy from 'wepy';
-// import auth from '@/api/auth';
-import Self from '@/api/self';
-import { request } from '@/utils/request';
-import tips from '@/utils/tips';
+import auth from '@/api/auth';
+// import { request } from '@/utils/request';
+// import tips from '@/utils/tips';
+import giveGiftModal from '@/components/card/giveGiftModal';
 import report from '@/components/report-submit';
 import track from '@/utils/track';
+import Card from '@/api/card';
 
 export default class cards extends wepy.page {
   config = {
     navigationBarTitleText: '我的电影卡'
   }
-  components = { report }
+  components = {report, giveGiftModal}
 
   data = {
     cardInfos: {},
     rules: [],
     card_id: '',
-    shared: false
+    shared: false,
+    giveGiftInfo: {
+      show: false
+    }
   }
 
   onShareAppMessage ( res ) {
@@ -39,31 +43,35 @@ export default class cards extends wepy.page {
   methods = {
     track () {
       track ( 'mycard_transfer' )
+    },
+    giveGift () {
+      this.giveGiftInfo.show = true;
     }
   }
 
   async init () {
     var page = getCurrentPages()[0].data;
-    this.cardInfos = Self.initCardInfo( page.cards, page.default_card )[page.cardNum];
     this.rules = page.rules;
-
-    var res = await request( {
-      url: '/mnp/card/reward',
-      method: 'POST',
-      data: {
-        card_id: this.cardInfos.id
-      }
-    } );
-    if ( res.succ ) {
-      this.card_id = res.data;
-    } else {
-      // tips.error( res.msg );
-    }
+    // this.cardInfos = Self.initCardInfo( page.cards, page.default_card )[page.cardNum];
+    await this.initCardInfo( this.cardId );
     this.$apply();
+  }
+  async initCardInfo ( id ) {
+    this.card_id = await Card.getCardInfo( id );
   }
 
   async onShow () {
-    // await auth.ready();
+
+  }
+  async onLoad ( options ) {
+    console.log( options );
+    await auth.ready();
+    this.cardId = options.card_id;
     await this.init();
+    await this.initCardInfo();
+  }
+
+  shareCallBack () {
+
   }
 }
