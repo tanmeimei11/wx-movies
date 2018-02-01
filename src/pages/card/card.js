@@ -4,6 +4,7 @@ import auth from '@/api/auth';
 // import tips from '@/utils/tips';
 import giveGiftModal from '@/components/card/giveGiftModal';
 import report from '@/components/report-submit';
+import track from '@/utils/track';
 import Card from '@/api/card';
 
 export default class cards extends wepy.page {
@@ -49,11 +50,17 @@ export default class cards extends wepy.page {
 
   methods = {
     async oprateCard () {
-      if ( true ) {
+      if ( this.cardInfos.cardStatus == 1 ) {
+        track( 'mycard_transfer' );
         this.giveGiftInfo.show = true;
-      } else {
+      } else if ( this.cardInfos.cardStatus == 3 ) {
         await Card.cancelCardGive( this.cardCode );
+        this.cardInfos.cardStatus = 1;
+        this.cardInfos.cardBtnText = '转赠他人';
       }
+    },
+    giveGift () {
+      // this.giveGiftInfo.show = true;
     }
   }
 
@@ -68,13 +75,14 @@ export default class cards extends wepy.page {
     var res = await Card.getCardInfo( id );
     this.cardCode = res.reward_code;
     this.giveGiftInfo.tips = res.prompt_txt;
-    this.cardInfos = {
-      ...Card.initCardInfo( res.card ),
-      cardBtnText: res.reward_btn,
-      cardStatus: res.reward_status
-    };
+    this.cardInfos = Card.initCardInfo( res.card );
+    this.cardInfos.cardStatus = res.reward_status;
+    this.cardInfos.cardBtnText = res.reward_btn_txt;
+    this.card_id = await Card.getCardInfo( id );
   }
+
   async onLoad ( options ) {
+    track( 'mycard_page_screen' );
     await auth.ready();
     this.cardId = options.card_id;
     await this.init();

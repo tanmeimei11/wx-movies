@@ -4,6 +4,7 @@ import Self from '@/api/self';
 import tips from '@/utils/tips';
 import { request } from '@/utils/request';
 import report from '@/components/report-submit';
+import track from '@/utils/track';
 
 export default class self extends wepy.page {
   config = {
@@ -74,6 +75,7 @@ export default class self extends wepy.page {
     },
     toCard ( e ) {
       this.cardNum = e.currentTarget.dataset.index;
+      track( 'my_card_click' );
       wepy.navigateTo( {
         url: `/pages/card/card?card_id=${e.currentTarget.dataset.id}`
       } );
@@ -99,8 +101,11 @@ export default class self extends wepy.page {
     this.rules = Self.initRules( myInfoRes.texts );
     this.$apply();
   }
-
+  async onLoad () {
+    track( 'my_page_enter' );
+  }
   async onShow () {
+    track( 'my_page_screen' );
     await auth.ready();
     await this.init();
   }
