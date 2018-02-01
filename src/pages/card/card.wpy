@@ -22,7 +22,7 @@
               <text class="name">{{cardInfos.reward_to_info.nick_name}}</text>
           </view>
           <view class="shareToOthers {{cardInfos.cardStatus !== 0 ? 'shared' : ''}}" wx:else @tap="oprateCard">
-             {{cardBtnText}}
+             {{cardInfos.cardBtnText}}
           </view>
         </view>
       </view>
