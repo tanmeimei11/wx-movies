@@ -117,6 +117,7 @@ export default class Index extends wepy.page {
   computed = {}
   methods = {
     openBuyMutiModal () {
+      track( 'page_buy' )
       this.BuyMutiModalInfo.show = true;
     },
     toIndex () {
