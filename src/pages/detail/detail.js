@@ -91,6 +91,7 @@ export default class Index extends wepy.page {
     },
     async receive () {
       try {
+        track ( 'page_receive_box_confirm' )
         await Detail.receiveCard( this.cardId, this.receiveGiftInfo.phoneNum );
         wepy.switchTab( {
           url: `/pages/self/self`
@@ -104,7 +105,7 @@ export default class Index extends wepy.page {
       try {
         if ( !this.isPay ) {
           this.isPay = true;
-          track( 'page_buy' );
+          track ( 'page_number_box_pay' )
           await this.pay();
           this.isPay = false;
         }
@@ -219,6 +220,7 @@ export default class Index extends wepy.page {
         this.receiveGiftInfo.show = true;
         _info.phone && ( this.receiveGiftInfo.phoneNum = _info.phone );
       } else if ( !_info.is_owner && !_info.can_get ) {
+        track ( 'page_receive_box_expo' )
         this.receiveFaildInfo.show = true;
         this.receiveFaildInfo.msg = _info.msg;
       }

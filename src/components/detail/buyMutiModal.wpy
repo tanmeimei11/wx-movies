@@ -242,12 +242,14 @@ export default class buyMutiModal extends wepy.component {
       if(this.number>19){
         return 
       }
+      track ( 'page_number_box_plus' )
       this.number++
     },
     opJian(){
       if(this.number<2){
         return 
       }
+      track ( 'page_number_box_minus' )
       this.number--
     }
   };

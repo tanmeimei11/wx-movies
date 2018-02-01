@@ -59,7 +59,7 @@ export default class cards extends wepy.page {
   }
 
   async onShow () {
-
+    track( 'mycard_page_screen' );
   }
   async onLoad ( options ) {
     console.log( options );
