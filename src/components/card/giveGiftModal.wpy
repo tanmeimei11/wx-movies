@@ -8,7 +8,7 @@
             {{item}}
           </view>
         </view>
-      <view class="s-btn" @tap="close"><button class="btn-cut-btn" open-type="share"></button>确认赠送</view>
+      <view class="s-btn" @tap="close"><button class="btn-cut-btn" open-type="share" @tap="track"></button>确认赠送</view>
     </view>
   </view>
 </template>
@@ -125,6 +125,9 @@ export default class giveGiftModal extends wepy.component {
   methods = {
     close(){
       this.$emit('closeGiveGiftModal')
+    }
+    track(){
+      track ( 'mycard_transfer_box_confirm' )
     }
   }
 }
