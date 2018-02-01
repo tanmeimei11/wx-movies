@@ -232,7 +232,7 @@
           <text class="getinfo">请关注小程序了解最近进展</text> -->
           <view class="follow" wx:if="{{!succ}}">
             <view class="text">请留下你的联系方式</view>
-            <input bindinput="bindKeyInput" placeholder="输入手机号" type="number" maxlength="11"/>
+            <input bindinput="bindKeyInput" placeholder="输入手机号" type="number" maxlength="11" value="{{phone}}"/>
             <view class="tips">＊开放选座后将及时提醒你</view>
             <view class="btn {{isFull ? 'on' : ''}}" @tap="submit">确认提交</view>
             <!-- <view class="qrcode" style="background-image: url({{qrinfo.qrcode}});"></view>
@@ -276,7 +276,8 @@
       num: '',
       orderNo: '',
       contractID: '2018011801960713',
-      qrinfo: {}
+      qrinfo: {},
+      phone: ''
     }
     computed = {}
     methods = {
@@ -325,6 +326,10 @@
       track( 'result_page' );
       this.orderNo = option.orderNo;
       await auth.ready();
+      var res = await Result.getContractID()
+      this.phone = res.phone
+      this.$apply()
+      console.log(res)
     }
   }
 </script>

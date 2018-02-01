@@ -24,7 +24,7 @@
         <view class="window">
           <view class="close" @tap="close"></view>
           <view class="bind">{{type}}手机号</view>
-          <input bindinput="bindKeyInput" placeholder="输入手机号" type="number" maxlength="11" placeholder-style="color: #E0E0E0"/>
+          <input bindinput="bindKeyInput" placeholder="输入手机号" type="number" maxlength="11" placeholder-style="color: #E0E0E0" value="{{userInfo.phone}}"/>
           <view class="btn {{isFull ? 'on' : ''}}" @tap.stop="submit">确认</view>
         </view>
     </view>

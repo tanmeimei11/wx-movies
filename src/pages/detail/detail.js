@@ -218,6 +218,9 @@ export default class Index extends wepy.page {
       var _info = this.receiveGiftInfo.cardInfo;
       if ( !_info.is_owner && _info.can_get ) {
         this.receiveGiftInfo.show = true;
+        if(_info.user_info.phone) {
+          this.receiveGiftInfo.phoneNum = _info.user_info.phone
+        }
       } else if ( !_info.is_owner && !_info.can_get ) {
         this.receiveFaildInfo.show = true;
         this.receiveFaildInfo.msg = _info.msg;
