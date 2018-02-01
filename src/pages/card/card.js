@@ -18,6 +18,7 @@ export default class cards extends wepy.page {
     rules: [],
     cardId: '',
     cardCode: '',
+    cartStatusText: '',
     giveGiftInfo: {
       show: false,
       tips: []
@@ -29,7 +30,7 @@ export default class cards extends wepy.page {
     var query = '';
     var fun = () => {};
     if ( res.from === 'button' ) {
-      query = `?card_id=${this.cardCode}`;
+      query = `?cardCode=${this.cardCode}`;
       var that = this;
       console.log( that );
       fun = this.shareCallBack( that );
@@ -53,10 +54,10 @@ export default class cards extends wepy.page {
       if ( this.cardInfos.cardStatus == 0 ) {
         track( 'mycard_transfer' );
         this.giveGiftInfo.show = true;
-      } else if ( this.cardInfos.cardStatus == 3 ) {
-        this.cardCode = await Card.cancelCardGive( this.cardCode );
-        this.changeCardStatus( 0 );
-        this.$apply();
+      } else if ( this.cardInfos.cardStatus == 1 ) {
+        var res = await Card.cancelCardGive( this.cardCode );
+        console.log( res );
+        this.changeCardInfo( res.card, res.reward_status );
       }
     },
     giveGift () {
@@ -64,22 +65,37 @@ export default class cards extends wepy.page {
     }
   }
 
+  /**
+   * 初始化页面信息
+   */
   async init () {
     var page = getCurrentPages()[0].data;
     this.rules = page.rules;
-    // this.cardInfos = Self.initCardInfo( page.cards, page.default_card )[page.cardNum];
     await this.initCardInfo( this.cardId );
     this.$apply();
   }
+  /**
+   * 初始化卡信息
+   * @param {*} id
+   */
   async initCardInfo ( id ) {
     var res = await Card.getCardInfo( id );
     this.cardCode = res.reward_code;
     this.giveGiftInfo.tips = res.prompt_txt;
-    this.cardInfos = Card.initCardInfo( res.card );
-    this.cardInfos.cardStatus = res.reward_status;
-    this.cardInfos.cartStatusText = res.btn_txt;
-    this.cardInfos.cardBtnText = res.btn_txt[ res.reward_status ];
-    // this.card_id = await Card.getCardInfo( id );
+    this.cartStatusText = res.btn_txt;
+    if ( res.card && res.card.reward_from_info ) {
+      res.reward_status = 3;
+    }
+    this.changeCardInfo( res.card, res.reward_status, res.btn_txt[ res.reward_status ] );
+  }
+  /**
+   *  改变卡的状态
+   */
+  changeCardInfo ( card, status, text ) {
+    this.cardInfos = Card.initCardInfo( card );
+    this.cardInfos.cardStatus = status;
+    this.cardInfos.cardBtnText = text || this.cartStatusText[status];
+    this.$apply();
   }
 
   async onLoad ( options ) {
@@ -87,7 +103,6 @@ export default class cards extends wepy.page {
     await auth.ready();
     this.cardId = options.card_id;
     await this.init();
-    await this.initCardInfo();
     this.$apply();
   }
 
@@ -95,10 +110,10 @@ export default class cards extends wepy.page {
    * 转增回调
    */
   shareCallBack ( that ) {
-    return ( ) => {
+    return async ( ) => {
       if ( that.cardInfos.cardStatus == 0 ) {
-        that.changeCardStatus( 3 );
-        that.$apply();
+        var res = await Card.giveCard( that.cardCode );
+        that.changeCardInfo( res.card, res.reward_status );
       }
     };
   }
@@ -106,7 +121,7 @@ export default class cards extends wepy.page {
    * 修改转赠状态
    * @param {*} status
    */
-  changeCardStatus ( status ) { // 转赠状态0：未赠送，1：已送出，2：已领取，3：已取消
+  changeCardStatus ( status ) { // 转赠状态 0：未赠送，1：已送出未领取，2：已送出已领取，3：领取了别人的
     this.cardInfos.cardStatus = status;
     this.cardInfos.cardBtnText = this.cardInfos.cartStatusText[status];
   }

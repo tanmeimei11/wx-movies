@@ -66,7 +66,7 @@ export default class Index extends wepy.page {
     receiveFaildInfo: {
       show: false
     },
-    cardId: '', // 分享进来的转赠卡的卡片id
+    cardCode: '', // 分享进来的转赠卡的卡片id
     bgImages: [], // 背景图
     partBg: '',
     shareImage: '',
@@ -91,8 +91,8 @@ export default class Index extends wepy.page {
     },
     async receive () {
       try {
-        track ( 'page_receive_box_confirm' )
-        await Detail.receiveCard( this.cardId, this.receiveGiftInfo.phoneNum );
+        track( 'page_receive_box_confirm' );
+        await Detail.receiveCard( this.cardCode, this.receiveGiftInfo.phoneNum );
         wepy.switchTab( {
           url: `/pages/self/self`
         } );
@@ -105,7 +105,7 @@ export default class Index extends wepy.page {
       try {
         if ( !this.isPay ) {
           this.isPay = true;
-          track ( 'page_number_box_pay' )
+          track( 'page_number_box_pay' );
           await this.pay();
           this.isPay = false;
         }
@@ -213,14 +213,14 @@ export default class Index extends wepy.page {
     this.$apply();
   }
   async initCardStatus () {
-    if ( this.cardId ) {
-      this.receiveGiftInfo.cardInfo = await Detail.getCardInfo( this.cardId );
+    if ( this.cardCode ) {
+      this.receiveGiftInfo.cardInfo = await Detail.getCardInfo( this.cardCode );
       var _info = this.receiveGiftInfo.cardInfo;
       if ( !_info.is_owner && _info.can_get ) {
         this.receiveGiftInfo.show = true;
         _info.phone && ( this.receiveGiftInfo.phoneNum = _info.phone );
       } else if ( !_info.is_owner && !_info.can_get ) {
-        track ( 'page_receive_box_expo' )
+        track( 'page_receive_box_expo' );
         this.receiveFaildInfo.show = true;
         this.receiveFaildInfo.msg = _info.msg;
       }
@@ -268,7 +268,7 @@ export default class Index extends wepy.page {
       this.data.qrcode_from = options.qrcode_from;
     }
     this.data.shareId = options.share_uid || '';
-    this.cardId = options.card_id || '';
+    this.cardCode = options.cardCode || '';
   }
   /**
    * 设置分享的shareticket
