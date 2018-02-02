@@ -41,7 +41,7 @@
           <view class="s-desc">{{detailText.desc08[1]}}</view>
           <image class="s-img-1" mode="aspectFill" src="{{cinemas.img}}"></image>
           <view class="s-info-wrap">
-            <view class="cinemas-wrap"  wx:for="{{cinemas.list}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
+            <view class="cinemas-wrap" wx:for="{{cinemas.list}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
               <view class="name">{{item.name}}</view>
               <view class="addr">{{item.address}}</view>
             </view>
@@ -57,7 +57,7 @@
           <view class="s-title">{{detailText.desc12[0]}}</view>
           <view class="s-desc">{{detailText.desc12[1]}}</view>
           <view class="s-info-wrap">
-            <view class="movies-wrap"  >
+            <view class="movies-wrap">
               <view class="movie" wx:for="{{movies}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
                 <image class="movie-paper" src="{{item.url}}"></image>
                 <view class="movie-name">{{item.name}}</view>
@@ -81,18 +81,19 @@
 
       <view class="c-last" id="details">
         <view class="s-mid-title rule">详情介绍</view>
-          <view class="s-rules"  wx:for="{{rules}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
-            <view class="title bold">{{item.title}}</view>
-            <view class="desc" wx:for="{{item.desc}}" wx:for-index="idx1" wx:for-item="item1" wx:key="idx">{{item1}}</view>
-          </view>
+        <view class="s-rules" wx:for="{{rules}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
+          <view class="title bold">{{item.title}}</view>
+          <view class="desc" wx:for="{{item.desc}}" wx:for-index="idx1" wx:for-item="item1" wx:key="idx">{{item1}}</view>
+        </view>
       </view>
     </scroll-view>
-    <shareWindow :shareInfo.sync="shareInfo" wx:if="{{showShareWindow}}" @closeShareWindow.user="closeShareWindow" @initShare.user="initShare" @shareCode.user="shareCode"></shareWindow>
+    <shareWindow :shareInfo.sync="shareInfo" wx:if="{{showShareWindow}}" @closeShareWindow.user="closeShareWindow" @initShare.user="initShare"
+      @shareCode.user="shareCode"></shareWindow>
     <rpWindow :rpInfo.sync="rpInfo" wx:if="{{rpShow}}" @closerpWindow.user="closerpWindow"></rpWindow>
 
     <receiveGiftModal :receiveGiftInfo.sync="receiveGiftInfo" wx:if="{{receiveGiftInfo.show}}"></receiveGiftModal>
     <receiveFaildModal :receiveFaildInfo.sync="receiveFaildInfo" wx:if="{{receiveFaildInfo.show}}"></receiveFaildModal>
-    <buyMutiModal :BuyMutiModalInfo.sync="BuyMutiModalInfo" wx:if="{{BuyMutiModalInfo.show}}" ></buyMutiModal>
+    <buyMutiModal :BuyMutiModalInfo.sync="BuyMutiModalInfo" wx:if="{{BuyMutiModalInfo.show}}"></buyMutiModal>
     <!-- 已购买
     <view class="buy-wrap"  wx:if="{{detailStatus.is_buy=='1'}}">
       <view class="btn btn-cut" @tap="sharePay">分享得现金</view>
@@ -100,8 +101,8 @@
     </view> -->
     <!-- 购买 -->
     <view class="buy-wrap" wx:else>
-      <view class="btn btn-origin" @tap="openBuyMutiModal">{{BuyMutiModalInfo.basePrice}}元购买</view>
-      <view class="btn btn-cut" @tap="sharePay">分享得现金</view>
+      <view class="btn btn-cut" @tap="openBuyMutiModal">{{BuyMutiModalInfo.basePrice}}元购买</view>
+      <view class="btn btn-origin" @tap="sharePay">分享得现金</view>
     </view>
 
   </report>
