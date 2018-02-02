@@ -99,8 +99,8 @@
     </view> -->
     <!-- 购买 -->
     <view class="buy-wrap" wx:else>
-      <view class="btn btn-cut" @tap="sharePay">分享得现金</view>
       <view class="btn btn-origin" @tap="openBuyMutiModal">{{BuyMutiModalInfo.basePrice}}元购买</view>
+      <view class="btn btn-cut" @tap="sharePay">分享得现金</view>
     </view>
 
   </report>
