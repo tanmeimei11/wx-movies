@@ -7,6 +7,7 @@ import shareWindow from '@/components/shareWindow';
 import receiveGiftModal from '@/components/detail/receiveGiftModal';
 import buyMutiModal from '@/components/detail/buyMutiModal';
 import receiveFaildModal from '@/components/detail/receiveFaildModal';
+import rpWindow from '@/components/detail/rpWindow';
 import shareConnectMixin from '@/mixins/shareConnectMixin';
 import loadingMixin from '@/mixins/loadingMixin';
 import track from '@/utils/track';
@@ -15,7 +16,7 @@ export default class Index extends wepy.page {
   config = {
     navigationBarTitleText: 'in同城趴·电影王卡'
   }
-  components = { report, shareWindow, receiveGiftModal, buyMutiModal, receiveFaildModal }
+  components = { report, shareWindow, receiveGiftModal, buyMutiModal, receiveFaildModal, rpWindow }
   mixins = [shareConnectMixin, loadingMixin]
   data = {
     toView: '',
@@ -71,7 +72,9 @@ export default class Index extends wepy.page {
     bgImages: [], // 背景图
     partBg: '',
     shareImage: '',
-    bgStyle: ''
+    bgStyle: '',
+    rpShow: false,
+    rpInfo: {}
   }
   events = {
     closeBuyMutiModal () {
@@ -125,6 +128,9 @@ export default class Index extends wepy.page {
   }
   computed = {}
   methods = {
+    closerpWindow () {
+      this.rpShow = false
+    },
     openBuyMutiModal () {
       track( 'page_buy' );
       this.BuyMutiModalInfo.show = true;
@@ -197,7 +203,7 @@ export default class Index extends wepy.page {
     track( 'page_enter' );
     await auth.ready();
     track( 'page_entry' );
-    await this.initCardStatus();
+    await this.initModalStatus();
   }
   async init () {
     var res = await Detail.getDetailData( this.detailCode );
@@ -222,7 +228,7 @@ export default class Index extends wepy.page {
     this.shareInfo = await Detail.getShareInfo();
     this.$apply();
   }
-  async initCardStatus () {
+  async initModalStatus () {
     if ( this.cardCode ) {
       this.receiveGiftInfo.cardInfo = await Detail.getCardInfo( this.cardCode );
       var _info = this.receiveGiftInfo.cardInfo;
@@ -234,6 +240,10 @@ export default class Index extends wepy.page {
         this.receiveFaildInfo.show = true;
         this.receiveFaildInfo.msg = _info.msg;
       }
+    } else if (this.rpShow) {
+      this.rpInfo = await Detail.getRpData();
+      this.$apply()
+      console.log(this.rpInfo)
     }
   }
   /**
@@ -279,6 +289,9 @@ export default class Index extends wepy.page {
     }
     this.data.shareId = options.share_uid || '';
     this.cardCode = options.cardCode || '';
+    if ( options.showWin === 'rp' ) {
+      this.rpShow = true
+    }
   }
   /**
    * 设置分享的shareticket

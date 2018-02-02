@@ -15,6 +15,14 @@ export default class Detail extends Pagebase {
     } );
   }
   /**
+   *  获取红包接口
+   */
+  static async getRpData ( ) {
+    return await this.request( {
+      url: '/info/rp'
+    } );
+  }
+  /**
    *  获取详情页数据接口
    */
   static async getDetailData ( data ) {

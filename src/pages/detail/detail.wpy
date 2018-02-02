@@ -88,6 +88,7 @@
       </view>
     </scroll-view>
     <shareWindow :shareInfo.sync="shareInfo" wx:if="{{showShareWindow}}" @closeShareWindow.user="closeShareWindow" @initShare.user="initShare" @shareCode.user="shareCode"></shareWindow>
+    <rpWindow :rpInfo.sync="rpInfo" wx:if="{{rpShow}}" @closerpWindow.user="closerpWindow"></rpWindow>
 
     <receiveGiftModal :receiveGiftInfo.sync="receiveGiftInfo" wx:if="{{receiveGiftInfo.show}}"></receiveGiftModal>
     <receiveFaildModal :receiveFaildInfo.sync="receiveFaildInfo" wx:if="{{receiveFaildInfo.show}}"></receiveFaildModal>
