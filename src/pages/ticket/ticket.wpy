@@ -1,15 +1,61 @@
 <template>
-  <report>
+  <!-- <report> -->
     <view class="container">
-      <view class="banner"></view>
+      <view class="banner">
+        <view class="rule" @tap="openRules">活动细则</view>
+      </view>
       <view class="myTicket">
         <view class="title">我的电影票</view>
-        <view class="ticket"></view>
-        <view class="ticket"></view>
-        <view class="ticket"></view>
+        <view class="ticket status{{item.ticket_status}} {{item.receive ? 'receive' : ''}}" wx:for="{{tickets}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
+          <view wx:if="{{item.ticket_status === '0'}}">
+            <button open-type="share"></button>
+          </view>
+          <view wx:if="{{item.ticket_status === '1'}}">
+            <view class="cards">
+              <view></view>
+              <view></view>
+              <view></view>
+            </view>
+            <view class="choosetxt">- 选择一张电影票 -</view>
+          </view>
+          <view wx:if="{{item.ticket_status === '2'}}">
+            <view wx:if="{{!item.receive}}">
+              <view class="cards">
+                <view class="{{item.has_fetch ? 'on' : ''}}" wx:for="{{cards}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
+                  <text class="type">{{item.desc}}</text>
+                  <text>电影票</text>
+                </view>
+              </view>
+              <view class="receive">收下电影票</view>
+            </view>
+            <view class="realTicket" wx:else>
+              <view class="t-title">{{cards[0].title}}</view>
+              <view class="remark">{{cards[0].remark}}</view>
+              <view class="up">升级为<text>3个月全天</text>电影无限看</view>
+              <view class="tipsArea">
+                <text class="tips">{{cards[0].tips}}</text>
+                <view class="jiao"></view>
+              </view>
+              <view class="btn">立即升级</view>
+            </view>
+          </view>
+        </view>
       </view>
     </view>
-  </report>
+    <view class="rules" wx:if="{{rulesShow}}">
+      <view class="bg" @tap="close"></view>
+      <view class="window">
+        <view class="banner">
+          <view class="close" @tap="close"></view>
+        </view>
+        <scroll-view scroll-y>
+          <view wx:for="{{rules}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
+            {{item}}
+          </view>
+        </scroll-view>
+      </view>
+    </view>
+  <!-- </report> -->
 </template>
 <style lang="less" src="./ticket.less">
 </style>

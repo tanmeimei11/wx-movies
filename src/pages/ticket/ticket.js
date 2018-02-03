@@ -1,111 +1,76 @@
 import wepy from 'wepy';
 import auth from '@/api/auth';
-import Self from '@/api/self';
+import Ticket from '@/api/ticket';
 import tips from '@/utils/tips';
-import { request } from '@/utils/request';
 import report from '@/components/report-submit';
+import shareConnectMixin from '@/mixins/shareConnectMixin';
 import track from '@/utils/track';
 
-export default class self extends wepy.page {
+export default class ticket extends wepy.page {
   config = {
-    navigationBarTitleText: '我的电影卡'
+    navigationBarTitleText: '电影票'
   }
   components = { report }
-
+  mixins = [shareConnectMixin]
   data = {
+    rulesShow: false,
     num: '',
     type: '',
     btninfo: {},
     isShowMobile: false,
     isFull: false,
-    cards: [],
-    cardNum: 0,
     rules: [], // 规则文案
-    userInfo: { // 用户信息
-      avatar: '',
-      name: '',
-      phone: ' '
-    },
-    cardInfos: [{ // 卡片信息
-      id: '',
-      title: 'in同城趴·电影王卡',
-      desc: '可任意次数兑换观影券',
-      time: '',
-      isApply: true,
-      num: ''
-    }]
+    tickets: [],
+    cards: [          {"desc":"上午场","has_fetch":"true", "title":"上午场电影通用票", "remark":"仅3月4日至3月8日上午使用,合作影院均可使用",tips:"24h内有效"}, //只有选中的情况下 才有除desc外 其他的字段
+    {"desc":"晚上场"},
+    {"desc":"下午场"}]
   }
 
+  onShareAppMessage ( res ) {
+    return {
+      title: '分享到群',
+      path: `/pages/detail/detail?shareCode=$`,
+      imageUrl: 'http://inimg07.jiuyan.info/in/2018/01/26/20A52317-E4EB-3657-E024-F2EF040B2E86.jpg',
+      // 'http://inimg07.jiuyan.info/in/2018/01/26/20A52317-E4EB-3657-E024-F2EF040B2E86.jpg'
+      success: this.shareCallBack( res )
+    };
+  }
+  
   methods = {
-    bindKeyInput ( e ) {
-      this.num = e.detail.value;
-      if ( e.detail.value.length === 11 ) {
-        this.isFull = true;
-      }
-    },
-    async submit () {
-      if ( this.isFull ) {
-        tips.loading();
-        var res = await request( {
-          url: '/mnp/user/update_phone',
-          method: 'POST',
-          data: {
-            phone: this.num
-          }
-        } );
-        if ( res.succ ) {
-          tips.loaded();
-          this.userInfo.phone = this.num;
-          await tips.success( this.type + '成功' );
-          this.isShowMobile = false;
-          this.$apply();
-        } else {
-          tips.loaded();
-          tips.error( '网络错误' );
-        }
-      }
-    },
-    open ( e ) {
-      console.log( e );
-      this.isShowMobile = true;
-      this.type = e.currentTarget.dataset.type;
+    openRules () {
+      this.rulesShow = true
     },
     close () {
-      this.isShowMobile = false;
-    },
-    toCard ( e ) {
-      this.cardNum = e.currentTarget.dataset.index;
-      track( 'my_card_click' );
-      wepy.navigateTo( {
-        url: `/pages/card/card?card_id=${e.currentTarget.dataset.id}`
-      } );
-    },
-    apply () {
-      if ( this.btninfo.cf_start === 'false' ) {
-        tips.error( this.btninfo.cf_start_desc );
-        return;
-      }
-      wepy.navigateTo( {
-        url: '/pages/detail/detail'
-      } );
+      this.rulesShow = false
     }
+  }
+  /**
+   * 设置分享的shareticket
+   */
+  setShare () {
+    wepy.showShareMenu( {
+      withShareTicket: true // 要求小程序返回分享目标信息
+    } );
+  }
+
+  async getShared (data) {
+    var exchangeTicket = await Ticket.exchangeTicket(data, {ticket_id: this.ticketID})
+    console.log(exchangeTicket)
   }
 
   async init () {
-    var myInfoRes = await Self.getMyInfo();
-    this.btninfo = myInfoRes;
-    this.cards = myInfoRes.cards;
-    console.log( myInfoRes.cards );
-    this.cardInfos = Self.initCardInfo( myInfoRes.cards );
-    this.userInfo = Self.initUserInfo( myInfoRes );
-    this.rules = Self.initRules( myInfoRes.texts );
+    var myInfoRes = await Ticket.getMyInfo();
+    this.rules = Ticket.initRules( myInfoRes.act_rules );
+    this.tickets = Ticket.initTickets( myInfoRes.tickets );
     this.$apply();
   }
-  async onLoad () {
-    track( 'my_page_enter' );
+  async onLoad (options) {
+    // track( 'my_page_enter' );
+    this.setShare();
+    this.ticketID = options.ticketId
   }
   async onShow () {
-    track( 'my_page_screen' );
+    // track( 'my_page_screen' );
     await auth.ready();
     await this.init();
   }

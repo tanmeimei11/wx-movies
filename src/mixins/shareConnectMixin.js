@@ -1,8 +1,9 @@
 import wepy from 'wepy';
+import tips from '@/utils/tips';
 export default class shareConnectMixin extends wepy.mixin {
   shareCallBack ( res ) {
     return async( res, isLoading ) => {
-      this.loadingIn( '请稍后' );
+      tips.loading( '请稍后' );
       try {
         if ( res.shareTickets ) {
           var ticket = res.shareTickets[0];
@@ -19,23 +20,23 @@ export default class shareConnectMixin extends wepy.mixin {
               code: loginRes.code
             };
 
-            this.loadingOut();
-            this.pay( shareTicketInfo );
+            tips.loaded();
+            this.getShared( shareTicketInfo );
           } else {
             throw new Error();
           }
         } else {
-          this.loadingOut();
-          this.data.isNotQun = true;
+          tips.loaded();
+          // this.data.isNotQun = true;
           setTimeout( () => {
-            this.toastFail( '请分享到群聊天', 3000 );
+            tips.error( '请分享到群聊天' );
           }, 1000 );
         }
       } catch ( e ) {
         throw new Error();
       }
 
-      this.loadingOut();
+      tips.loaded();
     };
   }
 }

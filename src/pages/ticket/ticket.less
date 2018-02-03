@@ -5,33 +5,272 @@ page{
   display: block;
   min-height: 100vh;
   background-color:#c62625;
-}
-.banner{
-  width: 100%;
-  height: 350rpx;
-  background-image: url('https://inimg05.jiuyan.info/in/2018/02/03/15C620FC-2C23-BAFE-EFFC-790121CB49FC.png');
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
+  .banner{
+    width: 100%;
+    height: 350rpx;
+    position: relative;
+    background-image: url('https://inimg05.jiuyan.info/in/2018/02/03/15C620FC-2C23-BAFE-EFFC-790121CB49FC.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    .rule{
+      width: 120rpx;
+      height: 42rpx;
+      position: absolute;
+      top: 18rpx;
+      right: -6rpx;
+      background: #ead396;
+      font-size: 22rpx;
+      color: #d1332f;
+      line-height: 42rpx;
+      text-align: center;
+      border-top-left-radius: 100rpx;
+      border-bottom-left-radius: 100rpx;
+    }
+  }
+  
+  .myTicket{
+    padding: 50rpx 40rpx;
+    .title{
+      font-size: 32rpx;
+      color: #ead396;
+      line-height: 32rpx;
+      text-align: left;
+      position: relative;
+      padding-left: 18rpx;
+      &::before{
+        content: '';
+        position: absolute;
+        left:0;
+        top:13rpx;
+        width: 6rpx;
+        height: 6rpx;
+        background: #ead396;
+        display: block;
+      }
+    }
+    .ticket{
+      width: 100%;
+      height: 320rpx;
+      margin-top: 40rpx;
+      border-radius: 12rpx;
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
+      position: relative;
+      overflow: hidden;
+      &.status0{
+        background-image: url('https://inimg07.jiuyan.info/in/2018/02/03/E73483B7-19A7-4567-8C4F-73256FFAA98F.png');
+        button{
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          opacity: 0;
+        }
+      }
+      &.status1{
+        background: #fce2c6;
+        .cards{
+          display: flex;
+          margin: 40rpx;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          view{
+            width: 174rpx;
+            height: 174rpx;
+            background-image: url('https://inimg01.jiuyan.info/in/2018/02/03/CA1A1C2A-6491-B27A-47FC-33CF51B857AF.png');
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+          }
+        }
+        .choosetxt{
+          position: absolute;
+          width: 100%;
+          top: 247rpx;
+          left: 0;
+          text-align: center;
+          font-size: 28rpx;
+          color: #cc8333;
+        }
+      }
+      &.status2{
+        background: #fce2c6;
+        .cards{
+          display: flex;
+          margin: 40rpx;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          view{
+            width: 174rpx;
+            height: 174rpx;
+            background-image: url('https://inimg02.jiuyan.info/in/2018/02/03/3ECA425F-F69A-769D-D064-917C96A904B4.png');
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0.5;
+            &.on{
+              opacity: 1;
+              border: 6rpx solid #fb5355;
+              border-radius: 8rpx;
+            }
+            .type{
+              font-size: 40rpx;
+            }
+            text{
+              font-size: 26rpx;
+              color: #ef5b4c;
+            }
+          }
+        }
+        .receive{
+          position: absolute;
+          top: 240rpx;
+          left: 259rpx;
+          width: 150rpx;
+          height: 52rpx;
+          margin: 0;
+          border: 2rpx solid #e2a25c;
+          border-radius: 100rpx;
+          box-sizing: border-box;
+          text-align: center;
+          line-height: 52rpx;
+          font-size: 22rpx;
+          color: #e2a25c;
+        }
+        .realTicket{
+          .t-title{
+            margin: 35rpx 40rpx 0;
+            font-size: 40rpx;
+            color: #a85500;
+          }
+          .remark{
+            margin: 7rpx 40rpx 0;
+            font-size: 22rpx;
+            color: #a85500;
+          }
+          .up{
+            margin: 120rpx 40rpx 0;
+            font-size: 24rpx;
+            color: #ef5b4c;
+            text{
+              font-size: 30rpx;
+            }
+          }
+          .tipsArea{
+            position: absolute;
+            top: 173rpx;
+            left: 437rpx;
+            width: 191rpx;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            .jiao{
+              width: 0;
+              height: 0;
+              position: absolute;
+              top: 100%;
+              left: 90rpx;
+              border-top: 8rpx solid #fb6d55;
+              border-right: 8rpx solid transparent;
+              border-left: 8rpx solid transparent;
+            }
+            .tips{
+              font-size: 20rpx;
+              color: #fff;
+              background-image: linear-gradient(90deg, #FA8A53 0%, #FA5456 100%);
+              border-radius: 100rpx;
+              padding: 7rpx 10rpx;
+            }
+          }
+          .btn{
+            width: 191rpx;
+            height: 68rpx;
+            background-image: linear-gradient(90deg, #FA8A53 0%, #FA5456 100%);
+            border-radius: 100rpx;
+            font-size: 32rpx;
+            color: #fff;
+            line-height: 68rpx;
+            text-align: center;
+            position: absolute;
+            top: 230rpx;
+            left: 437rpx;
+          }
+        }
+      }
+      &.receive{
+        background: url('https://inimg02.jiuyan.info/in/2018/02/03/86779824-CDDC-7B47-2DC3-26327F44A90B.png') no-repeat;
+        background-size: contain;
+        background-position: center;
+      }
+    }
+  }
 }
 
-.myTicket{
-  padding: 50rpx 40rpx;
-  .title{
-    font-size: 32rpx;
-    color: #ead396;
-    line-height: 32rpx;
-    text-align: left;
-    position: relative;
-    &::before{
-      content: '';
-      position: absolute;
-      left:-20rpx;
-      top:10rpx;
-      width: 6rpx;
-      height: 6rpx;
-      background: #ead396;
-      display: block;
+.rules{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1001;
+  .bg{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+  }
+  .window{
+    position: absolute;
+    top: 50%;
+    left: 95rpx;
+    width: 560rpx;
+    height: 782rpx;
+    transform: translateY(-50%);
+    border-radius: 10rpx;
+    background: #fff;
+    overflow: hidden;
+    text-align: center;
+    scroll-view{
+      width: 460rpx;
+      height: 534rpx;
+      margin: 38rpx auto;
+      view{
+        font-size: 28rpx;
+        color: #666;
+        text-align: left;
+        margin-bottom: 10rpx;
+      }
+    }
+    .banner{
+      width: 100%;
+      height: 170rpx;
+      position: relative;
+      background-image: url('https://inimg07.jiuyan.info/in/2018/02/03/ACDDA979-00ED-3353-00D4-1623F23D1D47.png');
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      .close{
+        position: absolute;
+        top: 14rpx;
+        right: 14rpx;
+        width: 44rpx;
+        height: 44rpx;
+        background: url('http://inimg01.jiuyan.info/in/2018/01/25/88885A4C-2E29-52C0-1EBB-E54CA1877F53.png') no-repeat;
+        background-position: center;
+        background-size: contain;
+      }
     }
   }
 }
