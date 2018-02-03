@@ -26,19 +26,18 @@ export default class ticket extends wepy.page {
     cardsbg: ['', '', ''],
     cards: [],
     ticketID: '',
-    share_img: ''
+    share_img: '',
+    share_code: ''
   }
 
   onShareAppMessage ( res ) {
-    var query = ``
     if (res.target) {
       this.shareIndex = res.target.dataset.index
       this.ticketID = res.target.dataset.code
-      var query = `shareCode=${res.target.dataset.id}`
     }
     return {
       title: '送你们每人3张电影票，杭州好多家影院都能看，快来领取吧！',
-      path: `/pages/detail/detail?${query}`,
+      path: `/pages/detail/detail?shareCode=${this.share_code}`,
       imageUrl: this.share_img,
       // 'http://inimg07.jiuyan.info/in/2018/01/26/20A52317-E4EB-3657-E024-F2EF040B2E86.jpg'
       success: this.shareCallBack( res )
@@ -99,6 +98,7 @@ export default class ticket extends wepy.page {
     this.rules = Ticket.initRules( myInfoRes.act_rules );
     this.tickets = Ticket.initTickets( myInfoRes.tickets );
     this.share_img = myInfoRes.share_img
+    this.share_code = myInfoRes.share_code
     this.$apply();
   }
   async onLoad (options) {
