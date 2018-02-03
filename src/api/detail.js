@@ -6,12 +6,16 @@ export default class Detail extends Pagebase {
   /**
    *  获取众筹状态接口
    */
-  static async getDetailStatus ( ) {
+  static async getDetailStatus ( shareCode ) {
+    var _data = {
+      product_id: 159
+    };
+    if ( shareCode ) {
+      _data.share_code = shareCode;
+    }
     return await this.request( {
       url: '/mnp/product/cfStatus2',
-      data: {
-        product_id: 159
-      }
+      data: _data
     } );
   }
   /**
@@ -77,8 +81,9 @@ export default class Detail extends Pagebase {
   /**
    * 创建订单接口
    */
-  static async creatOrder ( shareTicketInfo, buyNumber ) {
+  static async creatOrder ( shareTicketInfo, buyNumber, tikectId ) {
     var _data = shareTicketInfo || {};
+    tikectId && ( _data.tikect_id = tikectId );
     console.log( wepy.$instance.globalData );
     return await this.request( {
       url: '/mnp/order/create',

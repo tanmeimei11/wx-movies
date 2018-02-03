@@ -1,0 +1,111 @@
+<template>
+  <view class="c-modal c-receive-ticket-modal">
+    <view class="c-wrap">
+      <view class="s-close" @tap="close"></view>
+      <view class="s-text">
+        <view class="avatar" style="background-image:url({{receiveTicketInfo.userInfo.avatar}})"></view>
+          <text class="nick-name">{{receiveTicketInfo.userInfo.nick_name}}</text>
+          邀请你领取
+          <text class='ticket-num'>3</text>
+          张电影票
+      </view>
+      <view class="s-ticket"></view>
+      <view class="s-btn" @tap="goTicket">立即领取</view>
+    </view>
+  </view>
+</template>
+<style type="less">
+.c-receive-ticket-modal {
+  .c-wrap{
+    padding-top:30rpx;
+    padding-bottom: 50rpx;
+  }
+  .s-close {
+    /* background-image: url("https://inimg07.zjiuyan.info/in/2017/11/05/071B5DFD-47BA-4F0B-F965-1D65BC5DA2D2.jpg"); */
+  }
+  .s-ticket {
+    color: #fff;
+    width: 460rpx;
+    height: 175rpx;
+    margin:40rpx auto 60rpx;
+    background-image: url('https://inimg01.jiuyan.info/in/2018/02/03/4FEB6B74-F97B-063D-148C-C17FCFCB275A.jpg');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  .s-text {
+    color:#333333;
+    font-weight: bold;
+    font-size: 32rpx;
+    padding-top:100rpx;
+    width: 430rpx;
+    margin: 0 auto;
+    white-space: nowrap;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    .avatar{
+      position: absolute;
+      top:0;
+      left:50%;
+      transform:translate(-50%,0);
+      width: 80rpx;
+      height: 80rpx;
+      background-image: url('https://inimg01.jiuyan.info/in/2018/02/03/4FEB6B74-F97B-063D-148C-C17FCFCB275A.jpg');
+      background-size: cover ;
+      background-position:center;
+      background-repeat: no-repeat;
+      border-radius:50%;
+    }
+    .nick-name{
+      display: inline-block;
+      color: #888888;
+      max-width: 128rpx;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .ticket-num{
+      color:#F95758;
+    }
+  }
+  .s-btn {
+    width: 460rpx;
+    height: 80rpx;
+    line-height: 80rpx;
+    font-size: 28rpx;
+    text-align: center;
+    margin: 0 auto 0;
+    border-radius: 200rpx;
+    color: #fff;
+    background-image: linear-gradient(90deg, #fd9c6c 0%, #f95557 100%);
+    border-radius: 100px;
+    font-size: 28rpx;
+    position: relative;
+  }
+}
+</style>
+<script>
+import wepy from "wepy";
+import util from "@/utils/util";
+import { request } from "@/utils/request";
+import tips from "@/utils/tips";
+import track from "@/utils/track";
+
+export default class receiveTicketModal extends wepy.component {
+  props = {
+    receiveTicketInfo: Object
+  };
+  methods = {
+    close(){
+      this.$emit('closeRecevieTicket')
+    },
+    goTicket(){
+      this.$emit('getMovieTicket')
+    }
+  }
+}
+</script>
