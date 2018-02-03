@@ -353,6 +353,8 @@ export default class Index extends wepy.page {
       track( 'page_pay_successful' );
       this.paySucc( createRes.order_no );
     } catch ( e ) {
+      this.BuyMutiModalInfo.show = false;
+      this.$apply();
       track( 'page_pay_failed' );
     }
   }

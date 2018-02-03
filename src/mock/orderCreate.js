@@ -30,4 +30,4 @@ var o =
     'timestamp': '1516170694'
   };
 
-module.exports = m;
+module.exports = o;
