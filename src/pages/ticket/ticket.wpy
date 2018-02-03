@@ -8,12 +8,12 @@
         <view class="title">我的电影票</view>
         <view class="ticket status{{item.ticket_status}} {{(item.ticket_status === '2' || item.ticket_status === '4') ? 'received' : ''}}" wx:for="{{tickets}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
           <view wx:if="{{item.ticket_status === '0'}}">
-            <button open-type="share" data-id="{{item.share_code}}" data-index="{{idx}}" data-code="{{item.ticket_id}}"></button>
+            <button open-type="share" data-id="{{item.share_code}}" data-index="{{idx}}" data-code="{{item.id}}"></button>
           </view>
           <view wx:if="{{item.ticket_status === '1'}}">
             <view wx:if="{{!item.receive}}">
               <view class="cards">
-                <view wx:for="{{cardsbg}}" wx:for-index="idx2" wx:for-item="item2" wx:key="idx2" @tap="openCard" data-index="{{idx2}}" data-ticket="{{idx}}"></view>
+                <view wx:for="{{cardsbg}}" wx:for-index="idx2" wx:for-item="item2" wx:key="idx2" @tap="openCard" data-index="{{idx2}}" data-ticket="{{idx}}" data-ticketID="{{item.id}}"></view>
               </view>
               <view class="choosetxt">- 选择一张电影票 -</view>
             </view>

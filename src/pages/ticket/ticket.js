@@ -34,8 +34,8 @@ export default class ticket extends wepy.page {
     this.shareIndex = res.target.dataset.index
     this.ticketID = res.target.dataset.code
     return {
-      title: '分享到群',
-      path: `/pages/detail/detail?shareCode=${this.shareCode}&ticketId=${this.ticketID}`,
+      title: '送你们每人3张电影票，杭州好多家影院都能看，快来领取吧！',
+      path: `/pages/detail/detail?shareCode=${res.target.dataset.id}&ticketId=${res.target.dataset.code}`,
       imageUrl: 'http://inimg07.jiuyan.info/in/2018/01/26/20A52317-E4EB-3657-E024-F2EF040B2E86.jpg',
       // 'http://inimg07.jiuyan.info/in/2018/01/26/20A52317-E4EB-3657-E024-F2EF040B2E86.jpg'
       success: this.shareCallBack( res )
@@ -52,9 +52,9 @@ export default class ticket extends wepy.page {
     async openCard (e) {
       var thisTicket = e.currentTarget.dataset.ticket
       var thisIndex = e.currentTarget.dataset.index
-      console.log(thisTicket,thisIndex )
-      var card = await Ticket.pickCard( this.ticketID, thisIndex );
-      this.cards = card
+      var ticketID = e.currentTarget.dataset.ticketID
+      var card = await Ticket.pickCard( ticketID, thisIndex );
+      await this.init()
       this.tickets[thisTicket].receive = true
       this.$apply()
     },
