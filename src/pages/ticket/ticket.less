@@ -1,0 +1,39 @@
+page{
+  background-color:#c62625;
+}
+.container{
+  display: block;
+  min-height: 100vh;
+  background-color:#c62625;
+}
+.banner{
+  width: 100%;
+  height: 350rpx;
+  background-image: url('https://inimg05.jiuyan.info/in/2018/02/03/15C620FC-2C23-BAFE-EFFC-790121CB49FC.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+
+.myTicket{
+  padding: 50rpx 40rpx;
+  .title{
+    font-size: 32rpx;
+    color: #ead396;
+    line-height: 32rpx;
+    text-align: left;
+    position: relative;
+    &::before{
+      content: '';
+      position: absolute;
+      left:-20rpx;
+      top:10rpx;
+      width: 6rpx;
+      height: 6rpx;
+      background: #ead396;
+      display: block;
+    }
+  }
+}
+
+
