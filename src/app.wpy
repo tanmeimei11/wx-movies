@@ -66,7 +66,7 @@ form{
 
 <script>
 import wepy from 'wepy';
-import { token } from './utils/config.js';
+import { token,_v } from './utils/config.js';
 // 支付宝小程序 ES next 语法转换: async await
 import 'wepy-async-function';
 
@@ -85,6 +85,7 @@ export default class extends wepy.app {
         }
         p.header = this.createAuthHeader();
         p.header['Content-Type'] = 'application/x-www-form-urlencoded';
+        p.header['_v'] = _v
 
         p.data = p.data || {};
         p.data['privateKey'] = this.globalData.xToken || token;

@@ -82,7 +82,8 @@ export default class Index extends wepy.page {
     bgStyle: '',
     cutInfo: {
       show: false,
-      tikectId: ''
+      ticketId: '',
+      money: 50
     } // 减价金额
   }
   events = {
@@ -218,12 +219,14 @@ export default class Index extends wepy.page {
     this.$apply();
   }
   initReceiveTicketInfo ( res ) {
-    if ( res.fetch_ticket ) {
+    if ( res.fetch_ticket && this.receiveTicketInfo.shareCode ) {
       this.receiveTicketInfo = {
         ...this.receiveTicketInfo,
         show: true,
         userInfo: res.share_user_info
       };
+    } else if ( res.fetch_ticket && this.cutInfo.ticketId ) {
+      this.cutInfo.show = true;
     }
   }
   /**
@@ -243,7 +246,7 @@ export default class Index extends wepy.page {
   initBuyInfo ( res ) {
     this.BuyMutiModalInfo = {
       ...this.BuyMutiModalInfo,
-      basePrice: res.pay_price,
+      basePrice: parseInt( res.pay_price ),
       baseDesc: res.pay_notice
     };
   }
@@ -305,10 +308,11 @@ export default class Index extends wepy.page {
     }
     this.data.shareId = options.share_uid || '';
     this.cardCode = options.cardCode || '';
-    if ( options.tikectId ) {  // 立即升级点过来
+    if ( options.ticketId ) {  // 立即升级点过来
       this.cutInfo = {
+        ...this.cutInfo,
         show: true,
-        tikectId: options.tikectId
+        ticketId: options.ticketId
       };
     }
     if ( options.shareCode ) { // 由别人分享电影票点进来
@@ -337,7 +341,7 @@ export default class Index extends wepy.page {
     // }
 
     try {
-      var createRes = await Detail.creatOrder( shareTicketInfo, this.BuyMutiModalInfo.number, this.cutInfo.tikectId );
+      var createRes = await Detail.creatOrder( shareTicketInfo, this.BuyMutiModalInfo.number, this.cutInfo.ticketId );
       if ( createRes.code === '4000032129' || createRes.code === '4000031814' ) {
         tips.error( createRes.msg );
         return;
@@ -364,11 +368,22 @@ export default class Index extends wepy.page {
    *  支付成功
    */
   paySucc ( orderNo ) {
+    this.clearCutInfo();
     wepy.navigateTo( {
       url: `../result/result?orderNo=${orderNo}`
     } );
   }
   payFail () {
 
+  }
+  /**
+   *  清除优惠信息
+   */
+  clearCutInfo () {
+    this.cutInfo = {
+      show: false,
+      ticketId: '',
+      money: 50
+    };
   }
 }

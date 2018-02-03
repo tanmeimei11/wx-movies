@@ -14,9 +14,17 @@
               <view class="op jia" @tap.stop="opJia"></view>
           </view>
         </view>
-        <view class="s-desc-text ">付款金额
+        <view class="s-desc-text all">合计金额
           <text>¥{{money || BuyMutiModalInfo.basePrice}}</text>
         </view>
+        <block wx:if="{{cutInfo.show && cutInfo.ticketId}}">
+          <view class="s-desc-text red">升级优惠
+            <text>－¥50</text>
+          </view>
+          <view class="s-desc-text real-money">实付金额
+            <text>¥{{realMoney || (BuyMutiModalInfo.basePrice - cutInfo.money)}}</text>
+          </view>
+          </block>
         <view class="money-desc" >{{BuyMutiModalInfo.baseDesc}}</view>
       </view>
       <view class="s-btn" @tap.stop="pay">立即支付</view>
@@ -30,7 +38,7 @@
     padding-bottom: 50rpx;
   }
   .s-close {
-    background-image: url("https://inimg07.jiuyan.info/in/2017/11/05/071B5DFD-47BA-4F0B-F965-1D65BC5DA2D2.jpg");
+    /* background-image: url("https://inimg07.jiuyan.info/in/2017/11/05/071B5DFD-47BA-4F0B-F965-1D65BC5DA2D2.jpg"); */
   }
   .s-header {
     position: absolute;
@@ -126,14 +134,21 @@
     .s-desc-text text {
       float: right;
     }
-
+    .real-money{
+      border-top:1rpx solid #E0E0E0;
+    }
+    .red{
+      color: #EF5B4C ;
+    }
     .money-desc {
       color: #666666;
       font-size: 22rpx;
       word-break: wrap;
+    }
+    .all +  .money-desc{
+      border-top:1rpx solid #E0E0E0;
       margin-top: 20rpx;
       padding-top:30rpx;
-      border-top:1rpx solid #E0E0E0;
     }
     .s-title {
       color: #333333;
@@ -186,11 +201,13 @@ import track from "@/utils/track";
 
 export default class buyMutiModal extends wepy.component {
   props = {
-    BuyMutiModalInfo: Object
+    BuyMutiModalInfo: Object,
+    cutInfo:Object
   };
   data = {
     number:1,
-    money:''
+    money:'',
+    realMoney:''
   };
   methods = {
     close(){
@@ -217,6 +234,7 @@ export default class buyMutiModal extends wepy.component {
   watch= {
     number (newVal,oldVal){
       this.money = newVal * this.BuyMutiModalInfo.basePrice
+      this.realMoney =  this.money - this.cutInfo.money
       if(newVal !== oldVal){
         this.$emit('changeBuyNum',newVal)
       }

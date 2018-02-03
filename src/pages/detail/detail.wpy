@@ -4,8 +4,30 @@
       <!-- 活动规则 -->
       <view class="anch" @tap="gotoBottom">活动规则</view>
       <view class="c-bg" style="{{bgStyle}}"></view>
-      <!-- 影院部分 -->
       <view class="c-part" style="background-image:url({{partBg}})">
+         <!-- 电影部分 -->
+         <view class="c-one-part movie">
+            <view class="s-mid-title movie1">{{detailText.desc11}}</view>
+            <view class="s-title">{{detailText.desc12[0]}}</view>
+            <view class="s-desc">{{detailText.desc12[1]}}</view>
+            <view class="s-info-wrap">
+              <view class="movies-wrap"  >
+                <view class="movie" wx:for="{{movies}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
+                  <image class="movie-paper" src="{{item.url}}"></image>
+                  <view class="movie-name">{{item.name}}</view>
+                </view>
+              </view>
+            </view>
+            <view class="s-tips">(页面仅展示部分电影，更多电影无限畅看)</view>
+          </view>
+         <!-- 电影部分 -->
+        <view class="c-one-part movie">
+          <view class="s-mid-title movie">{{detailText.desc09}}</view>
+          <view class="s-title">{{detailText.desc10[0]}}</view>
+          <view class="s-desc">{{detailText.desc10[1]}}</view>
+          <image class="s-img-movie" src="https://inimg05.jiuyan.info/in/2018/01/26/6FF859BD-2789-FF95-2D40-464F0AA8BBC1.png"></image>
+        </view>
+        <!-- 影院部分 -->
         <view class="c-one-part">
           <view class="s-mid-title ciname">{{detailText.desc07}}</view>
           <view class="s-title">{{detailText.desc08[0]}}</view>
@@ -18,25 +40,7 @@
             </view>
           </view>
         </view>
-        <!-- 电影部分 -->
-        <view class="c-one-part movie">
-          <view class="s-mid-title movie">{{detailText.desc09}}</view>
-          <view class="s-title">{{detailText.desc10[0]}}</view>
-          <view class="s-desc">{{detailText.desc10[1]}}</view>
-          <image class="s-img-movie" src="https://inimg05.jiuyan.info/in/2018/01/26/6FF859BD-2789-FF95-2D40-464F0AA8BBC1.png"></image>
-          <view class="s-mid-title movie1">{{detailText.desc11}}</view>
-          <view class="s-title">{{detailText.desc12[0]}}</view>
-          <view class="s-desc">{{detailText.desc12[1]}}</view>
-          <view class="s-info-wrap">
-            <view class="movies-wrap"  >
-              <view class="movie" wx:for="{{movies}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
-                <image class="movie-paper" src="{{item.url}}"></image>
-                <view class="movie-name">{{item.name}}</view>
-              </view>
-            </view>
-          </view>
-          <view class="s-tips">(页面仅展示部分电影，更多电影无限畅看)</view>
-        </view>
+       
         <!-- 观看时间部分 -->
         <view class="c-one-part look">
           <view class="s-mid-title">{{detailText.desc13}}</view>
@@ -62,14 +66,14 @@
     <shareWindow :shareInfo.sync="shareInfo" wx:if="{{showShareWindow}}" @closeShareWindow.user="closeShareWindow" @initShare.user="initShare" @shareCode.user="shareCode"></shareWindow>
     <!-- 接收卡 -->
     <receiveGiftModal :receiveGiftInfo.sync="receiveGiftInfo" wx:if="{{receiveGiftInfo.show}}"></receiveGiftModal>
-     <!-- 接收电影票 -->
-    <receiveTicketModal wx:if="{{receiveTicketInfo.show && detailStatus.fetch_ticket}}" :receiveTicketInfo.sync="receiveTicketInfo" @getMovieTicket.user="getMovieTicket"></receiveTicketModal>
+    <!-- 接收电影票 -->
+    <receiveTicketModal wx:if="{{receiveTicketInfo.show && receiveTicketInfo.shareCode && detailStatus.fetch_ticket && !receiveTicketInfo.userInfo.is_owner}}" :receiveTicketInfo.sync="receiveTicketInfo" @getMovieTicket.user="getMovieTicket"></receiveTicketModal>
     <!-- 接收失败 -->
     <receiveFaildModal :receiveFaildInfo.sync="receiveFaildInfo" wx:if="{{receiveFaildInfo.show}}"></receiveFaildModal>
     <!-- 支付 -->
-    <buyMutiModal :BuyMutiModalInfo.sync="BuyMutiModalInfo" wx:if="{{BuyMutiModalInfo.show}}" ></buyMutiModal>
+    <buyMutiModal :BuyMutiModalInfo.sync="BuyMutiModalInfo" wx:if="{{BuyMutiModalInfo.show}}" :cutInfo.sync="cutInfo" ></buyMutiModal>
      <!--fix 获得电影卡-->
-    <view class="get-movies-ticket" wx:if="{{detailStatus.fetch_ticket}}" @tap="getMovieTicket"></view>
+    <view class="get-movies-ticket" wx:if="{{detailStatus.fetch_ticket && !cutInfo.ticketId}}" @tap="getMovieTicket"></view>
     <!--fix 按钮-->
     <view class="some-btn-wrap {{cutInfo.show ? 'cut':''}}">
       <view class="btn-icon btn-index" @tap="toIndex">首页</view>
