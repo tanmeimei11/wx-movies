@@ -29,11 +29,15 @@ export default class ticket extends wepy.page {
   }
 
   onShareAppMessage ( res ) {
-    this.shareIndex = res.target.dataset.index
-    this.ticketID = res.target.dataset.code
+    var query = ``
+    if (res.target) {
+      this.shareIndex = res.target.dataset.index
+      this.ticketID = res.target.dataset.code
+      var query = `shareCode=${res.target.dataset.id}`
+    }
     return {
       title: '送你们每人3张电影票，杭州好多家影院都能看，快来领取吧！',
-      path: `/pages/detail/detail?shareCode=${res.target.dataset.id}`,
+      path: `/pages/detail/detail?${query}`,
       imageUrl: 'http://inimg07.jiuyan.info/in/2018/01/26/20A52317-E4EB-3657-E024-F2EF040B2E86.jpg',
       // 'http://inimg07.jiuyan.info/in/2018/01/26/20A52317-E4EB-3657-E024-F2EF040B2E86.jpg'
       success: this.shareCallBack( res )
