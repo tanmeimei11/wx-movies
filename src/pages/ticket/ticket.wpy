@@ -19,7 +19,7 @@
             </view>
             <view wx:else>
               <view class="opencards">
-                <view class="{{item3.has_fetch ? 'on' : ''}}" wx:for="{{cards}}" wx:for-index="idx3" wx:for-item="item3" wx:key="idx3">
+                <view class="{{item3.has_fetch ? 'on' : ''}}" wx:for="{{cards[idx]}}" wx:for-index="idx3" wx:for-item="item3" wx:key="idx3">
                   <text class="type">{{item3.desc}}</text>
                   <text>电影票</text>
                 </view>

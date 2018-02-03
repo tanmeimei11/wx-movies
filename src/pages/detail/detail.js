@@ -144,6 +144,7 @@ export default class Index extends wepy.page {
       } );
     },
     gotoBottom () {
+      console.log(1123)
       track( 'page_rule' );
       this.toView = '';
       this.$apply();
