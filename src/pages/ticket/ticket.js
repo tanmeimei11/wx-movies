@@ -21,15 +21,19 @@ export default class ticket extends wepy.page {
     isFull: false,
     rules: [], // 规则文案
     tickets: [],
-    cards: [          {"desc":"上午场","has_fetch":"true", "title":"上午场电影通用票", "remark":"仅3月4日至3月8日上午使用,合作影院均可使用",tips:"24h内有效"}, //只有选中的情况下 才有除desc外 其他的字段
-    {"desc":"晚上场"},
-    {"desc":"下午场"}]
+
+    shareIndex: '',
+    cardsbg: ['', '', ''],
+    cards: [],
+    ticketID: ''
   }
 
   onShareAppMessage ( res ) {
+    this.shareIndex = res.target.dataset.index
+    this.ticketID = res.target.dataset.code
     return {
       title: '分享到群',
-      path: `/pages/detail/detail?shareCode=$`,
+      path: `/pages/detail/detail?shareCode=${res.target.dataset.id}`,
       imageUrl: 'http://inimg07.jiuyan.info/in/2018/01/26/20A52317-E4EB-3657-E024-F2EF040B2E86.jpg',
       // 'http://inimg07.jiuyan.info/in/2018/01/26/20A52317-E4EB-3657-E024-F2EF040B2E86.jpg'
       success: this.shareCallBack( res )
@@ -42,6 +46,29 @@ export default class ticket extends wepy.page {
     },
     close () {
       this.rulesShow = false
+    },
+    async openCard (e) {
+      var thisTicket = e.currentTarget.dataset.ticket
+      var thisIndex = e.currentTarget.dataset.index
+      console.log(thisTicket,thisIndex )
+      var card = await Ticket.pickCard( this.ticketID, thisIndex );
+      this.cards = card
+      this.tickets[thisTicket].receive = true
+      this.$apply()
+    },
+    async receive (e) {
+      await this.init()
+    },
+    toDetail (e) {
+      var thisTicket = e.currentTarget.dataset.ticket
+      wepy.navigateTo( {
+        url: `/pages/detail/detail?ticketId=${thisTicket}`
+      } );
+    },
+    toSelf () {
+      wepy.switchTab( {
+        url: `/pages/self/self`
+      } );
     }
   }
   /**
@@ -55,7 +82,9 @@ export default class ticket extends wepy.page {
 
   async getShared (data) {
     var exchangeTicket = await Ticket.exchangeTicket(data, {ticket_id: this.ticketID})
-    console.log(exchangeTicket)
+
+    this.tickets[this.shareIndex].ticket_status = '1'
+    this.$apply()
   }
 
   async init () {
@@ -67,7 +96,6 @@ export default class ticket extends wepy.page {
   async onLoad (options) {
     // track( 'my_page_enter' );
     this.setShare();
-    this.ticketID = options.ticketId
   }
   async onShow () {
     // track( 'my_page_screen' );

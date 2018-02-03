@@ -15,21 +15,22 @@ module.exports = {
                 id: 45
             },
             {
-                ticket_status: '1',//分享之后的状态
+                share_code: "jdjdjfjdf",//分享code
+                ticket_status: '1',//初始未分享的状态
                 id: 46
             },
             {
-                ticket_status: '2',//抽完电影票的状态
-                id: 48,
-                name: "上午场电影通用票",
-                desc: "仅3月4日至3月8日上午使用，合作影院均可用",
-                tips: "24h内有效"
+                ticket_status:'2',//抽完电影票的状态
+                id:47,
+                title:"上午场电影通用票",
+                remark:"仅3月4日至3月8日上午使用，合作影院均可用",
+                tips:"24h内有效"
             },
             {
-                ticket_status: '2',//电影票升级之后的状态
-                receive: true,
+                share_code: "jdjdjfjdf",//分享code
+                ticket_status: '3',//初始未分享的状态
                 id: 48
-            }
+            },
         ]
     },
     "code": "0",

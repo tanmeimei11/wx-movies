@@ -67,4 +67,17 @@ export default class Ticket extends Pagebase {
       data: data
     } );
   }
+  /**
+   * 抽奖
+   */
+  static async pickCard ( ticket_id, index ) {
+    return await this.request( {
+      url: '/mnp/ticket/fetch',
+      method: 'POST',
+      data: {
+        ticket_id: ticket_id,
+        index: index
+      }
+    } );
+  }
 }

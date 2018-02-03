@@ -1,44 +1,43 @@
 <template>
-  <!-- <report> -->
+  <report>
     <view class="container">
       <view class="banner">
         <view class="rule" @tap="openRules">活动细则</view>
       </view>
       <view class="myTicket">
         <view class="title">我的电影票</view>
-        <view class="ticket status{{item.ticket_status}} {{item.receive ? 'receive' : ''}}" wx:for="{{tickets}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
+        <view class="ticket status{{item.ticket_status}} {{item.ticket_status === '2' ? 'received' : ''}}" wx:for="{{tickets}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
           <view wx:if="{{item.ticket_status === '0'}}">
-            <button open-type="share"></button>
+            <button open-type="share" data-id="{{item.share_code}}" data-index="{{idx}}" data-code="{{item.ticket_id}}"></button>
           </view>
           <view wx:if="{{item.ticket_status === '1'}}">
-            <view class="cards">
-              <view></view>
-              <view></view>
-              <view></view>
-            </view>
-            <view class="choosetxt">- 选择一张电影票 -</view>
-          </view>
-          <view wx:if="{{item.ticket_status === '2'}}">
             <view wx:if="{{!item.receive}}">
               <view class="cards">
-                <view class="{{item.has_fetch ? 'on' : ''}}" wx:for="{{cards}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
-                  <text class="type">{{item.desc}}</text>
+                <view wx:for="{{cardsbg}}" wx:for-index="idx2" wx:for-item="item2" wx:key="idx2" @tap="openCard" data-index="{{idx2}}" data-ticket="{{idx}}"></view>
+              </view>
+              <view class="choosetxt">- 选择一张电影票 -</view>
+            </view>
+            <view wx:else>
+              <view class="opencards">
+                <view class="{{item3.has_fetch ? 'on' : ''}}" wx:for="{{cards}}" wx:for-index="idx3" wx:for-item="item3" wx:key="idx3">
+                  <text class="type">{{item3.desc}}</text>
                   <text>电影票</text>
                 </view>
               </view>
-              <view class="receive">收下电影票</view>
-            </view>
-            <view class="realTicket" wx:else>
-              <view class="t-title">{{cards[0].title}}</view>
-              <view class="remark">{{cards[0].remark}}</view>
-              <view class="up">升级为<text>3个月全天</text>电影无限看</view>
-              <view class="tipsArea">
-                <text class="tips">{{cards[0].tips}}</text>
-                <view class="jiao"></view>
-              </view>
-              <view class="btn">立即升级</view>
+              <view class="receive" @tap="receive" data-ticket="{{idx}}">收下电影票</view>
             </view>
           </view>
+          <view wx:if="{{item.ticket_status === '2'}}">
+            <view class="t-title">{{item.title}}</view>
+            <view class="remark">{{item.remark}}</view>
+            <view class="up">升级为<text>3个月全天</text>电影无限看</view>
+            <view class="tipsArea">
+              <text class="tips">{{item.tips}}</text>
+              <view class="jiao"></view>
+            </view>
+            <view class="btn" @tap="toDetail" data-ticket="{{item.id}}">立即升级</view>
+          </view>
+          <view wx:if="{{item.ticket_status === '3'}}" @tap="toSelf"></view>
         </view>
       </view>
     </view>
@@ -55,7 +54,7 @@
         </scroll-view>
       </view>
     </view>
-  <!-- </report> -->
+  </report>
 </template>
 <style lang="less" src="./ticket.less">
 </style>

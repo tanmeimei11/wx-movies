@@ -87,19 +87,7 @@ page{
             background-position: center;
           }
         }
-        .choosetxt{
-          position: absolute;
-          width: 100%;
-          top: 247rpx;
-          left: 0;
-          text-align: center;
-          font-size: 28rpx;
-          color: #cc8333;
-        }
-      }
-      &.status2{
-        background: #fce2c6;
-        .cards{
+        .opencards{
           display: flex;
           margin: 40rpx;
           display: flex;
@@ -132,6 +120,15 @@ page{
             }
           }
         }
+        .choosetxt{
+          position: absolute;
+          width: 100%;
+          top: 247rpx;
+          left: 0;
+          text-align: center;
+          font-size: 28rpx;
+          color: #cc8333;
+        }
         .receive{
           position: absolute;
           top: 240rpx;
@@ -147,67 +144,78 @@ page{
           font-size: 22rpx;
           color: #e2a25c;
         }
-        .realTicket{
-          .t-title{
-            margin: 35rpx 40rpx 0;
-            font-size: 40rpx;
-            color: #a85500;
-          }
-          .remark{
-            margin: 7rpx 40rpx 0;
-            font-size: 22rpx;
-            color: #a85500;
-          }
-          .up{
-            margin: 120rpx 40rpx 0;
-            font-size: 24rpx;
-            color: #ef5b4c;
-            text{
-              font-size: 30rpx;
-            }
-          }
-          .tipsArea{
-            position: absolute;
-            top: 173rpx;
-            left: 437rpx;
-            width: 191rpx;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            .jiao{
-              width: 0;
-              height: 0;
-              position: absolute;
-              top: 100%;
-              left: 90rpx;
-              border-top: 8rpx solid #fb6d55;
-              border-right: 8rpx solid transparent;
-              border-left: 8rpx solid transparent;
-            }
-            .tips{
-              font-size: 20rpx;
-              color: #fff;
-              background-image: linear-gradient(90deg, #FA8A53 0%, #FA5456 100%);
-              border-radius: 100rpx;
-              padding: 7rpx 10rpx;
-            }
-          }
-          .btn{
-            width: 191rpx;
-            height: 68rpx;
-            background-image: linear-gradient(90deg, #FA8A53 0%, #FA5456 100%);
-            border-radius: 100rpx;
-            font-size: 32rpx;
-            color: #fff;
-            line-height: 68rpx;
-            text-align: center;
-            position: absolute;
-            top: 230rpx;
-            left: 437rpx;
+      }
+      &.status2{
+        background: #fce2c6;
+        .t-title{
+          margin: 35rpx 40rpx 0;
+          font-size: 40rpx;
+          color: #a85500;
+        }
+        .remark{
+          margin: 7rpx 40rpx 0;
+          font-size: 22rpx;
+          color: #a85500;
+        }
+        .up{
+          margin: 120rpx 40rpx 0;
+          font-size: 24rpx;
+          color: #ef5b4c;
+          text{
+            font-size: 30rpx;
           }
         }
+        .tipsArea{
+          position: absolute;
+          top: 173rpx;
+          left: 437rpx;
+          width: 191rpx;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          .jiao{
+            width: 0;
+            height: 0;
+            position: absolute;
+            top: 100%;
+            left: 90rpx;
+            border-top: 8rpx solid #fb6d55;
+            border-right: 8rpx solid transparent;
+            border-left: 8rpx solid transparent;
+          }
+          .tips{
+            font-size: 20rpx;
+            color: #fff;
+            background-image: linear-gradient(90deg, #FA8A53 0%, #FA5456 100%);
+            border-radius: 100rpx;
+            padding: 7rpx 10rpx;
+          }
+        }
+        .btn{
+          width: 191rpx;
+          height: 68rpx;
+          background-image: linear-gradient(90deg, #FA8A53 0%, #FA5456 100%);
+          border-radius: 100rpx;
+          font-size: 32rpx;
+          color: #fff;
+          line-height: 68rpx;
+          text-align: center;
+          position: absolute;
+          top: 230rpx;
+          left: 437rpx;
+        }
       }
-      &.receive{
+      &.status3{
+        background-image: url('https://inimg07.jiuyan.info/in/2018/02/03/0B2FEB3D-03D8-DF9E-04FB-FEF789BAB05E.png');
+        view{
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+        }
+      }
+      &.received{
         background: url('https://inimg02.jiuyan.info/in/2018/02/03/86779824-CDDC-7B47-2DC3-26327F44A90B.png') no-repeat;
         background-size: contain;
         background-position: center;
