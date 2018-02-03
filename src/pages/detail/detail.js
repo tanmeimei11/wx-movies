@@ -331,14 +331,9 @@ export default class Index extends wepy.page {
    *  支付
    */
   async pay ( shareTicketInfo ) {
-    // if ( !auth._readyStatus ) {
-    //   await auth.ready();
-    //   await this.changeDetailStatus();
-    // }
-
-    // if ( this.detailStatus.is_buy === '1' ) {
-    //   return;
-    // }
+    if ( !auth._readyStatus ) {
+      await auth.ready();
+    }
 
     try {
       var createRes = await Detail.creatOrder( shareTicketInfo, this.BuyMutiModalInfo.number, this.cutInfo.ticketId );
