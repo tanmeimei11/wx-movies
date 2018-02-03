@@ -52,8 +52,9 @@ export default class ticket extends wepy.page {
     async openCard (e) {
       var thisTicket = e.currentTarget.dataset.ticket
       var thisIndex = e.currentTarget.dataset.index
-      var ticketID = e.currentTarget.dataset.ticketID
-      var card = await Ticket.pickCard( ticketID, thisIndex );
+      var ticketid = e.currentTarget.dataset.ticketid
+      console.log(ticketid)
+      var card = await Ticket.pickCard( ticketid, thisIndex );
       await this.init()
       this.tickets[thisTicket].receive = true
       this.$apply()

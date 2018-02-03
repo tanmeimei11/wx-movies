@@ -13,7 +13,7 @@
           <view wx:if="{{item.ticket_status === '1'}}">
             <view wx:if="{{!item.receive}}">
               <view class="cards">
-                <view wx:for="{{cardsbg}}" wx:for-index="idx2" wx:for-item="item2" wx:key="idx2" @tap="openCard" data-index="{{idx2}}" data-ticket="{{idx}}" data-ticketID="{{item.id}}"></view>
+                <view wx:for="{{cardsbg}}" wx:for-index="idx2" wx:for-item="item2" wx:key="idx2" @tap="openCard" data-index="{{idx2}}" data-ticket="{{idx}}" data-ticketid="{{item.id}}"></view>
               </view>
               <view class="choosetxt">- 选择一张电影票 -</view>
             </view>
