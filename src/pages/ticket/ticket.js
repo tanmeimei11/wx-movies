@@ -25,15 +25,17 @@ export default class ticket extends wepy.page {
     shareIndex: '',
     cardsbg: ['', '', ''],
     cards: [],
-    ticketID: ''
+    ticketID: '',
+    shareCode: ''
   }
 
   onShareAppMessage ( res ) {
+    this.shareCode = res.target.dataset.id
     this.shareIndex = res.target.dataset.index
     this.ticketID = res.target.dataset.code
     return {
       title: '分享到群',
-      path: `/pages/detail/detail?shareCode=${res.target.dataset.id}`,
+      path: `/pages/detail/detail?shareCode=${this.shareCode}&ticketId=${this.ticketID}`,
       imageUrl: 'http://inimg07.jiuyan.info/in/2018/01/26/20A52317-E4EB-3657-E024-F2EF040B2E86.jpg',
       // 'http://inimg07.jiuyan.info/in/2018/01/26/20A52317-E4EB-3657-E024-F2EF040B2E86.jpg'
       success: this.shareCallBack( res )

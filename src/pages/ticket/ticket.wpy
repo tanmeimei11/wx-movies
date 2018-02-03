@@ -6,7 +6,7 @@
       </view>
       <view class="myTicket">
         <view class="title">我的电影票</view>
-        <view class="ticket status{{item.ticket_status}} {{item.ticket_status === '2' ? 'received' : ''}}" wx:for="{{tickets}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
+        <view class="ticket status{{item.ticket_status}} {{(item.ticket_status === '2' || item.ticket_status === '4') ? 'received' : ''}}" wx:for="{{tickets}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
           <view wx:if="{{item.ticket_status === '0'}}">
             <button open-type="share" data-id="{{item.share_code}}" data-index="{{idx}}" data-code="{{item.ticket_id}}"></button>
           </view>
@@ -27,15 +27,16 @@
               <view class="receive" @tap="receive" data-ticket="{{idx}}">收下电影票</view>
             </view>
           </view>
-          <view wx:if="{{item.ticket_status === '2'}}">
+          <view wx:if="{{item.ticket_status === '2' || item.ticket_status === '4'}}">
             <view class="t-title">{{item.title}}</view>
             <view class="remark">{{item.remark}}</view>
             <view class="up">升级为<text>3个月全天</text>电影无限看</view>
-            <view class="tipsArea">
+            <view class="tipsArea" wx:if="{{item.ticket_status === '2'}}">
               <text class="tips">{{item.tips}}</text>
               <view class="jiao"></view>
             </view>
-            <view class="btn" @tap="toDetail" data-ticket="{{item.id}}">立即升级</view>
+            <view class="btn" @tap="toDetail" data-ticket="{{item.id}}" wx:if="{{item.ticket_status === '2'}}">立即升级</view>
+            <view class="btn fail" data-ticket="{{item.id}}" wx:if="{{item.ticket_status === '4'}}">已失效</view>
           </view>
           <view wx:if="{{item.ticket_status === '3'}}" @tap="toSelf"></view>
         </view>
