@@ -1,0 +1,17 @@
+<template>
+  <report>
+    <view class="container">
+      <view class="banner"></view>
+      <view class="myTicket">
+        <view class="title">我的电影票</view>
+        <view class="ticket"></view>
+        <view class="ticket"></view>
+        <view class="ticket"></view>
+      </view>
+    </view>
+  </report>
+</template>
+<style lang="less" src="./ticket.less">
+</style>
+<script src="./ticket.js">
+</script>
