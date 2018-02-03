@@ -3,37 +3,8 @@
     <scroll-view class="container" scroll-y scroll-with-animation scroll-into-view="{{toView}}">
       <!-- 活动规则 -->
       <view class="anch" @tap="gotoBottom">活动规则</view>
-      <!-- 客服 -->
-      <view class="contact" @tap="trackContact">
-        <contact-button session-from="wx_movie_contract"></contact-button>
-      </view>
-      <view class="toIndex" @tap="toIndex"></view>
-      <view class="c-bg" style="{{bgStyle}}">
-        <!-- <view class="logo"></view> -->
-        <!-- <view class="front_back">
-          <view class="front">
-            <view>{{detailText.desc01[0]}}</view>
-            <view>{{detailText.desc01[1]}}</view>
-          </view>
-          <view class="back">
-            <view>{{detailText.desc02[0]}}</view>
-            <view>{{detailText.desc02[1]}}</view>
-          </view>
-        </view> -->
-        <!-- 卡数量 -->
-        <!-- <view class="c-card-num-wrap">
-          <view class="s-outer"></view>
-          <view class="s-inner" style="width:{{cardNumInfo.percent}}">
-              <view class="s-inner-num">{{cardNumInfo.num}}</view>
-          </view>
-        </view> -->
-        <!-- <view class="progress">
-          <view>{{detailText.desc03}}</view>
-          <view>已售 {{detailStatus.current_person_count}}</view>
-        </view> -->
-        <!-- <view class="pay-btn" @tap="pay">{{detailStatus.is_buy === '1' ? '已购买' : '99元立即抢'}}</view> -->
-      </view>
-      <!-- 电影部分 -->
+      <view class="c-bg" style="{{bgStyle}}"></view>
+      <!-- 影院部分 -->
       <view class="c-part" style="background-image:url({{partBg}})">
         <view class="c-one-part">
           <view class="s-mid-title ciname">{{detailText.desc07}}</view>
@@ -47,7 +18,7 @@
             </view>
           </view>
         </view>
-
+        <!-- 电影部分 -->
         <view class="c-one-part movie">
           <view class="s-mid-title movie">{{detailText.desc09}}</view>
           <view class="s-title">{{detailText.desc10[0]}}</view>
@@ -66,7 +37,7 @@
           </view>
           <view class="s-tips">(页面仅展示部分电影，更多电影无限畅看)</view>
         </view>
-
+        <!-- 观看时间部分 -->
         <view class="c-one-part look">
           <view class="s-mid-title">{{detailText.desc13}}</view>
           <view class="s-title">{{detailText.desc14[0]}}</view>
@@ -78,7 +49,7 @@
           <view class="s-desc">{{detailText.desc16[1]}}</view>
         </view>
       </view>
-
+        <!-- 规则部分 -->
       <view class="c-last" id="details">
         <view class="s-mid-title rule">详情介绍</view>
           <view class="s-rules"  wx:for="{{rules}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
@@ -87,22 +58,25 @@
           </view>
       </view>
     </scroll-view>
+    <!-- 分享卡 -->
     <shareWindow :shareInfo.sync="shareInfo" wx:if="{{showShareWindow}}" @closeShareWindow.user="closeShareWindow" @initShare.user="initShare" @shareCode.user="shareCode"></shareWindow>
-
+    <!-- 接收卡 -->
     <receiveGiftModal :receiveGiftInfo.sync="receiveGiftInfo" wx:if="{{receiveGiftInfo.show}}"></receiveGiftModal>
+     <!-- 接收电影票 -->
+    <receiveTicketModal wx:if="{{receiveTicketInfo.show && detailStatus.fetch_ticket}}" :receiveTicketInfo.sync="receiveTicketInfo" @getMovieTicket.user="getMovieTicket"></receiveTicketModal>
+    <!-- 接收失败 -->
     <receiveFaildModal :receiveFaildInfo.sync="receiveFaildInfo" wx:if="{{receiveFaildInfo.show}}"></receiveFaildModal>
+    <!-- 支付 -->
     <buyMutiModal :BuyMutiModalInfo.sync="BuyMutiModalInfo" wx:if="{{BuyMutiModalInfo.show}}" ></buyMutiModal>
-    <!-- 已购买
-    <view class="buy-wrap"  wx:if="{{detailStatus.is_buy=='1'}}">
-      <view class="btn btn-cut" @tap="sharePay">分享得现金</view>
-      <view class="btn btn-origin disable">已购买</view>
-    </view> -->
-    <!-- 购买 -->
-    <view class="buy-wrap" wx:else>
+     <!--fix 获得电影卡-->
+    <view class="get-movies-ticket" wx:if="{{detailStatus.fetch_ticket}}" @tap="getMovieTicket"></view>
+    <!--fix 按钮-->
+    <view class="some-btn-wrap {{cutInfo.show ? 'cut':''}}">
+      <view class="btn-icon btn-index" @tap="toIndex">首页</view>
+      <view class="btn-icon btn-contract" @tap="trackContact"> <contact-button session-from="wx_movie_contract"></contact-button>客服</view>
       <view class="btn btn-cut" @tap="sharePay">分享得现金</view>
       <view class="btn btn-origin" @tap="openBuyMutiModal">{{BuyMutiModalInfo.basePrice}}元购买</view>
     </view>
-
   </report>
 </template>
 <style lang="less" src="./detail.less"></style>

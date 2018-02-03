@@ -1,84 +1,106 @@
 .container {
   width: 750rpx;
   display: block;
-  height: 100vh;
 }
-.contact{
-  position: fixed;
-  right: 40rpx;
-  bottom: 157rpx;
-  width: 90rpx;
-  height: 90rpx;
-  z-index: 100;
-  background-image: url('https://inimg07.jiuyan.info/in/2018/01/25/856C014E-B61F-6B2D-FF9F-FBC51D0B4C98.png');
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
-  overflow: hidden;
-  contact-button {
-    position: absolute;
-    top: 0;
-    left: 0;
-    transform-origin: 0 0;
-    width: 100%!important;
-    height: 100%!important;
-    transform: scale(10);
-    opacity: 0;
-    z-index: 0!important;
-  }
-  .wx-contact-button{
-    width: 100%!important;
-    height: 100%!important;
-  }
+// .contact{
+//   position: fixed;
+//   right: 40rpx;
+//   bottom: 157rpx;
+//   width: 90rpx;
+//   height: 90rpx;
+//   z-index: 100;
+//   background-image: url('https://inimg07.jiuyan.info/in/2018/01/25/856C014E-B61F-6B2D-FF9F-FBC51D0B4C98.png');
+//   background-repeat: no-repeat;
+//   background-size: contain;
+//   background-position: center;
+//   overflow: hidden;
+ 
+// }
+
+contact-button {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+  width: 100%!important;
+  height: 100%!important;
+  transform: scale(10);
+  opacity: 0;
+  z-index: 0!important;
 }
-.buy-wrap{
+.wx-contact-button{
+  width: 100%!important;
+  height: 100%!important;
+}
+.some-btn-wrap{
   position: fixed;
-  z-index: 9999;
+  z-index: 99;
   right: 0;
   bottom: 0;
   width: 100%;
-  height: 120rpx;
+  height: 100rpx;
   background-color: #fff;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  box-sizing: border-box;
   z-index: 1000;
+  &.cut:before{
+    content:'';
+    position: absolute;
+    right: 22rpx;
+    top: -110rpx;
+    width: 536rpx;
+    height: 95rpx;
+    background: url('https://inimg01.jiuyan.info/in/2018/02/03/C0DBCF88-C861-2753-39EE-ACF36F5D8C89.jpg') no-repeat;
+    background-size: contain;
+    background-position: center;
+  }
   .btn{
-    width: 324rpx;
-    height:80rpx;
-    line-height: 80rpx;
+    width: 263rpx;
+    height:100rpx;
+    line-height: 100rpx;
     font-size: 32rpx;
-    color: #EF5B4C;
-    border-radius: 1000rpx;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    color:#fff;
+  }
+  .btn-icon{
+    font-size: 18rpx;
+    color: #666666;
+    flex:1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top:50rpx;
+    background-repeat: no-repeat;
+    background-size: 45rpx auto ;
+    background-position: top center;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-index{
+    background-image: url('https://inimg01.jiuyan.info/in/2018/02/03/1946BAF7-B680-9C02-27F8-F24BA8E50CCB.jpg');
+  }
+  .btn-contract{
+    background-image: url('https://inimg01.jiuyan.info/in/2018/02/03/70FE5E8A-722B-A9DE-08A9-1F645D905D7D.jpg');
   }
   .btn-origin{
-    color:#fff;
     background-image: linear-gradient(90deg, #FD9C6C 0%, #F95557 100%);
-    &.disable {
-      background: #E0E0E0;
-      border-color: #E0E0E0;
-      color: #fff;
-    }
+    // &.disable {
+    //   background: #E0E0E0;
+    //   border-color: #E0E0E0;
+    //   color: #fff;
+    // }
   }
   .btn-cut{
-    margin-right: 22rpx;
+    background-image: linear-gradient(-90deg, #FCB43D 0%, #FEC872 100%);
     position: relative;
-    border:1rpx solid #EF5B4C;
-  }
-  .btn-cut-btn{
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top:0;
-    left: 0;
-    z-index: 0;
-    opacity: 0;
-  }
-  .btn-already{
-    background-color: #e0e0e0;
-    background-image: none!important;
   }
 }
 .container{
@@ -442,14 +464,14 @@
     }
   }
 }
-.toIndex{
+.get-movies-ticket{
   position: fixed;
-  right: 40rpx;
-  bottom: 279rpx;
-  width: 90rpx;
-  height: 90rpx;
+  right: 14rpx;
+  bottom: 235rpx;
+  width: 190rpx;
+  height: 197rpx;
   z-index: 100;
-  background: url('https://inimg05.jiuyan.info/in/2018/01/25/BC6F04C0-38E9-14DD-3FFB-E173E4D70339.png') no-repeat;
+  background: url('https://inimg01.jiuyan.info/in/2018/02/03/1239A1EB-4D5D-221F-DF7F-6A752B648316.jpg') no-repeat;
   background-size: contain;
   background-position: center;
 }
