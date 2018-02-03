@@ -22,12 +22,6 @@ export default class Index extends wepy.page {
     toView: '',
     detailCode: {},
     showShareWindow: false,
-    // cardNumInfo: {
-    //   title: '专享优惠 名额有限',
-    //   desc: '为保障用户观影体验 限量发售五万张',
-    //   num: '',
-    //   percent: 0
-    // },
     cinemas: {
       img: '',
       list: [
