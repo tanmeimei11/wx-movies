@@ -25,7 +25,8 @@ export default class ticket extends wepy.page {
     shareIndex: '',
     cardsbg: ['', '', ''],
     cards: [],
-    ticketID: ''
+    ticketID: '',
+    share_img: ''
   }
 
   onShareAppMessage ( res ) {
@@ -38,7 +39,7 @@ export default class ticket extends wepy.page {
     return {
       title: '送你们每人3张电影票，杭州好多家影院都能看，快来领取吧！',
       path: `/pages/detail/detail?${query}`,
-      imageUrl: 'http://inimg07.jiuyan.info/in/2018/01/26/20A52317-E4EB-3657-E024-F2EF040B2E86.jpg',
+      imageUrl: this.share_img,
       // 'http://inimg07.jiuyan.info/in/2018/01/26/20A52317-E4EB-3657-E024-F2EF040B2E86.jpg'
       success: this.shareCallBack( res )
     };
@@ -97,6 +98,7 @@ export default class ticket extends wepy.page {
     var myInfoRes = await Ticket.getMyInfo();
     this.rules = Ticket.initRules( myInfoRes.act_rules );
     this.tickets = Ticket.initTickets( myInfoRes.tickets );
+    this.share_img = myInfoRes.share_img
     this.$apply();
   }
   async onLoad (options) {
