@@ -36,7 +36,7 @@
               <view class="jiao"></view>
             </view>
             <view class="btn" @tap="toDetail" data-ticket="{{item.id}}" wx:if="{{item.ticket_status === '2'}}">立即升级</view>
-            <view class="btn fail" data-ticket="{{item.id}}" wx:if="{{item.ticket_status === '4'}}">已失效</view>
+            <view class="btn fail" data-ticket="{{item.id}}" wx:if="{{item.ticket_status === '4'}}">已过期</view>
           </view>
           <view wx:if="{{item.ticket_status === '3'}}" @tap="toSelf"></view>
         </view>

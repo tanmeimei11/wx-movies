@@ -27,7 +27,8 @@ export default class ticket extends wepy.page {
     cards: [],
     ticketID: '',
     share_img: '',
-    share_code: ''
+    share_code: '',
+    qrcode_from: '',
   }
 
   onShareAppMessage ( res ) {
@@ -37,7 +38,7 @@ export default class ticket extends wepy.page {
     }
     return {
       title: '送你们每人3张电影票，杭州好多家影院都能看，快来领取吧！',
-      path: `/pages/detail/detail?shareCode=${this.share_code}`,
+      path: `/pages/detail/detail?shareCode=${this.share_code}&qrcode_from=`+this.qrcode_from,
       imageUrl: this.share_img,
       // 'http://inimg07.jiuyan.info/in/2018/01/26/20A52317-E4EB-3657-E024-F2EF040B2E86.jpg'
       success: this.shareCallBack( res )
@@ -87,10 +88,22 @@ export default class ticket extends wepy.page {
   }
 
   async getShared (data) {
-    var exchangeTicket = await Ticket.exchangeTicket(data, {ticket_id: this.ticketID})
+    try {
+      var exchangeTicket = await Ticket.exchangeTicket(data, {ticket_id: this.ticketID})
 
-    this.tickets[this.shareIndex].ticket_status = '1'
-    this.$apply()
+      this.tickets[this.shareIndex].ticket_status = '1'
+      this.$apply()
+    } catch (e) {
+
+    wx.showToast({
+      title: e.message,
+      image: '../../image/fail.png',
+      mask: true
+    });
+      // setTimeout( () => {
+      //   tips.error( e.message );
+      // }, 1000 );
+    }
   }
 
   async init () {
@@ -99,11 +112,15 @@ export default class ticket extends wepy.page {
     this.tickets = Ticket.initTickets( myInfoRes.tickets );
     this.share_img = myInfoRes.share_img
     this.share_code = myInfoRes.share_code
+    this.qrcode_from = myInfoRes.qrcode_from
     this.$apply();
   }
   async onLoad (options) {
     // track( 'my_page_enter' );
     this.setShare();
+    if ( options.qrcode_from ) {
+      this.$parent.globalData.qrcode_from = options.qrcode_from;
+    }
   }
   async onShow () {
     // track( 'my_page_screen' );
