@@ -152,9 +152,6 @@ export default class ticket extends wepy.page {
     if ( options.qrcode_from ) {
       this.$parent.globalData.qrcode_from = options.qrcode_from;
     }
-  }
-  async onShow () {
-    // track( 'my_page_screen' );
     await auth.ready();
     await this.init();
   }
