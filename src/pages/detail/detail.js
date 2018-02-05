@@ -151,6 +151,7 @@ export default class Index extends wepy.page {
       this.$apply();
     },
     getMovieTicket () {
+      track( 'fission_immediately_get' );
       wepy.navigateTo( {
         url: `/pages/ticket/ticket`
       } );

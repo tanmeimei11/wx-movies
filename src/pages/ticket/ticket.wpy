@@ -7,7 +7,7 @@
       <view class="myTicket">
         <view class="title">我的电影票</view>
         <view class="ticket status{{item.ticket_status}} {{(item.ticket_status === '2' || item.ticket_status === '4') ? 'received' : ''}}" wx:for="{{tickets}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
-          <view wx:if="{{item.ticket_status === '0'}}">
+          <view wx:if="{{item.ticket_status === '0'}}" @tap="trackShareQun">
             <button open-type="share" data-id="{{item.share_code}}" data-index="{{idx}}" data-code="{{item.id}}"></button>
           </view>
           <view wx:if="{{item.ticket_status === '1'}}">
