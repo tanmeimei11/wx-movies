@@ -19,7 +19,7 @@
         </view>
         <block wx:if="{{cutInfo.show && cutInfo.ticketId}}">
           <view class="s-desc-text red">升级优惠
-            <text>－¥50</text>
+            <text>－¥{{cutInfo.money}}</text>
           </view>
           <view class="s-desc-text real-money">实付金额
             <text>¥{{realMoney || (BuyMutiModalInfo.basePrice - cutInfo.money)}}</text>
