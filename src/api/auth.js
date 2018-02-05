@@ -36,7 +36,7 @@ export default class auth extends base {
       const { tg_auth: token, _aries } = await this.post( `${this.baseUrl}/api/login`, { data: { code, encryptedData, iv, qrcode_from: wepy.$instance.globalData.qrcode_from } } );
       wepy.$instance.globalData.xToken = token;
       wepy.$instance.globalData.xAries = _aries;
-      this._readyStatus = true;
+      // this._readyStatus = true;
       console.log( `code: ${code}\ntoken: ${token}` );
       event.$emit( 'ready' );
     } catch ( e ) {
@@ -44,7 +44,7 @@ export default class auth extends base {
         const rst = await wepy.showModal( { title: '授权提示', content: '请开启“用户信息”权限', showCancel: true, cancelText: '拒绝', confirmText: '授权' } );
         if ( rst.confirm ) wepy.openSetting();
       }
-
+      this._readyStatus = null;
       throw new Error( '未授权授权' );
     }
   }

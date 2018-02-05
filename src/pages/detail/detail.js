@@ -122,14 +122,14 @@ export default class Index extends wepy.page {
     },
     async payOrder () {
       try {
-        if ( !this.isPay ) {
-          this.isPay = true;
-          track( 'page_number_box_pay' );
-          await this.pay();
-          this.isPay = false;
-        }
+        // if ( !this.isPay ) {
+        this.isPay = true;
+        track( 'page_number_box_pay' );
+        await this.pay();
+          // this.isPay = false;
+        // }
       } catch ( e ) {
-        this.isPay = false;
+        // this.isPay = false;
       }
     }
   }
@@ -326,11 +326,8 @@ export default class Index extends wepy.page {
    *  支付
    */
   async pay ( shareTicketInfo ) {
-    if ( !auth._readyStatus ) {
-      await auth.ready();
-    }
-
     try {
+      await auth.ready();
       var createRes = await Detail.creatOrder( shareTicketInfo, this.BuyMutiModalInfo.number, this.cutInfo.ticketId );
       if ( createRes.code === '4000032129' || createRes.code === '4000031814' ) {
         tips.error( createRes.msg );
@@ -344,6 +341,7 @@ export default class Index extends wepy.page {
       this.paySucc( createRes.order_no );
     } catch ( e ) {
       // this.BuyMutiModalInfo.show = false;
+      this.isPay = false;
       this.$apply();
       track( 'page_pay_failed' );
     }
