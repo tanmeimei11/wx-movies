@@ -1,25 +1,10 @@
 /* globals ls,test,cat */
-import {
-  request,
-  get
-} from 'https';
-import {
-  dirname,
-  basename
-} from 'path';
-import {
-  blue,
-  red
-} from 'chalk';
-import {
-  createReadStream,
-  createWriteStream,
-  appendFileSync
-} from 'fs';
-import getEtag from './qiniuHash.js';
-import {
-  build
-} from '../../config';
+const shelljs = require( 'shelljs' );
+var https = require( 'https' );
+var path = require( 'path' );
+var chalk = require( 'chalk' );
+var fs = require( 'fs' );
+// var getEtag = require( './qiniuHash.js' );
 const option = {
   hostname: 'tinypng.com',
   port: 443,
@@ -31,51 +16,55 @@ const option = {
 };
 const compress = ( path, name, hash ) => {
   if ( /.(json|gitkeep)$/.test( name ) ) return '';
-  let prefixDir = `/usr/src/app/${path}`;
+  let prefixDir = `${shelljs.pwd}/assets`;
+  console.log( path, prefixDir );
   let relativeName = `${path}/${name}`;
   let tinyPath = `${prefixDir}/tiny.json`;
-  if ( !test( '-f', tinyPath ) ) {
-    appendFileSync( tinyPath, '{}', {
-      flag: 'w'
-    } );
-  }
-  var tiny = JSON.parse( cat( tinyPath ) );
+  console.log( tinyPath );
+  // if ( shelljs.test( '-f', tinyPath ) ) {
+  fs.appendFileSync( tinyPath, '{}', {
+    flag: 'w'
+  } );
+  // }
+  console.log( tinyPath );
+  var tiny = JSON.parse( shelljs.cat( tinyPath ) );
   if ( relativeName in tiny && tiny[`${relativeName}`] === hash ) {
-    console.log( `CompressDone '${blue( relativeName )}'.....` );
+    console.log( `CompressDone '${chalk.blue( relativeName )}'.....` );
   } else {
-    console.log( `StartUpload '${blue( relativeName )}'.....` );
-    createReadStream( `${prefixDir}/${name}` ).pipe( request( option, ( res ) => {
+    console.log( `StartUpload '${chalk.blue( relativeName )}'.....` );
+    fs.createReadStream( `${prefixDir}/${name}` ).pipe( https.request( option, ( res ) => {
       res.on( 'data', resInfo => {
         try {
           resInfo = JSON.parse( resInfo.toString() );
           if ( resInfo.error ) {
-            return console.log( `CompressError '${red( relativeName )}'.....${resInfo.message}` );
+            return console.log( `CompressError '${chalk.red( relativeName )}'.....${resInfo.message}` );
           }
           var oldSize = ( resInfo.input.size / 1024 ).toFixed( 2 );
           var newSize = ( resInfo.output.size / 1024 ).toFixed( 2 );
-          get( resInfo.output.url, imgRes => {
-            let writeS = createWriteStream( `${prefixDir}/${name}` );
+          https.get( resInfo.output.url, imgRes => {
+            let writeS = fs.createWriteStream( `${prefixDir}/${name}` );
             imgRes.pipe( writeS );
             imgRes.on( 'end', () => {
-              console.log( `CompressSize ${blue( `${oldSize}KB ==> ${newSize}KB -${Math.floor( ( ( oldSize - newSize ) / oldSize * 100 ) )}% ` )}` );
-              console.log( `CompressDone '${blue( relativeName )}'.....` );
+              console.log( `CompressSize ${chalk.blue( `${oldSize}KB ==> ${newSize}KB -${Math.floor( ( ( oldSize - newSize ) / oldSize * 100 ) )}% ` )}` );
+              console.log( `CompressDone '${chalk.blue( relativeName )}'.....` );
             } );
             writeS.on( 'close', () => {
-              let compressHash = getEtag( `${prefixDir}/${name}` );
+              // let compressHash = getEtag( `${prefixDir}/${name}` );
               let _tinyData = JSON.parse( cat( tinyPath ) );
-              _tinyData[`${relativeName}`] = compressHash;
-              appendFileSync( tinyPath, JSON.stringify( _tinyData, null, '\t' ), {
+              _tinyData[`${relativeName}`] = '1';
+              fs.appendFileSync( tinyPath, JSON.stringify( _tinyData, null, '\t' ), {
                 flag: 'w'
               } );
             } );
           } );
         } catch ( error ) {
-          return console.log( `CompressError '${red( relativeName )}'.....${error}` );
+          return console.log( `CompressError '${chalk.red( relativeName )}'.....${error}` );
         }
       } );
     } ) );
   }
 };
-ls( './' ).forEach( file => {
-  compress( dirname( file ), basename( file ), getEtag( file ) );
+shelljs.ls( 'assets/' ).forEach( file => {
+  console.log( file );
+  compress( path.dirname( file ), path.basename( file ), '1' );
 } );

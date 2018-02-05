@@ -141,7 +141,7 @@ export default class receiveGiftModal extends wepy.component {
   };
   watch= {
     phoneNum (newVal,oldVal){
-      if((/\d{11}/.test(newVal)) && !this.receiveGiftInfo.btnStatus){
+      if((util.verifyPhone(newVal)) && !this.receiveGiftInfo.btnStatus){
         this.$emit('changeReceBtnStatus', true, newVal)
       }else {
         this.receiveGiftInfo.btnStatus && this.$emit('changeReceBtnStatus', false, newVal)
