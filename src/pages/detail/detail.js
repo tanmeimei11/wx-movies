@@ -77,7 +77,7 @@ export default class Index extends wepy.page {
     cutInfo: {
       show: false,
       ticketId: '',
-      money: 50
+      money: 30
     } // 减价金额
   }
   events = {
@@ -151,6 +151,7 @@ export default class Index extends wepy.page {
       this.$apply();
     },
     getMovieTicket () {
+      track( 'fission_immediately_get' );
       wepy.navigateTo( {
         url: `/pages/ticket/ticket`
       } );

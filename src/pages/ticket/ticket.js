@@ -29,23 +29,24 @@ export default class ticket extends wepy.page {
     ticketID: '',
     share_img: '',
     share_code: '',
-    qrcode_from: '',
+    qrcode_from: ''
   }
 
   onShareAppMessage ( res ) {
-    if (res.target) {
-      this.shareIndex = res.target.dataset.index
-      this.ticketID = res.target.dataset.code
+    if ( res.target ) {
+      this.shareIndex = res.target.dataset.index;
+      this.ticketID = res.target.dataset.code;
     }
+    track( 'fission_share_to_group' );
     return {
       title: '送你们每人3张电影票，杭州好多家影院都能看，快来领取吧！',
-      path: `/pages/detail/detail?shareCode=${this.share_code}&qrcode_from=`+this.qrcode_from,
+      path: `/pages/detail/detail?shareCode=${this.share_code}&qrcode_from=` + this.qrcode_from,
       imageUrl: this.share_img,
       // 'http://inimg07.jiuyan.info/in/2018/01/26/20A52317-E4EB-3657-E024-F2EF040B2E86.jpg'
       success: this.shareCallBack( res )
     };
   }
-  
+
   methods = {
     bindKeyInput ( e ) {
       this.phone = e.detail.value;
@@ -63,10 +64,10 @@ export default class ticket extends wepy.page {
       }
     },
     openRules () {
-      this.rulesShow = true
+      this.rulesShow = true;
     },
     close () {
-      this.rulesShow = false
+      this.rulesShow = false;
     },
     closePhone () {
       this.isShowMobile = false
@@ -79,8 +80,8 @@ export default class ticket extends wepy.page {
         this.isShowMobile = true
       }
     },
-    async receive (e) {
-      await this.init()
+    async receive ( e ) {
+      await this.init();
     },
     toDetail (e) {
       var thisTicket = e.currentTarget.dataset.ticket
@@ -115,19 +116,18 @@ export default class ticket extends wepy.page {
     this.$apply()
   }
 
-  async getShared (data) {
+  async getShared ( data ) {
     try {
-      var exchangeTicket = await Ticket.exchangeTicket(data, {ticket_id: this.ticketID})
+      var exchangeTicket = await Ticket.exchangeTicket( data, {ticket_id: this.ticketID} );
 
-      this.tickets[this.shareIndex].ticket_status = '1'
-      this.$apply()
-    } catch (e) {
-
-    wx.showToast({
-      title: e.message,
-      image: '../../image/fail.png',
-      mask: true
-    });
+      this.tickets[this.shareIndex].ticket_status = '1';
+      this.$apply();
+    } catch ( e ) {
+      wx.showToast( {
+        title: e.message,
+        image: '../../image/fail.png',
+        mask: true
+      } );
       // setTimeout( () => {
       //   tips.error( e.message );
       // }, 1000 );
@@ -144,7 +144,7 @@ export default class ticket extends wepy.page {
     this.phone = myInfoRes.phone || ''
     this.$apply();
   }
-  async onLoad (options) {
+  async onLoad ( options ) {
     // track( 'my_page_enter' );
     this.setShare();
     if ( options.qrcode_from ) {
