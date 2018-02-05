@@ -29,7 +29,11 @@ export default class shareConnectMixin extends wepy.mixin {
           tips.loaded();
           // this.data.isNotQun = true;
           setTimeout( () => {
-            tips.error( '请分享到群聊天' );
+            wx.showToast( {
+              title: '请分享到群聊天',
+              image: '../../image/fail.png',
+              mask: true
+            } );
           }, 1000 );
         }
       } catch ( e ) {

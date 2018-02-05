@@ -67,7 +67,7 @@
         position: absolute;
         top: 69rpx;
         left: 50rpx;
-        background: url('https://inimg01.jiuyan.info/in/2018/01/22/6FE37B16-C842-3833-7D02-6A33CD942AB3.jpg') no-repeat;
+        background-repeat: no-repeat;
         background-size: contain;
         background-position: center;
       }
@@ -224,7 +224,7 @@
         </view>
         <view class="content">
           <view class="card">
-            <view class="yuan"></view>
+            <view class="yuan" style="background-image: url({{share_card_img}});"></view>
             <!-- <text class="cardname">in同城趴·电影王卡</text> -->
             <text class="cardinfo">三个月电影免费看</text>
           </view>
@@ -277,7 +277,8 @@
       orderNo: '',
       contractID: '2018011801960713',
       qrinfo: {},
-      phone: ''
+      phone: '',
+      share_card_img: ''
     }
     computed = {}
     methods = {
@@ -334,6 +335,7 @@
         this.num = this.phone
         this.isFull = true
       }
+      this.share_card_img = res.share_card_img
       this.$apply()
       console.log(res)
     }
