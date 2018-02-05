@@ -14,17 +14,18 @@ export default class ticket extends wepy.page {
   mixins = [shareConnectMixin]
   data = {
     rulesShow: false,
-    num: '',
     type: '',
     btninfo: {},
     isShowMobile: false,
     isFull: false,
     rules: [], // 规则文案
     tickets: [],
+    phone: '',
 
     shareIndex: '',
     cardsbg: ['', '', ''],
     cards: [],
+    cardInfo: {},
     ticketID: '',
     share_img: '',
     share_code: '',
@@ -46,29 +47,44 @@ export default class ticket extends wepy.page {
   }
   
   methods = {
+    bindKeyInput ( e ) {
+      this.phone = e.detail.value;
+      if ( e.detail.value.length === 11 ) {
+        this.isFull = true;
+      } else {
+        this.isFull = false
+      }
+    },
+    async submit () {
+      if ( this.isFull ) {
+        this.openCard()
+        this.isShowMobile = false
+        tips.success( '绑定成功' )
+      }
+    },
     openRules () {
       this.rulesShow = true
     },
     close () {
       this.rulesShow = false
     },
-    async openCard (e) {
-      var thisTicket = e.currentTarget.dataset.ticket
-      var thisIndex = e.currentTarget.dataset.index
-      var ticketid = e.currentTarget.dataset.ticketid
-      var card = await Ticket.pickCard( ticketid, thisIndex );
-      // await this.init()
-      this.cards[thisTicket] = card
-      this.tickets[thisTicket].receive = true
-      this.$apply()
-      console.log(this.cards)
+    closePhone () {
+      this.isShowMobile = false
+    },
+    havePhone (e) {
+      this.cardInfo = e.currentTarget.dataset
+      if (this.phone) {
+        this.openCard()
+      } else {
+        this.isShowMobile = true
+      }
     },
     async receive (e) {
       await this.init()
     },
     toDetail (e) {
       var thisTicket = e.currentTarget.dataset.ticket
-      wepy.navigateTo( {
+      wepy.reLaunch( {
         url: `/pages/detail/detail?ticketId=${thisTicket}`
       } );
     },
@@ -85,6 +101,18 @@ export default class ticket extends wepy.page {
     wepy.showShareMenu( {
       withShareTicket: true // 要求小程序返回分享目标信息
     } );
+  }
+
+  async openCard () {
+    var thisTicket = this.cardInfo.ticket
+    var thisIndex = this.cardInfo.index
+    var ticketid = this.cardInfo.ticketid
+    console.log(this.phone)
+    var card = await Ticket.pickCard( ticketid, thisIndex, this.phone );
+    // await this.init()
+    this.cards[thisTicket] = card
+    this.tickets[thisTicket].receive = true
+    this.$apply()
   }
 
   async getShared (data) {
@@ -113,6 +141,7 @@ export default class ticket extends wepy.page {
     this.share_img = myInfoRes.share_img
     this.share_code = myInfoRes.share_code
     this.qrcode_from = myInfoRes.qrcode_from
+    this.phone = myInfoRes.phone || ''
     this.$apply();
   }
   async onLoad (options) {

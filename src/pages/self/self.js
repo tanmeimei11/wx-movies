@@ -41,6 +41,8 @@ export default class self extends wepy.page {
       this.num = e.detail.value;
       if ( e.detail.value.length === 11 ) {
         this.isFull = true;
+      } else {
+        this.isFull = false;
       }
     },
     async submit () {

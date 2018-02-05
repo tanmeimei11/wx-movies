@@ -13,7 +13,7 @@
           <view wx:if="{{item.ticket_status === '1'}}">
             <view wx:if="{{!item.receive}}">
               <view class="cards">
-                <view wx:for="{{cardsbg}}" wx:for-index="idx2" wx:for-item="item2" wx:key="idx2" @tap="openCard" data-index="{{idx2}}" data-ticket="{{idx}}" data-ticketid="{{item.id}}"></view>
+                <view wx:for="{{cardsbg}}" wx:for-index="idx2" wx:for-item="item2" wx:key="idx2" @tap="havePhone" data-index="{{idx2}}" data-ticket="{{idx}}" data-ticketid="{{item.id}}"></view>
               </view>
               <view class="choosetxt">- 选择一张电影票 -</view>
             </view>
@@ -53,6 +53,15 @@
             {{item}}
           </view>
         </scroll-view>
+      </view>
+    </view>
+    <view class="changeMobile" wx:if="{{isShowMobile}}">
+      <view class="bg" @tap="closePhone"></view>
+      <view class="window">
+        <view class="close" @tap="closePhone"></view>
+        <view class="bind">绑定手机号</view>
+        <input bindinput="bindKeyInput" placeholder="输入手机号" type="number" maxlength="11" placeholder-style="color: #E0E0E0"/>
+        <view class="btn {{isFull ? 'on' : ''}}" @tap.stop="submit">确认</view>
       </view>
     </view>
   </report>

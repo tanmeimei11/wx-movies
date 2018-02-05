@@ -195,6 +195,7 @@
         var stringlength = ( util.stringLength( this.shareInfo.nickname ) + 13 ) * 10;
         _images.qr.src = this.shareInfo.share_qrcode_url;
         _images.avatar.src = this.shareInfo.avatar;
+        _images.body.src = this.shareInfo.share_bg_img;
         util.loadImages( _images )
           .then( () => {
             var ctx = wx.createCanvasContext( 'firstCanvas' );
