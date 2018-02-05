@@ -17,6 +17,16 @@ module.exports = {
             },
             {
                 share_code: "jdjdjfjdf",//分享code
+                ticket_status: '0',//初始未分享的状态
+                id: 45
+            },
+            {
+                share_code: "jdjdjfjdf",//分享code
+                ticket_status: '0',//初始未分享的状态
+                id: 45
+            },
+            {
+                share_code: "jdjdjfjdf",//分享code
                 ticket_status: '1',//初始未分享的状态
                 id: 46
             },

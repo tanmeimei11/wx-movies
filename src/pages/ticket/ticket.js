@@ -37,7 +37,9 @@ export default class ticket extends wepy.page {
       this.shareIndex = res.target.dataset.index;
       this.ticketID = res.target.dataset.code;
     }
-    track( 'fission_share_to_group' );
+    if (res.from === 'button') {
+      track( 'fission_share_to_group' );
+    }
     return {
       title: '送你们每人3张电影票，杭州好多家影院都能看，快来领取吧！',
       path: `/pages/detail/detail?shareCode=${this.share_code}&qrcode_from=` + this.qrcode_from,
