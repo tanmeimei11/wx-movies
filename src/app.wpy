@@ -94,6 +94,15 @@ export default class extends wepy.app {
     } );
   }
 
+  onShow(res) {
+    console.log(res)
+    if (res.shareTicket) {
+      this.globalData.shareTicket = res.shareTicket
+    } else {
+      this.globalData.shareTicket = '';
+    }
+  }
+
   async onLaunch ( opts ) {
     console.log(opts)
     // 渠道埋点

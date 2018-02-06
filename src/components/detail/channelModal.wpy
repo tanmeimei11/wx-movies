@@ -47,11 +47,11 @@ export default class channelModal extends wepy.component {
   methods = {
     close () {
       this.$emit( 'closeChannelModal' );
-      track( 'page_wx_channelModal_close' );
+      track( 'movie_fission_redpack_close' );
     },
     getRedPacket () {
       this.$emit( 'closeChannelModal' );
-      track( 'page_wx_channelModal_get' );
+      track( 'movie_fission_redpack_get' );
     }
   };
 }

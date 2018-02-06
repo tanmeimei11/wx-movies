@@ -71,11 +71,11 @@
     <!-- 接收失败 -->
     <receiveFaildModal :receiveFaildInfo.sync="receiveFaildInfo" wx:if="{{receiveFaildInfo.show}}"></receiveFaildModal>
     <!-- 支付 -->
-    <buyMutiModal :BuyMutiModalInfo.sync="BuyMutiModalInfo" wx:if="{{BuyMutiModalInfo.show}}" :cutInfo.sync="cutInfo" ></buyMutiModal>
+    <buyMutiModal :BuyMutiModalInfo.sync="BuyMutiModalInfo" wx:if="{{BuyMutiModalInfo.show}}" :discountInfo.sync="discountInfo" ></buyMutiModal>
      <!--fix 获得电影卡-->
     <view class="get-movies-ticket" wx:if="{{detailStatus.fetch_ticket}}" @tap="getMovieTicket"></view>
     <!--fix 按钮-->
-    <view class="some-btn-wrap {{cutInfo.show ? 'cut':''}}">
+    <view class="some-btn-wrap">
       <view class="btn-icon btn-index" @tap="toIndex">首页</view>
       <view class="btn-icon btn-contract" @tap="trackContact"> <contact-button session-from="wx_movie_contract"></contact-button>客服</view>
       <view class="btn btn-cut" @tap="sharePay">分享得现金</view>
@@ -84,6 +84,7 @@
 
     <!-- 其他渠道红包（比如滴滴） -->
     <channelModal wx:if="{{channelModalInfo.show}}" :channelModalInfo.sync="channelModalInfo"></channelModal>
+    <notice wx:if="{{noticeInfo.show}}" :noticeInfo.sync="noticeInfo"></notice>
   </report>
 </template>
 <style lang="less" src="./detail.less"></style>

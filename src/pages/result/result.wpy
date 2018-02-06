@@ -258,7 +258,7 @@
   import report from '@/components/report-submit';
   import track from '@/utils/track';
   // import compose from '@/utils/compose'
-  // import util from '@/utils/util'
+  import util from '@/utils/util'
   // import images from './image.js'
   import tips from '@/utils/tips';
   import auth from '@/api/auth';
@@ -288,6 +288,9 @@
       bindKeyInput ( e ) {
         this.num = e.detail.value;
         if ( e.detail.value.length === 11 ) {
+          if (!util.verifyPhone(this.num)) {
+            return 
+          }
           this.isFull = true;
         } else {
           this.isFull = false;

@@ -9,6 +9,8 @@ import receiveTicketModal from '@/components/detail/receiveTicketModal';
 import buyMutiModal from '@/components/detail/buyMutiModal';
 import receiveFaildModal from '@/components/detail/receiveFaildModal';
 import channelModal from '@/components/detail/channelModal';
+import notice from '@/components/detail/notice';
+
 import shareConnectMixin from '@/mixins/shareConnectMixin';
 import loadingMixin from '@/mixins/loadingMixin';
 import track from '@/utils/track';
@@ -17,7 +19,7 @@ export default class Index extends wepy.page {
   config = {
     navigationBarTitleText: 'in同城趴·电影王卡'
   }
-  components = { report, shareWindow, receiveGiftModal, buyMutiModal, receiveFaildModal, receiveTicketModal, channelModal }
+  components = { report, shareWindow, receiveGiftModal, buyMutiModal, receiveFaildModal, receiveTicketModal, channelModal, notice }
   mixins = [shareConnectMixin, loadingMixin]
   data = {
     toView: '',
@@ -72,24 +74,24 @@ export default class Index extends wepy.page {
       userInfo: {}
     },
     channelModalInfo: { // 渠道优惠券弹窗
+      rp_code: null,
       show: false,
       imgUrl: ''
     },
-    tipsInfo: { // 右下角提示信息
+    noticeInfo: { // 右下角提示信息
       show: false,
       rp_notice: []
     },
-    discountInfo: [], // 优惠抵扣信息
+    discountInfo: { // 优惠抵扣信息
+      show: false,
+      ticketId: '',
+      detail: []
+    },
     cardCode: '', // 分享进来的转赠卡的卡片code
     bgImages: [], // 背景图
     partBg: '',
     shareImage: '',
     bgStyle: '',
-    cutInfo: {
-      show: false,
-      ticketId: '',
-      money: 30
-    }, // 减价金额
     statusQuery: {} // 状态参数
   }
   events = {
@@ -118,6 +120,7 @@ export default class Index extends wepy.page {
     // 关闭渠道红包弹窗
     closeChannelModal () {
       this.channelModalInfo.show = false;
+      this.noticeInfo.show = true;
     },
     async receive () {
       try {
@@ -149,7 +152,7 @@ export default class Index extends wepy.page {
   }
   methods = {
     openBuyMutiModal () {
-      if ( this.cutInfo.ticketId && this.cutInfo.show ) {
+      if ( this.discountInfo.ticketId && this.discountInfo.show ) {
         track( 'fission_minus_50_buy' );
       } else {
         track( 'page_buy' );
@@ -233,6 +236,7 @@ export default class Index extends wepy.page {
     track( 'page_entry' );
     this.detailStatus = await Detail.getDetailStatus( this.statusQuery );
     this.initReceiveTicketInfo( this.detailStatus );
+    this.initChannelDiscount( this.detailStatus );
     this.shareInfo = await Detail.getShareInfo();
     if ( this.cardCode ) { await this.initCardStatus(); };
     this.$apply();
@@ -244,8 +248,8 @@ export default class Index extends wepy.page {
   getDetailStatusQuery () {
     var _data = {};
     this.receiveTicketInfo.shareCode && ( _data.share_code = this.receiveTicketInfo.shareCode );
-    this.cutInfo.ticketId && ( _data.ticket_id = this.cutInfo.ticketId );
-    this.cutInfo.ticketId && ( _data.rp_id = this.cutInfo.ticketId );
+    this.discountInfo.ticketId && ( _data.ticket_id = this.discountInfo.ticketId );
+    this.channelModalInfo.rp_code && ( _data.rp_code = this.channelModalInfo.rp_code );
     this.statusQuery = _data;
     this.$apply();
     return _data;
@@ -255,8 +259,8 @@ export default class Index extends wepy.page {
    * @param {*} res
    */
   initReceiveTicketInfo ( res ) {
-    if ( this.cutInfo.ticketId ) {  // 升级点进来
-      this.cutInfo.show = true;
+    if ( this.discountInfo.ticketId ) {  // 升级点进来
+      this.discountInfo.show = true;
       return;
     }
 
@@ -275,6 +279,23 @@ export default class Index extends wepy.page {
         show: true,
         userInfo: res.share_user_info
       };
+    }
+  }
+  /**
+   * 初始化渠道优惠信息
+   */
+  initChannelDiscount ( res ) {
+    if ( res.rp_bg_img ) {
+      this.channelModalInfo.imgUrl = res.rp_bg_img;
+      this.channelModalInfo.show = true;
+      track( 'movie_fission_redpack_expo' );
+    }
+    if ( res.rp_notice && res.rp_notice.length ) {
+      this.noticeInfo.rp_notice = res.rp_notice;
+    }
+    if ( res.rp_deduction && res.rp_deduction.length ) {
+      this.discountInfo.detail = res.rp_deduction;
+      this.discountInfo.show = true;
     }
   }
   /**
@@ -357,14 +378,14 @@ export default class Index extends wepy.page {
     this.data.shareId = options.share_uid || '';
     this.cardCode = options.cardCode || '';
     if ( options.ticketId ) {  // 立即升级点过来
-      this.cutInfo = {
-        ...this.cutInfo,
-        show: true,
-        ticketId: options.ticketId
-      };
+      this.discountInfo.ticketId = options.ticketId;
+      this.discountInfo.show = true;
     }
     if ( options.shareCode ) { // 由别人分享电影票点进来
       this.receiveTicketInfo.shareCode = options.shareCode;
+    }
+    if ( options.rp_code ) {
+      this.channelModalInfo.rp_code = options.rp_code;
     }
 
     this.getDetailStatusQuery();
@@ -423,10 +444,10 @@ export default class Index extends wepy.page {
    *  清除优惠信息
    */
   clearCutInfo () {
-    this.cutInfo = {
-      show: false,
-      ticketId: '',
-      money: 50
-    };
+    this.noticeInfo.show = false;
+    this.discountInfo.show = false;
+    this.discountInfo.ticketId = '';
+    this.BuyMutiModalInfo.show = false;
+    this.$apply();
   }
 }
