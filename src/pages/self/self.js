@@ -156,6 +156,7 @@ export default class self extends wepy.page {
 
     closePopup ( force = 'false', e ) {
       if ( e.target.id === 'exchangePopup' || force === 'true' ) {
+        this.cdkeyError = '';
         this.isShowExchange = false;
       }
     }
