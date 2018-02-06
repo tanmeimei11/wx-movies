@@ -444,7 +444,10 @@ export default class Index extends wepy.page {
    *  清除优惠信息
    */
   clearCutInfo () {
+    this.noticeInfo.show = false;
     this.discountInfo.show = false;
     this.discountInfo.ticketId = '';
+    this.BuyMutiModalInfo.show = false;
+    this.$apply();
   }
 }
