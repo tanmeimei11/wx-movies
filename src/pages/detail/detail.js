@@ -8,6 +8,7 @@ import receiveGiftModal from '@/components/detail/receiveGiftModal';
 import receiveTicketModal from '@/components/detail/receiveTicketModal';
 import buyMutiModal from '@/components/detail/buyMutiModal';
 import receiveFaildModal from '@/components/detail/receiveFaildModal';
+import channelModal from '@/components/detail/channelModal';
 import shareConnectMixin from '@/mixins/shareConnectMixin';
 import loadingMixin from '@/mixins/loadingMixin';
 import track from '@/utils/track';
@@ -16,7 +17,7 @@ export default class Index extends wepy.page {
   config = {
     navigationBarTitleText: 'in同城趴·电影王卡'
   }
-  components = { report, shareWindow, receiveGiftModal, buyMutiModal, receiveFaildModal, receiveTicketModal }
+  components = { report, shareWindow, receiveGiftModal, buyMutiModal, receiveFaildModal, receiveTicketModal, channelModal }
   mixins = [shareConnectMixin, loadingMixin]
   data = {
     toView: '',
@@ -70,6 +71,15 @@ export default class Index extends wepy.page {
       shareCode: '',
       userInfo: {}
     },
+    channelModalInfo: { // 渠道优惠券弹窗
+      show: false,
+      imgUrl: ''
+    },
+    tipsInfo: { // 右下角提示信息
+      show: false,
+      rp_notice: []
+    },
+    discountInfo: [], // 优惠抵扣信息
     cardCode: '', // 分享进来的转赠卡的卡片code
     bgImages: [], // 背景图
     partBg: '',
@@ -79,7 +89,8 @@ export default class Index extends wepy.page {
       show: false,
       ticketId: '',
       money: 30
-    } // 减价金额
+    }, // 减价金额
+    statusQuery: {} // 状态参数
   }
   events = {
     closeBuyMutiModal () {
@@ -104,17 +115,19 @@ export default class Index extends wepy.page {
     closeRecevieTicket () {
       this.receiveTicketInfo.show = false;
     },
+    // 关闭渠道红包弹窗
+    closeChannelModal () {
+      this.channelModalInfo.show = false;
+    },
     async receive () {
       try {
         track( 'page_receive_box_confirm' );
-        var m = await Detail.receiveCard( this.cardCode, this.receiveGiftInfo.phoneNum );
-        console.log( m );
+        await Detail.receiveCard( this.cardCode, this.receiveGiftInfo.phoneNum );
         wepy.switchTab( {
           url: `/pages/self/self`
         } );
       } catch ( e ) {
         // 接收失败
-        console.log( e );
         this.receiveGiftInfo.show = false;
         this.receiveFaildInfo = {
           ...this.receiveFaildInfo,
@@ -218,11 +231,24 @@ export default class Index extends wepy.page {
     this.$apply();
     await auth.ready();
     track( 'page_entry' );
-    this.detailStatus = await Detail.getDetailStatus( this.receiveTicketInfo.shareCode );
+    this.detailStatus = await Detail.getDetailStatus( this.statusQuery );
     this.initReceiveTicketInfo( this.detailStatus );
     this.shareInfo = await Detail.getShareInfo();
     if ( this.cardCode ) { await this.initCardStatus(); };
     this.$apply();
+  }
+  /**
+   *  初始化从哪里进来  // 1.立即升级 2.分享送三张电影票 3.红包
+   *  返回  createorder cfstatus 接口的参数
+   */
+  getDetailStatusQuery () {
+    var _data = {};
+    this.receiveTicketInfo.shareCode && ( _data.share_code = this.receiveTicketInfo.shareCode );
+    this.cutInfo.ticketId && ( _data.ticket_id = this.cutInfo.ticketId );
+    this.cutInfo.ticketId && ( _data.rp_id = this.cutInfo.ticketId );
+    this.statusQuery = _data;
+    this.$apply();
+    return _data;
   }
   /**
    * 初始化接收卡的信息
@@ -340,6 +366,8 @@ export default class Index extends wepy.page {
     if ( options.shareCode ) { // 由别人分享电影票点进来
       this.receiveTicketInfo.shareCode = options.shareCode;
     }
+
+    this.getDetailStatusQuery();
   }
   /**
    * 设置分享的shareticket
@@ -352,10 +380,10 @@ export default class Index extends wepy.page {
   /**
    *  支付
    */
-  async pay ( shareTicketInfo ) {
+  async pay ( ) {
     try {
       await auth.ready();
-      var createRes = await Detail.creatOrder( shareTicketInfo, this.BuyMutiModalInfo.number, this.cutInfo.ticketId );
+      var createRes = await Detail.creatOrder( this.BuyMutiModalInfo.number, this.statusQuery );
       if ( createRes.code === '4000032129' || createRes.code === '4000031814' ) {
         tips.error( createRes.msg );
         return;
@@ -390,7 +418,6 @@ export default class Index extends wepy.page {
     } );
   }
   payFail () {
-
   }
   /**
    *  清除优惠信息
