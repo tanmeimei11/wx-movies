@@ -261,6 +261,7 @@ export default class Index extends wepy.page {
   initReceiveTicketInfo ( res ) {
     if ( this.discountInfo.ticketId ) {  // 升级点进来
       this.discountInfo.show = true;
+      this.noticeInfo.show = true;
       return;
     }
 
