@@ -8,6 +8,7 @@ import receiveGiftModal from '@/components/detail/receiveGiftModal';
 import receiveTicketModal from '@/components/detail/receiveTicketModal';
 import buyMutiModal from '@/components/detail/buyMutiModal';
 import receiveFaildModal from '@/components/detail/receiveFaildModal';
+import channelModal from '@/components/detail/channelModal';
 import shareConnectMixin from '@/mixins/shareConnectMixin';
 import loadingMixin from '@/mixins/loadingMixin';
 import track from '@/utils/track';
@@ -16,7 +17,7 @@ export default class Index extends wepy.page {
   config = {
     navigationBarTitleText: 'in同城趴·电影王卡'
   }
-  components = { report, shareWindow, receiveGiftModal, buyMutiModal, receiveFaildModal, receiveTicketModal }
+  components = { report, shareWindow, receiveGiftModal, buyMutiModal, receiveFaildModal, receiveTicketModal, channelModal }
   mixins = [shareConnectMixin, loadingMixin]
   data = {
     toView: '',
@@ -70,6 +71,15 @@ export default class Index extends wepy.page {
       shareCode: '',
       userInfo: {}
     },
+    channelModalInfo: { // 渠道优惠券弹窗
+      show: false,
+      imgUrl: ''
+    },
+    tipsInfo: { // 右下角提示信息
+      show: false,
+      rp_notice: []
+    },
+    discountInfo: [], // 优惠抵扣信息
     cardCode: '', // 分享进来的转赠卡的卡片code
     bgImages: [], // 背景图
     partBg: '',
@@ -103,6 +113,10 @@ export default class Index extends wepy.page {
     },
     closeRecevieTicket () {
       this.receiveTicketInfo.show = false;
+    },
+    // 关闭渠道红包弹窗
+    closeChannelModal () {
+      this.channelModalInfo.show = false;
     },
     async receive () {
       try {
