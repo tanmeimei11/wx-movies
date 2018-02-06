@@ -81,9 +81,8 @@ export default class Detail extends Pagebase {
   /**
    * 创建订单接口
    */
-  static async creatOrder ( shareTicketInfo, buyNumber, tikectId ) {
-    var _data = shareTicketInfo || {};
-    tikectId && ( _data.tikect_id = tikectId );
+  static async creatOrder ( buyNumber, _data ) {
+    // ticketId && ( _data.tikect_id = ticketId );
     console.log( wepy.$instance.globalData );
     return await this.request( {
       url: '/mnp/order/create',

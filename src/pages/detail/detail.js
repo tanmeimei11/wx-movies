@@ -108,13 +108,11 @@ export default class Index extends wepy.page {
       try {
         track( 'page_receive_box_confirm' );
         var m = await Detail.receiveCard( this.cardCode, this.receiveGiftInfo.phoneNum );
-        console.log( m );
         wepy.switchTab( {
           url: `/pages/self/self`
         } );
       } catch ( e ) {
         // 接收失败
-        console.log( e );
         this.receiveGiftInfo.show = false;
         this.receiveFaildInfo = {
           ...this.receiveFaildInfo,
@@ -352,10 +350,14 @@ export default class Index extends wepy.page {
   /**
    *  支付
    */
-  async pay ( shareTicketInfo ) {
+  async pay ( ) {
     try {
       await auth.ready();
-      var createRes = await Detail.creatOrder( shareTicketInfo, this.BuyMutiModalInfo.number, this.cutInfo.ticketId );
+      // 订单的data
+      var _orderData = {
+        tikect_id: this.cutInfo.ticketId
+      };
+      var createRes = await Detail.creatOrder( this.BuyMutiModalInfo.number, _orderData );
       if ( createRes.code === '4000032129' || createRes.code === '4000031814' ) {
         tips.error( createRes.msg );
         return;
@@ -390,7 +392,6 @@ export default class Index extends wepy.page {
     } );
   }
   payFail () {
-
   }
   /**
    *  清除优惠信息
