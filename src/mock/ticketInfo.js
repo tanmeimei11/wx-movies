@@ -8,7 +8,8 @@ module.exports = {
         "1.文案需要一休提供，鼓励金可以级在支付活动费用的时候直接抵扣现金，没有抵扣上限。", 
         "1.文案需要一休提供，鼓励金可以级在支付活动费用的时候直接抵扣现金，没有抵扣上限。", 
         "1.文案需要一休提供，鼓励金可以级在支付活动费用的时候直接抵扣现金，没有抵扣上限。"],
-        "phone": '',
+        "phone": '13122222222',
+        "upgrade_img": 'https://inimg02.jiuyan.info/in/2018/02/06/D37C751C-F241-4035-18F0-E36E2545E8D3.png',
         'ticket_desc':"今日电影票已领完",
         'ticket_switch':false,
         "tickets": [
@@ -19,13 +20,13 @@ module.exports = {
             },
             {
                 share_code: "jdjdjfjdf",//分享code
-                ticket_status: '0',//初始未分享的状态
-                id: 45
+                ticket_status: '1',//初始未分享的状态
+                id: 46
             },
             {
                 share_code: "jdjdjfjdf",//分享code
-                ticket_status: '0',//初始未分享的状态
-                id: 45
+                ticket_status: '1',//初始未分享的状态
+                id: 46
             },
             {
                 share_code: "jdjdjfjdf",//分享code
