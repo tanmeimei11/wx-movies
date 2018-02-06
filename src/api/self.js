@@ -60,4 +60,15 @@ export default class Self extends Pagebase {
     }
     return rules;
   }
+
+  /**
+   * 获取我的信息接口
+   */
+  static async cardChange ( data ) {
+    return await this.request( {
+      url: '/mnp/card/change',
+      method: 'POST',
+      data
+    } );
+  }
 }

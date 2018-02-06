@@ -9,24 +9,58 @@
         <view class="s-mobilebtn" wx:if="{{userInfo.avatar && !userInfo.phone}}" data-type="绑定" @tap="open">绑定手机号</view>
         <view class="s-mobile" wx:if="{{userInfo.avatar && userInfo.phone}}" @tap="open" data-type="修改">{{userInfo.phone}}</view>
       </view>
+      <!-- 兑换电影王卡 -->
+      <button class="exchange" @tap="triggerExchange">兑换电影王卡</button>
+      <!-- 天空背景 -->
       <view class="c-bg"></view>
+      <!-- 卡列表 -->
       <view class="c-rules">
-        <view class="title"></view>
-        <view class="cards {{(item.reward_from_info || item.reward_to_info) ? 'send' : 'unsend'}}" wx:for="{{cards}}" wx:for-index="idx" wx:for-item="item" wx:key="idx" @tap="toCard" data-index="{{idx}}" data-id="{{item.id}}">
-          <view class="id">NO.{{item.card_no}}</view>
-          <view class="icon"></view>
-        </view>
-        <view class="btn" wx:if="{{userInfo.name && cards.length === 0}}" @tap="apply">去购买</view>
+        <!-- empty -->
+        <block wx:if="{{userInfo.name && cards.length === 0}}">
+          <view class="tip">你还没有电影王卡</view>
+          <view class="btn" @tap="apply">立即购买</view>
+        </block>
+        <block wx:else>
+          <view class="title"></view>
+          <view class="cards {{(item.reward_from_info || item.reward_to_info) ? 'send' : 'unsend'}}" wx:for="{{cards}}" wx:for-index="idx" wx:for-item="item" wx:key="idx" @tap="toCard" data-index="{{idx}}" data-id="{{item.id}}">
+            <view class="id">NO.{{item.card_no}}</view>
+            <view class="icon"></view>
+          </view>
+        </block>
       </view>
     </view>
+    <!-- 修改手机号弹窗 -->
     <view class="changeMobile" wx:if="{{isShowMobile}}">
-        <view class="bg" @tap="close"></view>
-        <view class="window">
-          <view class="close" @tap="close"></view>
-          <view class="bind">{{type}}手机号</view>
-          <input bindinput="bindKeyInput" placeholder="输入手机号" type="number" maxlength="11" placeholder-style="color: #E0E0E0" value="{{userInfo.phone}}"/>
-          <view class="btn {{isFull ? 'on' : ''}}" @tap.stop="submit">确认</view>
+      <view class="bg" @tap="close"></view>
+      <view class="window">
+        <view class="close" @tap="close"></view>
+        <view class="bind">{{type}}手机号</view>
+        <input bindinput="bindKeyInput" placeholder="输入手机号" type="number" maxlength="11" placeholder-style="color: #E0E0E0" value="{{userInfo.phone}}"/>
+        <view class="btn {{isFull ? 'on' : ''}}" @tap.stop="submit">确认</view>
+      </view>
+    </view>
+    <!-- 兑换弹窗 -->
+    <view class="exchangePopup" wx:if="{{isShowExchange}}" id="exchangePopup" @tap="closePopup(false)">
+      <view class="content">
+        <view class="close" @tap="closePopup(true)"></view>
+        <view class="title">兑换电影王卡</view>
+        <view class="input-frame {{cdkeyError}}">
+          <input
+            placeholder="请输入你的兑换码"
+            placeholder-style="color:#e0e0e0;"
+            @input="cdkeyInput" />
+          <text>{{cdkeyText}}</text>
         </view>
+        <view class="input-frame {{phoneError}}" wx:if="{{isfirst}}">
+          <input
+            placeholder="请输入你的手机号"
+            placeholder-style="color:#e0e0e0;"
+            maxlength="11"
+            @input="phoneInput"/>
+          <text>请输入正确的手机号</text>
+        </view>
+        <button disabled="{{exchangeDisabled}}" @tap="exchange">确认兑换</button>
+      </view>
     </view>
   </report>
 </template>

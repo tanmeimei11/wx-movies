@@ -1,0 +1,58 @@
+<template>
+   <view class="c-modal c-channel-modal">
+    <view class="c-wrap">
+      <image mode="widthFix" src="{{channelModalInfo.imgUrl}}"></image>
+      <view class="area-close" @tap="close" ></view>
+      <view class="area-ok" @tap="getRedPacket" ></view>
+    </view>
+  </view>
+</template>
+<style type="less">
+  .c-channel-modal{
+    .c-wrap{
+      background-color: rgba(0,0,0,0);
+    }
+    image{
+      width: 100%;
+    }
+    .area-close{
+      position: absolute;
+      top: 20rpx;
+      right: 0;
+      width: 100rpx;
+      height: 100rpx;
+    }
+    .area-ok{
+      position: absolute;
+      width: 430rpx;
+      height: 90rpx;
+      left: 50%;
+      bottom: 80rpx; 
+      transform: translate(-50%, 0);
+    }
+  }
+</style>
+<script>
+import wepy from 'wepy';
+import track from '@/utils/track';
+
+export default class channelModal extends wepy.component {
+  props = {
+    channelModalInfo: {
+      type: Object
+    }
+  };
+  data = {
+  };
+  methods = {
+    close () {
+      this.$emit( 'closeChannelModal' );
+      track( 'movie_fission_redpack_close' );
+    },
+    getRedPacket () {
+      this.$emit( 'closeChannelModal' );
+      track( 'movie_fission_redpack_get' );
+    }
+  };
+}
+</script>
