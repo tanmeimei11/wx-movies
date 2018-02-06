@@ -79,7 +79,8 @@ export default class Index extends wepy.page {
       show: false,
       ticketId: '',
       money: 30
-    } // 减价金额
+    }, // 减价金额
+    statusQuery: {} // 状态参数
   }
   events = {
     closeBuyMutiModal () {
@@ -107,7 +108,7 @@ export default class Index extends wepy.page {
     async receive () {
       try {
         track( 'page_receive_box_confirm' );
-        var m = await Detail.receiveCard( this.cardCode, this.receiveGiftInfo.phoneNum );
+        await Detail.receiveCard( this.cardCode, this.receiveGiftInfo.phoneNum );
         wepy.switchTab( {
           url: `/pages/self/self`
         } );
@@ -216,11 +217,24 @@ export default class Index extends wepy.page {
     this.$apply();
     await auth.ready();
     track( 'page_entry' );
-    this.detailStatus = await Detail.getDetailStatus( this.receiveTicketInfo.shareCode );
+    this.detailStatus = await Detail.getDetailStatus( this.statusQuery );
     this.initReceiveTicketInfo( this.detailStatus );
     this.shareInfo = await Detail.getShareInfo();
     if ( this.cardCode ) { await this.initCardStatus(); };
     this.$apply();
+  }
+  /**
+   *  初始化从哪里进来  // 1.立即升级 2.分享送三张电影票 3.红包
+   *  返回  createorder cfstatus 接口的参数
+   */
+  getDetailStatusQuery () {
+    var _data = {};
+    this.receiveTicketInfo.shareCode && ( _data.share_code = this.receiveTicketInfo.shareCode );
+    this.cutInfo.ticketId && ( _data.ticket_id = this.cutInfo.ticketId );
+    this.cutInfo.ticketId && ( _data.rp_id = this.cutInfo.ticketId );
+    this.statusQuery = _data;
+    this.$apply();
+    return _data;
   }
   /**
    * 初始化接收卡的信息
@@ -338,6 +352,8 @@ export default class Index extends wepy.page {
     if ( options.shareCode ) { // 由别人分享电影票点进来
       this.receiveTicketInfo.shareCode = options.shareCode;
     }
+
+    this.getDetailStatusQuery();
   }
   /**
    * 设置分享的shareticket
@@ -353,11 +369,7 @@ export default class Index extends wepy.page {
   async pay ( ) {
     try {
       await auth.ready();
-      // 订单的data
-      var _orderData = {
-        tikect_id: this.cutInfo.ticketId
-      };
-      var createRes = await Detail.creatOrder( this.BuyMutiModalInfo.number, _orderData );
+      var createRes = await Detail.creatOrder( this.BuyMutiModalInfo.number, this.statusQuery );
       if ( createRes.code === '4000032129' || createRes.code === '4000031814' ) {
         tips.error( createRes.msg );
         return;
