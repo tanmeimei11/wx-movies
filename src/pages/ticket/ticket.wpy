@@ -7,8 +7,8 @@
       <view class="myTicket">
         <view class="title">我的电影票</view>
         <view class="ticket status{{item.ticket_status}} {{(item.ticket_status === '2' || item.ticket_status === '4') ? 'received' : ''}}" wx:for="{{tickets}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
-          <view wx:if="{{item.ticket_status === '0'}}">
-            <button open-type="share" data-id="{{item.share_code}}" data-index="{{idx}}" data-code="{{item.id}}"></button>
+          <view wx:if="{{item.ticket_status === '0'}}" @tap="alert">
+            <button open-type="share" data-id="{{item.share_code}}" data-index="{{idx}}" data-code="{{item.id}}" wx:if="{{!ticket_switch}}"></button>
           </view>
           <view wx:if="{{item.ticket_status === '1'}}">
             <view wx:if="{{!item.receive}}">
@@ -64,6 +64,8 @@
         <view class="btn {{isFull ? 'on' : ''}}" @tap.stop="submit">确认</view>
       </view>
     </view>
+    <!-- 接收失败 -->
+    <receiveFaildModal :receiveFaildInfo.sync="receiveFaildInfo" wx:if="{{receiveFaildInfo.show}}"></receiveFaildModal>
   </report>
 </template>
 <style lang="less" src="./ticket.less">

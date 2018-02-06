@@ -9,6 +9,8 @@ module.exports = {
         "1.文案需要一休提供，鼓励金可以级在支付活动费用的时候直接抵扣现金，没有抵扣上限。", 
         "1.文案需要一休提供，鼓励金可以级在支付活动费用的时候直接抵扣现金，没有抵扣上限。"],
         "phone": '',
+        'ticket_desc':"今日电影票已领完",
+        'ticket_switch':false,
         "tickets": [
             {
                 share_code: "jdjdjfjdf",//分享code
