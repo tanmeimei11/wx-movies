@@ -17,14 +17,14 @@
         <view class="s-desc-text all">合计金额
           <text>¥{{money || BuyMutiModalInfo.basePrice}}</text>
         </view>
-        <block wx:if="{{cutInfo.show && cutInfo.ticketId}}">
-          <view class="s-desc-text red">升级优惠
-            <text>－¥{{cutInfo.money}}</text>
+        <block wx:if="{{discountInfo.show}}">
+          <view class="s-desc-text red">{{targetDiscount.d_desc || discountInfo.detail[0].d_desc}}
+            <text>－¥{{targetDiscount.d_price || discountInfo.detail[0].d_price}}</text>
           </view>
           <view class="s-desc-text real-money">实付金额
-            <text>¥{{realMoney || (BuyMutiModalInfo.basePrice - cutInfo.money)}}</text>
+            <text>¥{{realMoney || (BuyMutiModalInfo.basePrice - (targetDiscount.d_price || discountInfo.detail[0].d_price))}}</text>
           </view>
-          </block>
+        </block>
         <view class="money-desc" >{{BuyMutiModalInfo.baseDesc}}</view>
       </view>
       <view class="s-btn" @tap.stop="pay">立即支付</view>
@@ -193,50 +193,54 @@
 }
 </style>
 <script>
-import wepy from "wepy";
-import util from "@/utils/util";
-import { request } from "@/utils/request";
-import tips from "@/utils/tips";
-import track from "@/utils/track";
+import wepy from 'wepy';
+// import util from '@/utils/util';
+// import { request } from '@/utils/request';
+// import tips from '@/utils/tips';
+import track from '@/utils/track';
 
 export default class buyMutiModal extends wepy.component {
   props = {
     BuyMutiModalInfo: Object,
-    cutInfo:Object
+    discountInfo: Object
   };
   data = {
-    number:1,
-    money:'',
-    realMoney:''
+    number: 1,
+    money: '',
+    realMoney: '',
+    targetDiscount: null
+
   };
   methods = {
-    close(){
-      this.$emit('closeBuyMutiModal')
+    close () {
+      this.$emit( 'closeBuyMutiModal' );
     },
-    pay(){
-      this.$emit('payOrder')
+    pay () {
+      this.$emit( 'payOrder' );
     },
-    opJia(){
-      if(this.number>19){
-        return 
+    opJia () {
+      if ( this.number > 19 ) {
+        return;
       }
-      track ( 'page_number_box_plus' )
-      this.number++
+      track( 'page_number_box_plus' );
+      this.number++;
     },
-    opJian(){
-      if(this.number<2){
-        return 
+    opJian () {
+      if ( this.number < 2 ) {
+        return;
       }
-      track ( 'page_number_box_minus' )
-      this.number--
+      track( 'page_number_box_minus' );
+      this.number--;
     }
   };
   watch= {
-    number (newVal,oldVal){
-      this.money = newVal * this.BuyMutiModalInfo.basePrice
-      this.realMoney =  this.money - this.cutInfo.money
-      if(newVal !== oldVal){
-        this.$emit('changeBuyNum',newVal)
+    number ( newVal, oldVal ) {
+      let idx = Math.min( newVal - 1, this.discountInfo.detail.length - 1 );
+      this.targetDiscount = this.discountInfo.detail[idx];
+      this.money = newVal * this.BuyMutiModalInfo.basePrice;
+      this.realMoney = this.money - this.targetDiscount.d_price;
+      if ( newVal !== oldVal ) {
+        this.$emit( 'changeBuyNum', newVal );
       }
     }
   }

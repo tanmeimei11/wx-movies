@@ -1,0 +1,68 @@
+<template>
+  <view class="notice">
+    <repeat for="{{noticeInfo.rp_notice}}" key="index" index="index" item="item">
+      <image mode="aspectFit" class="img" wx:if="{{item.img}}" src="{{item.img}}"></image>
+      <text class="text" wx:elif="{{item.text}}" style="{{item.style?item.style:''}}">{{item.text}}</text> 
+    </repeat>
+  </view>
+</template>
+<style type="less">
+  .notice{
+    position: absolute;
+    bottom: 122rpx;
+    right: 30rpx;
+    padding: 10rpx 20rpx;
+    background-color: #fff;
+    border-radius: 6rpx;
+    min-height: 45rpx;
+    min-width: 100rpx;
+    color: #333333;
+    box-shadow: 5rpx 5rpx 5px 0px rgba(0, 0, 0, 0.5);
+    &:after{
+      content: '';
+      position: absolute;
+      border: 15rpx solid transparent;
+      border-top: 15rpx solid #fff;
+      width: 0;
+      height: 0;
+      top: 100%;
+      right: 20rpx;
+    }
+    .img{
+      width: 44rpx;
+      height: 44rpx;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .text{
+      font-size: 32rpx;
+      line-height: 44rpx;
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+</style>
+<script>
+import wepy from 'wepy';
+import track from '@/utils/track';
+
+export default class notice extends wepy.component {
+  props = {
+    noticeInfo: {
+      type: Object
+    }
+  };
+  data = {
+  };
+  methods = {
+    close () {
+      this.$emit( 'closeChannelModal' );
+      track( 'page_wx_channelModal_close' );
+    },
+    getRedPacket () {
+      this.$emit( 'closeChannelModal' );
+      track( 'page_wx_channelModal_get' );
+    }
+  };
+}
+</script>
