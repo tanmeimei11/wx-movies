@@ -122,14 +122,10 @@ export default class Index extends wepy.page {
     },
     async payOrder () {
       try {
-        // if ( !this.isPay ) {
         this.isPay = true;
         track( 'page_number_box_pay' );
         await this.pay();
-          // this.isPay = false;
-        // }
       } catch ( e ) {
-        // this.isPay = false;
       }
     }
   }
@@ -222,6 +218,9 @@ export default class Index extends wepy.page {
       };
     } else if ( res.fetch_ticket && this.cutInfo.ticketId ) {
       this.cutInfo.show = true;
+    } else if ( res.ticket_switch ) {
+      this.receiveFaildInfo.show = true;
+      this.receiveFaildInfo.msg = res.ticket_desc;
     }
   }
   /**
