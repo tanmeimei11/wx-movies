@@ -50,6 +50,9 @@ export default class self extends wepy.page {
     bindKeyInput ( e ) {
       this.num = e.detail.value;
       if ( e.detail.value.length === 11 ) {
+        if (!util.verifyPhone(this.num)) {
+          return 
+        }
         this.isFull = true;
       } else {
         this.isFull = false;

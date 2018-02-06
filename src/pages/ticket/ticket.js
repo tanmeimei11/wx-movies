@@ -64,6 +64,7 @@ export default class ticket extends wepy.page {
 
   events = {
     closeRecevieFaild () {
+      track( 'fission_share_to_group_soldout_iknow' );
       this.receiveFaildInfo.show = false
     }
   }
@@ -77,6 +78,7 @@ export default class ticket extends wepy.page {
     },
     alert () {
       if (this.ticket_switch) {
+        track( 'fission_share_to_group_soldout_expo' );
         this.receiveFaildInfo.show = true
       }
     },
