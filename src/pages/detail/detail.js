@@ -60,6 +60,7 @@ export default class Index extends wepy.page {
       cardInfo: {}
     },
     receiveFaildInfo: { // 失败弹窗
+      type: '',
       show: false,
       msg: ''
     },
@@ -93,6 +94,9 @@ export default class Index extends wepy.page {
     },
     closeRecevieFaild () {
       this.receiveFaildInfo.show = false;
+      if ( this.receiveFaildInfo.type === 'notGetTicket' ) {
+        track( 'fission_other_soldout_iknow' );
+      }
     },
     closeReceiveModal () {
       this.receiveGiftInfo.show = false;
@@ -113,6 +117,7 @@ export default class Index extends wepy.page {
         console.log( e );
         this.receiveGiftInfo.show = false;
         this.receiveFaildInfo = {
+          ...this.receiveFaildInfo,
           show: true,
           msg: '领取失败了'
         };
@@ -122,20 +127,20 @@ export default class Index extends wepy.page {
     },
     async payOrder () {
       try {
-        // if ( !this.isPay ) {
         this.isPay = true;
         track( 'page_number_box_pay' );
         await this.pay();
-          // this.isPay = false;
-        // }
       } catch ( e ) {
-        // this.isPay = false;
       }
     }
   }
   methods = {
     openBuyMutiModal () {
-      track( 'page_buy' );
+      if ( this.cutInfo.ticketId && this.cutInfo.show ) {
+        track( 'fission_minus_50_buy' );
+      } else {
+        track( 'page_buy' );
+      }
       this.BuyMutiModalInfo.show = true;
     },
     toIndex () {
@@ -150,8 +155,14 @@ export default class Index extends wepy.page {
       this.toView = 'details';
       this.$apply();
     },
-    getMovieTicket () {
-      track( 'fission_immediately_get' );
+    getMovieTicket ( type ) {
+      if ( type === 'lingqu' ) {
+        // 来自弹窗的领取
+        track( 'fission_other_immediately_receive' );
+      } else {
+        track( 'fission_immediately_get' );
+      }
+
       wepy.navigateTo( {
         url: `/pages/ticket/ticket`
       } );
@@ -213,15 +224,29 @@ export default class Index extends wepy.page {
     if ( this.cardCode ) { await this.initCardStatus(); };
     this.$apply();
   }
+  /**
+   * 初始化接收卡的信息
+   * @param {*} res
+   */
   initReceiveTicketInfo ( res ) {
-    if ( res.fetch_ticket && this.receiveTicketInfo.shareCode ) {
-      this.receiveTicketInfo = {
-        ...this.receiveTicketInfo,
-        show: true,
-        userInfo: res.share_user_info
-      };
-    } else if ( res.fetch_ticket && this.cutInfo.ticketId ) {
+    if ( this.cutInfo.ticketId ) {
       this.cutInfo.show = true;
+    } else {
+      if ( res.ticket_switch ) {
+        track( 'fission_other_soldout_expo' );
+        this.receiveFaildInfo = {
+          type: 'notGetTicket',
+          show: true,
+          msg: res.ticket_desc
+        };
+      } else if ( res.fetch_ticket && this.receiveTicketInfo.shareCode ) {
+        track( 'fission_other_receivebox_expo' );
+        this.receiveTicketInfo = {
+          ...this.receiveTicketInfo,
+          show: true,
+          userInfo: res.share_user_info
+        };
+      }
     }
   }
   /**
@@ -341,7 +366,6 @@ export default class Index extends wepy.page {
       this.paySucc( createRes.order_no );
     } catch ( e ) {
       // this.BuyMutiModalInfo.show = false;
-      this.isPay = false;
       this.$apply();
       track( 'page_pay_failed' );
     }
