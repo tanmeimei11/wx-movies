@@ -229,24 +229,26 @@ export default class Index extends wepy.page {
    * @param {*} res
    */
   initReceiveTicketInfo ( res ) {
-    if ( this.cutInfo.ticketId ) {
+    if ( this.cutInfo.ticketId ) {  // 升级点进来
       this.cutInfo.show = true;
-    } else {
-      if ( res.ticket_switch ) {
-        track( 'fission_other_soldout_expo' );
-        this.receiveFaildInfo = {
-          type: 'notGetTicket',
-          show: true,
-          msg: res.ticket_desc
-        };
-      } else if ( res.fetch_ticket && this.receiveTicketInfo.shareCode ) {
-        track( 'fission_other_receivebox_expo' );
-        this.receiveTicketInfo = {
-          ...this.receiveTicketInfo,
-          show: true,
-          userInfo: res.share_user_info
-        };
-      }
+      return;
+    }
+
+    // 分享三张电影票点进来
+    if ( res.ticket_switch ) { // 票已经领完了
+      track( 'fission_other_soldout_expo' );
+      this.receiveFaildInfo = {
+        type: 'notGetTicket',
+        show: true,
+        msg: res.ticket_desc
+      };
+    } else if ( res.fetch_ticket && res.share_user_info && this.receiveTicketInfo.shareCode ) {  // 送你三张电影票
+      track( 'fission_other_receivebox_expo' );
+      this.receiveTicketInfo = {
+        ...this.receiveTicketInfo,
+        show: true,
+        userInfo: res.share_user_info
+      };
     }
   }
   /**
