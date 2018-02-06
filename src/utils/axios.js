@@ -61,7 +61,7 @@ export default class http {
     const serverData = data.data;
     if ( serverData ) {
       error.serverCode = data.code;
-      error.message = data.message;
+      error.message = data.msg || data.message;
       error.serverData = serverData;
     }
     return error;

@@ -5,6 +5,7 @@ import tips from '@/utils/tips';
 import { request } from '@/utils/request';
 import report from '@/components/report-submit';
 import track from '@/utils/track';
+import util from "@/utils/util";
 
 export default class self extends wepy.page {
   config = {
@@ -24,7 +25,7 @@ export default class self extends wepy.page {
     userInfo: { // 用户信息
       avatar: '',
       name: '',
-      phone: ' '
+      phone: ''
     },
     cardInfos: [{ // 卡片信息
       id: '',
@@ -33,7 +34,16 @@ export default class self extends wepy.page {
       time: '',
       isApply: true,
       num: ''
-    }]
+    }],
+
+    isShowExchange: false,
+    exchangeDisabled: true,
+    change_code: '',
+    phone: '',
+    isfirst: true,
+    cdkeyError: '',
+    cdkeyText: '',
+    phoneError: ''
   }
 
   methods = {
@@ -90,6 +100,61 @@ export default class self extends wepy.page {
       wepy.navigateTo( {
         url: '/pages/detail/detail'
       } );
+    },
+
+    triggerExchange () {
+      this.isShowExchange = true;
+    },
+
+    /**
+     * 确认兑换按钮
+     */
+    async exchange () {
+      if ( !util.verifyPhone( this.phone.trim() ) ) {
+        this.phoneError = 'error';
+        return;
+      }
+
+      try {
+        await Self.cardChange( {
+          change_code: this.change_code,
+          phone: this.phone
+        } );
+        // 兑换成功
+        this.isShowExchange = false
+        await this.init();
+      } catch ( e ) {
+        // 兑换失败
+        this.cdkeyError = 'error';
+        this.cdkeyText = e.message;
+        this.$apply();
+      }
+    },
+
+    cdkeyInput ( e ) {
+      this.cdkeyError = '';
+      this.exchangeDisabled = false;
+      this.change_code = e.detail.value;
+
+      if ( this.change_code.trim() === '' || !this.phone ) {
+        this.exchangeDisabled = true;
+      }
+    },
+
+    phoneInput ( e ) {
+      this.phoneError = '';
+      this.exchangeDisabled = false;
+      this.phone = e.detail.value;
+
+      if ( this.change_code.trim() === '' || !this.phone ) {
+        this.exchangeDisabled = true;
+      }
+    },
+
+    closePopup ( force = false, e ) {
+      if ( e.target.id === 'exchangePopup' || force ) {
+        this.isShowExchange = false;
+      }
     }
   }
 
@@ -101,6 +166,9 @@ export default class self extends wepy.page {
     this.cardInfos = Self.initCardInfo( myInfoRes.cards );
     this.userInfo = Self.initUserInfo( myInfoRes );
     this.rules = Self.initRules( myInfoRes.texts );
+    // 读取手机号
+    this.isfirst = !this.userInfo.phone;
+    this.phone = this.userInfo.phone;
     this.$apply();
   }
   async onLoad () {
