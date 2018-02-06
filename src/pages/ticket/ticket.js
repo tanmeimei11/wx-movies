@@ -22,6 +22,8 @@ export default class ticket extends wepy.page {
     rules: [], // 规则文案
     tickets: [],
     phone: '',
+    isShowUpgrade: false,
+    upgradeTicket: '',
 
     shareIndex: '',
     cardsbg: ['', '', ''],
@@ -32,6 +34,7 @@ export default class ticket extends wepy.page {
     share_code: '',
     qrcode_from: '',
     ticket_switch: '',
+    upgrade_img: '',
 
     receiveFaildInfo: {
       msg: '',
@@ -66,6 +69,12 @@ export default class ticket extends wepy.page {
   }
 
   methods = {
+    showUpgrade (e) {
+      track( 'fission_upgrade' );
+      track( 'fission_upgradebox_expo' );
+      this.isShowUpgrade = true
+      this.upgradeTicket = e.currentTarget.dataset.ticket
+    },
     alert () {
       if (this.ticket_switch) {
         this.receiveFaildInfo.show = true
@@ -90,6 +99,7 @@ export default class ticket extends wepy.page {
       this.rulesShow = true;
     },
     close () {
+      this.isShowUpgrade = false;
       this.rulesShow = false;
     },
     closePhone () {
@@ -106,11 +116,10 @@ export default class ticket extends wepy.page {
     async receive ( e ) {
       await this.init();
     },
-    toDetail (e) {
-      var thisTicket = e.currentTarget.dataset.ticket
-      track( 'fission_upgrade' );
+    toDetail () {
+      track( 'fission_upgradebox_upgrade' );
       wepy.reLaunch( {
-        url: `/pages/detail/detail?ticketId=${thisTicket}`
+        url: `/pages/detail/detail?ticketId=${this.upgradeTicket}`
       } );
     },
     toSelf () {
@@ -132,11 +141,25 @@ export default class ticket extends wepy.page {
     var thisTicket = this.cardInfo.ticket
     var thisIndex = this.cardInfo.index
     var ticketid = this.cardInfo.ticketid
-    var card = await Ticket.pickCard( ticketid, thisIndex, this.phone );
+    var card = await Ticket.pickCard( ticketid, thisIndex, this.phone, this.$parent.globalData.shareTicket );
     // await this.init()
     this.cards[thisTicket] = card
     this.tickets[thisTicket].receive = true
+    this.tickets[thisTicket].countDown = 3
     this.$apply()
+    this.countDown(this.tickets[thisTicket])
+  }
+
+  async countDown (item) {
+    setTimeout(() => {
+      if (item.countDown === 0) {
+        this.init()
+        return
+      }
+      item.countDown --;
+      this.$apply()
+      this.countDown(item)
+    }, 1000);
   }
 
   async getShared ( data ) {
@@ -168,6 +191,7 @@ export default class ticket extends wepy.page {
     this.phone = myInfoRes.phone || ''
     this.ticket_switch = myInfoRes.ticket_switch
     this.receiveFaildInfo.msg = myInfoRes.ticket_desc
+    this.upgrade_img = myInfoRes.upgrade_img
     this.$apply();
   }
   async onLoad ( options ) {

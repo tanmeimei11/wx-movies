@@ -70,14 +70,15 @@ export default class Ticket extends Pagebase {
   /**
    * 抽奖
    */
-  static async pickCard ( ticket_id, index, phone ) {
+  static async pickCard ( ticket_id, index, phone, shareTicket ) {
     return await this.request( {
       url: '/mnp/ticket/fetch',
       method: 'POST',
       data: {
         ticket_id: ticket_id,
         index: index,
-        phone: phone
+        phone: phone,
+        open_gid: shareTicket
       }
     } );
   }

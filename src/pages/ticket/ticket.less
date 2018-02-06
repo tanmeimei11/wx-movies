@@ -120,6 +120,12 @@ page{
               font-size: 26rpx;
               color: #ef5b4c;
             }
+            .delivered{
+              font-size: 20rpx;
+              color: #ef5b4c;
+              display: inline-block;
+              margin-top: 20rpx;
+            }
           }
         }
         .choosetxt{
@@ -234,6 +240,11 @@ page{
       }
       &.received{
         background: url('https://inimg02.jiuyan.info/in/2018/02/03/86779824-CDDC-7B47-2DC3-26327F44A90B.png') no-repeat;
+        background-size: contain;
+        background-position: center;
+      }
+      &.status4.received{
+        background: url('https://inimg05.jiuyan.info/in/2018/02/06/54B04EB2-3FA1-65B6-913B-B3C72BEF4D24.png') no-repeat;
         background-size: contain;
         background-position: center;
       }
@@ -367,6 +378,50 @@ page{
       &.on{
         opacity: 1;
       }
+    }
+  }
+}
+
+.upgradeWindow{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1001;
+  .bg{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+  }
+  .window{
+    position: absolute;
+    top: 44%;
+    left: 95rpx;
+    width: 560rpx;
+    height: 686rpx;
+    transform: translateY(-50%);
+    z-index: 100;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    .close{
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 120rpx;
+      height: 120rpx;
+    }
+    .toDetail{
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
     }
   }
 }

@@ -22,21 +22,21 @@
                 <view class="{{item3.has_fetch ? 'on' : ''}}" wx:for="{{cards[idx]}}" wx:for-index="idx3" wx:for-item="item3" wx:key="idx3">
                   <text class="type">{{item3.desc}}</text>
                   <text>电影票</text>
+                  <text class="delivered">已送出{{item3.delivered_count}}张</text>
                 </view>
               </view>
-              <view class="receive" @tap="receive" data-ticket="{{idx}}">收下电影票</view>
+              <view class="receive" data-ticket="{{idx}}">{{item.countDown}}秒自动收下</view>
             </view>
           </view>
           <view wx:if="{{item.ticket_status === '2' || item.ticket_status === '4'}}">
             <view class="t-title">{{item.title}}</view>
             <view class="remark">{{item.remark}}</view>
-            <view class="up">升级为<text>3个月全天</text>电影无限看</view>
+            <view class="up" wx:if="{{item.ticket_status === '2'}}">升级为<text>3个月全天</text>电影无限看</view>
             <view class="tipsArea" wx:if="{{item.ticket_status === '2'}}">
               <text class="tips">{{item.tips}}</text>
               <view class="jiao"></view>
             </view>
-            <view class="btn" @tap="toDetail" data-ticket="{{item.id}}" wx:if="{{item.ticket_status === '2'}}">立即升级</view>
-            <view class="btn fail" data-ticket="{{item.id}}" wx:if="{{item.ticket_status === '4'}}">已过期</view>
+            <view class="btn" @tap="showUpgrade" data-ticket="{{item.id}}" wx:if="{{item.ticket_status === '2'}}">立即升级</view>
           </view>
           <view wx:if="{{item.ticket_status === '3'}}" @tap="toSelf"></view>
         </view>
@@ -62,6 +62,13 @@
         <view class="bind">绑定手机号</view>
         <input bindinput="bindKeyInput" placeholder="输入手机号" type="number" maxlength="11" placeholder-style="color: #E0E0E0"/>
         <view class="btn {{isFull ? 'on' : ''}}" @tap.stop="submit">确认</view>
+      </view>
+    </view>
+    <view class="upgradeWindow" wx:if="{{isShowUpgrade}}">
+      <view class="bg" @tap="close"></view>
+      <view class="window" style="background-image: url({{upgrade_img}});">
+        <view class="toDetail" @tap="toDetail"></view>
+        <view class="close" @tap="close"></view>
       </view>
     </view>
     <!-- 接收失败 -->
