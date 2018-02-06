@@ -318,7 +318,8 @@ page{
     border-radius: 100px;
   }
 
-  button[disabled="true"] {
+  wx-button[disabled]:not([type]) {
+    color: #fff;
     opacity: .5;
   }
 }
