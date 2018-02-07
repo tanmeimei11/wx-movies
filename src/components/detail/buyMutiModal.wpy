@@ -238,9 +238,9 @@ export default class buyMutiModal extends wepy.component {
   watch= {
     number ( newVal, oldVal ) {
       let idx = Math.min( newVal - 1, this.discountInfo.detail.length - 1 );
-      this.targetDiscount = this.discountInfo.detail[idx];
+      this.targetDiscount = this.discountInfo.detail[idx] || {};
       this.money = newVal * this.buyMutiModalInfo.basePrice;
-      this.realMoney = this.money - this.targetDiscount.d_price;
+      this.realMoney = this.money - ( this.targetDiscount.d_price || 0 );
       if ( newVal !== oldVal ) {
         this.$emit( 'changeBuyNum', newVal );
       }

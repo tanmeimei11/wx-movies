@@ -82,7 +82,7 @@
   .bottom-img{
     display: block;
     width: 100%;
-    margin:20rpx auto;
+    margin:20rpx auto 0;
   }
  }
 </style>
