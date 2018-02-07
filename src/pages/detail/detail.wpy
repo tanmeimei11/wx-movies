@@ -5,21 +5,7 @@
       <view class="anch" @tap="gotoBottom">活动规则</view>
       <view class="c-bg" style="{{bgStyle}}"></view>
       <view class="c-part" style="background-image:url({{partBg}})">
-         <!-- 电影部分 -->
-         <view class="c-one-part movie">
-            <view class="s-mid-title movie1">{{detailText.desc11}}</view>
-            <view class="s-title">{{detailText.desc12[0]}}</view>
-            <view class="s-desc">{{detailText.desc12[1]}}</view>
-            <view class="s-info-wrap">
-              <view class="movies-wrap"  >
-                <view class="movie" wx:for="{{movies}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
-                  <image class="movie-paper" src="{{item.url}}"></image>
-                  <view class="movie-name">{{item.name}}</view>
-                </view>
-              </view>
-            </view>
-            <view class="s-tips">(页面仅展示部分电影，更多电影无限畅看)</view>
-          </view>
+         <moviePart :moviesSections.sync="moviesSections" :detailText.sync="detailText" :movieImg.sync="movieImg"></moviePart>
          <!-- 电影部分 -->
         <view class="c-one-part movie">
           <view class="s-mid-title movie">{{detailText.desc09}}</view>
@@ -71,7 +57,7 @@
     <!-- 接收失败 -->
     <receiveFaildModal :receiveFaildInfo.sync="receiveFaildInfo" wx:if="{{receiveFaildInfo.show}}"></receiveFaildModal>
     <!-- 支付 -->
-    <buyMutiModal :BuyMutiModalInfo.sync="BuyMutiModalInfo" wx:if="{{BuyMutiModalInfo.show}}" :discountInfo.sync="discountInfo" ></buyMutiModal>
+    <buyMutiModal :buyMutiModalInfo.sync="buyMutiModalInfo" :cardImg.sync="cardImg" wx:if="{{buyMutiModalInfo.show}}" :discountInfo.sync="discountInfo" ></buyMutiModal>
      <!--fix 获得电影卡-->
     <view class="get-movies-ticket" wx:if="{{detailStatus.fetch_ticket}}" @tap="getMovieTicket"></view>
     <!--fix 按钮-->

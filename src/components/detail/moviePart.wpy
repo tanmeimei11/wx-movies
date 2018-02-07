@@ -1,0 +1,111 @@
+<template>
+   <!-- 电影部分 -->
+   <view class="c-one-part movie-part">
+    <view class="s-mid-title movie1">{{detailText.desc11}}</view>
+    <view class="s-title">{{detailText.desc12[0]}}</view>
+    <view class="s-desc">{{detailText.desc12[1]}}</view>
+    <view class="s-info-wrap" wx:for="{{moviesSections}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
+      <view class="title">{{item.title}}</view>
+      <view class="movies-wrap" >
+        <view class="movie" wx:for="{{item.list}}" wx:for-index="idx" wx:for-item="movie" wx:key="idx">
+          <image class="movie-paper" src="{{movie.url}}"></image>
+          <view class="movie-name">{{movie.name}}</view>
+          <view class="movie-desc">{{movie.desc}}</view>
+        </view>
+      </view>
+    </view>
+    <!-- <view class="s-tips">(页面仅展示部分电影，更多电影无限畅看)</view> -->
+    <image class="bottom-img" mode="widthFix" src="{{movieImg}}"></image>
+  </view>
+</template>
+<style type="less">
+ .movie-part{
+  .s-desc{
+    padding-bottom: 50rpx;
+  }
+  .s-info-wrap{
+    width: 100%;
+    margin:0 0 0rpx 0;
+    display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content:center;
+      align-content:center;
+    .title{
+      margin:0 0 20rpx 0;
+      border-radius: 500rpx;
+      font-size: 24rpx;
+      color: #FFFFFF;
+      line-height: 46rpx;
+      padding:0 16rpx;
+      background-image: linear-gradient(90deg, #EC7E64 0%, #E865BB 100%);
+    }
+    .movies-wrap{
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content:flex-start;
+      align-content:flex-start;
+    
+      .movie{
+        width:  188rpx;
+        margin-bottom: 40rpx;
+        margin-right: 25rpx
+      }
+      .movie:nth-child(3n){
+        margin-right:0
+      }
+      .movie-paper{
+        width: 188rpx;
+        height: 280rpx;
+        background-color: #fff;
+        margin:0 auto;
+      }
+      .movie-name{
+        text-align: center;
+        font-size: 24rpx;
+        line-height: 2;
+        color: #333333;
+        white-space: nowrap;
+      }
+      .movie-desc{
+        font-size: 22rpx;
+        color: #B0B0B0;
+        text-align: center;
+        height: 30rpx;
+        line-height: 30rpx;
+        white-space: nowrap;
+      }
+    }
+  }
+  .bottom-img{
+    display: block;
+    width: 100%;
+    margin:20rpx auto;
+  }
+ }
+</style>
+<script>
+import wepy from 'wepy';
+import track from '@/utils/track';
+
+export default class moviePart extends wepy.component {
+  props = {
+    detailText: {},
+    moviesSections: [],
+    movieImg: String
+  };
+  data = {};
+  methods = {
+    close () {
+      this.$emit( 'closeChannelModal' );
+      track( 'page_wx_channelModal_close' );
+    },
+    getRedPacket () {
+      this.$emit( 'closeChannelModal' );
+      track( 'page_wx_channelModal_get' );
+    }
+  };
+}
+</script>

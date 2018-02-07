@@ -2,9 +2,10 @@
   <view class="c-modal c-buymuti-modal">
     <view class="c-wrap">
       <view class="s-close" @tap.stop="close"></view>
-      <view class="s-header">
-        <view class="tips">NO.xxxxxxxxxxxxxxxxxx</view>
-        <view class="time">三个月电影无限看</view>
+      <!-- <view class="s-header" style="background-image:url({{cardImg}})"> -->
+      <view class="s-header" style="background-image:url('https://inimg07.jiuyan.info/in/2018/02/07/7D546BB7-C97B-2080-95C2-B27EFB8C3301.jpg')">
+        <!-- <view class="tips">NO.xxxxxxxxxxxxxxxxxx</view>
+        <view class="time">三个月电影无限看</view> -->
       </view>
       <view class="s-main pay-wrap">
         <view class="s-desc-text ">购买数量
@@ -15,17 +16,17 @@
           </view>
         </view>
         <view class="s-desc-text all">合计金额
-          <text>¥{{money || BuyMutiModalInfo.basePrice}}</text>
+          <text>¥{{money || buyMutiModalInfo.basePrice}}</text>
         </view>
         <block wx:if="{{discountInfo.show}}">
           <view class="s-desc-text red">{{targetDiscount.d_desc || discountInfo.detail[0].d_desc}}
             <text>－¥{{targetDiscount.d_price || discountInfo.detail[0].d_price}}</text>
           </view>
           <view class="s-desc-text real-money">实付金额
-            <text>¥{{realMoney || (BuyMutiModalInfo.basePrice - (targetDiscount.d_price || discountInfo.detail[0].d_price))}}</text>
+            <text>¥{{realMoney || (buyMutiModalInfo.basePrice - (targetDiscount.d_price || discountInfo.detail[0].d_price))}}</text>
           </view>
         </block>
-        <view class="money-desc" >{{BuyMutiModalInfo.baseDesc}}</view>
+        <view class="money-desc" >{{buyMutiModalInfo.baseDesc}}</view>
       </view>
       <view class="s-btn" @tap.stop="pay">立即支付</view>
     </view>
@@ -47,7 +48,7 @@
     transform: translate(-50%,-50%);
     width: 400rpx;
     height: 236rpx;
-    background-image: url(https://inimg01.jiuyan.info/in/2018/01/25/FB5D55FB-986F-6433-18B8-BAF8C0C797E3.jpg);
+    /* background-image: url(https://inimg01.jiuyan.info/in/2018/01/25/FB5D55FB-986F-6433-18B8-BAF8C0C797E3.jpg); */
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -201,8 +202,9 @@ import track from '@/utils/track';
 
 export default class buyMutiModal extends wepy.component {
   props = {
-    BuyMutiModalInfo: Object,
-    discountInfo: Object
+    buyMutiModalInfo: Object,
+    discountInfo: Object,
+    cardImg: String
   };
   data = {
     number: 1,
@@ -237,7 +239,7 @@ export default class buyMutiModal extends wepy.component {
     number ( newVal, oldVal ) {
       let idx = Math.min( newVal - 1, this.discountInfo.detail.length - 1 );
       this.targetDiscount = this.discountInfo.detail[idx];
-      this.money = newVal * this.BuyMutiModalInfo.basePrice;
+      this.money = newVal * this.buyMutiModalInfo.basePrice;
       this.realMoney = this.money - this.targetDiscount.d_price;
       if ( newVal !== oldVal ) {
         this.$emit( 'changeBuyNum', newVal );

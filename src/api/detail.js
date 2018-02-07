@@ -74,8 +74,10 @@ export default class Detail extends Pagebase {
 
     return data.map( ( item ) => {
       return {
-        name: item.name,
-        url: item.movie_img_url
+        title: item.title,
+        list: item.list
+        // name: item.name,
+        // url: item.movie_img_url
       };
     } );
   }

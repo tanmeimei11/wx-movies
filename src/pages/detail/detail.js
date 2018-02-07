@@ -10,6 +10,7 @@ import buyMutiModal from '@/components/detail/buyMutiModal';
 import receiveFaildModal from '@/components/detail/receiveFaildModal';
 import channelModal from '@/components/detail/channelModal';
 import notice from '@/components/detail/notice';
+import moviePart from '@/components/detail/moviePart';
 
 import shareConnectMixin from '@/mixins/shareConnectMixin';
 import loadingMixin from '@/mixins/loadingMixin';
@@ -19,7 +20,7 @@ export default class Index extends wepy.page {
   config = {
     navigationBarTitleText: 'in同城趴·电影王卡'
   }
-  components = { report, shareWindow, receiveGiftModal, buyMutiModal, receiveFaildModal, receiveTicketModal, channelModal, notice }
+  components = {report, shareWindow, receiveGiftModal, buyMutiModal, receiveFaildModal, receiveTicketModal, channelModal, notice, moviePart}
   mixins = [shareConnectMixin, loadingMixin]
   data = {
     toView: '',
@@ -37,9 +38,12 @@ export default class Index extends wepy.page {
     },
     movies: [
       { name: '',
-        URL: ''
+        url: ''
       }
     ],
+    moviesSections: [],  // 电影模块的list
+    movieImg: '', // 电影模块的底图
+    cardImg: '', // 支付卡片的图片
     rules: [],
     detailStatus: {
       is_buy: '0',
@@ -50,7 +54,7 @@ export default class Index extends wepy.page {
     qrcode_from: '',
     shareInfo: {},  // 分享信息
     showShareWindow: false,
-    BuyMutiModalInfo: {  // 购买多张的信息
+    buyMutiModalInfo: {  // 购买多张的信息
       show: false,
       number: 1,
       basePrice: '',
@@ -97,10 +101,10 @@ export default class Index extends wepy.page {
   }
   events = {
     closeBuyMutiModal () {
-      this.BuyMutiModalInfo.show = false;
+      this.buyMutiModalInfo.show = false;
     },
     changeBuyNum ( num ) {
-      this.BuyMutiModalInfo.number = num;
+      this.buyMutiModalInfo.number = num;
     },
     changeReceBtnStatus ( val, phoneNum ) {
       this.receiveGiftInfo.btnStatus = val;
@@ -158,7 +162,7 @@ export default class Index extends wepy.page {
       } else {
         track( 'page_buy' );
       }
-      this.BuyMutiModalInfo.show = true;
+      this.buyMutiModalInfo.show = true;
     },
     toIndex () {
       wepy.switchTab( {
@@ -199,10 +203,6 @@ export default class Index extends wepy.page {
     },
     trackContact () {
       track( 'page_custom_service' );
-    },
-    async initShare () {
-      this.shareInfo = await Detail.getShareInfo();
-      this.$apply();
     }
   }
   onShareAppMessage ( res ) {
@@ -226,7 +226,8 @@ export default class Index extends wepy.page {
   async init () {
     var res = await Detail.getDetailData( this.detailCode );
     this.cinemas = Detail.initCinemas( res.cinemas, res.all_cinema_addr_img );
-    this.movies = Detail.initMovies( res.movies );
+    this.moviesSections = Detail.initMovies( res.movie_sections );
+
     this.detailText = this.initBuyText( res );
     this.rules = this.initRulesText( res.desc );
     this.initBuyInfo( res );
@@ -308,10 +309,12 @@ export default class Index extends wepy.page {
     }
   }
   /**
-   * 初始化背景图等
+   * 初始化背景图
    * @param {*} res
    */
   initBgImages ( res ) {
+    this.movieImg = res.movies_bottom_pic;
+    this.cardImg = res.card_img;
     this.bgImages = res.bg_imgs;
     this.bgStyle = `background-image:url(${this.bgImages[0]}),url(${this.bgImages[1]}),url(${this.bgImages[2]})`;
     this.partBg = res.bg_img_01;
@@ -322,8 +325,8 @@ export default class Index extends wepy.page {
    * @param {*} res
    */
   initBuyInfo ( res ) {
-    this.BuyMutiModalInfo = {
-      ...this.BuyMutiModalInfo,
+    this.buyMutiModalInfo = {
+      ...this.buyMutiModalInfo,
       basePrice: parseInt( res.pay_price ),
       baseDesc: res.pay_notice
     };
@@ -413,7 +416,7 @@ export default class Index extends wepy.page {
   async pay ( ) {
     try {
       await auth.ready();
-      var createRes = await Detail.creatOrder( this.BuyMutiModalInfo.number, this.statusQuery );
+      var createRes = await Detail.creatOrder( this.buyMutiModalInfo.number, this.statusQuery );
       if ( createRes.code === '4000032129' || createRes.code === '4000031814' ) {
         tips.error( createRes.msg );
         return;
@@ -425,7 +428,7 @@ export default class Index extends wepy.page {
       track( 'page_pay_successful' );
       this.paySucc( createRes.order_no );
     } catch ( e ) {
-      // this.BuyMutiModalInfo.show = false;
+      // this.buyMutiModalInfo.show = false;
       this.$apply();
       track( 'page_pay_failed' );
     }
@@ -456,7 +459,7 @@ export default class Index extends wepy.page {
     this.noticeInfo.show = false;
     this.discountInfo.show = false;
     this.discountInfo.ticketId = '';
-    this.BuyMutiModalInfo.show = false;
+    this.buyMutiModalInfo.show = false;
     this.$apply();
   }
 }
