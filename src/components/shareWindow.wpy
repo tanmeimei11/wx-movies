@@ -1,21 +1,25 @@
 <template>
-  <view class="shareWindow">
+  <view class="shareWindow {{shareInfo.is_show_amount ? '' :'invite' }}">
     <view class="bg" @tap="close"></view>
     <view class="window">
-      <view class="title">
+      <view class="title hidden" >
         <view class="title1">{{shareInfo.toast_title}}</view>
         <view class="title2">{{shareInfo.toast_subtitle}}</view>
       </view>
       <view class="close" @tap="close"></view>
-      <view class="content">
+      <view class="content hidden" >
         <view class="txt1">当前可提现金额</view>
         <view class="cash">￥{{amount}}</view>
         <view class="apply" @tap="apply">申请提现 ></view>
-        <view class="shareBtn" @tap="shareCode">转发给好友/群
-          <button class="btn-cut-btn" open-type="share"></button>
-        </view>
-        <view class="compose" @tap.stop="compose" wx:if="{{shareInfo.is_show}}">生成朋友圈分享图</view>
       </view>
+      <view class="content invite">
+       <image class="img-bg" src="{{bg}}"></image>  
+        <view class="text">{{shareInfo.show_txt}}</view>
+      </view>
+      <view class="shareBtn" @tap="shareCode">转发给好友/群
+        <button class="btn-cut-btn" open-type="share"></button>
+      </view>
+      <view class="compose" @tap.stop="compose" wx:if="{{shareInfo.is_show}}">生成朋友圈分享图</view>
     </view>
     <canvas style="width: 750px; height: 1205px;position:absolute;top:-2000px;left:-2000px;" canvas-id="firstCanvas"></canvas>
   </view>
@@ -29,6 +33,7 @@
     width: 100%;
     height: 100%;
     z-index: 1001;
+   
     .bg{
       position: absolute;
       top: 0;
@@ -90,7 +95,8 @@
           color: #ef5b4c;
           font-size: 30rpx;
         }
-        .shareBtn{
+      }
+      .shareBtn{
           position: relative;
           margin: 50rpx auto 0;
           width: 460rpx;
@@ -122,7 +128,40 @@
           color: #333;
           box-sizing: border-box;
         }
-      }
+    }
+    .invite{
+      display: none;
+    }
+  }
+  .shareWindow.invite{
+    .hidden{
+      display: none!important;
+    }
+    .close{
+      background-size: 30rpx 30rpx;
+      background-image: url('https://inimg01.jiuyan.info/in/2017/10/15/1C51CF46-3F39-78F7-1972-C33785B2D124.jpg')
+    }
+    .invite{
+      display: block
+    }
+    .window{
+      height: 604rpx;
+      padding-top:60rpx;
+      box-sizing: border-box;
+    }
+    .img-bg{
+      display: block;
+      width: 200rpx;
+      height: 200rpx;
+      margin:0 auto;
+    }
+    .text{
+      margin:24rpx 0 0rpx 0;
+      font-size: 36rpx;
+      color: #333333;
+    }
+    .shareBtn{
+      margin-top:30rpx;
     }
   }
 </style>
@@ -134,7 +173,7 @@
   import images from '@/utils/image';
   import { request } from '@/utils/request';
   import tips from '@/utils/tips';
-  import track  from '@/utils/track';
+  import track from '@/utils/track';
 
   export default class shareWindow extends wepy.component {
     props = {
@@ -143,7 +182,8 @@
     data = {
       qrinfo: this.shareInfo,
       amount: '',
-      images: images
+      images: images,
+      bg: 'https://inimg07.jiuyan.info/in/2018/02/07/1E0AE6A1-D2DA-4C00-5D65-69E10B798B08.jpg'
     }
 
     watch = {
@@ -161,7 +201,7 @@
         this.$emit( 'closeShareWindow' );
       },
       async apply () {
-        track('page_share_apply_withdrawal')
+        track( 'page_share_apply_withdrawal' );
         var res = await request( {
           url: '/mnp/account/withdraw',
           method: 'POST'
@@ -186,7 +226,7 @@
       },
       compose () {
         console.log( this.shareInfo );
-        track('page_share_moments_photo')
+        track( 'page_share_moments_photo' );
         wx.showLoading( {
           title: '加载中',
           mask: true

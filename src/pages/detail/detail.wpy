@@ -78,8 +78,8 @@
     <view class="some-btn-wrap">
       <view class="btn-icon btn-index" @tap="toIndex">首页</view>
       <view class="btn-icon btn-contract" @tap="trackContact"> <contact-button session-from="wx_movie_contract"></contact-button>客服</view>
-      <view class="btn btn-cut" @tap="sharePay">分享得现金</view>
-      <view class="btn btn-origin" @tap="openBuyMutiModal">{{BuyMutiModalInfo.basePrice}}元购买</view>
+      <view class="btn btn-cut" @tap="sharePay">{{fixBtnText[0]}}</view>
+      <view class="btn btn-origin" @tap="openBuyMutiModal">{{fixBtnText[1]}}</view>
     </view>
 
     <!-- 其他渠道红包（比如滴滴） -->

@@ -24,7 +24,6 @@ export default class Index extends wepy.page {
   data = {
     toView: '',
     detailCode: {},
-    showShareWindow: false,
     cinemas: {
       img: '',
       list: [
@@ -49,7 +48,8 @@ export default class Index extends wepy.page {
     isPay: false,
     detailText: {},
     qrcode_from: '',
-    shareInfo: {},
+    shareInfo: {},  // 分享信息
+    showShareWindow: false,
     BuyMutiModalInfo: {  // 购买多张的信息
       show: false,
       number: 1,
@@ -92,7 +92,8 @@ export default class Index extends wepy.page {
     partBg: '',
     shareImage: '',
     bgStyle: '',
-    statusQuery: {} // 状态参数
+    statusQuery: {}, // 状态参数
+    fixBtnText: ['', '']// fix按钮的文案
   }
   events = {
     closeBuyMutiModal () {
@@ -200,8 +201,7 @@ export default class Index extends wepy.page {
       track( 'page_custom_service' );
     },
     async initShare () {
-      var shareInfo = await Detail.getShareInfo();
-      this.shareInfo = shareInfo;
+      this.shareInfo = await Detail.getShareInfo();
       this.$apply();
     }
   }
@@ -231,6 +231,7 @@ export default class Index extends wepy.page {
     this.rules = this.initRulesText( res.desc );
     this.initBuyInfo( res );
     this.initBgImages( res );
+    this.initFixBtnText( res );
     this.$apply();
     await auth.ready();
     track( 'page_entry' );
@@ -240,6 +241,13 @@ export default class Index extends wepy.page {
     this.shareInfo = await Detail.getShareInfo();
     if ( this.cardCode ) { await this.initCardStatus(); };
     this.$apply();
+  }
+  /**
+   * 初始化fixed按钮的文案
+   * @param {*} res
+   */
+  initFixBtnText ( res ) {
+    this.fixBtnText = res.btn_txts;
   }
   /**
    *  初始化从哪里进来  // 1.立即升级 2.分享送三张电影票 3.红包

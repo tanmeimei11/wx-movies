@@ -40,7 +40,11 @@ module.exports = {
     pay_price: '109',
     pay_notice: '＊可购买多张转赠给他人使用，瑞机说啥就说睡觉还是交换机的环境',
     'bg_img_01': 'https://inimg01.jiuyan.info/in/2018/01/25/572169AF-DAAC-DDAF-0E40-EF7BEC4DAB57.jpg',
-    'bg_imgs': ['https://inimg01.jiuyan.info/in/2018/01/31/0E2EB360-EE37-AC5D-F774-1CF34BB7EB1F.jpg', 'https://inimg01.jiuyan.info/in/2018/01/31/8FE47727-3E04-D365-B657-D9D7C79D11FE.jpg', 'https://inimg01.jiuyan.info/in/2018/01/31/625DF2A0-FCD4-C1BD-6582-FF19E578781D.jpg']
+    'bg_imgs': ['https://inimg01.jiuyan.info/in/2018/01/31/0E2EB360-EE37-AC5D-F774-1CF34BB7EB1F.jpg', 'https://inimg01.jiuyan.info/in/2018/01/31/8FE47727-3E04-D365-B657-D9D7C79D11FE.jpg', 'https://inimg01.jiuyan.info/in/2018/01/31/625DF2A0-FCD4-C1BD-6582-FF19E578781D.jpg'],
+    'btn_txts': [
+      '分享给好友',
+      '159元购买'
+    ] // 按钮文案
   },
   'code': '0',
   'msg': ''

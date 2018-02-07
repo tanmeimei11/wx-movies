@@ -3,7 +3,7 @@ module.exports = {
   'code': '200003',
   'succ': true,
   'data': {
-    'ticket_switch': true,
+    'ticket_switch': false,
     'ticket_desc': '电影票已领完',
     'is_share': '0',                // 用户是否分享过
     'is_buy': '0',                // 用户是否买过该产品
