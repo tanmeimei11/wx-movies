@@ -133,6 +133,7 @@ export default class Detail extends Pagebase {
   }
   /**
    *
+   * @static  接收卡片接口
    * @param {*} code
    * @param {*} phone
    */
@@ -144,6 +145,17 @@ export default class Detail extends Pagebase {
         reward_code: code,
         phone: phone
       }
+    } );
+  }
+  /**
+   *
+   * @static  预约秒杀接口
+   * @memberof Detail
+   */
+  static async setBook () {
+    return await this.request( {
+      url: '/mnp/seckill/attach2remind',
+      method: 'POST'
     } );
   }
 }

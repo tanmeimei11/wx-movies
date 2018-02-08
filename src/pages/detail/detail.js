@@ -12,6 +12,7 @@ import channelModal from '@/components/detail/channelModal';
 import notice from '@/components/detail/notice';
 import moviePart from '@/components/detail/moviePart';
 import adBanner from '@/components/adBanner';
+import seckill from '@/components/detail/seckill';
 
 import shareConnectMixin from '@/mixins/shareConnectMixin';
 import loadingMixin from '@/mixins/loadingMixin';
@@ -21,7 +22,7 @@ export default class Index extends wepy.page {
   config = {
     navigationBarTitleText: 'in同城趴·电影王卡'
   }
-  components = {report, shareWindow, receiveGiftModal, buyMutiModal, receiveFaildModal, receiveTicketModal, channelModal, notice, moviePart, adBanner}
+  components = {report, shareWindow, receiveGiftModal, buyMutiModal, receiveFaildModal, receiveTicketModal, channelModal, notice, moviePart, adBanner, seckill}
   mixins = [shareConnectMixin, loadingMixin]
   data = {
     toView: '',
@@ -98,7 +99,10 @@ export default class Index extends wepy.page {
     shareImage: '',
     bgStyle: '',
     statusQuery: {}, // 状态参数
-    fixBtnText: ['', '']// fix按钮的文案
+    fixBtnText: ['', ''], // fix按钮的文案
+    seckillInfo: { // 秒杀信息
+      enabled: false
+    }
   }
   events = {
     closeBuyMutiModal () {
@@ -127,6 +131,19 @@ export default class Index extends wepy.page {
     closeChannelModal () {
       this.channelModalInfo.show = false;
       this.noticeInfo.show = true;
+    },
+    // 秒杀开始 致富信息初始化
+    seckill () {
+
+    },
+    // 修改秒杀信息
+    changeSeckill ( status ) {
+      ( typeof status === 'string' ) && ( status = {status: status} );
+      this.seckillInfo = {
+        ...this.seckillInfo,
+        ...status
+      };
+      this.$apply();
     },
     async receive () {
       try {
@@ -232,6 +249,7 @@ export default class Index extends wepy.page {
     this.detailText = this.initBuyText( res );
     this.rules = this.initRulesText( res.desc );
     this.initBuyInfo( res );
+    this.initSeckillInfo( res );
     this.initBgImages( res );
     this.initFixBtnText( res );
     this.$apply();
@@ -243,6 +261,12 @@ export default class Index extends wepy.page {
     this.shareInfo = await Detail.getShareInfo();
     if ( this.cardCode ) { await this.initCardStatus(); };
     this.$apply();
+  }
+  initSeckillInfo ( res ) {
+    this.seckillInfo = res.seckill_info;
+    if ( this.seckillInfo.enabled ) {
+      this.$invoke( 'seckill', 'countdown' );
+    }
   }
   /**
    * 初始化fixed按钮的文案
