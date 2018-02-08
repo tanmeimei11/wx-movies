@@ -1,12 +1,23 @@
 <template>
   <report>
-    <adBanner></adBanner>
     <scroll-view class="container" scroll-y scroll-with-animation scroll-into-view="{{toView}}">
+      <!-- banner部分 -->
+    <adBanner wx:if="{{bannerInfo && bannerInfo.img_url.length > 0}}"
+              :bannerInfo.sync="bannerInfo"></adBanner>
       <!-- 活动规则 -->
       <view class="anch" @tap="gotoBottom">活动规则</view>
-      <view class="c-bg" style="{{bgStyle}}"></view>
       <!-- 秒杀模块 -->
       <seckill wx:if="{{seckillInfo.enabled}}" :seckillInfo.sync="seckillInfo" ></seckill>
+      <!-- 视频和图片部分 -->
+      <view class="c-bg">
+        <image class="img" mode="widthFix" src="{{bgImages[0]}}" />
+        <video wx:if="{{videoConf.support && videoConf.video_url.length > 0}}"
+               src="{{videoConf.video_url}}" 
+               objectFit="cover"
+               poster="{{videoConf.cover_img_url}}"
+               controls></video>
+        <image class="img" mode="widthFix" src="{{bgImages[2]}}" />
+      </view>
       <view class="c-part" style="background-image:url({{partBg}})">
          <moviePart :moviesSections.sync="moviesSections" :detailText.sync="detailText" :movieImg.sync="movieImg"></moviePart>
          <!-- 电影部分 -->

@@ -1,9 +1,8 @@
 <template>
   <report>
     <view class="container">
-      <adBanner wx:if="{{adBannerImg && adBannerImg.length > 0}}"
-                :bannerImg.sync="adBannerImg"
-                :bannerUrl.sync="adBannerUrl"></adBanner>
+      <adBanner wx:if="{{bannerInfo && bannerInfo.img_url.length > 0}}"
+                :bannerInfo.sync="bannerInfo"></adBanner>
       <view class="banner">
         <view class="rule" @tap="openRules">活动细则</view>
       </view>
