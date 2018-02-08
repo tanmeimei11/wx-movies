@@ -1,6 +1,6 @@
 <template>
   <view class="c-banner-wrap" @tap="goBnner">
-       <image class="img" mode="widthFix" src="{{bannerImg}}"></image>
+    <image class="img" mode="widthFix" src="{{bannerImg}}"></image>
   </view>
 </template>
 
@@ -15,15 +15,19 @@
 
 <script>
   import wepy from 'wepy';
-  // import util from '@/utils/util';
-  // import images from '@/utils/image';
-  // import track from '@/utils/track';
-
   export default class adBanner extends wepy.component {
     props = {
+      bannerUrl: {
+        type: String,
+        default: ''
+      },
+      bannerImg: {
+        type: String,
+        default: ''
+      }
     }
     data = {
-      bannerImg: 'https://inimg01.jiuyan.info/in/2018/02/03/4FEB6B74-F97B-063D-148C-C17FCFCB275A.jpg'
+
     }
 
     watch = {
@@ -31,7 +35,9 @@
     }
     methods = {
       goBnner () {
-  
+        wepy.navigateTo( {
+          url: `/pages/webview/webview?h5url=${encodeURIComponent( this.bannerUrl )}`
+        } );
       }
     }
   }

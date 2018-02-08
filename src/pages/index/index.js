@@ -42,7 +42,7 @@ export default class index extends wepy.page {
   onShareAppMessage ( res ) {
     return {
       title: this.shareInfo.share_txt,
-      path: `/pages/index/index?qrcode_from=${this.qrcode}`,
+      path: `/pages/index/index?qrcode_from=${this.qrcode}`
       // imageUrl: this.shareInfo.share_img
       // 'http://inimg07.jiuyan.info/in/2018/01/26/20A52317-E4EB-3657-E024-F2EF040B2E86.jpg'
     };
@@ -66,7 +66,7 @@ export default class index extends wepy.page {
     }
     var InfoRes = await Index.getIndexInfo();
     this.texts = InfoRes;
-    this.qrcode = InfoRes.qrcode_from || ''
+    this.qrcode = InfoRes.qrcode_from || '';
     this.btnon = InfoRes.cf_start !== 'false';
     this.bgImage = InfoRes.bg_img;
     this.$apply();

@@ -1,0 +1,7 @@
+<template>
+  <web-view wx:if="{{webviewShow}}" src="{{webviewUlr}}"></web-view>
+</template>
+<style lang="less" src="./webview.less">
+</style>
+<script src="./webview.js">
+</script>

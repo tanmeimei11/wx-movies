@@ -5,15 +5,18 @@ import tips from '@/utils/tips';
 import report from '@/components/report-submit';
 import shareConnectMixin from '@/mixins/shareConnectMixin';
 import receiveFaildModal from '@/components/detail/receiveFaildModal';
+import adBanner from '@/components/adBanner';
 import track from '@/utils/track';
 
 export default class ticket extends wepy.page {
   config = {
     navigationBarTitleText: '电影票'
   }
-  components = { report, receiveFaildModal }
+  components = { report, receiveFaildModal, adBanner}
   mixins = [shareConnectMixin]
   data = {
+    adBannerImg: 'https://inimg01.jiuyan.info/in/2018/02/03/4FEB6B74-F97B-063D-148C-C17FCFCB275A.jpg',
+    adBannerUrl: 'https://mp.weixin.qq.com/',
     rulesShow: false,
     type: '',
     btninfo: {},
@@ -43,7 +46,7 @@ export default class ticket extends wepy.page {
   }
 
   onShareAppMessage ( res ) {
-    var query = `?shareCode=${this.share_code}&qrcode_from=${this.qrcode_from}`
+    var query = `?shareCode=${this.share_code}&qrcode_from=${this.qrcode_from}`;
     if ( res.target ) {
       this.shareIndex = res.target.dataset.index;
       this.ticketID = res.target.dataset.code;
@@ -65,21 +68,21 @@ export default class ticket extends wepy.page {
   events = {
     closeRecevieFaild () {
       track( 'fission_share_to_group_soldout_iknow' );
-      this.receiveFaildInfo.show = false
+      this.receiveFaildInfo.show = false;
     }
   }
 
   methods = {
-    showUpgrade (e) {
+    showUpgrade ( e ) {
       track( 'fission_upgrade' );
       track( 'fission_upgradebox_expo' );
-      this.isShowUpgrade = true
-      this.upgradeTicket = e.currentTarget.dataset.ticket
+      this.isShowUpgrade = true;
+      this.upgradeTicket = e.currentTarget.dataset.ticket;
     },
     alert () {
-      if (this.ticket_switch) {
+      if ( this.ticket_switch ) {
         track( 'fission_share_to_group_soldout_expo' );
-        this.receiveFaildInfo.show = true
+        this.receiveFaildInfo.show = true;
       }
     },
     bindKeyInput ( e ) {
@@ -87,14 +90,14 @@ export default class ticket extends wepy.page {
       if ( e.detail.value.length === 11 ) {
         this.isFull = true;
       } else {
-        this.isFull = false
+        this.isFull = false;
       }
     },
     async submit () {
       if ( this.isFull ) {
-        this.openCard()
-        this.isShowMobile = false
-        tips.success( '绑定成功' )
+        this.openCard();
+        this.isShowMobile = false;
+        tips.success( '绑定成功' );
       }
     },
     openRules () {
@@ -105,14 +108,14 @@ export default class ticket extends wepy.page {
       this.rulesShow = false;
     },
     closePhone () {
-      this.isShowMobile = false
+      this.isShowMobile = false;
     },
-    havePhone (e) {
-      this.cardInfo = e.currentTarget.dataset
-      if (this.phone) {
-        this.openCard()
+    havePhone ( e ) {
+      this.cardInfo = e.currentTarget.dataset;
+      if ( this.phone ) {
+        this.openCard();
       } else {
-        this.isShowMobile = true
+        this.isShowMobile = true;
       }
     },
     async receive ( e ) {
@@ -140,28 +143,28 @@ export default class ticket extends wepy.page {
   }
 
   async openCard () {
-    var thisTicket = this.cardInfo.ticket
-    var thisIndex = this.cardInfo.index
-    var ticketid = this.cardInfo.ticketid
+    var thisTicket = this.cardInfo.ticket;
+    var thisIndex = this.cardInfo.index;
+    var ticketid = this.cardInfo.ticketid;
     var card = await Ticket.pickCard( ticketid, thisIndex, this.phone, this.$parent.globalData.shareTicket );
     // await this.init()
-    this.cards[thisTicket] = card
-    this.tickets[thisTicket].receive = true
-    this.tickets[thisTicket].countDown = 3
-    this.$apply()
-    this.countDown(this.tickets[thisTicket])
+    this.cards[thisTicket] = card;
+    this.tickets[thisTicket].receive = true;
+    this.tickets[thisTicket].countDown = 3;
+    this.$apply();
+    this.countDown( this.tickets[thisTicket] );
   }
 
-  async countDown (item) {
-    setTimeout(() => {
-      if (item.countDown === 0) {
-        this.init()
-        return
+  async countDown ( item ) {
+    setTimeout( () => {
+      if ( item.countDown === 0 ) {
+        this.init();
+        return;
       }
       item.countDown --;
-      this.$apply()
-      this.countDown(item)
-    }, 1000);
+      this.$apply();
+      this.countDown( item );
+    }, 1000 );
   }
 
   async getShared ( data ) {
@@ -187,13 +190,13 @@ export default class ticket extends wepy.page {
     var myInfoRes = await Ticket.getMyInfo();
     this.rules = Ticket.initRules( myInfoRes.act_rules );
     this.tickets = Ticket.initTickets( myInfoRes.tickets );
-    this.share_img = myInfoRes.share_img
-    this.share_code = myInfoRes.share_code
-    this.qrcode_from = myInfoRes.qrcode_from
-    this.phone = myInfoRes.phone || ''
-    this.ticket_switch = myInfoRes.ticket_switch
-    this.receiveFaildInfo.msg = myInfoRes.ticket_desc
-    this.upgrade_img = myInfoRes.upgrade_img
+    this.share_img = myInfoRes.share_img;
+    this.share_code = myInfoRes.share_code;
+    this.qrcode_from = myInfoRes.qrcode_from;
+    this.phone = myInfoRes.phone || '';
+    this.ticket_switch = myInfoRes.ticket_switch;
+    this.receiveFaildInfo.msg = myInfoRes.ticket_desc;
+    this.upgrade_img = myInfoRes.upgrade_img;
     this.$apply();
   }
   async onLoad ( options ) {
