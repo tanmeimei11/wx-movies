@@ -11,6 +11,7 @@ import receiveFaildModal from '@/components/detail/receiveFaildModal';
 import channelModal from '@/components/detail/channelModal';
 import notice from '@/components/detail/notice';
 import moviePart from '@/components/detail/moviePart';
+import adBanner from '@/components/adBanner';
 
 import shareConnectMixin from '@/mixins/shareConnectMixin';
 import loadingMixin from '@/mixins/loadingMixin';
@@ -20,7 +21,7 @@ export default class Index extends wepy.page {
   config = {
     navigationBarTitleText: 'in同城趴·电影王卡'
   }
-  components = {report, shareWindow, receiveGiftModal, buyMutiModal, receiveFaildModal, receiveTicketModal, channelModal, notice, moviePart}
+  components = {report, shareWindow, receiveGiftModal, buyMutiModal, receiveFaildModal, receiveTicketModal, channelModal, notice, moviePart, adBanner}
   mixins = [shareConnectMixin, loadingMixin]
   data = {
     toView: '',

@@ -1,5 +1,6 @@
 <template>
   <report>
+    <adBanner></adBanner>
     <scroll-view class="container" scroll-y scroll-with-animation scroll-into-view="{{toView}}">
       <!-- 活动规则 -->
       <view class="anch" @tap="gotoBottom">活动规则</view>

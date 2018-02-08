@@ -70,12 +70,12 @@
 
 <script>
   import wepy from 'wepy';
-  import compose from '@/utils/compose';
-  import util from '@/utils/util';
+  // import compose from '@/utils/compose';
+  // import util from '@/utils/util';
   import images from '@/utils/image';
   import { request } from '@/utils/request';
-  import tips from '@/utils/tips';
-  import track  from '@/utils/track';
+  // import tips from '@/utils/tips';
+  import track from '@/utils/track';
 
   export default class researchWindow extends wepy.component {
     props = {
@@ -93,19 +93,19 @@
         this.$emit( 'closeResearchWindow' );
       },
       goSomewhere () {
-        console.log(this.researchInfo.action.action_type)
-        if (this.researchInfo.action.action_type === "navigate_miniprogram") {
-          wepy.navigateToMiniProgram({  
-            appId: this.researchInfo.action.app_id,  
+        console.log( this.researchInfo.action.action_type );
+        if ( this.researchInfo.action.action_type === 'navigate_miniprogram' ) {
+          wepy.navigateToMiniProgram( {
+            appId: this.researchInfo.action.app_id,
             path: this.researchInfo.action.path,
-            success(res) {  
-              // 打开成功  
-            }  
-          }) 
-        } else if (this.researchInfo.action.action_type === "navigate_page") {
-          var tab = ['index', 'seat', 'self']
-          console.log(tab.indexOf(this.researchInfo.action.path.split('/')[2]) )
-          if (tab.indexOf(this.researchInfo.action.path.split('/')[2]) > -1 ){
+            success ( res ) {
+              // 打开成功
+            }
+          } );
+        } else if ( this.researchInfo.action.action_type === 'navigate_page' ) {
+          var tab = ['index', 'seat', 'self'];
+          console.log( tab.indexOf( this.researchInfo.action.path.split( '/' )[2] ) );
+          if ( tab.indexOf( this.researchInfo.action.path.split( '/' )[2] ) > -1 ) {
             wepy.switchTab( {
               url: this.researchInfo.action.path
             } );
@@ -117,7 +117,7 @@
         }
       },
       async apply () {
-        track('page_share_apply_withdrawal')
+        track( 'page_share_apply_withdrawal' );
         var res = await request( {
           url: '/mnp/account/withdraw',
           method: 'POST'
