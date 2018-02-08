@@ -26,6 +26,7 @@ export default class Index extends wepy.page {
   data = {
     toView: '',
     bannerInfo: {},
+    videoConf: {},
     getMyInfo: {},
     detailCode: {},
     cinemas: {
@@ -231,6 +232,10 @@ export default class Index extends wepy.page {
     this.cinemas = Detail.initCinemas( res.cinemas, res.all_cinema_addr_img );
     this.moviesSections = Detail.initMovies( res.movie_sections );
     this.bannerInfo = res.ad_info;
+    if ( res.video_info ) {
+      res.video_info.support = wx.canIUse( 'video' );
+    }
+    this.videoConf = res.video_info;
     this.detailText = this.initBuyText( res );
     this.rules = this.initRulesText( res.desc );
     this.initBuyInfo( res );

@@ -5,7 +5,15 @@
               :bannerInfo.sync="bannerInfo"></adBanner>
       <!-- 活动规则 -->
       <view class="anch" @tap="gotoBottom">活动规则</view>
-      <view class="c-bg" style="{{bgStyle}}"></view>
+      <view class="c-bg">
+        <image class="img" mode="widthFix" src="{{bgImages[0]}}" />
+        <video wx:if="{{videoConf.support && videoConf.video_url.length > 0}}"
+               src="{{videoConf.video_url}}" 
+               objectFit="cover"
+               poster="{{videoConf.cover_img_url}}"
+               controls></video>
+        <image class="img" mode="widthFix" src="{{bgImages[2]}}" />
+      </view>
       <view class="c-part" style="background-image:url({{partBg}})">
          <moviePart :moviesSections.sync="moviesSections" :detailText.sync="detailText" :movieImg.sync="movieImg"></moviePart>
          <!-- 电影部分 -->
