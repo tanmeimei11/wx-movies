@@ -41,7 +41,7 @@ export default class index extends wepy.page {
 
   onShareAppMessage ( res ) {
     return {
-      title: this.shareInfo.share_txt,
+      title: this.texts.share_txt,
       path: `/pages/index/index?qrcode_from=${this.qrcode}`
       // imageUrl: this.shareInfo.share_img
       // 'http://inimg07.jiuyan.info/in/2018/01/26/20A52317-E4EB-3657-E024-F2EF040B2E86.jpg'
