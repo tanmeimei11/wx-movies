@@ -25,6 +25,8 @@ export default class Index extends wepy.page {
   mixins = [shareConnectMixin, loadingMixin]
   data = {
     toView: '',
+    bannerInfo: {},
+    getMyInfo: {},
     detailCode: {},
     cinemas: {
       img: '',
@@ -228,7 +230,7 @@ export default class Index extends wepy.page {
     var res = await Detail.getDetailData( this.detailCode );
     this.cinemas = Detail.initCinemas( res.cinemas, res.all_cinema_addr_img );
     this.moviesSections = Detail.initMovies( res.movie_sections );
-
+    this.bannerInfo = res.ad_info;
     this.detailText = this.initBuyText( res );
     this.rules = this.initRulesText( res.desc );
     this.initBuyInfo( res );

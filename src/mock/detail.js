@@ -2,8 +2,26 @@ module.exports = {
   'timestamp': '1516246003',
   'succ': true,
   'data': {
-    movies_bottom_pic: 'https://oimagea5.ydstatic.com/image?id=-7269965680182292610&product=adpublish&w=300&h=250&sc=0&rm=0',
-    desc: {
+    seckill_info: {
+      enabled: true,  // 是否开启
+      status: '0',  // 0->未开始， 1->进行中，2->已结束   是否开始
+      start_time: '1518074682',
+      end_time: '1518075682',
+      price: '109.00',
+      attached_remind_list: false // 是否预约提醒过了
+    },
+    ad_info: {
+      img_url: 'http://itugo.jiuyan.info/2017/09/08/27F49AF2-12FD-7C42-DE2A-A6ABBDB5465D.jpg?imageMogr2/format/jpg/quality/80',
+      type: 'h5',  // "miniprogram", "path",
+      app_id: 'xwwds589548w5dw',
+      landing_path: 'http://print.in66.com/new/homepage.html'
+    },
+    video_info: {
+      cover_img_url: 'http://p1.music.126.net/xdgsjM7uQxR7o1xSKGXlCg==/109951163099447939.jpg?param=440y440',
+      video_url: 'http://video01.jiuyan.info/in/2018/02/08/3792ADED-AFA5-8C6F-652B-26CE8C10AFC6-1JyjwzaG.mp4'
+    },
+    'movies_bottom_pic': 'https://oimagea5.ydstatic.com/image?id=-7269965680182292610&product=adpublish&w=300&h=250&sc=0&rm=0',
+    'desc': {
       desc01: [
         '2月1日 前购买',
         '优享价109元'
@@ -99,16 +117,16 @@ module.exports = {
     'all_cinema_addr_img': 'https://inimg01.jiuyan.info/in/2018/01/18/0DB172F7-09B5-212A-F0B4-DA26F44762AB.png', // 所有影院位置的图
     'total_person_count': '50000',
     'current_person_count': '12345',
-    pay_price: '109',
-    pay_notice: '＊可购买多张转赠给他人使用，瑞机说啥就说睡觉还是交换机的环境',
+    'pay_price': '109',
+    'pay_notice': '＊可购买多张转赠给他人使用，瑞机说啥就说睡觉还是交换机的环境',
     'bg_img_01': 'https://inimg01.jiuyan.info/in/2018/01/25/572169AF-DAAC-DDAF-0E40-EF7BEC4DAB57.jpg',
     'bg_imgs': ['https://inimg01.jiuyan.info/in/2018/01/31/0E2EB360-EE37-AC5D-F774-1CF34BB7EB1F.jpg', 'https://inimg01.jiuyan.info/in/2018/01/31/8FE47727-3E04-D365-B657-D9D7C79D11FE.jpg', 'https://inimg01.jiuyan.info/in/2018/01/31/625DF2A0-FCD4-C1BD-6582-FF19E578781D.jpg'],
     'btn_txts': [
       '分享给好友',
       '159元购买'
     ], // 按钮文案
-    card_img: 'http://www.w3school.com.cn/i/eg_tulip.jpg',
-    movie_sections: [
+    'card_img': 'http://www.w3school.com.cn/i/eg_tulip.jpg',
+    'movie_sections': [
       {
         title: '必看好莱坞神作',
         list: [

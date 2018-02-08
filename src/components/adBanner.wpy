@@ -1,6 +1,6 @@
 <template>
   <view class="c-banner-wrap" @tap="goBnner">
-    <image class="img" mode="widthFix" src="{{bannerImg}}"></image>
+    <image class="img" mode="widthFix" src="{{bannerInfo.img_url}}"></image>
   </view>
 </template>
 
@@ -17,13 +17,9 @@
   import wepy from 'wepy';
   export default class adBanner extends wepy.component {
     props = {
-      bannerUrl: {
-        type: String,
-        default: ''
-      },
-      bannerImg: {
-        type: String,
-        default: ''
+      bannerInfo: {
+        type: Object,
+        default: {}
       }
     }
     data = {
@@ -33,11 +29,51 @@
     watch = {
   
     }
+
     methods = {
       goBnner () {
-        wepy.navigateTo( {
-          url: `/pages/webview/webview?h5url=${encodeURIComponent( this.bannerUrl )}`
-        } );
+        const tplData = this.bannerInfo;
+        switch ( tplData.type ) {
+          case 'h5':
+            if ( wx.canIUse( 'web-view' ) ) {
+              wepy.navigateTo( {
+                url: `/pages/webview/webview?h5url=${encodeURIComponent( this.bannerInfo.landing_path )}`
+              } );
+            } else {
+              wx.showModal( {
+                title: '提示',
+                content: '您的微信暂不支持该功能，请升级您的微信客户端'
+              } );
+            }
+            break;
+          case 'miniprogram':
+            if ( wx.canIUse( 'navigateToMiniProgram' ) ) {
+              wepy.navigateToMiniProgram( {
+                appId: tplData.app_id,
+                path: tplData.landing_path,
+                success ( res ) {
+                  // 打开成功
+                },
+                fail: ( err ) => {
+                  wx.showModal( {
+                    title: '提示',
+                    content: err
+                  } );
+                }
+              } );
+            } else {
+              wx.showModal( {
+                title: '提示',
+                content: '您的微信暂不支持该功能，请升级您的微信客户端'
+              } );
+            }
+            break;
+          case 'path':
+            wepy.navigateTo( {
+              url: tplData.landing_path
+            } );
+            break;
+        }
       }
     }
   }

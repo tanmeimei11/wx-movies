@@ -1,7 +1,8 @@
 <template>
   <report>
-    <adBanner></adBanner>
     <scroll-view class="container" scroll-y scroll-with-animation scroll-into-view="{{toView}}">
+    <adBanner wx:if="{{bannerInfo && bannerInfo.img_url.length > 0}}"
+              :bannerInfo.sync="bannerInfo"></adBanner>
       <!-- 活动规则 -->
       <view class="anch" @tap="gotoBottom">活动规则</view>
       <view class="c-bg" style="{{bgStyle}}"></view>
