@@ -6,8 +6,7 @@
               :bannerInfo.sync="bannerInfo"></adBanner>
       <!-- 活动规则 -->
       <view class="anch" @tap="gotoBottom">活动规则</view>
-      <!-- 秒杀模块 -->
-      <seckill wx:if="{{seckillInfo.enabled}}" :seckillInfo.sync="seckillInfo" ></seckill>
+     
       <!-- 视频和图片部分 -->
       <view class="c-bg">
         <image class="img" mode="widthFix" src="{{bgImages[0]}}" />
@@ -18,6 +17,8 @@
                controls></video>
         <image class="img" mode="widthFix" src="{{bgImages[2]}}" />
       </view>
+       <!-- 秒杀模块 -->
+      <seckill wx:if="{{seckillInfo.enabled}}" :seckillInfo.sync="seckillInfo" ></seckill>
       <view class="c-part" style="background-image:url({{partBg}})">
          <moviePart :moviesSections.sync="moviesSections" :detailText.sync="detailText" :movieImg.sync="movieImg"></moviePart>
          <!-- 电影部分 -->

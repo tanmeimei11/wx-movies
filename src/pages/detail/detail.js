@@ -133,11 +133,19 @@ export default class Index extends wepy.page {
     // 关闭渠道红包弹窗
     closeChannelModal () {
       this.channelModalInfo.show = false;
-      this.noticeInfo.show = true;
+      if ( !this.seckillInfo.enabled ) {
+        this.noticeInfo.show = true;
+      }
     },
-    // 秒杀开始 致富信息初始化
+    // 秒杀开始 支付信息初始化
     seckill () {
-
+      if ( this.seckillInfo.status === '1' ) {
+        this.statusQuery = {
+          is_seckill: 1
+        };
+        this.buyMutiModalInfo.basePrice = this.seckillInfo.price;
+        this.buyMutiModalInfo.show = true;
+      }
     },
     // 修改秒杀信息
     changeSeckill ( status ) {
@@ -146,6 +154,7 @@ export default class Index extends wepy.page {
         ...this.seckillInfo,
         ...status
       };
+
       this.$apply();
     },
     async receive () {
@@ -272,7 +281,11 @@ export default class Index extends wepy.page {
   initSeckillInfo ( res ) {
     this.seckillInfo = res.seckill_info;
     if ( this.seckillInfo.enabled ) {
-      this.$invoke( 'seckill', 'countdown' );
+      // 这里传值是因为 界面还没有更新 调了组件的方法 所以直接船只过去保证能立刻取到真实的值
+      this.$invoke( 'seckill', 'countdown', {
+        start: res.seckill_info.start_countdown,
+        duration: res.seckill_info.duration
+      } );
     }
   }
   /**
