@@ -186,6 +186,7 @@ export default class ticket extends wepy.page {
 
   async init () {
     var myInfoRes = await Ticket.getMyInfo();
+    this.bannerInfo = myInfoRes.ad_info;
     this.rules = Ticket.initRules( myInfoRes.act_rules );
     this.tickets = Ticket.initTickets( myInfoRes.tickets );
     this.share_img = myInfoRes.share_img;

@@ -2,6 +2,12 @@ module.exports = {
   'timestamp': '1516246003',
   'succ': true,
   'data': {
+    'ad_info': {
+      img_url: 'http://itugo.jiuyan.info/2017/09/08/27F49AF2-12FD-7C42-DE2A-A6ABBDB5465D.jpg?imageMogr2/format/jpg/quality/80',
+      type: 'h5',  // "miniprogram", "path",
+      app_id: 'xwwds589548w5dw',
+      landing_path: 'http://print.in66.com/new/homepage.html'
+    },
     'act_rules': ['1.文案需要一休提供，鼓励金可以级在支付活动费用的时候直接抵扣现金，没有抵扣上限。',
       '1.文案需要一休提供，鼓励金可以级在支付活动费用的时候直接抵扣现金，没有抵扣上限。',
       '1.文案需要一休提供，鼓励金可以级在支付活动费用的时候直接抵扣现金，没有抵扣上限。',
