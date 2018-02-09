@@ -28,6 +28,7 @@ export default class Index extends wepy.page {
     toView: '',
     bannerInfo: {},
     videoConf: {},
+    videoShow: false,
     getMyInfo: {},
     detailCode: {},
     cinemas: {
@@ -189,6 +190,17 @@ export default class Index extends wepy.page {
     }
   }
   methods = {
+    showVideo() {
+      this.videoShow = true
+    },
+    closeVideo () {
+      this.videoShow = false
+    },
+    videoScreenchange(e) {
+      if (!e.detail.fullScreen) {
+        this.$emit("hiddenVideo", this.photoIndex);
+      }
+    },
     openBuyMutiModal () {
       if ( this.discountInfo.ticketId && this.discountInfo.show ) {
         track( 'fission_minus_50_buy' );

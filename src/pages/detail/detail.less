@@ -3,6 +3,9 @@
   display: block;
   min-height: 100vh;
 }
+button{
+  height: 100vh!important;
+}
 // .contact{
 //   position: fixed;
 //   right: 40rpx;
@@ -18,6 +21,63 @@
  
 // }
 
+.videoWindow{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color:rgba(0,0,0,0.5);
+  z-index: 9990;
+  .bg{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  video{
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: 100%;
+  }
+}
+
+.s-video-wrap {
+  padding: 34rpx;
+  width: 750rpx;
+  height: 439rpx;
+  box-sizing: border-box;
+  white-space: nowrap;
+  overflow: scroll;
+  video {
+    width: 100%;
+    height: 100%;
+  }
+  video.hidden {
+    width: 0rpx;
+    height: 0rpx;
+  }
+  .play-module {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+  .play-bg {
+    width: 100%;
+    height: 100%;
+  }
+  .play-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 106rpx;
+    height: 106rpx;
+  }
+}
 contact-button {
   position: absolute;
   top: 0;
@@ -130,6 +190,9 @@ contact-button {
   // background-position: 0 0,0 515rpx,0 1030rpx;
   position: relative;
   // padding-top: 890rpx;
+  .cover_img{
+    height: 225px;
+  }
   .logo{
     position: absolute;
     top:25rpx;
