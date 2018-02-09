@@ -149,12 +149,15 @@ export default class Index extends wepy.page {
     },
     // 修改秒杀信息
     changeSeckill ( status ) {
-      ( typeof status === 'string' ) && ( status = {status: status} );
+      console.log( this.seckillInfo );
+      if ( typeof status === 'string' ) { status = {status: status}; }
+      console.log( status );
       this.seckillInfo = {
         ...this.seckillInfo,
         ...status
       };
-
+      console.log( this.seckillInfo );
+      this.changeToSecKillInfo();
       this.$apply();
     },
     async receive () {
@@ -265,9 +268,9 @@ export default class Index extends wepy.page {
     this.detailText = this.initBuyText( res );
     this.rules = this.initRulesText( res.desc );
     this.initBuyInfo( res );
+    this.initFixBtnText( res );
     this.initSeckillInfo( res );
     this.initBgImages( res );
-    this.initFixBtnText( res );
     this.$apply();
     await auth.ready();
     track( 'page_entry' );
@@ -279,6 +282,7 @@ export default class Index extends wepy.page {
     this.$apply();
   }
   initSeckillInfo ( res ) {
+    if ( !res.seckill_info ) { return; }
     this.seckillInfo = res.seckill_info;
     if ( this.seckillInfo.enabled ) {
       // 这里传值是因为 界面还没有更新 调了组件的方法 所以直接船只过去保证能立刻取到真实的值
@@ -286,8 +290,42 @@ export default class Index extends wepy.page {
         start: res.seckill_info.start_countdown,
         duration: res.seckill_info.duration
       } );
+      this.changeToSecKillInfo();
     }
   }
+
+  /**
+   *
+   * 秒杀的时候改变支付的状态 清除优惠信息
+   * @memberof Index
+   */
+  changeToSecKillInfo () {
+    // 如果变成立即秒杀的时候修改
+    // 1.fixbtn的样式和文案
+    // 2.去掉优惠信息
+
+    if ( this.seckillInfo.status === '1' ) {
+      this.fixBtnText = [
+        {
+          price: `${this.seckillInfo.price}立即秒杀`
+        }
+      ];
+    } else {
+      this.fixBtnText = [
+        {
+          price: `${this.buyMutiModalInfo.basePrice}立即购买`
+        }
+      ];
+    }
+    console.log( this.fixBtnText );
+
+    this.discountInfo = {
+      show: false,
+      ticketId: '',
+      detail: []
+    };
+  }
+
   /**
    * 初始化fixed按钮的文案
    * @param {*} res

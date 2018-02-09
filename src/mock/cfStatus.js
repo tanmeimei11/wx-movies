@@ -13,6 +13,27 @@ module.exports = {
       nick_name: '一休', // 分享人昵称
       avatar: 'https://inimg01.jiuyan.info/in/2018/02/03/4FEB6B74-F97B-063D-148C-C17FCFCB275A.jpg'// 头像
     } // 分享用户信息可能为空
+    // rp_price: 10,
+    // rp_deduction: [
+    //   {d_price: 50, d_desc: '滴滴红包抵扣'},
+    //   {d_price: 100, d_desc: '滴滴红包抵扣'}
+    // ],
+    // rp_notice: [
+    //   {
+    //     img: 'http://xxxx.jpg'
+    //   },
+    //   {
+    //     text: '你有一个'
+    //   },
+    //   {
+    //     text: '50',
+    //     style: 'color:red;'
+    //   },
+    //   {
+    //     text: '的红包'
+    //   }
+    // ],
+    // rp_bg_img: 'http://inimg05.jiuyan.info/in/2018/02/06/FE3DF90F-01EE-40BD-2722-918B87EE862D.png'
   },
   'timestamp': '1512552968'
 };

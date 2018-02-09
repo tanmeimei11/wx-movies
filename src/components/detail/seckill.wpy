@@ -84,14 +84,15 @@
     methods = {
       async seckill () {
         await auth.ready();
-        if ( this.seckillInfo.status === '0' && !this.seckillInfo.attached_remind_list ) { // 没预约
+        if ( this.seckillInfo.status === '0' && !this.seckillInfo.attached_remind_list ) { // to预约
           await Detail.setBook();
           this.$emit( 'changeSeckill', {status: '0', attached_remind_list: true} );
-        } else if ( this.seckillInfo.status === '0' && this.seckillInfo.attached_remind_list ) { // 预约
-            // 改变样式
-        } else if ( this.seckillInfo.status === '1' ) { // 开始秒杀
-          this.$emit( 'seckill' );
-        } else if ( this.seckillInfo.status === '2' ) { // 结束了
+        } else if ( this.seckillInfo.status === '0' && this.seckillInfo.attached_remind_list ) { // to开始秒杀
+          // 改变样式
+          this.$emit( 'changeSeckill', '1' );
+        } else if ( this.seckillInfo.status === '1' ) { // to结束了
+          // this.$emit( 'changeSeckill', '2' );
+        } else if ( this.seckillInfo.status === '2' ) { //
           console.log( '结束了 不可以点击了' );
         }
       }

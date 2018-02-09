@@ -8,7 +8,7 @@
 </template>
 <style type="less">
   .notice{
-    position: absolute;
+    position: fixed;
     bottom: 122rpx;
     right: 30rpx;
     padding: 10rpx 20rpx;

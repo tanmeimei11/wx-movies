@@ -1,7 +1,7 @@
 .container {
   width: 750rpx;
   display: block;
-  height: 100vh;
+  min-height: 100vh;
 }
 // .contact{
 //   position: fixed;
@@ -59,9 +59,9 @@ contact-button {
     background-position: center;
   }
   .btn{
-    width: 263rpx;
+    flex:1;
     height:100rpx;
-    line-height: 100rpx;
+    height: 100rpx;
     font-size: 32rpx;
     display: flex;
     flex-direction: column;
@@ -69,11 +69,18 @@ contact-button {
     justify-content: center;
     box-sizing: border-box;
     color:#fff;
+    .price{
+      font-size: 36rpx;
+    }
+    text{
+      font-size: 20rpx;
+    }
   }
+  
   .btn-icon{
     font-size: 18rpx;
     color: #666666;
-    flex:1;
+    width: 112rpx;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -86,22 +93,23 @@ contact-button {
     overflow: hidden;
   }
   .btn-index{
-    background-image: url('https://inimg01.jiuyan.info/in/2018/02/03/1946BAF7-B680-9C02-27F8-F24BA8E50CCB.jpg');
+    // background-image: url('https://inimg01.jiuyan.info/in/2018/02/03/1946BAF7-B680-9C02-27F8-F24BA8E50CCB.jpg');
+    background-image: url('https://inimg07.jiuyan.info/in/2018/02/09/65E84CEA-3FD6-23BE-B9E9-4D732BF3D63F.jpg');
   }
   .btn-contract{
     background-image: url('https://inimg01.jiuyan.info/in/2018/02/03/70FE5E8A-722B-A9DE-08A9-1F645D905D7D.jpg');
   }
   .btn-origin{
-    background-image: linear-gradient(90deg, #FD9C6C 0%, #F95557 100%);
-    // &.disable {
-    //   background: #E0E0E0;
-    //   border-color: #E0E0E0;
-    //   color: #fff;
-    // }
-  }
-  .btn-cut{
     background-image: linear-gradient(-90deg, #FCB43D 0%, #FEC872 100%);
-    position: relative;
+    // &.disable {
+      //   background: #E0E0E0;
+      //   border-color: #E0E0E0;
+      //   color: #fff;
+      // }
+    }
+    .btn-cut{
+      background-image: linear-gradient(90deg, #FD9C6C 0%, #F95557 100%);
+      position: relative;
   }
 }
 .container{
