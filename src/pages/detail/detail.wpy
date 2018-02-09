@@ -88,7 +88,7 @@
     <!--fix 按钮-->
     <view class="some-btn-wrap">
       <view class="btn-icon btn-index" @tap="toIndex">首页</view>
-      <view class="btn-icon btn-index" @tap="sharePay">分享</view>
+      <view class="btn-icon btn-share" @tap="sharePay">分享</view>
       <view class="btn-icon btn-contract" @tap="trackContact"> <contact-button session-from="wx_movie_contract"></contact-button>客服</view>
       <!-- <view class="btn btn-cut" @tap="sharePay">{{fixBtnText[0]}}</view> -->
       <!-- 按钮区域  1正常情况 拼团 两个按钮  秒杀情况 一个按钮 -->
