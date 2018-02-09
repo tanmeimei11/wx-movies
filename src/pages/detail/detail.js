@@ -29,6 +29,7 @@ export default class Index extends wepy.page {
     toView: '',
     bannerInfo: {},
     videoConf: {},
+    videoShow: false,
     getMyInfo: {},
     detailCode: {},
     cinemas: {
@@ -192,6 +193,16 @@ export default class Index extends wepy.page {
         appId: this.unionInfo.app_id,
         path: this.unionInfo.path
       } );
+    },
+    showVideo () {
+      this.videoShow = true;
+    },
+    closeVideo () {
+      this.videoShow = false;
+    },
+    videoEnd () {
+      console.log( 'end' );
+      this.videoShow = false;
     },
     openBuyMutiModal () {
       // 秒杀

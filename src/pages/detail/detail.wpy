@@ -1,7 +1,7 @@
 <template>
   <report>
-    <!-- <scroll-view class="container" scroll-y scroll-with-animation scroll-into-view="{{toView}}"> -->
-    <view class="container" scroll-y scroll-with-animation scroll-into-view="{{toView}}">
+    <scroll-view class="container" scroll-y scroll-with-animation scroll-into-view="{{toView}}">
+    <view class="container">
       <!-- banner部分 -->
     <adBanner wx:if="{{bannerInfo && bannerInfo.img_url.length > 0}}"
               :bannerInfo.sync="bannerInfo"></adBanner>
@@ -14,11 +14,13 @@
         <seckill wx:if="{{seckillInfo.enabled}}" :seckillInfo.sync="seckillInfo" ></seckill>
         <image class="img" mode="widthFix" src="{{bgImages[1]}}" wx:else/>
         <image class="img" mode="widthFix" src="{{bgImages[2]}}" />
-        <video wx:if="{{videoConf.support && videoConf.video_url.length > 0}}"
+        <image class="cover_img" mode="aspectFill" src="{{videoConf.cover_img_url}}" wx:if="{{videoConf.support && videoConf.video_url.length > 0}}" @tap="showVideo"/>
+        <!-- <video wx:if="{{videoConf.support && videoConf.video_url.length > 0}}"
                src="{{videoConf.video_url}}" 
                objectFit="cover"
                poster="{{videoConf.cover_img_url}}"
-               controls></video>
+               controls>
+        </video> -->
       </view>
       
       <view class="c-part" style="background-image:url({{partBg}})">
@@ -64,7 +66,13 @@
           </view>
       </view>
     </view>
-    <!-- </scroll-view> -->
+    </scroll-view>
+    <!-- video -->
+   <view class="videoWindow" wx:if="{{videoConf.support && videoConf.video_url.length > 0 && videoShow}}">
+      <view class="bg" @tap="closeVideo"></view>
+      <video src="{{videoConf.video_url}}" poster="{{videoConf.cover_img_url}}" controls autoplay direction=0 bindended="videoEnd"  bindfullscreenchange="videoEnd" >
+      </video>
+   </view>
     <!-- 分享卡 -->
     <shareWindow :shareInfo.sync="shareInfo" wx:if="{{showShareWindow}}" @closeShareWindow.user="closeShareWindow" @initShare.user="initShare" @shareCode.user="shareCode"></shareWindow>
     <!-- 接收卡 -->
