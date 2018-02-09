@@ -106,7 +106,11 @@ export default class Index extends wepy.page {
     fixBtnText: ['', ''], // fix按钮的文案
     seckillInfo: { // 秒杀信息
       enabled: false
-    }
+    },
+    unionInfo: { // 拼团信息
+
+    },
+    tabText: []
   }
   events = {
     closeBuyMutiModal () {
@@ -183,6 +187,12 @@ export default class Index extends wepy.page {
     }
   }
   methods = {
+    openGroup () {
+      wepy.navigateToMiniProgram( {
+        appId: this.unionInfo.app_id,
+        path: this.unionInfo.path
+      } );
+    },
     openBuyMutiModal () {
       // 秒杀
       if ( this.seckillInfo.status === '1' ) {
@@ -269,6 +279,7 @@ export default class Index extends wepy.page {
     this.initFixBtnText( res );
     this.initSeckillInfo( res );
     this.initBgImages( res );
+    this.unionInfo = res.union_info;
     this.$apply();
     await auth.ready();
     track( 'page_entry' );
@@ -327,6 +338,8 @@ export default class Index extends wepy.page {
           text: '限时限量秒杀火热进行中'
         }
       ];
+    } else if ( this.seckillInfo.status === '2' ) {
+      this.fixBtnText = this.tabText;
     } else {
       this.fixBtnText = [
         {
@@ -348,7 +361,8 @@ export default class Index extends wepy.page {
    * @param {*} res
    */
   initFixBtnText ( res ) {
-    this.fixBtnText = res.btn_txts;
+    this.tabText = res.union_btn_txts;
+    this.fixBtnText = res.union_btn_txts;
   }
   /**
    *  初始化从哪里进来  // 1.立即升级 2.分享送三张电影票 3.红包

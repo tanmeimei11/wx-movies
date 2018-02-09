@@ -88,7 +88,7 @@
         <text class="price">{{fixBtnText[0].price}}</text>
         <text wx:if="fixBtnText[0].text">{{fixBtnText[0].text}}</text>
       </view>
-      <view class="btn btn-cut"  @tap="openBuyMutiModal" wx:if="{{!seckillInfo.enabled}}" >
+      <view class="btn btn-cut"  @tap="openGroup" wx:if="{{fixBtnText[1]}}" >
         <text class="price">{{fixBtnText[1].price}}</text>
         <text wx:if="fixBtnText[1].text">{{fixBtnText[1].text}}</text>
       </view>

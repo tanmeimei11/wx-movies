@@ -2,13 +2,22 @@ module.exports = {
   'timestamp': '1516246003',
   'succ': true,
   'data': {
+    union_info: {
+      app_id: 'wx48155bddeea6fb66',
+      path: 'pages/index/index'
+    },
     seckill_info: {
-      enabled: true,  // 是否开启
+      enabled: false,  // 是否开启
       status: '0',  // 0->未开始， 1->进行中，2->已结束   是否开始
       start_countdown: '500', // 开始倒计时
       duration: '500', // 持续时间
       price: '109.00',
-      attached_remind_list: false // 是否预约提醒过了
+      attached_remind_list: false, // 是否预约提醒过了
+      bg_imgs: [
+        'https://inimg07.jiuyan.info/in/2018/02/09/FA3C35CB-8A7A-5A1D-F4C2-BEF41748C04D.jpg',
+        'https://inimg07.jiuyan.info/in/2018/02/09/FA3C35CB-8A7A-5A1D-F4C2-BEF41748C04D.jpg',
+        'https://inimg07.jiuyan.info/in/2018/02/09/FA3C35CB-8A7A-5A1D-F4C2-BEF41748C04D.jpg'
+      ]
     },
     ad_info: {
       img_url: 'http://itugo.jiuyan.info/2017/09/08/27F49AF2-12FD-7C42-DE2A-A6ABBDB5465D.jpg?imageMogr2/format/jpg/quality/80',
@@ -20,7 +29,6 @@ module.exports = {
       cover_img_url: 'http://p1.music.126.net/xdgsjM7uQxR7o1xSKGXlCg==/109951163099447939.jpg?param=440y440',
       video_url: 'http://video01.jiuyan.info/in/2018/02/08/3792ADED-AFA5-8C6F-652B-26CE8C10AFC6-1JyjwzaG.mp4'
     },
-
     pay_price: '159',
     total_person_count: '50000',
     count: '15',
@@ -115,6 +123,15 @@ module.exports = {
             desc: '新垣结衣倾情出演'
           }
         ]
+      }
+    ],
+    union_btn_txts: [
+      {
+        price: '159',
+        text: '立即抢购'
+      }, {
+        price: '129',
+        text: '一键拼团'
       }
     ],
     btn_txts: [
