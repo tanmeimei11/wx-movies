@@ -9,6 +9,7 @@
    .img{
      display: inline-block;
      width: 750rpx;
+     height:0rpx;
    }
  }
 </style>

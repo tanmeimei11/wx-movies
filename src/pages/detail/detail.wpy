@@ -5,14 +5,14 @@
       <!-- banner部分 -->
     <adBanner wx:if="{{bannerInfo && bannerInfo.img_url.length > 0}}"
               :bannerInfo.sync="bannerInfo"></adBanner>
-     
-     
       <!-- 视频和图片部分 -->
       <view class="c-bg">
          <!-- 活动规则 -->
         <view class="anch" @tap="gotoBottom">活动规则</view>
         <image class="img" mode="widthFix" src="{{bgImages[0]}}" />
-        <image class="img" mode="widthFix" src="{{bgImages[1]}}" />
+         <!-- 秒杀模块 -->
+        <seckill wx:if="{{seckillInfo.enabled}}" :seckillInfo.sync="seckillInfo" ></seckill>
+        <image class="img" mode="widthFix" src="{{bgImages[1]}}" wx:else/>
         <image class="img" mode="widthFix" src="{{bgImages[2]}}" />
         <image class="cover_img" mode="aspectFill" src="{{videoConf.cover_img_url}}" wx:if="{{videoConf.support && videoConf.video_url.length > 0}}" @tap="showVideo"/>
         <!-- <video wx:if="{{videoConf.support && videoConf.video_url.length > 0}}"
@@ -22,8 +22,7 @@
                controls>
         </video> -->
       </view>
-       <!-- 秒杀模块 -->
-      <seckill wx:if="{{seckillInfo.enabled}}" :seckillInfo.sync="seckillInfo" ></seckill>
+      
       <view class="c-part" style="background-image:url({{partBg}})">
          <moviePart :moviesSections.sync="moviesSections" :detailText.sync="detailText" :movieImg.sync="movieImg"></moviePart>
          <!-- 电影部分 -->

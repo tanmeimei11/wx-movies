@@ -5,7 +5,7 @@ module.exports = {
     seckill_info: {
       enabled: true,  // 是否开启
       status: '0',  // 0->未开始， 1->进行中，2->已结束   是否开始
-      start_countdown: '10', // 开始倒计时
+      start_countdown: '500', // 开始倒计时
       duration: '500', // 持续时间
       price: '109.00',
       attached_remind_list: false // 是否预约提醒过了
