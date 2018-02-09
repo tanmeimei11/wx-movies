@@ -25,6 +25,7 @@ export default class Index extends wepy.page {
   components = {report, shareWindow, receiveGiftModal, buyMutiModal, receiveFaildModal, receiveTicketModal, channelModal, notice, moviePart, adBanner, seckill}
   mixins = [shareConnectMixin, loadingMixin]
   data = {
+    payPrice: '',
     toView: '',
     bannerInfo: {},
     videoConf: {},
@@ -140,23 +141,16 @@ export default class Index extends wepy.page {
     // 秒杀开始 支付信息初始化
     seckill () {
       if ( this.seckillInfo.status === '1' ) {
-        this.statusQuery = {
-          is_seckill: 1
-        };
-        this.buyMutiModalInfo.basePrice = this.seckillInfo.price;
-        this.buyMutiModalInfo.show = true;
+        this.seckillPay();
       }
     },
     // 修改秒杀信息
     changeSeckill ( status ) {
-      console.log( this.seckillInfo );
       if ( typeof status === 'string' ) { status = {status: status}; }
-      console.log( status );
       this.seckillInfo = {
         ...this.seckillInfo,
         ...status
       };
-      console.log( this.seckillInfo );
       this.changeToSecKillInfo();
       this.$apply();
     },
@@ -190,6 +184,10 @@ export default class Index extends wepy.page {
   }
   methods = {
     openBuyMutiModal () {
+      // 秒杀
+      if ( this.seckillInfo.status === '1' ) {
+        this.seckillPay();
+      }
       if ( this.discountInfo.ticketId && this.discountInfo.show ) {
         track( 'fission_minus_50_buy' );
       } else {
@@ -281,9 +279,27 @@ export default class Index extends wepy.page {
     if ( this.cardCode ) { await this.initCardStatus(); };
     this.$apply();
   }
+  /**
+   * @memberof Index
+   */
+  seckillPay () {
+    this.statusQuery = {
+      is_seckill: 1
+    };
+    this.buyMutiModalInfo.basePrice = this.seckillInfo.price;
+    this.buyMutiModalInfo.show = true;
+  }
+  /**
+   *
+   *
+   * @param {any} res
+   * @returns
+   * @memberof Index
+   */
   initSeckillInfo ( res ) {
     if ( !res.seckill_info ) { return; }
     this.seckillInfo = res.seckill_info;
+    // if ( false ) {
     if ( this.seckillInfo.enabled ) {
       // 这里传值是因为 界面还没有更新 调了组件的方法 所以直接船只过去保证能立刻取到真实的值
       this.$invoke( 'seckill', 'countdown', {
@@ -307,13 +323,14 @@ export default class Index extends wepy.page {
     if ( this.seckillInfo.status === '1' ) {
       this.fixBtnText = [
         {
-          price: `${this.seckillInfo.price}立即秒杀`
+          price: `${this.seckillInfo.price}立即秒杀`,
+          text: '限时限量秒杀火热进行中'
         }
       ];
     } else {
       this.fixBtnText = [
         {
-          price: `${this.buyMutiModalInfo.basePrice}立即购买`
+          price: `${this.payPrice}立即抢购`
         }
       ];
     }
@@ -408,6 +425,7 @@ export default class Index extends wepy.page {
    * @param {*} res
    */
   initBuyInfo ( res ) {
+    this.payPrice = res.pay_price;
     this.buyMutiModalInfo = {
       ...this.buyMutiModalInfo,
       basePrice: parseInt( res.pay_price ),
