@@ -87,7 +87,7 @@
     <view class="get-movies-ticket" wx:if="{{detailStatus.fetch_ticket}}" @tap="getMovieTicket"></view>
     <!--fix 按钮-->
     <view class="some-btn-wrap">
-      <!-- <view class="btn-icon btn-index" @tap="toIndex">首页</view> -->
+      <view class="btn-icon btn-index" @tap="toIndex">首页</view>
       <view class="btn-icon btn-index" @tap="sharePay">分享</view>
       <view class="btn-icon btn-contract" @tap="trackContact"> <contact-button session-from="wx_movie_contract"></contact-button>客服</view>
       <!-- <view class="btn btn-cut" @tap="sharePay">{{fixBtnText[0]}}</view> -->
