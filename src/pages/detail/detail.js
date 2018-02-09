@@ -190,10 +190,9 @@ export default class Index extends wepy.page {
     closeVideo () {
       this.videoShow = false
     },
-    videoScreenchange(e) {
-      if (!e.detail.fullScreen) {
-        this.$emit("hiddenVideo", this.photoIndex);
-      }
+    videoEnd () {
+      console.log('end')
+      this.videoShow = false
     },
     openBuyMutiModal () {
       // 秒杀
