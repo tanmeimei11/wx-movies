@@ -98,7 +98,7 @@
   import tools from '../../components/detail/tools.wxs';
   // import util from '@/utils/util';
   // import images from '@/utils/image';
-  // import track from '@/utils/track';
+  import track from '@/utils/track';
 
   export default class seckill extends wepy.component {
     props = {
@@ -139,8 +139,10 @@
         await auth.ready();
         if ( this.seckillInfo.status === '0' && !this.seckillInfo.attached_remind_list ) { // to预约
           await Detail.setBook();
+          track('page_spike_reserve')
           this.$emit( 'changeSeckill', {status: '0', attached_remind_list: true} );
-        } else if ( this.seckillInfo.status === '1' ) { // to结束了
+        } else if ( this.seckillInfo.status === '1' ) { // to秒杀
+          track('page_spike_immediately_buy')
           this.$emit( 'seckill' );
         }
       }

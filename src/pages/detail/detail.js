@@ -13,7 +13,6 @@ import notice from '@/components/detail/notice';
 import moviePart from '@/components/detail/moviePart';
 import adBanner from '@/components/adBanner';
 import seckill from '@/components/detail/seckill';
-
 import shareConnectMixin from '@/mixins/shareConnectMixin';
 import loadingMixin from '@/mixins/loadingMixin';
 import track from '@/utils/track';
@@ -189,12 +188,14 @@ export default class Index extends wepy.page {
   }
   methods = {
     openGroup () {
+      track( 'page_open_group' );
       wepy.navigateToMiniProgram( {
         appId: this.unionInfo.app_id,
         path: this.unionInfo.path
       } );
     },
     showVideo () {
+      track( 'page_video_click' );
       this.videoShow = true;
     },
     closeVideo () {
@@ -207,6 +208,7 @@ export default class Index extends wepy.page {
     openBuyMutiModal () {
       // 秒杀
       if ( this.seckillInfo.status === '1' ) {
+        track( 'page_spike_limited_buy' );
         this.seckillPay();
       }
       if ( this.discountInfo.ticketId && this.discountInfo.show ) {
@@ -279,13 +281,10 @@ export default class Index extends wepy.page {
     var res = await Detail.getDetailData( this.detailCode );
     this.cinemas = Detail.initCinemas( res.cinemas, res.all_cinema_addr_img );
     this.moviesSections = Detail.initMovies( res.movie_sections );
-    this.bannerInfo = res.ad_info;
-    if ( res.video_info ) {
-      res.video_info.support = wx.canIUse( 'video' );
-    }
-    this.videoConf = res.video_info;
     this.detailText = this.initBuyText( res );
     this.rules = this.initRulesText( res.desc );
+    this.initBannerInfo( res );
+    this.initVideoInfo( res );
     this.initBuyInfo( res );
     this.initFixBtnText( res );
     this.initSeckillInfo( res );
@@ -300,6 +299,31 @@ export default class Index extends wepy.page {
     this.shareInfo = await Detail.getShareInfo();
     if ( this.cardCode ) { await this.initCardStatus(); };
     this.$apply();
+  }
+  /**
+   * 广告位
+   *
+   * @param {any} res
+   * @memberof Index
+   */
+  initBannerInfo ( res ) {
+    this.bannerInfo = res.ad_info;
+    if ( res.ad_info ) {
+      track( 'page_ad_expo' );
+    }
+  }
+  /**
+   *
+   * 初始化video
+   * @param {any} res
+   * @memberof Index
+   */
+  initVideoInfo ( res ) {
+    if ( res.video_info ) {
+      res.video_info.support = wx.canIUse( 'video' );
+      track( 'page_video_expo' );
+    }
+    this.videoConf = res.video_info;
   }
   /**
    * @memberof Index
@@ -323,6 +347,7 @@ export default class Index extends wepy.page {
     this.seckillInfo = res.seckill_info;
     // if ( false ) {
     if ( this.seckillInfo.enabled ) {
+      track( 'page_spike_expo' );
       // 这里传值是因为 界面还没有更新 调了组件的方法 所以直接船只过去保证能立刻取到真实的值
       this.$invoke( 'seckill', 'countdown', {
         start: res.seckill_info.start_countdown,

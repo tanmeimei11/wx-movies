@@ -16,6 +16,7 @@
 
 <script>
   import wepy from 'wepy';
+  import track from '@/utils/track';
   export default class adBanner extends wepy.component {
     props = {
       bannerInfo: {
@@ -33,6 +34,7 @@
 
     methods = {
       goBnner () {
+        track('page_ad_click')
         const tplData = this.bannerInfo;
         switch ( tplData.type ) {
           case 'h5':
