@@ -207,7 +207,7 @@ export default class Index extends wepy.page {
     },
     openBuyMutiModal () {
       // 秒杀
-      if ( this.seckillInfo.status === '1' ) {
+      if ( this.seckillInfo.enabled && this.seckillInfo.status === '1' ) {
         track( 'page_spike_limited_buy' );
         this.seckillPay();
       } else {
