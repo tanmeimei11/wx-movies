@@ -7,7 +7,7 @@
           <text>{{texts.desc01}}</text>
           <text>{{texts.desc02}}</text>
         </view>
-        <view class="btn" @tap="toDetail">{{btnon ? '立即抢购' : texts.cf_start_desc}}</view>
+        <view class="btn" @tap="toDetail">{{btnon ? '查看详情' : texts.cf_start_desc}}</view>
       </view>
     </view>
     <researchWindow :researchInfo.sync="researchInfo" wx:if="{{showResearchWindow}}" @closeResearchWindow.user="closeResearchWindow"></researchWindow>

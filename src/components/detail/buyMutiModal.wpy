@@ -18,7 +18,7 @@
         <view class="s-desc-text all">合计金额
           <text>¥{{money || buyMutiModalInfo.basePrice}}</text>
         </view>
-        <block wx:if="{{discountInfo.show}}">
+        <block wx:if="{{discountInfo.show && (!seckillInfo.enabled || seckillInfo.status==0 || seckillInfo.status==2)}}">
           <view class="s-desc-text red">{{targetDiscount.d_desc || discountInfo.detail[0].d_desc}}
             <text>－¥{{targetDiscount.d_price || discountInfo.detail[0].d_price}}</text>
           </view>
@@ -202,6 +202,7 @@ import track from '@/utils/track';
 
 export default class buyMutiModal extends wepy.component {
   props = {
+    seckillInfo: Object,
     buyMutiModalInfo: Object,
     discountInfo: Object,
     cardImg: String

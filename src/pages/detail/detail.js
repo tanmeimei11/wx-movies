@@ -386,12 +386,13 @@ export default class Index extends wepy.page {
       ];
     }
     console.log( this.fixBtnText );
-
-    this.discountInfo = {
-      show: false,
-      ticketId: '',
-      detail: []
-    };
+    if (this.seckillInfo.status === '1') {
+      this.discountInfo = {
+        show: false,
+        ticketId: '',
+        detail: []
+      };
+    }
   }
 
   /**
