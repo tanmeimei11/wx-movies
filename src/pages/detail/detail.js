@@ -210,6 +210,8 @@ export default class Index extends wepy.page {
       if ( this.seckillInfo.status === '1' ) {
         track( 'page_spike_limited_buy' );
         this.seckillPay();
+      } else {
+        this.buyMutiModalInfo.basePrice = this.payPrice;
       }
       if ( this.discountInfo.ticketId && this.discountInfo.show ) {
         track( 'fission_minus_50_buy' );
