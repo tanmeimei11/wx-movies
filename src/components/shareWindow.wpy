@@ -106,6 +106,7 @@
           line-height: 80rpx;
           color: #fff;
           font-size: 28rpx;
+          overflow:hidden;
           .btn-cut-btn{
             position: absolute;
             top: 0;
