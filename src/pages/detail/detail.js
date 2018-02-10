@@ -138,7 +138,7 @@ export default class Index extends wepy.page {
     // 关闭渠道红包弹窗
     closeChannelModal () {
       this.channelModalInfo.show = false;
-      if ( !this.seckillInfo.enabled || (this.seckillInfo.enable && this.seckillInfo.status !== '1')) {
+      if ( !this.seckillInfo.enabled || (this.seckillInfo.enabled && this.seckillInfo.status !== '1')) {
         this.noticeInfo.show = true;
       }
     },
