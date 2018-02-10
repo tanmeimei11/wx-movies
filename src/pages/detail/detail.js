@@ -138,7 +138,7 @@ export default class Index extends wepy.page {
     // 关闭渠道红包弹窗
     closeChannelModal () {
       this.channelModalInfo.show = false;
-      if ( !this.seckillInfo.enabled ) {
+      if ( !this.seckillInfo.enabled || (this.seckillInfo.enable && this.seckillInfo.status !== '1')) {
         this.noticeInfo.show = true;
       }
     },
@@ -455,6 +455,7 @@ export default class Index extends wepy.page {
     }
     if ( res.rp_notice && res.rp_notice.length ) {
       this.noticeInfo.rp_notice = res.rp_notice;
+      this.noticeInfo.show = true;
     }
     if ( res.rp_deduction && res.rp_deduction.length ) {
       this.discountInfo.detail = res.rp_deduction;
