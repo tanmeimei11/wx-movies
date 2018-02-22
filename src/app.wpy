@@ -105,8 +105,9 @@ export default class extends wepy.app {
 
   async onLaunch ( opts ) {
     console.log(opts)
+    var qf = opts.qrcode_from || getParamV(opts, 'qf');
     // 渠道埋点
-    this.globalData.qrcode_from = opts.qrcode_from || '';
+    this.globalData.qrcode_from = qf || '';
     /**
      * try
      *   收集微信机型数据
@@ -118,6 +119,29 @@ export default class extends wepy.app {
       const meta = { model, platform, version, system, SDKVersion };
       this.globalData.WechatApp = Object.keys( meta ).map( key => `${key}=${meta[key]}` ).join( ';' );
     } finally { /* none */ }
+  }
+
+  /**
+   * 获取渠道
+   */
+  getParamV(options, key) {
+    console.log("app-" + options.scene);
+    var scene = options.scene;
+    if (scene) {
+      scene = decodeURIComponent(scene);
+      //'qf=forward_sfsdfd&k=v'
+      var paramKVs = scene.split('&');
+      if(paramKVs) {
+        for(pIndex in paramKVs) {
+          info_arr = paramKVs[pIndex].split('=');
+          let k = info_arr[0];
+          if(k === key) {
+            return info_arr[1];
+          }
+        }
+      }
+    }
+    return '';
   }
 
   /**

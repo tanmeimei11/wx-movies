@@ -538,10 +538,9 @@ export default class Index extends wepy.page {
    */
   initOptions ( options ) {
     this.detailCode = options;
-    if ( options.qrcode_from ) {
-      this.$parent.globalData.qrcode_from = options.qrcode_from;
-      this.data.qrcode_from = options.qrcode_from;
-    }
+    var qf = options.qrcode_from || getParamV(options, 'qf');
+    this.$parent.globalData.qrcode_from = qf;
+    this.data.qrcode_from = qf;
     this.data.shareId = options.share_uid || '';
     this.cardCode = options.cardCode || '';
     if ( options.ticketId ) {  // 立即升级点过来
@@ -557,6 +556,30 @@ export default class Index extends wepy.page {
 
     this.getDetailStatusQuery();
   }
+
+  /**
+   * 获取渠道
+   */
+  getParamV(options, key) {
+    console.log("detail-" + options.scene);
+    var scene = options.scene;
+    if (scene) {
+      scene = decodeURIComponent(scene);
+      //'qf=forward_sfsdfd&k=v'
+      var paramKVs = scene.split('&');
+      if(paramKVs) {
+        for(pIndex in paramKVs) {
+          info_arr = paramKVs[pIndex].split('=');
+          let k = info_arr[0];
+          if(k === key) {
+            return info_arr[1];
+          }
+        }
+      }
+    }
+    return '';
+  }
+
   /**
    * 设置分享的shareticket
    */
