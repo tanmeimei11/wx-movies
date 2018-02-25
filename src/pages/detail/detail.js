@@ -538,7 +538,7 @@ export default class Index extends wepy.page {
    */
   initOptions ( options ) {
     this.detailCode = options;
-    var qf = options.qrcode_from || getParamV(options, 'qf');
+    var qf = options.qrcode_from || this.getParamV(options, 'qf');
     this.$parent.globalData.qrcode_from = qf;
     this.data.qrcode_from = qf;
     this.data.shareId = options.share_uid || '';
@@ -552,6 +552,8 @@ export default class Index extends wepy.page {
     }
     if ( options.rp_code ) {
       this.channelModalInfo.rp_code = options.rp_code;
+    } else {
+      this.channelModalInfo.rp_code = this.getParamV(options, 'rc');
     }
 
     this.getDetailStatusQuery();
@@ -561,15 +563,14 @@ export default class Index extends wepy.page {
    * 获取渠道
    */
   getParamV(options, key) {
-    console.log("detail-" + options.scene);
     var scene = options.scene;
     if (scene) {
       scene = decodeURIComponent(scene);
       //'qf=forward_sfsdfd&k=v'
       var paramKVs = scene.split('&');
       if(paramKVs) {
-        for(pIndex in paramKVs) {
-          info_arr = paramKVs[pIndex].split('=');
+        for(var pIndex in paramKVs) {
+          var info_arr = paramKVs[pIndex].split('=');
           let k = info_arr[0];
           if(k === key) {
             return info_arr[1];
