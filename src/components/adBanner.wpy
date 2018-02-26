@@ -7,7 +7,7 @@
 <style type="less">
  .c-banner-wrap{
    .img{
-     display: inline-block;
+     display: block;
      width: 750rpx;
      height:0rpx;
    }
