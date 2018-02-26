@@ -20,7 +20,7 @@
     </view>
   </view>
 </template>
-<style type="less">
+<style lang="less">
 
 .c-receive-modal {
   .c-wrap{

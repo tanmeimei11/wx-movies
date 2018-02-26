@@ -32,7 +32,7 @@
     </view>
   </view>
 </template>
-<style type="less">
+<style lang="less">
 .c-buymuti-modal {
   .c-wrap{
     padding-top: 120rpx;

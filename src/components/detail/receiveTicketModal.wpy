@@ -14,7 +14,7 @@
     </view>
   </view>
 </template>
-<style type="less">
+<style lang="less">
 .c-receive-ticket-modal {
   .c-wrap{
     padding-top:30rpx;

@@ -18,7 +18,7 @@
     <image class="bottom-img" mode="widthFix" src="{{movieImg}}"></image>
   </view>
 </template>
-<style type="less">
+<style lang="less">
  .movie-part{
   .s-desc{
     padding-bottom: 50rpx;
