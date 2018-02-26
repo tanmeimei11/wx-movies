@@ -21,9 +21,9 @@ module.exports = {
     },
     ad_info: {
       img_url: 'http://itugo.jiuyan.info/2017/09/08/27F49AF2-12FD-7C42-DE2A-A6ABBDB5465D.jpg?imageMogr2/format/jpg/quality/80',
-      type: 'h5',  // "miniprogram", "path",
+      type: 'path',  // "miniprogram", "path",
       app_id: 'xwwds589548w5dw',
-      landing_path: 'pages/index/index?a=1'
+      landing_path: '/pages/index/index'
     },
     video_info: {
       cover_img_url: 'http://p1.music.126.net/xdgsjM7uQxR7o1xSKGXlCg==/109951163099447939.jpg?param=440y440',

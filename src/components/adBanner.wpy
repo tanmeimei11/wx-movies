@@ -72,9 +72,16 @@
             }
             break;
           case 'path':
-            wepy.navigateTo( {
-              url: tplData.landing_path
-            } );
+            var tab = ['index', 'seat', 'self'];
+            if ( tab.indexOf( tplData.landing_path.split( '/' )[2] ) > -1 ) {
+              wepy.switchTab( {
+                url: tplData.landing_path
+              } );
+            } else {
+              wepy.navigateTo( {
+                url: tplData.landing_path
+              } );
+            }
             break;
         }
       }
