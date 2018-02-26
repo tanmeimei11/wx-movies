@@ -1,4 +1,3 @@
-/* globals ls,test,cat */
 const shelljs = require( 'shelljs' );
 var https = require( 'https' );
 var path = require( 'path' );
