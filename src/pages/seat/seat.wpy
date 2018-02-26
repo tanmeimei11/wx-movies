@@ -24,23 +24,124 @@
       background-size: contain;
       background-position: bottom;
     }
+    .bg{
+      background: #fff;
+      opacity: 0.9;
+    }
+    .seat,.bg{
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      .topic{
+        margin-top: 164rpx;
+        font-size: 46rpx;
+        color: #333;
+      }
+      .txt{
+        margin-top: 12rpx;
+        font-size: 32rpx;
+        color: #666;
+      }
+      .session{
+        margin: 70rpx auto;
+        width: 590rpx;
+        height: 390rpx;
+        background: url('https://inimg01.jiuyan.info/in/2018/02/26/9F8EAC85-F0A5-371E-1734-702C6A15141C.png') no-repeat;
+        background-size: contain;
+        background-position: center;
+        position: relative;
+        .btn{
+          background-image: linear-gradient(0deg, #FF7869 0%, #FF4338 99%);
+          border-radius: 200px;
+          font-size: 32rpx;
+          color: #fff;
+          line-height: 80rpx;
+          width: 360rpx;
+          height: 80rpx;
+          position: absolute;
+          top: 255rpx;
+          left: 120rpx;
+          overflow: hidden;
+          contact-button {
+            position:absolute;
+            top:0;
+            left:0;
+            transform-origin:0 0;
+            width:100%!important;
+            height:100%!important;
+            opacity:0;
+          }
+        }
+      }
+    }
+    .wx-contact-button-wrapper{
+      width: 100%!important;
+      height: 100%!important;
+    }
+    .tips{
+      position: absolute;
+      bottom: 60rpx;
+      width: 100%;
+      left: 0;
+      text-align: center;
+      font-size: 24rpx;
+      color: #666;
+    }
   }
 </style>
 <template>
   <report>
-    <view class="container fake">
-        <view class="mask"></view>
+    <view class="container">
+        <!-- <view class="mask"></view> -->
+        <view class="bg"></view>
+        <view class="seat">
+          <view class="topic">开放选座啦</view>
+          <view class="txt">选座功能已在“in同城趴”app开放</view>
+          <view class="txt">请下载app进行选座</view>
+          <view class="session">
+            <view class="btn" @tap="checkLogin">
+              <contact-button type="default-dark" size="20" session-from="wx_movie_contract" @tap="getSessionFrom" wx:if="{{loginIn}}"></contact-button>
+              点击获取下载链接
+            </view>
+          </view>
+        </view>
+        <view class="tips">温馨提示：选座功能仅在in同城趴app开放</view>
     </view>
   </report>
 </template>
 
 <script>
   import wepy from 'wepy';
+  import auth from '@/api/auth';
+  import Seat from '@/api/seat';
   import report from '@/components/report-submit';
-  export default class result extends wepy.page {
+  export default class seat extends wepy.page {
     config = {
       navigationBarTitleText: '选座'
     }
+    data = {
+      loginIn: false
+    }
     components = { report }
+    methods = {
+      async checkLogin () {
+        try {
+          await wepy.getUserInfo( { lang: 'zh_CN' } )
+          this.loginIn = true
+          this.$apply()
+        } catch (e) {
+          console.log(e)
+        }
+      },
+      getSessionFrom () {
+        var res = Seat.getSessionFrom();
+      }
+    }
+    async onLoad () {
+      await auth.ready();
+    }
   }
 </script>

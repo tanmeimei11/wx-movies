@@ -279,9 +279,6 @@ export default class Index extends wepy.page {
     this.setShare();
     track( 'page_enter' );
     await this.init();
-    if ( options.show_pay_win ) {
-      await this.openPayWin();
-    }
   }
   async init () {
     var res = await Detail.getDetailData( this.detailCode );
@@ -577,6 +574,9 @@ export default class Index extends wepy.page {
       this.channelModalInfo.rp_code = options.rp_code;
     } else {
       this.channelModalInfo.rp_code = getParamV( options, 'rc' );
+    }
+    if ( options.show_pay_win ) {
+      this.openPayWin();
     }
 
     this.getDetailStatusQuery();
