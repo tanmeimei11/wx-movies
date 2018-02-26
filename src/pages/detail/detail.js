@@ -278,6 +278,9 @@ export default class Index extends wepy.page {
     this.setShare();
     track( 'page_enter' );
     await this.init();
+    if ( options.show_pay_win ) {
+      await this.openPayWin();
+    }
   }
   async init () {
     var res = await Detail.getDetailData( this.detailCode );
@@ -336,6 +339,25 @@ export default class Index extends wepy.page {
     };
     this.buyMutiModalInfo.basePrice = this.seckillInfo.price;
     this.buyMutiModalInfo.show = true;
+  }
+  /**
+   * 支付弹窗
+   */
+  openPayWin () {
+    // 秒杀
+    if ( this.seckillInfo.enabled && this.seckillInfo.status === '1' ) {
+      track( 'page_spike_limited_buy' );
+      this.seckillPay();
+    } else {
+      this.buyMutiModalInfo.basePrice = this.payPrice;
+    }
+    if ( this.discountInfo.ticketId && this.discountInfo.show ) {
+      track( 'fission_minus_50_buy' );
+    } else {
+      track( 'page_buy' );
+    }
+    this.buyMutiModalInfo.show = true;
+    this.$apply();
   }
   /**
    *
