@@ -66,7 +66,8 @@ form{
 
 <script>
 import wepy from 'wepy';
-import { token,_v } from './utils/config.js';
+import { token, _v } from './utils/config.js';
+import {getParamV} from '@/utils/common';
 // 支付宝小程序 ES next 语法转换: async await
 import 'wepy-async-function';
 
@@ -80,12 +81,12 @@ export default class extends wepy.app {
 
     this.intercept( 'request', {
       config ( p ) {
-        if(/google-analytics/.test(p.url)){
-          return  p
+        if ( /google-analytics/.test( p.url ) ) {
+          return p;
         }
         p.header = this.createAuthHeader();
         p.header['Content-Type'] = 'application/x-www-form-urlencoded';
-        p.header['_v'] = _v
+        p.header['_v'] = _v;
 
         p.data = p.data || {};
         p.data['privateKey'] = this.globalData.xToken || token;
@@ -94,17 +95,17 @@ export default class extends wepy.app {
     } );
   }
 
-  onShow(res) {
-    console.log(res)
-    if (res.shareTicket) {
-      this.globalData.shareTicket = res.shareTicket
+  onShow ( res ) {
+    console.log( res );
+    if ( res.shareTicket ) {
+      this.globalData.shareTicket = res.shareTicket;
     } else {
       this.globalData.shareTicket = '';
     }
   }
 
   async onLaunch ( opts ) {
-    var qf = opts.qrcode_from || this.getParamV(opts, 'qf');
+    var qf = opts.qrcode_from || getParamV( opts, 'qf' );
     // 渠道埋点
     this.globalData.qrcode_from = qf || '';
     /**
@@ -118,28 +119,6 @@ export default class extends wepy.app {
       const meta = { model, platform, version, system, SDKVersion };
       this.globalData.WechatApp = Object.keys( meta ).map( key => `${key}=${meta[key]}` ).join( ';' );
     } finally { /* none */ }
-  }
-
-  /**
-   * 获取渠道
-   */
-  getParamV(options, key) {
-    var scene = options.scene;
-    if (scene) {
-      scene = decodeURIComponent(scene);
-      //'qf=forward_sfsdfd&k=v'
-      var paramKVs = scene.split('&');
-      if(paramKVs) {
-        for(var pIndex in paramKVs) {
-          var info_arr = paramKVs[pIndex].split('=');
-          let k = info_arr[0];
-          if(k === key) {
-            return info_arr[1];
-          }
-        }
-      }
-    }
-    return '';
   }
 
   /**
