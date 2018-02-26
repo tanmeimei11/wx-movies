@@ -25,7 +25,7 @@
   </view>
 </template>
 
-<style type="less">
+<style lang="less">
   .shareWindow{
     position: fixed;
     top: 0;

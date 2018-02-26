@@ -12,7 +12,7 @@
     </view>
   </view>
 </template>
-<style type="less">
+<style lang="less">
 
 /* 弹窗 */
 .c-modal {

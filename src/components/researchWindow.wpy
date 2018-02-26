@@ -10,7 +10,7 @@
   </view>
 </template>
       
-<style type="less">
+<style lang="less">
   .researchWindow{
     position: fixed;
     top: 0;

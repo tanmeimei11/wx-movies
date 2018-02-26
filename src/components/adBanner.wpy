@@ -1,10 +1,11 @@
-<template>
+<template lang="wxml">
   <view class="c-banner-wrap" @tap="goBnner">
     <image class="img" mode="widthFix" src="{{bannerInfo.img_url}}"></image>
+    <view></view>
   </view>
 </template>
 
-<style type="less">
+<style lang="scss">
  .c-banner-wrap{
    .img{
      display: block;
@@ -24,17 +25,13 @@
         default: {}
       }
     }
-    data = {
+    data = {}
 
-    }
-
-    watch = {
-  
-    }
+    watch ={}
 
     methods = {
       goBnner () {
-        track('page_ad_click')
+        track( 'page_ad_click' );
         const tplData = this.bannerInfo;
         switch ( tplData.type ) {
           case 'h5':

@@ -7,7 +7,7 @@
     </view>
   </view>
 </template>
-<style type="less">
+<style lang="less">
   .c-channel-modal{
     .c-wrap{
       background-color: rgba(0,0,0,0);

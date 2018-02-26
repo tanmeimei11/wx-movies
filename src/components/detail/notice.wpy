@@ -6,7 +6,7 @@
     </repeat>
   </view>
 </template>
-<style type="less">
+<style lang="less">
   .notice{
     position: fixed;
     bottom: 122rpx;

@@ -13,7 +13,7 @@
   </view>
 </template>
 
-<style type="less">
+<style lang="less">
  .c-seckill-wrap{
    /* padding:50rpx; */
    width: 750rpx;
