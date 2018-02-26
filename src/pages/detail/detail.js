@@ -16,6 +16,7 @@ import seckill from '@/components/detail/seckill';
 import shareConnectMixin from '@/mixins/shareConnectMixin';
 import loadingMixin from '@/mixins/loadingMixin';
 import track from '@/utils/track';
+import {getParamV} from '@/utils/common';
 
 export default class Index extends wepy.page {
   config = {
@@ -138,7 +139,7 @@ export default class Index extends wepy.page {
     // 关闭渠道红包弹窗
     closeChannelModal () {
       this.channelModalInfo.show = false;
-      if ( !this.seckillInfo.enabled || (this.seckillInfo.enabled && this.seckillInfo.status !== '1')) {
+      if ( !this.seckillInfo.enabled || ( this.seckillInfo.enabled && this.seckillInfo.status !== '1' ) ) {
         this.noticeInfo.show = true;
       }
     },
@@ -408,7 +409,7 @@ export default class Index extends wepy.page {
       ];
     }
     console.log( this.fixBtnText );
-    if (this.seckillInfo.status === '1') {
+    if ( this.seckillInfo.status === '1' ) {
       this.discountInfo = {
         show: false,
         ticketId: '',
@@ -560,7 +561,7 @@ export default class Index extends wepy.page {
    */
   initOptions ( options ) {
     this.detailCode = options;
-    var qf = options.qrcode_from || this.getParamV(options, 'qf');
+    var qf = options.qrcode_from || getParamV( options, 'qf' );
     this.$parent.globalData.qrcode_from = qf;
     this.data.qrcode_from = qf;
     this.data.shareId = options.share_uid || '';
@@ -575,34 +576,11 @@ export default class Index extends wepy.page {
     if ( options.rp_code ) {
       this.channelModalInfo.rp_code = options.rp_code;
     } else {
-      this.channelModalInfo.rp_code = this.getParamV(options, 'rc');
+      this.channelModalInfo.rp_code = getParamV( options, 'rc' );
     }
 
     this.getDetailStatusQuery();
   }
-
-  /**
-   * 获取渠道
-   */
-  getParamV(options, key) {
-    var scene = options.scene;
-    if (scene) {
-      scene = decodeURIComponent(scene);
-      //'qf=forward_sfsdfd&k=v'
-      var paramKVs = scene.split('&');
-      if(paramKVs) {
-        for(var pIndex in paramKVs) {
-          var info_arr = paramKVs[pIndex].split('=');
-          let k = info_arr[0];
-          if(k === key) {
-            return info_arr[1];
-          }
-        }
-      }
-    }
-    return '';
-  }
-
   /**
    * 设置分享的shareticket
    */
