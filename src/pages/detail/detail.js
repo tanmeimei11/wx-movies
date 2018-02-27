@@ -25,7 +25,8 @@ export default class Index extends wepy.page {
   components = {report, shareWindow, receiveGiftModal, buyMutiModal, receiveFaildModal, receiveTicketModal, channelModal, notice, moviePart, adBanner, seckill}
   mixins = [shareConnectMixin, loadingMixin]
   data = {
-    payPrice: '',
+    promoPrice: '', // 活动价格
+    payPrice: '', // 原价 159
     toView: '',
     bannerInfo: {},
     videoConf: {},
@@ -179,12 +180,7 @@ export default class Index extends wepy.page {
       }
     },
     async payOrder () {
-      try {
-        this.isPay = true;
-        track( 'page_number_box_pay' );
-        await this.pay();
-      } catch ( e ) {
-      }
+      await this.payOrderReal();
     }
   }
   methods = {
@@ -304,6 +300,19 @@ export default class Index extends wepy.page {
     this.$apply();
   }
   /**
+   *
+   * 供组件和当前页面使用
+  */
+  async payOrderReal () {
+    try {
+      this.isPay = true;
+      track( 'page_number_box_pay' );
+      await this.pay();
+    } catch ( e ) {
+
+    }
+  }
+  /**
    * 广告位
    *
    * @param {any} res
@@ -342,18 +351,25 @@ export default class Index extends wepy.page {
    * 支付弹窗
    */
   openPayWin () {
-    // 秒杀
-    if ( this.seckillInfo.enabled && this.seckillInfo.status === '1' ) {
-      track( 'page_spike_limited_buy' );
-      this.seckillPay();
+    // 活动价格最高
+    if ( this.promotion ) {
+      track( `${this.promotion}_page_buy` );
+      this.buyMutiModalInfo.basePrice = this.detailStatus.promotion_channel_price || this.payPrice;
     } else {
-      this.buyMutiModalInfo.basePrice = this.payPrice;
+      // 秒杀
+      if ( this.seckillInfo.enabled && this.seckillInfo.status === '1' ) {
+        track( 'page_spike_limited_buy' );
+        this.seckillPay();
+      } else {
+        this.buyMutiModalInfo.basePrice = this.payPrice;
+      }
+      if ( this.discountInfo.ticketId && this.discountInfo.show ) {
+        track( 'fission_minus_50_buy' );
+      } else {
+        track( 'page_buy' );
+      }
     }
-    if ( this.discountInfo.ticketId && this.discountInfo.show ) {
-      track( 'fission_minus_50_buy' );
-    } else {
-      track( 'page_buy' );
-    }
+
     this.buyMutiModalInfo.show = true;
     this.$apply();
   }
@@ -432,6 +448,7 @@ export default class Index extends wepy.page {
     this.receiveTicketInfo.shareCode && ( _data.share_code = this.receiveTicketInfo.shareCode );
     this.discountInfo.ticketId && ( _data.ticket_id = this.discountInfo.ticketId );
     this.channelModalInfo.rp_code && ( _data.rp_code = this.channelModalInfo.rp_code );
+    this.promotion && ( _data.promotion = this.promotion );
     this.statusQuery = _data;
     this.$apply();
     return _data;
@@ -577,6 +594,11 @@ export default class Index extends wepy.page {
     }
     if ( options.show_pay_win ) {
       this.openPayWin();
+    }
+    if ( options.promotion ) {
+      this.promotion = options.promotion || getParamV( options, 'promo' );
+      this.openPayWin(); // 支付信息初始化
+      this.payOrderReal();// 立即支付
     }
 
     this.getDetailStatusQuery();
