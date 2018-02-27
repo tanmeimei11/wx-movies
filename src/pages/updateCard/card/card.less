@@ -1,0 +1,183 @@
+page{
+  background-color:#fff;
+}
+.container{
+  display: block;
+  min-height: 100vh;
+}
+.c-bg{
+  width: 100%;
+  height: 435rpx;
+  background-image: url('https://inimg01.jiuyan.info/in/2018/01/21/1CA7FDC3-D2FC-4C76-5691-7C6510909D74.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+.c-rules{
+  width:651rpx;
+  padding-left: 75rpx;
+  color: #B0B0B0;
+  margin-top: 138rpx;
+  font-size: 24rpx;
+  .rule{
+    position: relative;
+    margin-bottom: 10rpx;
+  }
+  .rule:before{
+    content:'';
+    position: absolute;
+    left:-20rpx;
+    top:10rpx;
+    width:12rpx;
+    height: 12rpx;
+    border-radius: 50%;
+    background-color: #FFB67C;
+  }
+}
+.c-cards{
+  position: absolute;
+  top:0;
+  left: 50rpx;
+  width: 650rpx;
+  .s-avatar-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 40rpx 0rpx;
+    .s-avatar {
+      width: 60rpx;
+      height: 60rpx;
+      border-radius: 50%;
+      margin-right: 18rpx;
+    }
+    .s-name {
+      width: 250rpx;
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 36rpx;
+      color: #fff;
+    }
+  }
+  .s-card{
+    position: relative;
+    width: 650rpx;
+    height: 383rpx;
+    border-radius: 6rpx;
+    background: url('https://inimg01.jiuyan.info/in/2018/01/25/FB5D55FB-986F-6433-18B8-BAF8C0C797E3.jpg') no-repeat;
+    background-size: contain;
+    background-position: center;
+    color:#fff;
+    .shareToOthers{
+      opacity: 0.9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: #D9A554;
+      background: #fff;
+      width: 160rpx;
+      height: 60rpx;
+      border-radius: 200rpx;
+      font-size: 28rpx;
+      position: absolute;
+      top:293rpx;
+      left:450rpx;
+      &.shared{
+        border: 2rpx solid #fff;
+        background: transparent;
+        color: #fff;
+      }
+    }
+    .getOthers,.toOthers{
+      position: absolute;
+      bottom: 40rpx;
+      right: 30rpx;
+      font-size: 20rpx;
+      color: #fff;
+      .icon{
+        background-image: url(https://inimg01.jiuyan.info/in/2018/01/31/1799E012-BB02-F447-BD8C-E3301BC776A4.png);
+        margin-right: 4rpx;
+      }
+      .name{
+        max-width: 120rpx;
+        opacity: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: inline-block;
+        margin: 0;
+        margin-left: 6rpx;
+      }
+      text{
+        opacity: 0.8;
+        margin: 6rpx;
+        vertical-align: middle;
+      }
+      .avatar,.icon{
+        vertical-align: middle;
+        border-radius: 50%;
+        display: inline-block;
+        width: 24rpx;
+        height: 24rpx;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+      }
+    }
+    &.have {
+      background-image: url(https://inimg01.jiuyan.info/in/2018/01/25/FB5D55FB-986F-6433-18B8-BAF8C0C797E3.jpg);
+    }
+
+    .title{
+      font-size: 48rpx;
+      position: absolute;
+      top:40rpx;
+      left:40rpx;
+    }
+    .tips{
+      font-size: 32rpx;
+      position: absolute;
+      top:112rpx;
+      left:40rpx;
+    }
+    .time{
+      font-size: 28rpx;
+      position: absolute;
+      bottom:33rpx;
+      left:40rpx;
+      padding-left: 30rpx;
+      background: url('https://inimg01.jiuyan.info/in/2018/01/17/9DD8E8EA-327C-85E7-94D2-5C64C7E06DC8.png') no-repeat;
+      background-size: 25rpx 25rpx;
+      background-position: left 50%;
+      font-size: 28rpx;
+      color: #fff;
+      opacity: 0.8;
+    }
+    .apply{
+      font-weight: bold;
+      position: absolute;
+      bottom:33rpx;
+      left:40rpx;
+      width: 160rpx;
+      height: 60rpx;
+      border-radius: 100rpx;
+      font-size: 28rpx;
+      line-height: 63rpx;
+      text-align: center;
+      background-color: #fff;
+      color: #000;
+    }
+    .num{
+      position: absolute;
+      top:111rpx;
+      left:40rpx;
+      font-size: 20rpx;
+      color: #fff;
+      opacity: 0.8
+    }
+  }
+}

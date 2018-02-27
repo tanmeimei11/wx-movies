@@ -1,0 +1,11 @@
+<template>
+  <report>
+    <view class="container">
+     <videoComp :videoInfo.sync="videoInfo"></videoComp>
+    </view>
+  </report>
+</template>
+<style lang="less" src="./updateCard.less">
+</style>
+<script src="./updateCard.js">
+</script>

@@ -45,4 +45,8 @@
 1.优化过年期间的修改
 2.tiny upload 不能多文件 // todo
 
+###part-14 checkout from part-13
+1.滚动显示购买记录
+2.升级王卡页面
+
 

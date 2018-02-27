@@ -1,0 +1,47 @@
+<template lang="wxml">
+ <view class="videoWindow" wx:if="{{videoInfo.support && videoInfo.videoUrl > 0 && videoShow}}">
+      <view class="bg" @tap="closeVideo"></view>
+      <video src="{{videoInfo.videoUrl}}" poster="{{videoInfo.coverImgUrl}}" controls autoplay direction='0' bindended="videoEnd"  bindfullscreenchange="videoEnd" >
+      </video>
+   </view>
+</template>
+
+<style lang="scss">
+ .c-banner-wrap{
+   .img{
+     display: block;
+     width: 750rpx;
+     height:0rpx;
+   }
+ }
+</style>
+
+<script>
+  import wepy from 'wepy';
+  import track from '@/utils/track';
+  export default class adBanner extends wepy.component {
+    props = {
+      videoInfo:{}
+    }
+    data = {
+      videoShow:false
+    }
+
+    watch ={}
+
+    methods = {
+      showVideo () {
+        track( 'page_video_click' );
+        this.videoShow = true;
+      },
+      closeVideo () {
+        this.videoShow = false;
+      },
+      videoEnd () {
+        this.videoShow = false;
+      }
+    }
+
+    
+  }
+</script>
