@@ -203,19 +203,7 @@ export default class Index extends wepy.page {
       this.videoShow = false;
     },
     openBuyMutiModal () {
-      // 秒杀
-      if ( this.seckillInfo.enabled && this.seckillInfo.status === '1' ) {
-        track( 'page_spike_limited_buy' );
-        this.seckillPay();
-      } else {
-        this.buyMutiModalInfo.basePrice = this.payPrice;
-      }
-      if ( this.discountInfo.ticketId && this.discountInfo.show ) {
-        track( 'fission_minus_50_buy' );
-      } else {
-        track( 'page_buy' );
-      }
-      this.buyMutiModalInfo.show = true;
+      this.openPayWin();
     },
     toIndex () {
       wepy.switchTab( {
@@ -275,6 +263,15 @@ export default class Index extends wepy.page {
     this.setShare();
     track( 'page_enter' );
     await this.init();
+
+    // 数据之后的操作
+    if ( options.show_pay_win ) {
+      this.openPayWin();
+    }
+    if ( options.promotion ) {
+      this.openPayWin(); // 支付信息初始化
+      this.payOrderReal();// 立即支付
+    }
   }
   async init () {
     var res = await Detail.getDetailData( this.detailCode );
@@ -354,7 +351,7 @@ export default class Index extends wepy.page {
     // 活动价格最高
     if ( this.promotion ) {
       track( `${this.promotion}_page_buy` );
-      this.buyMutiModalInfo.basePrice = this.detailStatus.promotion_channel_price || this.payPrice;
+      // this.buyMutiModalInfo.basePrice = this.detailStatus.promotion_channel_price || this.payPrice;
     } else {
       // 秒杀
       if ( this.seckillInfo.enabled && this.seckillInfo.status === '1' ) {
@@ -492,7 +489,7 @@ export default class Index extends wepy.page {
     }
     if ( res.rp_notice && res.rp_notice.length ) {
       this.noticeInfo.rp_notice = res.rp_notice;
-      this.noticeInfo.show = true;
+      !this.promotion && ( this.noticeInfo.show = true );
     }
     if ( res.rp_deduction && res.rp_deduction.length ) {
       this.discountInfo.detail = res.rp_deduction;
@@ -593,12 +590,14 @@ export default class Index extends wepy.page {
       this.channelModalInfo.rp_code = getParamV( options, 'rc' );
     }
     if ( options.show_pay_win ) {
-      this.openPayWin();
+      this.show_pay_win = options.show_pay_win;
+      // this.openPayWin(); // 这里授权之后的数据还没有回来 会出现问题
     }
     if ( options.promotion ) {
       this.promotion = options.promotion || getParamV( options, 'promo' );
-      this.openPayWin(); // 支付信息初始化
-      this.payOrderReal();// 立即支付
+      // 这里授权之后的数据还没有回来 会出现问题
+      // this.openPayWin(); // 支付信息初始化
+      // this.payOrderReal();// 立即支付
     }
 
     this.getDetailStatusQuery();

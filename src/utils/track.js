@@ -39,7 +39,7 @@ function initGaTrack () {
 GAtracker = initGaTrack();
 
 /**
- *
+ *Google统计代码
  * @param {*} app
  * @param {*} track
  */
