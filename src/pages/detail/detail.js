@@ -593,11 +593,14 @@ export default class Index extends wepy.page {
       this.show_pay_win = options.show_pay_win;
       // this.openPayWin(); // 这里授权之后的数据还没有回来 会出现问题
     }
+    // debugger;
     if ( options.promotion ) {
-      this.promotion = options.promotion || getParamV( options, 'promo' );
+      this.promotion = options.promotion;
       // 这里授权之后的数据还没有回来 会出现问题
       // this.openPayWin(); // 支付信息初始化
       // this.payOrderReal();// 立即支付
+    } else {
+      this.promotion = getParamV( options, 'promo' );
     }
 
     this.getDetailStatusQuery();
