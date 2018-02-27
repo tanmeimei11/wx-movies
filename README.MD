@@ -41,12 +41,12 @@
 ###part-12 _v:0.2.9.3
 1.唤起支付弹窗
 
-###part-13
+###part-13 _v:0.2.9.4
 1.优化过年期间的修改
 2.tiny upload 不能多文件 // todo
 
-###part-14 checkout from part-13
-1.滚动显示购买记录
+###part-14 checkout from part-13   _v:0.3.0
+1.滚动显示购买记录 没做
 2.升级王卡页面
 
 
