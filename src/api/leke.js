@@ -5,7 +5,12 @@ export default class Seat extends Pagebase {
    */
   static async getSessionFrom () {
     return await this.request( {
-      url: '/mnp/custom/auto_reply'
+      url: '/mnp/custom/leke_reply'
+    } );
+  }
+  static async getLekeInfo () {
+    return await this.request( {
+      url: '/mnp/card/has_card'
     } );
   }
 }
