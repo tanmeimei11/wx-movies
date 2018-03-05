@@ -53,26 +53,32 @@
         background-size: contain;
         background-position: center;
         position: relative;
-        .btn{
-          background-image: linear-gradient(0deg, #FF7869 0%, #FF4338 99%);
-          border-radius: 200px;
-          font-size: 32rpx;
-          color: #fff;
-          line-height: 80rpx;
-          width: 360rpx;
-          height: 80rpx;
+        .btnarea{
+          width: 400rpx;
+          height: 120rpx;
           position: absolute;
-          top: 255rpx;
-          left: 120rpx;
-          overflow: hidden;
-          contact-button {
-            position:absolute;
-            top:0;
-            left:0;
-            transform-origin:0 0;
-            width:100%!important;
-            height:100%!important;
-            opacity:0;
+          top: 225rpx;
+          left: 100rpx;
+          .btn{
+            position: relative;
+            margin: 20rpx auto;
+            width: 360rpx;
+            height: 80rpx;
+            background-image: linear-gradient(0deg, #FF7869 0%, #FF4338 99%);
+            border-radius: 200px;
+            font-size: 32rpx;
+            color: #fff;
+            line-height: 80rpx;
+            overflow: hidden;
+            contact-button {
+              position:absolute;
+              top:0;
+              left:0;
+              transform-origin:0 0;
+              width:100%!important;
+              height:100%!important;
+              opacity:0;
+            }
           }
         }
       }
@@ -102,10 +108,12 @@
           <view class="txt">选座功能已在“in同城趴”app开放</view>
           <view class="txt">请下载app进行选座</view>
           <view class="session">
-            <view class="btn" @tap="checkLogin">
-              <contact-button type="default-dark" size="20" session-from="wx_movie_contract" @tap="getSessionFrom" wx:if="{{loginIn}}"></contact-button>
-              点击获取下载链接
-            </view>
+            <div class="btnarea" @tap="checkLogin">
+              <view class="btn">
+                <contact-button type="default-dark" size="20" session-from="wx_movie_contract" wx:if="{{loginIn}}"></contact-button>
+                点击获取下载链接
+              </view>
+            </div>
           </view>
         </view>
         <view class="tips">温馨提示：选座功能仅在in同城趴app开放</view>
@@ -129,15 +137,14 @@
     methods = {
       async checkLogin () {
         try {
-          await wepy.getUserInfo( { lang: 'zh_CN' } )
+          await auth.ready();
+          await Seat.getSessionFrom();
+          console.log(1)
           this.loginIn = true
           this.$apply()
         } catch (e) {
           console.log(e)
         }
-      },
-      getSessionFrom () {
-        var res = Seat.getSessionFrom();
       }
     }
     async init () {
