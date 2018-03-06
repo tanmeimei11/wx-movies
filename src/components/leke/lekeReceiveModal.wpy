@@ -61,9 +61,11 @@ export default class lekeReceiveModal extends wepy.component {
   methods = {
     close () {
       this.$emit( 'closeLekeModal' );
+    },
+    receive () {
+      track('leke_share_to_group')
     }
   };
-  watch= {
-  }
+  watch= {}
 }
 </script>

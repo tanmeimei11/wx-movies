@@ -272,6 +272,7 @@ export default class Index extends wepy.page {
     await this.init();
 
     // 数据之后的操作
+    console.log( 'options', options );
     if ( options.show_pay_win ) {
       this.openPayWin();
     }
@@ -303,7 +304,6 @@ export default class Index extends wepy.page {
     this.shareInfo = await Detail.getShareInfo();
     if ( this.cardCode ) { await this.initCardStatus(); };
     this.$apply();
-    console.log( '11', this );
   }
   initLekeInfo ( status ) {
     if ( !status.leke_info || this.cardCode ) { return; }

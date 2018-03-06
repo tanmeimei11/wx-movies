@@ -70,6 +70,7 @@
         <view class="rule-btn" @tap="openRule"></view>
     </view>
     <lekeModal wx:if="{{isShowRuleModal}}"></lekeModal>
+    <redrectModal wx:if="{{isShowRedrectModal}}"></redrectModal>
   </report>
 </template>
 
@@ -79,6 +80,8 @@
   import lekeApi from '@/api/leke';
   import report from '@/components/report-submit';
   import lekeModal from '@/components/leke/lekeModal';
+  import redrectModal from '@/components/leke/redrectModal';
+  import track from '@/utils/track';
   export default class leke extends wepy.page {
     config = {
       navigationBarTitleText: '乐刻'
@@ -89,17 +92,20 @@
         'https://inimg01.jiuyan.info/in/2018/03/06/E0B3357E-F07A-3273-B156-D1D3F34BDFBE.jpg'
       ],
       isHaveCard:false,
-      isShowRuleModal:false
+      isShowRuleModal:false,
+      isShowRedrectModal:false
     }
-    components = { report, lekeModal}
+    components = { report, lekeModal, redrectModal}
     methods = {
       async getLeKe () {
         await auth.ready();
         await this.getCardInfo()
         if(this.isHaveCard == null){
-           wepy.navigateTo( {
-            url: `/pages/detail/detail`
-          } );
+           track('leke_get_with_out_card')
+            this.isShowRedrectModal = true
+            this.$apply()
+        }else{
+           track('leke_get_with_card')
         }
       },
       async getSessionFrom(){
@@ -110,6 +116,12 @@
       }
     }
     events = {
+      openRedrectModal(){
+         this.isShowRedrectModal = true
+      },
+      closeRedrectModal(){
+        this.isShowRedrectModal = false
+      },
       closeModal (){
         this.isShowRuleModal = false
       }
@@ -123,6 +135,9 @@
     async onShow () {
       await auth.ready();
       await this.getCardInfo();
+    }
+    onLoad(){
+      track('leke_enter')
     }
   }
 </script>
