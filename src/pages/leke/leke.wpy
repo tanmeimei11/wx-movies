@@ -7,74 +7,41 @@
     height: 100%;
     .report-button{
       height: 100%;;
+      background-color: #dedede;
     }
   }
   .container {
-    /* position: absolute;
-    width: 100%;
-    height: 100%; */
-    background: url('https://inimg02.jiuyan.info/in/2018/01/27/7E13DF45-19C0-0D75-3D8A-A7009B0931FC.jpg') no-repeat;
-    background-size: contain;
-    background-position: top;
-    .mask{
-      /* position: absolute; */
-      width: 750rpx;
-      height: 100%;
-      background: url('https://inimg01.jiuyan.info/in/2018/01/25/64D66B04-2594-323C-E068-B10C5209CDC5.jpg') no-repeat;
-      background-size: contain;
-      background-position: bottom;
-    }
-    .bg{
-      background: #fff;
-      opacity: 0.9;
-    }
-    .seat,.bg{
+    justify-content:flex-start;
+    position: relative;
+    .rule-btn{
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      text-align: center;
-      .topic{
-        margin-top: 164rpx;
-        font-size: 46rpx;
-        color: #333;
-      }
-      .txt{
-        margin-top: 12rpx;
-        font-size: 32rpx;
-        color: #666;
-      }
-      .session{
-        margin: 70rpx auto;
-        width: 590rpx;
-        height: 390rpx;
-        background: url('https://inimg01.jiuyan.info/in/2018/02/26/9F8EAC85-F0A5-371E-1734-702C6A15141C.png') no-repeat;
-        background-size: contain;
-        background-position: center;
-        position: relative;
-        .btn{
-          background-image: linear-gradient(0deg, #FF7869 0%, #FF4338 99%);
-          border-radius: 200px;
-          font-size: 32rpx;
-          color: #fff;
-          line-height: 80rpx;
-          width: 360rpx;
-          height: 80rpx;
-          position: absolute;
-          top: 255rpx;
-          left: 120rpx;
-          overflow: hidden;
-          contact-button {
-            position:absolute;
-            top:0;
-            left:0;
-            transform-origin:0 0;
-            width:100%!important;
-            height:100%!important;
-            opacity:0;
-          }
-        }
+      top: 27rpx;
+      right: 20rpx;
+      width: 150rpx;
+      height: 50rpx;
+    }
+   .bg-image{
+     width: 100%;
+     display: block;
+   }
+    .btn{
+      position: absolute;
+      top: 972rpx;
+      left: 160rpx;
+      width: 435rpx;
+      height: 91rpx;
+      overflow: hidden;
+      background: url('https://inimg01.jiuyan.info/in/2018/03/06/C9C8207F-0FC0-227B-EBDC-F6BFAE2A0FE4.jpg') no-repeat;
+      background-size: contain;
+      background-position: center;
+      contact-button {
+        position:absolute;
+        top:0;
+        left:0;
+        transform-origin:0 0;
+        width:100%!important;
+        height:100%!important;
+        opacity:0;
       }
     }
     .wx-contact-button-wrapper{
@@ -95,59 +62,67 @@
 <template>
   <report>
     <view class="container">
-        <!-- <view class="mask"></view> -->
-        <view class="bg"></view>
-        <view class="seat">
-          <view class="topic">开放选座啦</view>
-          <view class="txt">选座功能已在“in同城趴”app开放</view>
-          <view class="txt">请下载app进行选座</view>
-          <view class="session">
-            <view class="btn" @tap="getLeKe">
-              <contact-button type="default-dark" size="20" session-from="wx_movie_contract" @tap="getSessionFrom" wx:if="{{isLoginIn}}"></contact-button>
-              点击获取下载链接
-            </view>
-          </view>
+       <image src="{{bgs[0]}}" mode="widthFix" class="bg-image"/>
+       <image src="{{bgs[1]}}" mode="widthFix" class="bg-image"/>
+        <view class="btn" @tap="getLeKe">
+          <contact-button type="default-dark" size="20" session-from="wx_movie_contract_btn" @tap="getSessionFrom" wx:if="{{isHaveCard}}"></contact-button>
         </view>
-        <view class="tips">温馨提示：选座功能仅在in同城趴app开放</view>
+        <view class="rule-btn" @tap="openRule"></view>
     </view>
+    <lekeModal wx:if="{{isShowRuleModal}}"></lekeModal>
   </report>
 </template>
 
 <script>
   import wepy from 'wepy';
   import auth from '@/api/auth';
-  import Leke from '@/api/leke';
+  import lekeApi from '@/api/leke';
   import report from '@/components/report-submit';
-  export default class seat extends wepy.page {
+  import lekeModal from '@/components/leke/lekeModal';
+  export default class leke extends wepy.page {
     config = {
       navigationBarTitleText: '乐刻'
     }
     data = {
-      isLoginIn: false,
-      isHaveCard:false
+      bgs:[
+        'https://inimg01.jiuyan.info/in/2018/03/06/07347B4F-DDB3-DAFC-9AAC-DE97F3CF087E.jpg',
+        'https://inimg01.jiuyan.info/in/2018/03/06/E0B3357E-F07A-3273-B156-D1D3F34BDFBE.jpg'
+      ],
+      isHaveCard:false,
+      isShowRuleModal:false
     }
-    components = { report }
+    components = { report, lekeModal}
     methods = {
       async getLeKe () {
-        try {
-          await wepy.getUserInfo( { lang: 'zh_CN' } )
-          this.isLoginIn = true
-          this.$apply()
-        } catch (e) {
-          console.log(e)
+        await auth.ready();
+        await this.getCardInfo()
+        if(this.isHaveCard == null){
+           wepy.navigateTo( {
+            url: `/pages/detail/detail`
+          } );
         }
       },
-      getSessionFrom () {
-        var res = Seat.getSessionFrom();
+      async getSessionFrom(){
+        await lekeApi.getSessionFrom()
+      },
+      openRule () {
+         this.isShowRuleModal = true
       }
     }
-    async init () {
-      this.isLoginIn = await Leke.getLekeInfo() || fale
+    events = {
+      closeModal (){
+        this.isShowRuleModal = false
+      }
+    }
+
+    async getCardInfo () {
+      this.isHaveCard = await lekeApi.getLekeInfo() ? true : null
       this.$apply()
     }
-    async onLoad() {
+
+    async onShow () {
       await auth.ready();
-      await this.init();
+      await this.getCardInfo();
     }
   }
 </script>

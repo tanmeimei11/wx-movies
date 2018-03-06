@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "wepy build --watch",
     "build": "cross-env NODE_ENV=production wepy build --no-cache",
-    "upload": "node assets/qiniu"
+    "upload": "node assets/qiniu",
+    "tiny": "node assets/tiny"
   },
   "author": "",
   "license": "MIT",

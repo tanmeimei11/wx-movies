@@ -13,7 +13,8 @@ import notice from '@/components/detail/notice';
 import moviePart from '@/components/detail/moviePart';
 import adBanner from '@/components/adBanner';
 import seckill from '@/components/detail/seckill';
-import shareConnectMixin from '@/mixins/shareConnectMixin';
+import lekeReceiveModal from '@/components/leke/lekeReceiveModal';
+import shareLekeMixin from '@/mixins/shareLekeMixin';
 import loadingMixin from '@/mixins/loadingMixin';
 import track from '@/utils/track';
 import {getParamV} from '@/utils/common';
@@ -22,8 +23,8 @@ export default class Index extends wepy.page {
   config = {
     navigationBarTitleText: 'in同城趴·电影王卡'
   }
-  components = {report, shareWindow, receiveGiftModal, buyMutiModal, receiveFaildModal, receiveTicketModal, channelModal, notice, moviePart, adBanner, seckill}
-  mixins = [shareConnectMixin, loadingMixin]
+  components = {report, shareWindow, receiveGiftModal, buyMutiModal, receiveFaildModal, receiveTicketModal, channelModal, notice, moviePart, adBanner, seckill, lekeReceiveModal}
+  mixins = [loadingMixin, shareLekeMixin]
   data = {
     promoPrice: '', // 活动价格
     payPrice: '', // 原价 159
@@ -112,9 +113,15 @@ export default class Index extends wepy.page {
     unionInfo: { // 拼团信息
 
     },
-    tabText: []
+    tabText: [],
+    lekePromoInfo: {  // leke活动信息
+      isShow: false
+    }
   }
   events = {
+    closeLekeModal () {
+      this.lekePromoInfo.isShow = false;
+    },
     closeBuyMutiModal () {
       this.buyMutiModalInfo.show = false;
     },
@@ -250,8 +257,8 @@ export default class Index extends wepy.page {
     return {
       title: this.shareInfo.share_txt,
       path: `/pages/index/index?directTo=detail&qrcode_from=${this.shareInfo.qrcode_from}`,
-      imageUrl: this.shareInfo.share_img
-      // 'http://inimg07.jiuyan.info/in/2018/01/26/20A52317-E4EB-3657-E024-F2EF040B2E86.jpg'
+      imageUrl: this.shareInfo.share_img,
+      success: this.shareCallBack( res )
     };
   }
   onReachBottom () {
@@ -292,9 +299,18 @@ export default class Index extends wepy.page {
     this.detailStatus = await Detail.getDetailStatus( this.statusQuery );
     this.initReceiveTicketInfo( this.detailStatus );
     this.initChannelDiscount( this.detailStatus );
+    this.initLekeInfo( this.detailStatus );
     this.shareInfo = await Detail.getShareInfo();
     if ( this.cardCode ) { await this.initCardStatus(); };
     this.$apply();
+    console.log( '11', this );
+  }
+  initLekeInfo ( status ) {
+    if ( !status.leke_info || this.cardCode ) { return; }
+    this.lekePromoInfo = {
+      isShow: true,
+      ...status.leke_info
+    };
   }
   /**
    *
@@ -566,16 +582,21 @@ export default class Index extends wepy.page {
       };
     } );
   }
+  initQrcodeFrom ( options ) {
+    console.log( options );
+    var qf = options.qrcode_from || getParamV( options, 'qf' );
+    this.$parent.globalData.qrcode_from = qf;
+    this.qrcode_from = qf;
+    console.log( this.qrcode_from );
+  }
   /**
    * 初始化连接上的参数
    * @param {*} options
    */
   initOptions ( options ) {
     this.detailCode = options;
-    var qf = options.qrcode_from || getParamV( options, 'qf' );
-    this.$parent.globalData.qrcode_from = qf;
-    this.data.qrcode_from = qf;
-    this.data.shareId = options.share_uid || '';
+    this.initQrcodeFrom( options );
+    this.shareId = options.share_uid || '';
     this.cardCode = options.cardCode || '';
     if ( options.ticketId ) {  // 立即升级点过来
       this.discountInfo.ticketId = options.ticketId;
@@ -663,5 +684,15 @@ export default class Index extends wepy.page {
     this.discountInfo.ticketId = '';
     this.buyMutiModalInfo.show = false;
     this.$apply();
+  }
+
+  async getCardByLekePromo () {
+    this.lekePromoInfo.isShow = false;
+    this.initQrcodeFrom( {
+      qrcode_from: 'leke_reward_01'
+    } );
+    this.cardCode = this.lekePromoInfo.leke_code;
+    this.$apply();
+    await this.init();
   }
 }

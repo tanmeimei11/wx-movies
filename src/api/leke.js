@@ -1,5 +1,5 @@
 import Pagebase from './page';
-export default class Seat extends Pagebase {
+export default class leke extends Pagebase {
   /**
    * 获取我的信息接口
    */
@@ -9,6 +9,7 @@ export default class Seat extends Pagebase {
     } );
   }
   static async getLekeInfo () {
+    console.log( 'get card' );
     return await this.request( {
       url: '/mnp/card/has_card'
     } );
