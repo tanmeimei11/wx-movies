@@ -131,7 +131,7 @@
       navigationBarTitleText: '选座'
     }
     data = {
-      loginIn: false
+      loginIn: null
     }
     components = { report }
     methods = {

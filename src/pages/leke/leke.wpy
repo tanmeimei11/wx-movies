@@ -1,0 +1,143 @@
+<style lang="less">
+  form{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    .report-button{
+      height: 100%;;
+      background-color: #dedede;
+    }
+  }
+  .container {
+    justify-content:flex-start;
+    position: relative;
+    .rule-btn{
+      position: absolute;
+      top: 27rpx;
+      right: 20rpx;
+      width: 150rpx;
+      height: 50rpx;
+    }
+   .bg-image{
+     width: 100%;
+     display: block;
+   }
+    .btn{
+      position: absolute;
+      top: 972rpx;
+      left: 160rpx;
+      width: 435rpx;
+      height: 91rpx;
+      overflow: hidden;
+      background: url('https://inimg01.jiuyan.info/in/2018/03/06/C9C8207F-0FC0-227B-EBDC-F6BFAE2A0FE4.jpg') no-repeat;
+      background-size: contain;
+      background-position: center;
+      contact-button {
+        position:absolute;
+        top:0;
+        left:0;
+        transform-origin:0 0;
+        width:100%!important;
+        height:100%!important;
+        opacity:0;
+      }
+    }
+    .wx-contact-button-wrapper{
+      width: 100%!important;
+      height: 100%!important;
+    }
+    .tips{
+      position: absolute;
+      bottom: 60rpx;
+      width: 100%;
+      left: 0;
+      text-align: center;
+      font-size: 24rpx;
+      color: #666;
+    }
+  }
+</style>
+<template>
+  <report>
+    <view class="container">
+       <image src="{{bgs[0]}}" mode="widthFix" class="bg-image"/>
+       <image src="{{bgs[1]}}" mode="widthFix" class="bg-image"/>
+        <view class="btn" @tap="getLeKe">
+          <contact-button type="default-dark" size="20" session-from="wx_movie_contract_btn" @tap="getSessionFrom" wx:if="{{isHaveCard}}"></contact-button>
+        </view>
+        <view class="rule-btn" @tap="openRule"></view>
+    </view>
+    <lekeModal wx:if="{{isShowRuleModal}}"></lekeModal>
+    <redrectModal wx:if="{{isShowRedrectModal}}"></redrectModal>
+  </report>
+</template>
+
+<script>
+  import wepy from 'wepy';
+  import auth from '@/api/auth';
+  import lekeApi from '@/api/leke';
+  import report from '@/components/report-submit';
+  import lekeModal from '@/components/leke/lekeModal';
+  import redrectModal from '@/components/leke/redrectModal';
+  import track from '@/utils/track';
+  export default class leke extends wepy.page {
+    config = {
+      navigationBarTitleText: '乐刻'
+    }
+    data = {
+      bgs:[
+        'https://inimg01.jiuyan.info/in/2018/03/06/07347B4F-DDB3-DAFC-9AAC-DE97F3CF087E.jpg',
+        'https://inimg01.jiuyan.info/in/2018/03/06/E0B3357E-F07A-3273-B156-D1D3F34BDFBE.jpg'
+      ],
+      isHaveCard:false,
+      isShowRuleModal:false,
+      isShowRedrectModal:false
+    }
+    components = { report, lekeModal, redrectModal}
+    methods = {
+      async getLeKe () {
+        await auth.ready();
+        await this.getCardInfo()
+        if(this.isHaveCard == null){
+           track('leke_get_with_out_card')
+            this.isShowRedrectModal = true
+            this.$apply()
+        }else{
+           track('leke_get_with_card')
+        }
+      },
+      async getSessionFrom(){
+        await lekeApi.getSessionFrom()
+      },
+      openRule () {
+         this.isShowRuleModal = true
+      }
+    }
+    events = {
+      openRedrectModal(){
+         this.isShowRedrectModal = true
+      },
+      closeRedrectModal(){
+        this.isShowRedrectModal = false
+      },
+      closeModal (){
+        this.isShowRuleModal = false
+      }
+    }
+
+    async getCardInfo () {
+      this.isHaveCard = await lekeApi.getLekeInfo() ? true : null
+      this.$apply()
+    }
+
+    async onShow () {
+      await auth.ready();
+      await this.getCardInfo();
+    }
+    onLoad(){
+      track('leke_enter')
+    }
+  }
+</script>

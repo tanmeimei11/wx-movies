@@ -1,0 +1,71 @@
+<template>
+  <view class="c-modal c-leke-receive-modal">
+    <view class="c-wrap">
+      <image mode="widthFix" src="{{lekePromoInfo.bgs[0]}}" class="bg-img"/>
+      <image mode="widthFix" src="{{lekePromoInfo.bgs[1]}}" class="bg-img"/>
+      <view class="s-close" @tap="close" ></view>
+      <view class="s-btn" bindtap="receive">
+        <button class="s-share-btn" open-type="share"></button>
+      </view>
+    </view>
+  </view>
+</template>
+<style lang="less">
+
+.c-leke-receive-modal {
+  background-color: #0d2529;
+  .c-wrap{
+    width: 707rpx;
+    overflow: hidden;
+    padding-bottom: 50rpx;
+    background-color: rgba(255,255,255,0);
+    position: relative;
+  }
+  .s-close {
+    width: 85rpx;
+    height: 80rpx;
+    background:none;
+  }
+  .bg-img{
+    width: 100%;
+    display: block;
+  }
+  .s-btn {
+    position: absolute;
+    top: 795rpx;
+    left: 159rpx;
+    width: 386rpx;
+    height: 90rpx;
+    .s-share-btn{
+      width: 100%;
+      height: 100%;
+      display: block;
+      opacity: 0;
+    }
+  }
+}
+</style>
+<script>
+import wepy from "wepy";
+import util from "@/utils/util";
+import { request } from "@/utils/request";
+import tips from "@/utils/tips";
+import track from "@/utils/track";
+
+export default class lekeReceiveModal extends wepy.component {
+  props = {
+    lekePromoInfo:{}
+  };
+  data = {
+  };
+  methods = {
+    close () {
+      this.$emit( 'closeLekeModal' );
+    },
+    receive () {
+      track('leke_share_to_group')
+    }
+  };
+  watch= {}
+}
+</script>

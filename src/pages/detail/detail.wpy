@@ -154,6 +154,8 @@
     <buyMutiModal :buyMutiModalInfo.sync="buyMutiModalInfo" :cardImg.sync="cardImg" wx:if="{{buyMutiModalInfo.show}}" :discountInfo.sync="discountInfo" :seckillInfo.sync="seckillInfo"></buyMutiModal>
      <!--fix 获得电影卡-->
     <view class="get-movies-ticket" wx:if="{{detailStatus.fetch_ticket}}" @tap="getMovieTicket"></view>
+    <!-- leke 获得卡的弹窗 -->
+    <lekeReceiveModal :lekePromoInfo.sync="lekePromoInfo" wx:if="{{lekePromoInfo.isShow}}"></lekeReceiveModal>
     <!--fix 按钮-->
     <view class="some-btn-wrap">
       <view class="btn-icon btn-index" @tap="toIndex">首页</view>

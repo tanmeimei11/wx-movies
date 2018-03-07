@@ -3,6 +3,13 @@ module.exports = {
   'code': '200003',
   'succ': true,
   'data': {
+    leke_info: {
+      leke_code: '9kslls', // 乐刻码
+      bgs: [
+        'https://inimg01.jiuyan.info/in/2018/03/06/6A67B1AA-76D5-1CFA-7101-F1B25F03BE47.jpg',
+        'https://inimg01.jiuyan.info/in/2018/03/06/24AF432F-A19B-9B53-042B-96754983862C.jpg'
+      ] // 乐刻抽取王卡的图片
+    }, // 这个字段可能为空
     'ticket_switch': false,
     'ticket_desc': '电影票已领完',
     'is_share': '0',                // 用户是否分享过

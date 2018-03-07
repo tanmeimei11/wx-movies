@@ -22,5 +22,7 @@ module.exports = {
   [`${DOMAIN}/mnp/ticket/share`]: 'share',
   [`${DOMAIN}/mnp/ticket/fetch`]: 'fetch',
   [`${DOMAIN}/mnp/seckill/attach2remind`]: 'attach2remind',
+  [`${DOMAIN}/mnp/custom/leke_reply`]: 'example',
+  [`${DOMAIN}/mnp/card/has_card`]: 'example',
   [`${payUrl}`]: 'signature'
 };
