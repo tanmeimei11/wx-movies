@@ -28,6 +28,15 @@ export default class Detail extends Pagebase {
       data: data
     } );
   }
+  /**
+   *  获取详情页页面接口
+   */
+  static async getDetailDataNew ( data ) {
+    return await this.request( {
+      url: '/info/newcinemas',
+      data: data
+    } );
+  }
   static initCardNum ( data ) {
     return {
       num: `${data.current_person_count}/${data.total_person_count}`,
@@ -43,14 +52,15 @@ export default class Detail extends Pagebase {
     }
     return {
       img: img,
-      list: data.map( ( item ) => {
-        return {
-          address: item.address,
-          addressImg: item.address_img,
-          gps: item.gps,
-          name: item.name
-        };
-      } )
+      list: data
+      // list: data.map( ( item ) => {
+      //   return {
+      //     address: item.address,
+      //     addressImg: item.address_img,
+      //     gps: item.gps,
+      //     name: item.name
+      //   };
+      // } )
     };
   }
   /**

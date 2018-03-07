@@ -1,0 +1,111 @@
+<template>
+  <report>
+    <scroll-view class="container" scroll-y scroll-with-animation scroll-into-view="{{toView}}">
+    <view class="container">
+      <!-- banner部分 -->
+    <adBanner wx:if="{{bannerInfo && bannerInfo.img_url.length > 0}}"
+              :bannerInfo.sync="bannerInfo"></adBanner>
+      <!-- 视频和图片部分 -->
+      <view class="c-bg">
+         <!-- 活动规则 -->
+        <view class="anch" @tap="gotoBottom">活动规则</view>
+        <image class="img" mode="widthFix" src="{{bgImages[0]}}" />
+         <!-- 秒杀模块 -->
+        <seckill wx:if="{{seckillInfo.enabled}}" :seckillInfo.sync="seckillInfo" ></seckill>
+        <image class="img" mode="widthFix" src="{{bgImages[1]}}" wx:else/>
+        <image class="img" mode="widthFix" src="{{bgImages[2]}}" />
+        <image class="cover_img" mode="aspectFill" src="{{videoConf.cover_img_url}}" wx:if="{{videoConf.support && videoConf.video_url.length > 0}}" @tap="showVideo"/>
+        <!-- <video wx:if="{{videoConf.support && videoConf.video_url.length > 0}}"
+               src="{{videoConf.video_url}}" 
+               objectFit="cover"
+               poster="{{videoConf.cover_img_url}}"
+               controls>
+        </video> -->
+      </view>
+      
+      <view class="c-part" style="background-image:url({{partBg}})">
+         <moviePart :moviesSections.sync="moviesSections" :detailText.sync="detailText" :movieImg.sync="movieImg"></moviePart>
+         <!-- 电影部分 -->
+        <view class="c-one-part movie">
+          <view class="s-mid-title movie">{{detailText.desc09}}</view>
+          <view class="s-title">{{detailText.desc10[0]}}</view>
+          <view class="s-desc">{{detailText.desc10[1]}}</view>
+          <image class="s-img-movie" src="https://inimg05.jiuyan.info/in/2018/01/26/6FF859BD-2789-FF95-2D40-464F0AA8BBC1.png"></image>
+        </view>
+        <!-- 影院部分 -->
+        <view class="c-one-part">
+          <view class="s-mid-title ciname">{{detailText.desc07}}</view>
+          <view class="s-title">{{detailText.desc08[0]}}</view>
+          <view class="s-desc">{{detailText.desc08[1]}}</view>
+          <image class="s-img-1" mode="aspectFill" src="{{cinemas.img}}"></image>
+          <view class="s-info-wrap">
+            <view class="cinemas-wrap"  wx:for="{{cinemas.list}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
+              <view class="name">{{item.name}}</view>
+              <view class="addr">{{item.address}}</view>
+            </view>
+          </view>
+        </view>
+       
+        <!-- 观看时间部分 -->
+        <view class="c-one-part look">
+          <view class="s-mid-title">{{detailText.desc13}}</view>
+          <view class="s-title">{{detailText.desc14[0]}}</view>
+          <view class="s-desc">{{detailText.desc14[1]}}</view>
+          <image class="s-img-1" mode="aspectFill" src="https://inimg01.jiuyan.info/in/2018/01/20/5C6F0180-3C30-D9F7-C4CF-0AE422636EC1.jpg"></image>
+          <view class="s-mid-title movie2">{{detailText.desc15}}</view>
+          <view class="s-title">{{detailText.desc16[0]}}</view>
+          <view class="s-desc">{{detailText.desc16[1]}}</view>
+        </view>
+      </view>
+        <!-- 规则部分 -->
+      <view class="c-last" id="details">
+        <view class="s-mid-title rule">详情介绍</view>
+          <view class="s-rules"  wx:for="{{rules}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
+            <view class="title bold">{{item.title}}</view>
+            <view class="desc" wx:for="{{item.desc}}" wx:for-index="idx1" wx:for-item="item1" wx:key="idx">{{item1}}</view>
+          </view>
+      </view>
+    </view>
+    </scroll-view>
+    <!-- video -->
+   <view class="videoWindow" wx:if="{{videoConf.support && videoConf.video_url.length > 0 && videoShow}}">
+      <view class="bg" @tap="closeVideo"></view>
+      <video src="{{videoConf.video_url}}" poster="{{videoConf.cover_img_url}}" controls autoplay direction='0' bindended="videoEnd"  bindfullscreenchange="videoEnd" >
+      </video>
+   </view>
+    <!-- 分享卡 -->
+    <shareWindow :shareInfo.sync="shareInfo" wx:if="{{showShareWindow}}" @closeShareWindow.user="closeShareWindow" @initShare.user="initShare" @shareCode.user="shareCode"></shareWindow>
+    <!-- 接收卡 -->
+    <receiveGiftModal :receiveGiftInfo.sync="receiveGiftInfo" wx:if="{{receiveGiftInfo.show}}"></receiveGiftModal>
+    <!-- 接收电影票 -->
+    <receiveTicketModal wx:if="{{receiveTicketInfo.show && receiveTicketInfo.shareCode && detailStatus.fetch_ticket && !receiveTicketInfo.userInfo.is_owner}}" :receiveTicketInfo.sync="receiveTicketInfo" @getMovieTicket.user="getMovieTicket"></receiveTicketModal>
+    <!-- 接收失败 -->
+    <receiveFaildModal :receiveFaildInfo.sync="receiveFaildInfo" wx:if="{{receiveFaildInfo.show}}"></receiveFaildModal>
+    <!-- 支付 -->
+    <buyMutiModal :buyMutiModalInfo.sync="buyMutiModalInfo" :cardImg.sync="cardImg" wx:if="{{buyMutiModalInfo.show}}" :discountInfo.sync="discountInfo" :seckillInfo.sync="seckillInfo"></buyMutiModal>
+     <!--fix 获得电影卡-->
+    <view class="get-movies-ticket" wx:if="{{detailStatus.fetch_ticket}}" @tap="getMovieTicket"></view>
+    <!--fix 按钮-->
+    <view class="some-btn-wrap">
+      <view class="btn-icon btn-index" @tap="toIndex">首页</view>
+      <view class="btn-icon btn-share" @tap="sharePay">分享</view>
+      <view class="btn-icon btn-contract" @tap="trackContact"> <contact-button session-from="wx_movie_contract"></contact-button>客服</view>
+      <!-- <view class="btn btn-cut" @tap="sharePay">{{fixBtnText[0]}}</view> -->
+      <!-- 按钮区域  1正常情况 拼团 两个按钮  秒杀情况 一个按钮 -->
+      <view class="btn {{seckillInfo.enabled ? 'btn-cut':'btn-origin'}} {{tabText.length === 1 ? 'btn-red' : ''}}" @tap="openBuyMutiModal">
+        <text class="price">{{fixBtnText[0].price}}</text>
+        <text wx:if="fixBtnText[0].text" class="{{tabText.length === 1 ? 'btnbig' : ''}}">{{fixBtnText[0].text}}</text>
+      </view>
+      <view class="btn btn-cut"  @tap="openGroup" wx:if="{{fixBtnText[1]}}" >
+        <text class="price">{{fixBtnText[1].price}}</text>
+        <text wx:if="fixBtnText[1].text">{{fixBtnText[1].text}}</text>
+      </view>
+    </view>
+
+    <!-- 其他渠道红包（比如滴滴） -->
+    <channelModal wx:if="{{channelModalInfo.show}}" :channelModalInfo.sync="channelModalInfo"></channelModal>
+    <notice wx:if="{{noticeInfo.show}}" :noticeInfo.sync="noticeInfo"></notice>
+  </report>
+</template>
+<style lang="less" src="./detail.less"></style>
+<script src="./detail.js"></script>

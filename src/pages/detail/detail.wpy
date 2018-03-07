@@ -1,6 +1,6 @@
 <template>
   <report>
-    <scroll-view class="container" scroll-y scroll-with-animation scroll-into-view="{{toView}}">
+    <scroll-view class="container" scroll-y scroll-with-animation scroll-into-view="{{toView}}" bindscroll="scroll">
     <view class="container">
       <!-- banner部分 -->
     <adBanner wx:if="{{bannerInfo && bannerInfo.img_url.length > 0}}"
@@ -8,58 +8,121 @@
       <!-- 视频和图片部分 -->
       <view class="c-bg">
          <!-- 活动规则 -->
-        <view class="anch" @tap="gotoBottom">活动规则</view>
-        <image class="img" mode="widthFix" src="{{bgImages[0]}}" />
+        <!-- <view class="anch" @tap="gotoBottom">活动规则</view> -->
+        <image class="img" mode="widthFix" src="{{bgImages.banner}}" />
          <!-- 秒杀模块 -->
         <seckill wx:if="{{seckillInfo.enabled}}" :seckillInfo.sync="seckillInfo" ></seckill>
-        <image class="img" mode="widthFix" src="{{bgImages[1]}}" wx:else/>
-        <image class="img" mode="widthFix" src="{{bgImages[2]}}" />
-        <image class="cover_img" mode="aspectFill" src="{{videoConf.cover_img_url}}" wx:if="{{videoConf.support && videoConf.video_url.length > 0}}" @tap="showVideo"/>
-        <!-- <video wx:if="{{videoConf.support && videoConf.video_url.length > 0}}"
-               src="{{videoConf.video_url}}" 
-               objectFit="cover"
-               poster="{{videoConf.cover_img_url}}"
-               controls>
-        </video> -->
+        <!-- <image class="img" mode="widthFix" src="{{bgImages[1]}}" wx:else/>
+        <image class="img" mode="widthFix" src="{{bgImages[2]}}" /> -->
+        <view class="top">
+          <view class="card"></view>
+          <view class="icon">
+            <view class="icon-item"  wx:for="{{icon}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
+              <view class="img" style="background-image:url({{item.img}})"></view>
+              <view class="title">{{item.title}}</view>
+              <view class="desc">{{item.desc}}</view>
+            </view>
+          </view>
+          <view class="course">
+            <view class="title">{{course.title}}</view>
+            <view class="desc1">{{course.desc1}}</view>
+            <view class="desc2">{{course.desc2}}
+              <view class="btn" @tap="showVideo2">视频教程 ></view>
+            </view>
+          </view>
+          <view class="video" wx:if="{{videoConf.support && videoConf.video_url.length > 0}}">
+            <image class="cover_img" mode="aspectFill" src="{{videoConf.cover_img_url}}"/>
+            <view class="covertop">
+                <view class="title">{{videoConf.title}}</view>
+                <view class="desc">{{videoConf.desc}}</view>
+            </view>
+            <view class="coverbtn" @tap="showVideo"></view>
+          </view>
+        </view>
       </view>
       
-      <view class="c-part" style="background-image:url({{partBg}})">
-         <moviePart :moviesSections.sync="moviesSections" :detailText.sync="detailText" :movieImg.sync="movieImg"></moviePart>
+      <view class="tabbar">
+        <view class="tabbar-item {{tabbarID == idx ? 'on' : ''}}"  wx:for="{{tabbar}}" wx:for-index="idx" wx:for-item="item" wx:key="idx" @tap="goDetail" data-tab="{{item.id}}" data-id="{{idx}}">
+          <view class="name">{{item.name}}</view>
+          <view class="jiao"></view>
+        </view>
+      </view>
+
+      <view class="c-part" id="right">
+
          <!-- 电影部分 -->
         <view class="c-one-part movie">
-          <view class="s-mid-title movie">{{detailText.desc09}}</view>
-          <view class="s-title">{{detailText.desc10[0]}}</view>
-          <view class="s-desc">{{detailText.desc10[1]}}</view>
-          <image class="s-img-movie" src="https://inimg05.jiuyan.info/in/2018/01/26/6FF859BD-2789-FF95-2D40-464F0AA8BBC1.png"></image>
+          <view class="topic">{{content.right.title}}</view>
+          <view class="s-mid-title movie">{{content.right.desc1}}</view>
+          <view class="s-desc">{{content.right.desc2}}</view>
+          <view class="s-desc">{{content.right.desc3}}</view>
+          <image class="s-img-movie" mode="widthFix" src="{{content.right.img1}}"></image>
+          <view class="s-mid-title movie">{{content.right.desc4}}</view>
+          <scroll-view class="movieList" scroll-x>
+            <view class="movies">
+              <view class="movie-item"  wx:for="{{movies}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
+                <view class="img" style="background-image:url({{item.movie_img_url}})"></view>
+                <view class="name">{{item.name}}</view>
+              </view>
+            </view>
+          </scroll-view>
         </view>
         <!-- 影院部分 -->
         <view class="c-one-part">
-          <view class="s-mid-title ciname">{{detailText.desc07}}</view>
-          <view class="s-title">{{detailText.desc08[0]}}</view>
-          <view class="s-desc">{{detailText.desc08[1]}}</view>
+          <view class="s-mid-title ciname">{{content.right.desc5}}</view>
+          <view class="s-desc">{{content.right.desc6}}</view>
+          <view class="s-desc">{{content.right.desc7}}</view>
           <image class="s-img-1" mode="aspectFill" src="{{cinemas.img}}"></image>
-          <view class="s-info-wrap">
+          <view class="cinemaList">
+            <swiper indicator-dots='true' indicator-color='rgba(255, 255, 255, 0.5)' indicator-active-color='#fff'>
+              <block wx:for="{{cinemas.list}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
+                <swiper-item>
+                  <image src="{{item}}" mode="widthFix" class="slide-image"></image>
+                </swiper-item>
+              </block>
+            </swiper>
+          </view>
+          <view class="cinemaBg"></view>
+          <!-- <view class="s-info-wrap">
             <view class="cinemas-wrap"  wx:for="{{cinemas.list}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
               <view class="name">{{item.name}}</view>
               <view class="addr">{{item.address}}</view>
             </view>
-          </view>
+          </view> -->
         </view>
        
         <!-- 观看时间部分 -->
         <view class="c-one-part look">
-          <view class="s-mid-title">{{detailText.desc13}}</view>
-          <view class="s-title">{{detailText.desc14[0]}}</view>
-          <view class="s-desc">{{detailText.desc14[1]}}</view>
-          <image class="s-img-1" mode="aspectFill" src="https://inimg01.jiuyan.info/in/2018/01/20/5C6F0180-3C30-D9F7-C4CF-0AE422636EC1.jpg"></image>
-          <view class="s-mid-title movie2">{{detailText.desc15}}</view>
-          <view class="s-title">{{detailText.desc16[0]}}</view>
-          <view class="s-desc">{{detailText.desc16[1]}}</view>
+          <view class="s-mid-title">{{content.right.desc8}}</view>
+          <view class="s-desc">{{content.right.desc9}}</view>
+          <view class="s-desc">{{content.right.desc10}}</view>
+          <image class="s-img-1" mode="widthFix" src="{{content.right.img2}}"></image>
         </view>
       </view>
+
+      <view class="c-part-live" id="cinema_live">
+        <view class="topic">{{content.cinema_live.title}}</view>
+        <view class="liveList">
+          <swiper display-multiple-items='1.5'>
+            <block wx:for="{{content.cinema_live.pics}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
+              <swiper-item>
+                <image src="{{item}}" mode="widthFix" class="slide-image"></image>
+              </swiper-item>
+            </block>
+          </swiper>
+        </view>
+      </view>
+
+      <view class="c-part-comment" id="comment">
+        <view class="topic">{{content.comment.title}}</view>
+        <view class="tabbar-item"  wx:for="{{content.comment.pics}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
+          <image class="pics" mode="widthFix" src="{{item}}"></image>
+        </view>
+      </view>
+
         <!-- 规则部分 -->
-      <view class="c-last" id="details">
-        <view class="s-mid-title rule">详情介绍</view>
+      <view class="c-last" id="usage">
+          <view class="topic">{{content.usage.title}}</view>
           <view class="s-rules"  wx:for="{{rules}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
             <view class="title bold">{{item.title}}</view>
             <view class="desc" wx:for="{{item.desc}}" wx:for-index="idx1" wx:for-item="item1" wx:key="idx">{{item1}}</view>
@@ -73,6 +136,12 @@
       <video src="{{videoConf.video_url}}" poster="{{videoConf.cover_img_url}}" controls autoplay direction='0' bindended="videoEnd"  bindfullscreenchange="videoEnd" >
       </video>
    </view>
+   <!-- 教程视频 -->
+  <view class="videoWindow" wx:if="{{videoConf.support && videoConf.video_url.length > 0 && videoShow2}}">
+     <view class="bg" @tap="closeVideo"></view>
+     <video src="{{course.src}}" controls autoplay direction='0' bindended="videoEnd"  bindfullscreenchange="videoEnd" >
+     </video>
+  </view>
     <!-- 分享卡 -->
     <shareWindow :shareInfo.sync="shareInfo" wx:if="{{showShareWindow}}" @closeShareWindow.user="closeShareWindow" @initShare.user="initShare" @shareCode.user="shareCode"></shareWindow>
     <!-- 接收卡 -->

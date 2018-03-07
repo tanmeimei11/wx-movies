@@ -31,20 +31,18 @@ export default class Index extends wepy.page {
     bannerInfo: {},
     videoConf: {},
     videoShow: false,
-    videoShow2: false,
     getMyInfo: {},
     detailCode: {},
     cinemas: {
       img: '',
-      list: []
-      // list: [
-      //   {
-      //     address: '',
-      //     addressImg: '',
-      //     gps: '',
-      //     name: ''
-      //   }
-      // ]
+      list: [
+        {
+          address: '',
+          addressImg: '',
+          gps: '',
+          name: ''
+        }
+      ]
     },
     movies: [
       { name: '',
@@ -103,12 +101,6 @@ export default class Index extends wepy.page {
     },
     cardCode: '', // 分享进来的转赠卡的卡片code
     bgImages: [], // 背景图
-    icon: [],
-    course: {},
-    tabbar: [],
-    tabbarID: 0,
-    tabHeight: '',
-    content: {},
     partBg: '',
     shareImage: '',
     bgStyle: '',
@@ -206,16 +198,9 @@ export default class Index extends wepy.page {
     closeVideo () {
       this.videoShow = false;
     },
-    showVideo2 () {
-      this.videoShow2 = true;
-    },
-    closeVideo2 () {
-      this.videoShow2 = false;
-    },
     videoEnd () {
       console.log( 'end' );
       this.videoShow = false;
-      this.videoShow2 = false;
     },
     openBuyMutiModal () {
       this.openPayWin();
@@ -225,19 +210,12 @@ export default class Index extends wepy.page {
         url: `/pages/index/index`
       } );
     },
-    // gotoBottom () {
-    //   track( 'page_rule' );
-    //   this.toView = '';
-    //   this.$apply();
-    //   this.toView = 'details';
-    //   this.$apply();
-    // },
-    goDetail (e) {
+    gotoBottom () {
+      track( 'page_rule' );
       this.toView = '';
       this.$apply();
-      this.toView = e.currentTarget.dataset.tab;
+      this.toView = 'details';
       this.$apply();
-      this.tabbarID = e.currentTarget.dataset.id
     },
     getMovieTicket ( type ) {
       if ( type === 'lingqu' ) {
@@ -276,12 +254,6 @@ export default class Index extends wepy.page {
       // 'http://inimg07.jiuyan.info/in/2018/01/26/20A52317-E4EB-3657-E024-F2EF040B2E86.jpg'
     };
   }
-  scroll (e) {
-    // console.log(e.detail.scrollTop,this.tabHeight)
-    // if (e.detail.scrollTop > this.tabHeight) {
-    //   console.log('over')
-    // }
-  }
   onReachBottom () {
     track( 'page_slide_to_end' );
   }
@@ -303,17 +275,16 @@ export default class Index extends wepy.page {
   }
   async init () {
     var res = await Detail.getDetailData( this.detailCode );
-    var newRes = await Detail.getDetailDataNew( this.detailCode );
-    this.cinemas = Detail.initCinemas( newRes.cinemas, newRes.all_cinema_addr_img );
+    this.cinemas = Detail.initCinemas( res.cinemas, res.all_cinema_addr_img );
     this.moviesSections = Detail.initMovies( res.movie_sections );
     this.detailText = this.initBuyText( res );
-    this.rules = this.initRulesText( newRes.desc );
+    this.rules = this.initRulesText( res.desc );
     this.initBannerInfo( res );
-    this.initVideoInfo( newRes );
+    this.initVideoInfo( res );
     this.initBuyInfo( res );
     this.initFixBtnText( res );
     this.initSeckillInfo( res );
-    this.initBgImages( newRes );
+    this.initBgImages( res );
     this.unionInfo = res.union_info;
     this.$apply();
     await auth.ready();
@@ -323,12 +294,6 @@ export default class Index extends wepy.page {
     this.initChannelDiscount( this.detailStatus );
     this.shareInfo = await Detail.getShareInfo();
     if ( this.cardCode ) { await this.initCardStatus(); };
-    var self = this
-    wx.getSystemInfo({
-      success: function (res) {
-        self.tabHeight = 750 / res.windowWidth * 1048
-      }
-    })
     this.$apply();
   }
   /**
@@ -539,12 +504,7 @@ export default class Index extends wepy.page {
     this.movieImg = res.movies_bottom_pic;
     this.cardImg = res.card_img;
     this.bgImages = res.bg_imgs;
-    this.icon = res.icon;
-    this.course = res.course
-    this.tabbar = res.tabbar
-    this.content = res.content
-    this.movies = res.movies
-    // this.bgStyle = `background-image:url(${this.bgImages[0]}),url(${this.bgImages[1]}),url(${this.bgImages[2]})`;
+    this.bgStyle = `background-image:url(${this.bgImages[0]}),url(${this.bgImages[1]}),url(${this.bgImages[2]})`;
     this.partBg = res.bg_img_01;
   }
 

@@ -2,7 +2,7 @@ module.exports = {
   _v: '0.3.1',
   DOMAIN: 'https://crowdfunding.in66.com',
   // DOMAIN: 'http://qacrowd-zf.in66.com',
-  isMock: false,
+  isMock: true,
   isTrack: false,
   qnTokenUrl: 'https://www.in66.com/promo/commonapi/qiniutoken',
   // qnUploadUrl: "http://upload.qiniup.com/",
