@@ -1,13 +1,13 @@
 <style lang="less">
   page {
-    background: #19033b;
+    background: #e91c26;
   }
 
   .container {
     /* position: absolute;
     width: 100%;
     height: 100%; */
-    background: url('https://inimg05.jiuyan.info/in/2018/01/20/03C3B4F8-DCA2-0A83-2F29-B51B0B494A76.jpg') no-repeat;
+    background: url('https://inimg01.jiuyan.info/in/2018/03/08/661C33DD-279C-0461-A0B9-996F15E0C332.jpg') no-repeat;
     background-size: cover;
     background-position: top;
   }
@@ -53,12 +53,12 @@
     border-radius: 12rpx;
     position: relative;
     .card {
-      width: 526rpx;
-      height: 310rpx;
+      width: 518rpx;
+      height: 318rpx;
       position: absolute;
-      top: -93rpx;
-      left: 34rpx;
-      background: url('https://inimg01.jiuyan.info/in/2018/01/25/31F09241-BE48-CDC5-AED9-94D5FC27EF25.png') no-repeat;
+      top: 30rpx;
+      left: 39rpx;
+      background: url('https://inimg07.jiuyan.info/in/2018/03/08/ACF2CF60-45EA-9508-E3E5-56B6AD7CCE61.png') no-repeat;
       background-size: contain;
       background-position: center;
       .yuan {
@@ -98,7 +98,7 @@
     } */
     .follow, .succ {
       position: absolute;
-      top: 287rpx;
+      top: 367rpx;
       left: 0;
       width: 526rpx;
       text-align: center;
@@ -151,7 +151,7 @@
       .btn {
         width: 400rpx;
         height: 88rpx;
-        margin: 90rpx auto 0;
+        margin: 50rpx auto 0;
         line-height: 88rpx;
         font-size: 32rpx;
         color: #fff;
@@ -224,9 +224,9 @@
         </view>
         <view class="content">
           <view class="card">
-            <view class="yuan" style="background-image: url({{share_card_img}});"></view>
+            <!-- <view class="yuan" style="background-image: url({{share_card_img}});"></view> -->
             <!-- <text class="cardname">in同城趴·电影王卡</text> -->
-            <text class="cardinfo">三个月电影免费看</text>
+            <!-- <text class="cardinfo">三个月电影免费看</text> -->
           </view>
           <!-- <view class="icon"></view>
           <text class="getinfo">请关注小程序了解最近进展</text> -->

@@ -6,7 +6,7 @@ module.exports = {
   [`${DOMAIN}/info/cinemas`]: 'detail',
   [`${DOMAIN}/info/newcinemas`]: 'newDetail',
   [`${DOMAIN}/info/research`]: 'research',
-  [`${DOMAIN}/index/info`]: 'info',
+  [`${DOMAIN}/index/newinfo`]: 'info',
   [`${DOMAIN}/mnp/product/cfStatus2`]: 'cfStatus',
   [`${DOMAIN}/mnp/order/result`]: 'result',
   [`${DOMAIN}/mnp/share/wechat/img`]: 'wechatimg',

@@ -3,7 +3,7 @@
     <view class="c-wrap">
       <view class="s-close" @tap.stop="close"></view>
       <!-- <view class="s-header" style="background-image:url({{cardImg}})"> -->
-      <view class="s-header" style="background-image:url('https://inimg07.jiuyan.info/in/2018/02/07/7D546BB7-C97B-2080-95C2-B27EFB8C3301.jpg')">
+      <view class="s-header" style="background-image:url('https://inimg02.jiuyan.info/in/2018/03/08/A05C4D69-731F-9CDA-F064-CC50AD023ECA.png')">
         <!-- <view class="tips">NO.xxxxxxxxxxxxxxxxxx</view>
         <view class="time">三个月电影无限看</view> -->
       </view>
@@ -46,8 +46,8 @@
     top:0;
     left:50%;
     transform: translate(-50%,-50%);
-    width: 400rpx;
-    height: 236rpx;
+    width: 476rpx;
+    height: 294rpx;
     /* background-image: url(https://inimg01.jiuyan.info/in/2018/01/25/FB5D55FB-986F-6433-18B8-BAF8C0C797E3.jpg); */
     background-size: contain;
     background-position: center;
