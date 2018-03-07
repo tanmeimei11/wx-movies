@@ -7,7 +7,7 @@
           <text>{{texts.desc01}}</text>
           <text>{{texts.desc02}}</text>
         </view>
-        <view class="btn" @tap="toDetail"></view>
+        <view class="btn" @tap="toDetail"  style="background-image:url({{texts.btn_img}})"></view>
       </view>
     </view>
     <researchWindow :researchInfo.sync="researchInfo" wx:if="{{showResearchWindow}}" @closeResearchWindow.user="closeResearchWindow"></researchWindow>
