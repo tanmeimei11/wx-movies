@@ -111,6 +111,7 @@
             </block>
           </swiper>
         </view>
+        <view class="area">{{content.cinema_live.area}}</view>
       </view>
 
       <view class="c-part-comment" id="comment">

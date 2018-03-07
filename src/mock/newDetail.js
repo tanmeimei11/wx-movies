@@ -48,7 +48,8 @@ module.exports = {
                 'https://inimg05.jiuyan.info/in/2018/03/07/AE462EFA-D47C-5669-B13E-FBE2CDE4C571.png',
                 'https://inimg05.jiuyan.info/in/2018/03/07/AE462EFA-D47C-5669-B13E-FBE2CDE4C571.png',
                 'https://inimg05.jiuyan.info/in/2018/03/07/AE462EFA-D47C-5669-B13E-FBE2CDE4C571.png'
-            ]
+            ],
+            area: '电影王卡 海上明珠影城'
         },
         comment: {
             title: '电影王卡·用户评价',
