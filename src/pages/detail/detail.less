@@ -125,7 +125,8 @@
   height: 100rpx;
   background: #fff;
   box-shadow: 1px 1px 3px #666;
-  position: relative;
+  position: absolute;
+  bottom: 0;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -158,6 +159,12 @@
   .on .jiao{
     display: block;
   }
+  &.fix{
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: auto;
+  }
 }
 .c-part-live{
   background: #fff;
@@ -167,10 +174,8 @@
       width: 100%;
     }
   }
-  // .liveList{
-  //   width: 100%;
-  //   margin-left: -50%;
-  // }
+  .liveList{
+  }
 }
 .c-part-comment{
   background: #fff;
@@ -366,7 +371,7 @@ contact-button {
   // background-size: 100%  auto;
   // background-position: 0 0,0 515rpx,0 1030rpx;
   position: relative;
-  padding-bottom: 40rpx;
+  padding-bottom: 140rpx;
   .cover_img{
     height: 225px;
     border: 16rpx solid #fa6f51;
@@ -398,6 +403,9 @@ contact-button {
   }
   video {
     width: 100%;
+  }
+  .image{
+    min-width: 600rpx;
   }
   image {
     display: block;

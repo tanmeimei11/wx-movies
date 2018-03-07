@@ -106,6 +106,7 @@ export default class Index extends wepy.page {
     bgImages: [], // 背景图
     icon: [],
     course: {},
+    onTop: false,
     tabbar: [],
     tabbarID: 0,
     tabHeight: '',
@@ -284,10 +285,11 @@ export default class Index extends wepy.page {
     };
   }
   scroll (e) {
-    // console.log(e.detail.scrollTop,this.tabHeight)
-    // if (e.detail.scrollTop > this.tabHeight) {
-    //   console.log('over')
-    // }
+    if (e.detail.scrollTop > this.tabHeight) {
+      this.onTop = true
+    } else {
+      this.onTop = false
+    }
   }
   onReachBottom () {
     track( 'page_slide_to_end' );
@@ -335,7 +337,8 @@ export default class Index extends wepy.page {
     var self = this
     wx.getSystemInfo({
       success: function (res) {
-        self.tabHeight = 750 / res.windowWidth * 1048
+        var tabHeight = self.bannerInfo ? 1900 : 1720
+        self.tabHeight = res.windowWidth / 750 * tabHeight
       }
     })
     this.$apply();

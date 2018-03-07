@@ -9,7 +9,7 @@
       <view class="c-bg">
          <!-- 活动规则 -->
         <!-- <view class="anch" @tap="gotoBottom">活动规则</view> -->
-        <image class="img" mode="widthFix" src="{{bgImages.banner}}" />
+        <image class="image" mode="widthFix" src="{{bgImages.banner}}" />
          <!-- 秒杀模块 -->
         <seckill wx:if="{{seckillInfo.enabled}}" :seckillInfo.sync="seckillInfo" ></seckill>
         <!-- <image class="img" mode="widthFix" src="{{bgImages[1]}}" wx:else/>
@@ -39,12 +39,12 @@
             <view class="coverbtn" @tap="showVideo"></view>
           </view>
         </view>
-      </view>
       
-      <view class="tabbar">
-        <view class="tabbar-item {{tabbarID == idx ? 'on' : ''}}"  wx:for="{{tabbar}}" wx:for-index="idx" wx:for-item="item" wx:key="idx" @tap="goDetail" data-tab="{{item.id}}" data-id="{{idx}}">
-          <view class="name">{{item.name}}</view>
-          <view class="jiao"></view>
+        <view class="tabbar" wx:if="{{!onTop}}">
+          <view class="tabbar-item {{tabbarID == idx ? 'on' : ''}}"  wx:for="{{tabbar}}" wx:for-index="idx" wx:for-item="item" wx:key="idx" @tap="goDetail" data-tab="{{item.id}}" data-id="{{idx}}">
+            <view class="name">{{item.name}}</view>
+            <view class="jiao"></view>
+          </view>
         </view>
       </view>
 
@@ -131,6 +131,12 @@
     </view>
     </scroll-view>
     <!-- video -->
+    <view class="tabbar fix" wx:if="{{onTop}}">
+      <view class="tabbar-item {{tabbarID == idx ? 'on' : ''}}"  wx:for="{{tabbar}}" wx:for-index="idx" wx:for-item="item" wx:key="idx" @tap="goDetail" data-tab="{{item.id}}" data-id="{{idx}}">
+        <view class="name">{{item.name}}</view>
+        <view class="jiao"></view>
+      </view>
+    </view>
    <view class="videoWindow" wx:if="{{videoConf.support && videoConf.video_url.length > 0 && videoShow}}">
       <view class="bg" @tap="closeVideo"></view>
       <video src="{{videoConf.video_url}}" poster="{{videoConf.cover_img_url}}" controls autoplay direction='0' bindended="videoEnd"  bindfullscreenchange="videoEnd" >
