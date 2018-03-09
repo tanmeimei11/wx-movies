@@ -5,9 +5,9 @@ export default class upgrade extends Pagebase {
   /**
    * 获取我的信息接口
    */
-  static async getUpgradeData () {
+  static async getUpgradeData ( ticketid ) {
     return await this.request( {
-      url: '/mnp/ticket/upgrade_info'
+      url: `/mnp/ticket/upgrade_info?ticket_id=${ticketid}`
     } );
   }
     /**

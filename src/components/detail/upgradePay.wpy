@@ -109,8 +109,8 @@
 <view class="upgradePayWrap">
     <view class="goChooseSeat" @tap="jumpToSeat"></view>
     <view class="upgratedWang" @tap="payka"><view class="txt">{{upgradeInfo.movie_card_price}}</view>元升级王卡</view>
-    <view class="upgrateDay"   @tap="paypiao" wx:if="{{upgradeInfo.ticket_upgradable}}"><view class="txt">{{upgradeInfo.all_day_price}}</view>元升级全天</view>
     <view class="alreadyupdate" wx:if="{{!upgradeInfo.ticket_upgradable}}">已升级全天场</view>
+    <view class="upgrateDay"   @tap="paypiao" wx:if="{{upgradeInfo.ticket_upgradable}}"><view class="txt">{{upgradeInfo.all_day_price}}</view>元升级全天</view>
     
     <view class="succpop" wx:if="{{succpop}}">
         <view class="cont">
@@ -133,11 +133,11 @@ export default class upgradePay extends wepy.component {
   props = {
     upgradeInfo: {
       type: Object,
-    //   default: {
-    //     'all_day_price': '9.9',
-    //     'movie_card_price': '109',
-    //     'ticket_upgradable': true
-    //   },
+      default: {
+        'all_day_price': '9.9',
+        'movie_card_price': '109',
+        'ticket_upgradable': true
+      },
       twoWay: true
     },
     ticketid: {
