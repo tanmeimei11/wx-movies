@@ -74,8 +74,11 @@ export default class ticket extends wepy.page {
     showUpgrade ( e ) {
       track( 'fission_upgrade' );
       track( 'fission_upgradebox_expo' );
-      this.isShowUpgrade = true;
-      this.upgradeTicket = e.currentTarget.dataset.ticket;
+      wepy.navigateTo( {
+        url: `/pages/upgrade/upgrade?ticketId=${this.upgradeTicket}`
+      } );
+      // this.isShowUpgrade = true;
+      // this.upgradeTicket = e.currentTarget.dataset.ticket;
     },
     alert () {
       if ( this.ticket_switch ) {

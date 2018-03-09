@@ -125,6 +125,7 @@ export default class self extends wepy.page {
         } );
         // 兑换成功
         this.isShowExchange = false
+        track( 'exchange_successful' )
         await this.init();
       } catch ( e ) {
         // 兑换失败
