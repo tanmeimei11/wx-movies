@@ -1,6 +1,6 @@
 import wepy from 'wepy';
 import auth from '@/api/auth';
-import Ticket from '@/api/ticket';
+import Upgrade from '@/api/upgrade';
 import tips from '@/utils/tips';
 import report from '@/components/report-submit';
 import shareConnectMixin from '@/mixins/shareConnectMixin';
@@ -25,7 +25,7 @@ export default class upgrade extends wepy.page {
   }
 
   async init () {
-    // var myInfoRes = await Ticket.getMyInfo();
+    var myInfoRes = await Upgrade.getUpgradeData();
     this.$apply();
   }
   async onLoad ( options ) {
