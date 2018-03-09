@@ -19,7 +19,9 @@ export default class upgrade extends wepy.page {
     upgrade: {},
     cinema_photos: [],
     videoInfo: {},
-    videoShow: false
+    videoShow: false,
+    upgrade_info: {},
+    ticketid: ''
   }
 
   events = {
@@ -34,16 +36,18 @@ export default class upgrade extends wepy.page {
     }
   }
 
-  async init () {
+  async init (options) {
+    this.ticketid = options.ticketid
     var myInfoRes = await Upgrade.getUpgradeData();
     this.upgrade = myInfoRes;
     this.cinema_photos = myInfoRes.cinema_photos;
     this.videoInfo = myInfoRes.video_info;
-    console.log( myInfoRes );
+    this.upgrade_info = myInfoRes.upgrade_info
+    console.log( this.upgrade_info );
     this.$apply();
   }
   async onLoad ( options ) {
     await auth.ready();
-    await this.init();
+    await this.init(options);
   }
 }
