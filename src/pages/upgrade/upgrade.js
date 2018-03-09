@@ -36,10 +36,10 @@ export default class upgrade extends wepy.page {
 
   async init () {
     var myInfoRes = await Upgrade.getUpgradeData();
-    this.upgrade = myInfoRes
-    this.cinema_photos = myInfoRes.cinema_photos
-    this.videoInfo = myInfoRes.video_info
-    console.log(myInfoRes)
+    this.upgrade = myInfoRes;
+    this.cinema_photos = myInfoRes.cinema_photos;
+    this.videoInfo = myInfoRes.video_info;
+    console.log( myInfoRes );
     this.$apply();
   }
   async onLoad ( options ) {

@@ -1,6 +1,7 @@
 import {DOMAIN, payUrl} from '@/utils/config';
 module.exports = {
   [`${DOMAIN}/mnp/order/create`]: 'orderCreate',
+  [`${DOMAIN}/mnp/order/create_tu`]: 'createTu',
   [`${DOMAIN}/mnp/user/my2`]: 'my',
   [`${DOMAIN}/mnp/product/cfStatus`]: 'cfStatus',
   [`${DOMAIN}/info/cinemas`]: 'detail',
