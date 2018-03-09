@@ -8,6 +8,7 @@ module.exports = {
   [`${DOMAIN}/info/newcinemas`]: 'newDetail',
   [`${DOMAIN}/info/research`]: 'research',
   [`${DOMAIN}/index/newinfo`]: 'info',
+  [`${DOMAIN}/promotion/channel/ticket`]: 'upgrade',
   [`${DOMAIN}/mnp/product/cfStatus2`]: 'cfStatus',
   [`${DOMAIN}/mnp/order/result`]: 'result',
   [`${DOMAIN}/mnp/share/wechat/img`]: 'wechatimg',

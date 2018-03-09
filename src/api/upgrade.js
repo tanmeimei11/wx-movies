@@ -58,8 +58,12 @@ export default class upgrade extends Pagebase {
       } )
     };
     return await this.request( {
+<<<<<<< HEAD
       url: payUrl,
       data: _data
+=======
+      url: '/promotion/channel/ticket'
+>>>>>>> 69cb746dd7cff503e175b8076f66be8e8d016d4d
     } );
   }
 }

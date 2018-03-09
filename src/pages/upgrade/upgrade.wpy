@@ -1,8 +1,42 @@
 <template>
   <report>
     <view class="container">
-      <upgradePay :ticketid="ticketid" :upgradeInfo="upgradeInfo"></upgradePay>
+      <view class="banner"></view>
+
+      <view class="c-part-live">
+        <view class="topic"></view>
+        <view class="liveList">
+          <swiper display-multiple-items='1.5'>
+            <block wx:for="{{cinema_photos}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
+              <swiper-item>
+                <image src="{{item}}" mode="widthFix" class="slide-image"></image>
+              </swiper-item>
+            </block>
+          </swiper>
+        </view>
+      </view>
+
+      <image mode="widthFix" class="movielist" src="{{upgrade.movie_list}}"></image>
+
+      <view class="video" wx:if="{{videoInfo.video_url}}">
+        <view class="topic"></view>
+        <view class="videoBox">
+          <image class="cover_img" mode="aspectFill" src="{{videoInfo.cover_img_url}}"/>
+          <view class="covertop"></view>
+          <view class="coverbtn" @tap="showVideo"></view>
+        </view>
+      </view>   
+      
+      <view class="upgrade"></view>
+
+      <view class="compare"></view>
     </view>
+    <view class="videoWindow" wx:if="{{videoInfo.video_url && videoShow}}">
+       <view class="bg" @tap="closeVideo"></view>
+       <video src="{{videoInfo.video_url}}" poster="{{videoInfo.cover_img_url}}" controls autoplay direction='0' bindended="videoEnd"  bindfullscreenchange="videoEnd" >
+       </video>
+    </view>
+    <upgradePay :ticketid="ticketid" :upgradeInfo="upgradeInfo"></upgradePay>
   </report>
 </template>
 <style lang="less" src="./upgrade.less">
