@@ -36,6 +36,7 @@
        <video src="{{videoInfo.video_url}}" poster="{{videoInfo.cover_img_url}}" controls autoplay direction='0' bindended="videoEnd"  bindfullscreenchange="videoEnd" >
        </video>
     </view>
+    <upgradePay></upgradePay>
   </report>
 </template>
 <style lang="less" src="./upgrade.less">
