@@ -4,7 +4,7 @@
       <adBanner wx:if="{{bannerInfo && bannerInfo.img_url.length > 0}}"
                 :bannerInfo.sync="bannerInfo"></adBanner>
       <view class="banner">
-        <view class="rule" @tap="openRules">活动细则</view>
+        <view class="rule" @tap="openRules"></view>
       </view>
       <view class="myTicket">
         <view class="title">我的电影票</view>

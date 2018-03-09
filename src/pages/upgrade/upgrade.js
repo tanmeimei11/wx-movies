@@ -12,16 +12,30 @@ export default class upgrade extends wepy.page {
   components = { report }
   mixins = []
   data = {
+    upgrade: {},
+    cinema_photos: [],
+    videoInfo: {},
+    videoShow: false
   }
 
   events = {
   }
 
   methods = {
+    showVideo () {
+      this.videoShow = true;
+    },
+    videoEnd () {
+      this.videoShow = false;
+    }
   }
 
   async init () {
     var myInfoRes = await Upgrade.getUpgradeData();
+    this.upgrade = myInfoRes
+    this.cinema_photos = myInfoRes.cinema_photos
+    this.videoInfo = myInfoRes.video_info
+    console.log(myInfoRes)
     this.$apply();
   }
   async onLoad ( options ) {
