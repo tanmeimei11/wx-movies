@@ -1,7 +1,7 @@
 <template>
   <report>
     <view class="container">
-      <upgradePay></upgradePay>
+      <upgradePay :ticketid="ticketid" :upgradeInfo="upgradeInfo"></upgradePay>
     </view>
   </report>
 </template>

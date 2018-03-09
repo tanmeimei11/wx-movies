@@ -25,7 +25,7 @@ export default class upgrade extends wepy.page {
   }
 
   async init () {
-    var myInfoRes = await Upgrade.getUpgradeData();
+    // var myInfoRes = await Upgrade.getUpgradeData();
     this.$apply();
   }
   async onLoad ( options ) {
