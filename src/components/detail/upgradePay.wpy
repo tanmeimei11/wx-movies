@@ -153,6 +153,7 @@ export default class upgradePay extends wepy.component {
   methods = {
     async payka () {
       console.log( this.upgradeInfo );
+      track( 'ppayka_start' );
       try {
         await auth.ready();
         var createRes = await Upgrade.creatOrderKa( 1 );
@@ -173,6 +174,7 @@ export default class upgradePay extends wepy.component {
       }
     },
     async paypiao () {
+      track( 'ppaypiao_start' );
       try {
         await auth.ready();
         console.log( this.ticketid, 'jiemo' );
@@ -194,6 +196,7 @@ export default class upgradePay extends wepy.component {
       }
     },
     jumpToSeat () {
+      track( 'paypiao_wx_jumpToSeat' );
       wepy.switchTab( {
         url: '/pages/seat/seat'
       } );
