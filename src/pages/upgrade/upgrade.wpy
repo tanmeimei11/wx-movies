@@ -1,6 +1,7 @@
 <template>
   <report>
     <view class="container">
+    </view>
   </report>
 </template>
 <style lang="less" src="./upgrade.less">
