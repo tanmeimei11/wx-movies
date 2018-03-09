@@ -1,0 +1,101 @@
+<style lang="less">
+.upgradePayWrap{
+    position: fixed;
+    left: 0rpx;
+    bottom: -1rpx;
+    height: 100rpx;
+    width: 100%;
+    display: flex;
+    line-height: 100rpx;
+    color: #fff;
+    background: #fff;
+    .goChooseSeat{
+        margin-left: 1rpx;
+        width: 155rpx;
+        height: 100rpx;
+        background-image: url('https://inimg05.jiuyan.info/in/2018/03/09/77814238-EBC6-EFFB-3455-CD326D1AFE62.jpg');
+        background-size: contain;
+        background-repeat: no-repeat;
+    }
+    .upgratedWang{
+        width: 297rpx;
+        height: 100rpx;
+        background-image: url('http://inimg01.jiuyan.info/in/2018/03/09/9784724C-6EFE-C163-B78F-D1A88A93360D.jpg');
+        background-repeat: no-repeat;
+        background-size: contain;
+        text-align: center;
+        font-size: 30rpx;
+        .txt{
+            font-size: 40rpx;
+            display: inline;
+        }
+    }
+    .upgrateDay{
+        width: 298rpx;
+        height: 100rpx;
+        background-image: url('http://inimg01.jiuyan.info/in/2018/03/09/4B575FD4-C866-DB0C-7351-24BD75962169.jpg');
+        background-repeat: no-repeat;
+        background-size: contain;
+        text-align: center;
+        font-size: 30rpx;
+        .txt{
+            font-size: 40rpx;
+            display: inline;
+        }
+    }
+    .alreadyupdate{
+        width: 298rpx;
+        height: 100rpx;
+        background-image: url('http://inimg01.jiuyan.info/in/2018/03/09/D50AED4E-B5EA-B732-865F-A13321B594C7.jpg');
+        background-repeat: no-repeat;
+        background-size: contain;
+        text-align: center;
+        font-size: 30rpx;
+    }
+}
+
+</style>
+<template>
+<view class="upgradePayWrap">
+    <view class="goChooseSeat"></view>
+    <view class="upgratedWang" @tap="pay(109)"><view class="txt">109</view>元升级王卡</view>
+    <view class="upgrateDay"  wx:if="{{!alreadyupdate}}"><view class="txt">9.9</view>元升级全天</view>
+    <view class="alreadyupdate" wx:if="{{alreadyupdate}}">已升级全天场</view>
+</view>
+</template>
+<script>
+import wepy from 'wepy';
+import auth from '@/api/auth';
+import Detail from '@/api/detail';
+import tips from '@/utils/tips';
+import track from '@/utils/track';
+
+export default class upgradePay extends wepy.component {
+  data = {
+    alreadyupdate: false
+  }
+  methods = {
+    async pay ( number ) {
+      try {
+        await auth.ready();
+        var createRes = await Detail.creatOrder( number, this.statusQuery );
+        if ( createRes.code === '4000032129' || createRes.code === '4000031814' ) {
+          tips.error( createRes.msg );
+          return;
+        }
+
+        var getOrderRes = await Detail.getOrderDetail( createRes );
+        track( 'page_wx_pay_start' );
+        await wepy.requestPayment( getOrderRes.sign );
+        track( 'page_pay_successful' );
+        this.paySucc( createRes.order_no );
+      } catch ( e ) {
+      // this.buyMutiModalInfo.show = false;
+        this.$apply();
+        track( 'page_pay_failed' );
+      }
+    }
+
+  }
+}
+</script>

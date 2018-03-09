@@ -1,6 +1,8 @@
 <template>
   <report>
     <view class="container">
+      <upgradePay></upgradePay>
+    </view>
   </report>
 </template>
 <style lang="less" src="./upgrade.less">
