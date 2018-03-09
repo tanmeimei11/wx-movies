@@ -7,7 +7,7 @@ export default class upgrade extends Pagebase {
    */
   static async getUpgradeData () {
     return await this.request( {
-      url: '/promotion/channel/ticket'
+      url: '/mnp/ticket/upgrade_info'
     } );
   }
     /**

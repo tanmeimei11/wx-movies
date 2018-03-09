@@ -38,7 +38,7 @@
               <!-- <text class="tips">{{item.tips}}</text>
               <view class="jiao"></view> -->
             </view>
-            <view class="btn" @tap="showUpgrade" data-ticket="{{item.id}}" wx:if="{{item.ticket_status === '2'}}">去使用</view>
+            <view class="btn" @tap="showUpgrade({{item.id}})" data-ticket="{{item.id}}" wx:if="{{item.ticket_status === '2'}}">去使用</view>
             <view class="btn btned" wx:if="{{item.ticket_status === '4'}}">已使用</view>
           </view>
           <view wx:if="{{item.ticket_status === '3'}}" @tap="toSelf"></view>
