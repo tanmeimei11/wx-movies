@@ -1,0 +1,9 @@
+<template>
+  <report>
+    <view class="container">
+  </report>
+</template>
+<style lang="less" src="./upgrade.less">
+</style>
+<script src="./upgrade.js">
+</script>
