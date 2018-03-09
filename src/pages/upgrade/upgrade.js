@@ -3,9 +3,6 @@ import auth from '@/api/auth';
 import Ticket from '@/api/ticket';
 import tips from '@/utils/tips';
 import report from '@/components/report-submit';
-import shareConnectMixin from '@/mixins/shareConnectMixin';
-import receiveFaildModal from '@/components/detail/receiveFaildModal';
-import adBanner from '@/components/adBanner';
 import track from '@/utils/track';
 
 export default class upgrade extends wepy.page {
@@ -24,7 +21,7 @@ export default class upgrade extends wepy.page {
   }
 
   async init () {
-    // var myInfoRes = await Ticket.getMyInfo();
+    var myInfoRes = await Ticket.getMyInfo();
     this.$apply();
   }
   async onLoad ( options ) {
