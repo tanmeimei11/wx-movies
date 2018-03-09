@@ -71,7 +71,7 @@ import tips from '@/utils/tips';
 import track from '@/utils/track';
 
 export default class upgradePay extends wepy.component {
-  props={
+  props = {
     upgradeInfo: {
       type: Object,
       default: {
@@ -83,7 +83,8 @@ export default class upgradePay extends wepy.component {
     },
     ticketid: {
       type: Number,
-      default: 34901482
+      twoWay: true
+    //   default: 34901482
     }
   }
   data = {
@@ -113,6 +114,7 @@ export default class upgradePay extends wepy.component {
     async paypiao () {
       try {
         await auth.ready();
+        console.log( this.ticketid, 'jiemo' );
         var createRes = await Upgrade.creatOrderPiao( 1, this.ticketid );
         if ( createRes.code === '4000032129' || createRes.code === '4000031814' ) {
           tips.error( createRes.msg );

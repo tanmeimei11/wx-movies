@@ -1,13 +1,13 @@
 import wepy from 'wepy';
 import auth from '@/api/auth';
 import Upgrade from '@/api/upgrade';
-import tips from '@/utils/tips';
+// import tips from '@/utils/tips';
 import report from '@/components/report-submit';
-import shareConnectMixin from '@/mixins/shareConnectMixin';
-import receiveFaildModal from '@/components/detail/receiveFaildModal';
-import adBanner from '@/components/adBanner';
+// import shareConnectMixin from '@/mixins/shareConnectMixin';
+// import receiveFaildModal from '@/components/detail/receiveFaildModal';
+// import adBanner from '@/components/adBanner';
 import upgradePay from '@/components/detail/upgradePay';
-import track from '@/utils/track';
+// import track from '@/utils/track';
 
 export default class upgrade extends wepy.page {
   config = {
@@ -21,7 +21,7 @@ export default class upgrade extends wepy.page {
     videoInfo: {},
     videoShow: false,
     upgrade_info: {},
-    ticketid: ''
+    ticketid: 1
   }
 
   events = {
@@ -36,18 +36,19 @@ export default class upgrade extends wepy.page {
     }
   }
 
-  async init (options) {
-    this.ticketid = options.ticketid
+  async init ( options ) {
+    console.log( options.ticketid );
+    this.ticketid = options.ticketid;
     var myInfoRes = await Upgrade.getUpgradeData();
     this.upgrade = myInfoRes;
     this.cinema_photos = myInfoRes.cinema_photos;
     this.videoInfo = myInfoRes.video_info;
-    this.upgrade_info = myInfoRes.upgrade_info
+    this.upgrade_info = myInfoRes.upgrade_info;
     console.log( this.upgrade_info );
     this.$apply();
   }
   async onLoad ( options ) {
     await auth.ready();
-    await this.init(options);
+    await this.init( options );
   }
 }
