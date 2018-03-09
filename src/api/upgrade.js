@@ -5,11 +5,11 @@ export default class upgrade extends Pagebase {
   /**
    * 获取我的信息接口
    */
-  // static async getUpgradeData () {
-  //   return await this.request( {
-  //     url: '/mnp/custom/auto_reply'
-  //   } );
-  // }
+  static async getUpgradeData () {
+    return await this.request( {
+      url: '/promotion/channel/ticket'
+    } );
+  }
     /**
    * 创建订单接口
    */
@@ -58,12 +58,8 @@ export default class upgrade extends Pagebase {
       } )
     };
     return await this.request( {
-<<<<<<< HEAD
       url: payUrl,
       data: _data
-=======
-      url: '/promotion/channel/ticket'
->>>>>>> 69cb746dd7cff503e175b8076f66be8e8d016d4d
     } );
   }
 }

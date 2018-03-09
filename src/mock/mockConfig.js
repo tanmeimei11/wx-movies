@@ -20,7 +20,7 @@ module.exports = {
   [`${DOMAIN}/mnp/card/reward`]: 'reward',
   [`${DOMAIN}/mnp/card/cancelreward`]: 'cancelGift',
   [`${DOMAIN}/mnp/card/gifts`]: 'cancelGift',
-  [`${DOMAIN}/mnp/ticket/my`]: 'ticketInfo',
+  [`${DOMAIN}/mnp/ticket/my2`]: 'ticketInfo',
   [`${DOMAIN}/mnp/ticket/share`]: 'share',
   [`${DOMAIN}/mnp/ticket/fetch`]: 'fetch',
   [`${DOMAIN}/mnp/seckill/attach2remind`]: 'attach2remind',
