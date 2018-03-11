@@ -30,22 +30,51 @@
         }
     }
     .upgrateDay{
-        width: 299rpx;
+        width: 596rpx;
         height: 100rpx;
-        background-image: url('http://inimg01.jiuyan.info/in/2018/03/09/4B575FD4-C866-DB0C-7351-24BD75962169.jpg');
+        // background-image: linear-gradient(to right,#feb667,#fdb542);
+        background-image: url('http://inimg05.jiuyan.info/in/2018/03/11/2826AA4C-51C3-BC48-CD2D-2E9E9EB4B906.jpg');
         background-repeat: no-repeat;
         background-size: cover;
         text-align: center;
         font-size: 30rpx;
+        color: #000;
+        position: relative;
         .txt{
             font-size: 40rpx;
             display: inline;
+            color: #f02d00;
+        }
+        .xianliang{
+            position: absolute;
+            right: 22rpx;
+            top: -50rpx;
+            color: #000;
+            height: 35rpx;
+            font-size: 20rpx;
+            padding: 0 20rpx;
+            background: #fbe808;
+            line-height: 35rpx;
+            text-align: center;
+            border-radius: 100px;
+            icon{
+                position: absolute;
+                bottom: -5rpx;
+                left: 50%;
+                display: inline-block;
+                width: 11rpx;
+                height: 7rpx;
+                background-image: url('http://inimg05.jiuyan.info/in/2018/03/11/E9C420F7-73A9-37B5-37BA-4BFB114C9830.png');
+                background-repeat: no-repeat;
+                background-size: contain;
+            }
         }
     }
     .alreadyupdate{
-        width: 298rpx;
+        width: 596rpx;
         height: 100rpx;
-        background-image: url('http://inimg01.jiuyan.info/in/2018/03/09/D50AED4E-B5EA-B732-865F-A13321B594C7.jpg');
+        // background-image: url('http://inimg01.jiuyan.info/in/2018/03/09/D50AED4E-B5EA-B732-865F-A13321B594C7.jpg');
+        background-image: linear-gradient(to right,#b3b3b3,#999999);
         background-repeat: no-repeat;
         background-size: contain;
         text-align: center;
@@ -108,9 +137,14 @@
 <template>
 <view class="upgradePayWrap">
     <view class="goChooseSeat" @tap="jumpToSeat"></view>
-    <view class="upgratedWang" @tap="payka"><view class="txt">{{upgradeInfo.movie_card_price}}</view>元升级王卡</view>
+    <!-- <view class="upgratedWang" @tap="payka"><view class="txt">{{upgradeInfo.movie_card_price}}</view>元升级王卡</view> -->
     <view class="alreadyupdate" wx:if="{{!upgradeInfo.ticket_upgradable}}">已升级全天场</view>
-    <view class="upgrateDay"   @tap="paypiao" wx:if="{{upgradeInfo.ticket_upgradable}}"><view class="txt">{{upgradeInfo.all_day_price}}</view>元升级全天</view>
+    <view class="upgrateDay"   @tap="paypiao" wx:if="{{upgradeInfo.ticket_upgradable}}">
+        {{upgradeInfo.btn_text}}
+        <view class="txt">{{upgradeInfo.all_day_price}}</view>
+        元
+        <view class="xianliang" wx:if="{{upgradeInfo.btn_tip}}">{{upgradeInfo.btn_tip}}<icon></icon></view>
+    </view>
     
     <view class="succpop" wx:if="{{succpop}}">
         <view class="cont">

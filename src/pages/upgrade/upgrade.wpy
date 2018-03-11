@@ -1,8 +1,10 @@
 <template>
   <report>
     <view class="container">
-      <view class="banner"></view>
-
+      <!-- <view class="banner"></view> -->
+      <image mode="widthFix" class="movielist" wx:if="{{upgrade.bg_img01}}" src="{{upgrade.bg_img01}}"></image>
+      <image mode="widthFix" class="movielist" wx:if="{{upgrade.bg_img02}}" src="{{upgrade.bg_img02}}"></image>
+      
       <view class="c-part-live">
         <view class="topic"></view>
         <view class="liveList">
@@ -26,10 +28,11 @@
           <view class="coverbtn" @tap="showVideo"></view>
         </view>
       </view>   
-      
-      <view class="upgrade"></view>
+      <image mode="widthFix" class="movielist" wx:if="{{upgrade.bg_img03}}" src="{{upgrade.bg_img03}}"></image>
+      <image mode="widthFix" class="movielist" wx:if="{{upgrade.bg_img04}}" src="{{upgrade.bg_img04}}"></image>
+      <!-- <view class="upgrade"></view> -->
 
-      <view class="compare"></view>
+      <!-- <view class="compare"></view> -->
     </view>
     <view class="videoWindow" wx:if="{{videoInfo.video_url && videoShow}}">
        <view class="bg" @tap="closeVideo"></view>
