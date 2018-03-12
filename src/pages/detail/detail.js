@@ -26,10 +26,11 @@ export default class Index extends wepy.page {
   components = {report, shareWindow, receiveGiftModal, buyMutiModal, receiveFaildModal, receiveTicketModal, channelModal, notice, moviePart, adBanner, seckill, lekeReceiveModal}
   mixins = [loadingMixin, shareLekeMixin]
   data = {
+    a: 1,
     promoPrice: '', // 活动价格
     payPrice: '', // 原价 159
     toView: '',
-    bannerInfo: {},
+    bannerInfo: [],
     videoConf: {},
     videoShow: false,
     videoShow2: false,
@@ -240,12 +241,12 @@ export default class Index extends wepy.page {
     //   this.toView = 'details';
     //   this.$apply();
     // },
-    goDetail (e) {
+    goDetail ( e ) {
       this.toView = '';
       this.$apply();
       this.toView = e.currentTarget.dataset.tab;
       this.$apply();
-      this.tabbarID = e.currentTarget.dataset.id
+      this.tabbarID = e.currentTarget.dataset.id;
     },
     getMovieTicket ( type ) {
       if ( type === 'lingqu' ) {
@@ -284,11 +285,11 @@ export default class Index extends wepy.page {
       success: this.shareCallBack( res )
     };
   }
-  scroll (e) {
-    if (e.detail.scrollTop > this.tabHeight) {
-      this.onTop = true
+  scroll ( e ) {
+    if ( e.detail.scrollTop > this.tabHeight ) {
+      this.onTop = true;
     } else {
-      this.onTop = false
+      this.onTop = false;
     }
   }
   onReachBottom () {
@@ -334,13 +335,13 @@ export default class Index extends wepy.page {
     this.initLekeInfo( this.detailStatus );
     this.shareInfo = await Detail.getShareInfo();
     if ( this.cardCode ) { await this.initCardStatus(); };
-    var self = this
-    wx.getSystemInfo({
-      success: function (res) {
-        var tabHeight = self.bannerInfo ? 1900 : 1720
-        self.tabHeight = res.windowWidth / 750 * tabHeight
+    var self = this;
+    wx.getSystemInfo( {
+      success: function ( res ) {
+        var tabHeight = self.bannerInfo ? 1900 : 1720;
+        self.tabHeight = res.windowWidth / 750 * tabHeight;
       }
-    })
+    } );
     this.$apply();
   }
   initLekeInfo ( status ) {
@@ -370,7 +371,8 @@ export default class Index extends wepy.page {
    * @memberof Index
    */
   initBannerInfo ( res ) {
-    this.bannerInfo = res.ad_info;
+    // this.bannerInfo = res.ad_info;
+    this.bannerInfo = res.ad_info_list || [];
     if ( res.ad_info ) {
       track( 'page_ad_expo' );
     }
@@ -559,10 +561,10 @@ export default class Index extends wepy.page {
     this.cardImg = res.card_img;
     this.bgImages = res.bg_imgs;
     this.icon = res.icon;
-    this.course = res.course
-    this.tabbar = res.tabbar
-    this.content = res.content
-    this.movies = res.movies
+    this.course = res.course;
+    this.tabbar = res.tabbar;
+    this.content = res.content;
+    this.movies = res.movies;
     // this.bgStyle = `background-image:url(${this.bgImages[0]}),url(${this.bgImages[1]}),url(${this.bgImages[2]})`;
     this.partBg = res.bg_img_01;
   }

@@ -25,6 +25,24 @@ module.exports = {
       app_id: 'xwwds589548w5dw',
       landing_path: '/pages/index/index'
     },
+    ad_info_list: [
+      {
+        img_url: 'https://inimg07.jiuyan.info/in/2018/03/08/225DF916-FDAF-7DDD-DE17-F95DDA44DCD3.jpg',
+        type: 'path',  // "miniprogram", "path",
+        app_id: 'xwwds589548w5dw',
+        landing_path: '/pages/index/index'
+      }, {
+        img_url: 'https://inimg07.jiuyan.info/in/2018/03/08/225DF916-FDAF-7DDD-DE17-F95DDA44DCD3.jpg',
+        type: 'path',  // "miniprogram", "path",
+        app_id: 'xwwds589548w5dw',
+        landing_path: '/pages/index/index'
+      }, {
+        img_url: 'https://inimg07.jiuyan.info/in/2018/03/08/225DF916-FDAF-7DDD-DE17-F95DDA44DCD3.jpg',
+        type: 'path',  // "miniprogram", "path",
+        app_id: 'xwwds589548w5dw',
+        landing_path: '/pages/index/index'
+      }
+    ],
     video_info: {
       cover_img_url: 'http://p1.music.126.net/xdgsjM7uQxR7o1xSKGXlCg==/109951163099447939.jpg?param=440y440',
       video_url: 'http://video01.jiuyan.info/in/2018/02/08/3792ADED-AFA5-8C6F-652B-26CE8C10AFC6-1JyjwzaG.mp4'

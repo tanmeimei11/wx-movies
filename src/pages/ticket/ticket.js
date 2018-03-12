@@ -15,7 +15,7 @@ export default class ticket extends wepy.page {
   components = { report, receiveFaildModal, adBanner}
   mixins = [shareConnectMixin]
   data = {
-    bannerInfo: {}, // 头部广告
+    bannerInfo: [], // 头部广告
     rulesShow: false,
     type: '',
     btninfo: {},
@@ -189,7 +189,7 @@ export default class ticket extends wepy.page {
 
   async init () {
     var myInfoRes = await Ticket.getMyInfo();
-    this.bannerInfo = myInfoRes.ad_info;
+    this.bannerInfo = myInfoRes.ad_info_list || [];
     this.rules = Ticket.initRules( myInfoRes.act_rules );
     this.tickets = Ticket.initTickets( myInfoRes.tickets );
     this.share_img = myInfoRes.share_img;

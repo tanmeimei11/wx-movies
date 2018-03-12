@@ -1,7 +1,7 @@
 <template>
   <report>
     <view class="container">
-      <adBanner wx:if="{{bannerInfo && bannerInfo.img_url.length > 0}}"
+      <adBanner wx:if="{{bannerInfo && bannerInfo.length > 0}}"
                 :bannerInfo.sync="bannerInfo"></adBanner>
       <view class="banner">
         <view class="rule" @tap="openRules"></view>
