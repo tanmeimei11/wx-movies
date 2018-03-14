@@ -7,7 +7,7 @@ import report from '@/components/report-submit';
 // import receiveFaildModal from '@/components/detail/receiveFaildModal';
 // import adBanner from '@/components/adBanner';
 import upgradePay from '@/components/detail/upgradePay';
-// import track from '@/utils/track';
+import track from '@/utils/track';
 
 export default class upgrade extends wepy.page {
   config = {
@@ -49,6 +49,7 @@ export default class upgrade extends wepy.page {
   async onLoad ( options ) {
     console.log( options );
     await auth.ready();
+    track( 'fission_ticket_upgrade_page_enter' );
     await this.init( options );
   }
 }
