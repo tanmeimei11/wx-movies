@@ -26,6 +26,7 @@ export default class Index extends wepy.page {
   components = {report, shareWindow, receiveGiftModal, buyMutiModal, receiveFaildModal, receiveTicketModal, channelModal, notice, moviePart, adBanner, seckill, lekeReceiveModal}
   mixins = [loadingMixin, shareLekeMixin]
   data = {
+    windowWidth: 375,
     a: 1,
     promoPrice: '', // 活动价格
     payPrice: '', // 原价 159
@@ -111,6 +112,8 @@ export default class Index extends wepy.page {
     tabbar: [],
     tabbarID: 0,
     tabHeight: '',
+    partHeight: [500, 1500, 3000, 3500],
+    loadHeight: [],
     content: {},
     partBg: '',
     shareImage: '',
@@ -234,13 +237,6 @@ export default class Index extends wepy.page {
         url: `/pages/index/index`
       } );
     },
-    // gotoBottom () {
-    //   track( 'page_rule' );
-    //   this.toView = '';
-    //   this.$apply();
-    //   this.toView = 'details';
-    //   this.$apply();
-    // },
     goDetail ( e ) {
       this.toView = '';
       this.$apply();
@@ -291,6 +287,20 @@ export default class Index extends wepy.page {
     } else {
       this.onTop = false;
     }
+    if (e.detail.scrollTop > this.partHeight[0] && !this.loadHeight[0]) {
+      this.loadHeight[0] = true
+      console.log('load1')
+    } else if (e.detail.scrollTop > this.partHeight[1] && !this.loadHeight[1]) {
+      this.loadHeight[1] = true
+      console.log('load2')
+    } else if (e.detail.scrollTop > this.partHeight[2] && !this.loadHeight[2]) {
+      this.loadHeight[2] = true
+      console.log('load3')
+    } else if (e.detail.scrollTop > this.partHeight[3] && !this.loadHeight[3]) {
+      this.loadHeight[3] = true
+      console.log('load4')
+    }
+    this.$apply()
   }
   onReachBottom () {
     track( 'page_slide_to_end' );
@@ -313,19 +323,19 @@ export default class Index extends wepy.page {
     }
   }
   async init () {
-    var res = await Detail.getDetailData( this.detailCode );
+    // var res = await Detail.getDetailData( this.detailCode );
     var newRes = await Detail.getDetailDataNew( this.detailCode );
     this.cinemas = Detail.initCinemas( newRes.cinemas, newRes.all_cinema_addr_img );
-    this.moviesSections = Detail.initMovies( res.movie_sections );
-    this.detailText = this.initBuyText( res );
+    // this.moviesSections = Detail.initMovies( res.movie_sections );
+    // this.detailText = this.initBuyText( res );
     this.rules = this.initRulesText( newRes.desc );
-    this.initBannerInfo( res );
+    this.initBannerInfo( newRes );
     this.initVideoInfo( newRes );
-    this.initBuyInfo( res );
-    this.initFixBtnText( res );
-    this.initSeckillInfo( res );
+    this.initBuyInfo( newRes );
+    this.initFixBtnText( newRes );
+    this.initSeckillInfo( newRes );
     this.initBgImages( newRes );
-    this.unionInfo = res.union_info;
+    this.unionInfo = newRes.union_info;
     this.$apply();
     await auth.ready();
     track( 'page_entry' );
@@ -335,13 +345,7 @@ export default class Index extends wepy.page {
     this.initLekeInfo( this.detailStatus );
     this.shareInfo = await Detail.getShareInfo();
     if ( this.cardCode ) { await this.initCardStatus(); };
-    var self = this;
-    wx.getSystemInfo( {
-      success: function ( res ) {
-        var tabHeight = self.bannerInfo ? 1900 : 1720;
-        self.tabHeight = res.windowWidth / 750 * tabHeight;
-      }
-    } );
+    this.countHeight()
     this.$apply();
   }
   initLekeInfo ( status ) {
@@ -633,6 +637,21 @@ export default class Index extends wepy.page {
     this.$parent.globalData.qrcode_from = qf;
     this.qrcode_from = qf;
     console.log( this.qrcode_from );
+  }
+  /**
+   * 初始化计算内容高度
+   */
+  countHeight () {
+    this.windowWidth = wx.getSystemInfoSync().windowWidth
+    var hasBanner = this.bannerInfo ? true : false
+    var tabHeight = hasBanner ? 1900 : 1720;
+    this.tabHeight = this.windowWidth / 750 * tabHeight;
+    this.partHeight.forEach( (e,i) => {
+      if (hasBanner) {
+        e += 180
+      }
+      this.partHeight[i] = this.windowWidth / 750 * e
+    } )
   }
   /**
    * 初始化连接上的参数
