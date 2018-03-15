@@ -12,7 +12,7 @@ import channelModal from '@/components/detail/channelModal';
 import notice from '@/components/detail/notice';
 import moviePart from '@/components/detail/moviePart';
 import adBanner from '@/components/adBanner';
-import seckill from '@/components/detail/seckill';
+// import seckill from '@/components/detail/seckill';
 import lekeReceiveModal from '@/components/leke/lekeReceiveModal';
 import shareLekeMixin from '@/mixins/shareLekeMixin';
 import loadingMixin from '@/mixins/loadingMixin';
@@ -23,7 +23,7 @@ export default class Index extends wepy.page {
   config = {
     navigationBarTitleText: 'in同城趴·电影王卡'
   }
-  components = {report, shareWindow, receiveGiftModal, buyMutiModal, receiveFaildModal, receiveTicketModal, channelModal, notice, moviePart, adBanner, seckill, lekeReceiveModal}
+  components = {report, shareWindow, receiveGiftModal, buyMutiModal, receiveFaildModal, receiveTicketModal, channelModal, notice, moviePart, adBanner, lekeReceiveModal}
   mixins = [loadingMixin, shareLekeMixin]
   data = {
     windowWidth: 375,
@@ -40,14 +40,6 @@ export default class Index extends wepy.page {
     cinemas: {
       img: '',
       list: []
-      // list: [
-      //   {
-      //     address: '',
-      //     addressImg: '',
-      //     gps: '',
-      //     name: ''
-      //   }
-      // ]
     },
     movies: [
       { name: '',
@@ -120,9 +112,9 @@ export default class Index extends wepy.page {
     bgStyle: '',
     statusQuery: {}, // 状态参数
     fixBtnText: ['', ''], // fix按钮的文案
-    seckillInfo: { // 秒杀信息
-      enabled: false
-    },
+    // seckillInfo: { // 秒杀信息
+    //   enabled: false
+    // },
     unionInfo: { // 拼团信息
 
     },
@@ -164,22 +156,22 @@ export default class Index extends wepy.page {
         this.noticeInfo.show = true;
       }
     },
-    // 秒杀开始 支付信息初始化
-    seckill () {
-      if ( this.seckillInfo.status === '1' ) {
-        this.seckillPay();
-      }
-    },
-    // 修改秒杀信息
-    changeSeckill ( status ) {
-      if ( typeof status === 'string' ) { status = {status: status}; }
-      this.seckillInfo = {
-        ...this.seckillInfo,
-        ...status
-      };
-      this.changeToSecKillInfo();
-      this.$apply();
-    },
+    // // 秒杀开始 支付信息初始化
+    // seckill () {
+    //   if ( this.seckillInfo.status === '1' ) {
+    //     this.seckillPay();
+    //   }
+    // },
+    // // 修改秒杀信息
+    // changeSeckill ( status ) {
+    //   if ( typeof status === 'string' ) { status = {status: status}; }
+    //   this.seckillInfo = {
+    //     ...this.seckillInfo,
+    //     ...status
+    //   };
+    //   this.changeToSecKillInfo();
+    //   this.$apply();
+    // },
     async receive () {
       try {
         track( 'page_receive_box_confirm' );
@@ -333,7 +325,7 @@ export default class Index extends wepy.page {
     this.initVideoInfo( newRes );
     this.initBuyInfo( newRes );
     this.initFixBtnText( newRes );
-    this.initSeckillInfo( newRes );
+    // this.initSeckillInfo( newRes );
     this.initBgImages( newRes );
     this.unionInfo = newRes.union_info;
     this.$apply();
@@ -394,16 +386,16 @@ export default class Index extends wepy.page {
     }
     this.videoConf = res.video_info;
   }
-  /**
-   * @memberof Index
-   */
-  seckillPay () {
-    this.statusQuery = {
-      is_seckill: 1
-    };
-    this.buyMutiModalInfo.basePrice = this.seckillInfo.price;
-    this.buyMutiModalInfo.show = true;
-  }
+  // /**
+  //  * @memberof Index
+  //  */
+  // seckillPay () {
+  //   this.statusQuery = {
+  //     is_seckill: 1
+  //   };
+  //   this.buyMutiModalInfo.basePrice = this.seckillInfo.price;
+  //   this.buyMutiModalInfo.show = true;
+  // }
   /**
    * 支付弹窗
    */
@@ -430,63 +422,63 @@ export default class Index extends wepy.page {
     this.buyMutiModalInfo.show = true;
     this.$apply();
   }
-  /**
-   *
-   *
-   * @param {any} res
-   * @returns
-   * @memberof Index
-   */
-  initSeckillInfo ( res ) {
-    if ( !res.seckill_info ) { return; }
-    this.seckillInfo = res.seckill_info;
-    // if ( false ) {
-    if ( this.seckillInfo.enabled ) {
-      track( 'page_spike_expo' );
-      // 这里传值是因为 界面还没有更新 调了组件的方法 所以直接船只过去保证能立刻取到真实的值
-      this.$invoke( 'seckill', 'countdown', {
-        start: res.seckill_info.start_countdown,
-        duration: res.seckill_info.duration
-      } );
-      this.changeToSecKillInfo();
-    }
-  }
+  // /**
+  //  *
+  //  *
+  //  * @param {any} res
+  //  * @returns
+  //  * @memberof Index
+  //  */
+  // initSeckillInfo ( res ) {
+  //   if ( !res.seckill_info ) { return; }
+  //   this.seckillInfo = res.seckill_info;
+  //   // if ( false ) {
+  //   if ( this.seckillInfo.enabled ) {
+  //     track( 'page_spike_expo' );
+  //     // 这里传值是因为 界面还没有更新 调了组件的方法 所以直接船只过去保证能立刻取到真实的值
+  //     this.$invoke( 'seckill', 'countdown', {
+  //       start: res.seckill_info.start_countdown,
+  //       duration: res.seckill_info.duration
+  //     } );
+  //     this.changeToSecKillInfo();
+  //   }
+  // }
 
-  /**
-   *
-   * 秒杀的时候改变支付的状态 清除优惠信息
-   * @memberof Index
-   */
-  changeToSecKillInfo () {
-    // 如果变成立即秒杀的时候修改
-    // 1.fixbtn的样式和文案
-    // 2.去掉优惠信息
+  // /**
+  //  *
+  //  * 秒杀的时候改变支付的状态 清除优惠信息
+  //  * @memberof Index
+  //  */
+  // changeToSecKillInfo () {
+  //   // 如果变成立即秒杀的时候修改
+  //   // 1.fixbtn的样式和文案
+  //   // 2.去掉优惠信息
 
-    if ( this.seckillInfo.status === '1' ) {
-      this.fixBtnText = [
-        {
-          price: `${this.seckillInfo.price}立即秒杀`,
-          text: '限时限量秒杀火热进行中'
-        }
-      ];
-    } else if ( this.seckillInfo.status === '2' ) {
-      this.fixBtnText = this.tabText;
-    } else {
-      this.fixBtnText = [
-        {
-          price: `${this.payPrice}立即抢购`
-        }
-      ];
-    }
-    console.log( this.fixBtnText );
-    if ( this.seckillInfo.status === '1' ) {
-      this.discountInfo = {
-        show: false,
-        ticketId: '',
-        detail: []
-      };
-    }
-  }
+  //   if ( this.seckillInfo.status === '1' ) {
+  //     this.fixBtnText = [
+  //       {
+  //         price: `${this.seckillInfo.price}立即秒杀`,
+  //         text: '限时限量秒杀火热进行中'
+  //       }
+  //     ];
+  //   } else if ( this.seckillInfo.status === '2' ) {
+  //     this.fixBtnText = this.tabText;
+  //   } else {
+  //     this.fixBtnText = [
+  //       {
+  //         price: `${this.payPrice}立即抢购`
+  //       }
+  //     ];
+  //   }
+  //   console.log( this.fixBtnText );
+  //   if ( this.seckillInfo.status === '1' ) {
+  //     this.discountInfo = {
+  //       show: false,
+  //       ticketId: '',
+  //       detail: []
+  //     };
+  //   }
+  // }
 
   /**
    * 初始化fixed按钮的文案
