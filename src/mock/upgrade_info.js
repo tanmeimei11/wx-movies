@@ -4,7 +4,7 @@ module.exports = {
   'succ': true,
   'data': {
     // 'bg_img01': 'http://inimg02.jiuyan.info/in/2018/03/11/6B5B2D65-41C7-E4C1-48D0-2E74A0CD20D7.jpg',
-    'bg_img01': 'http://inimg01.jiuyan.info/in/2018/03/15/188E8C71-2BEC-97BF-043A-5A3524264151.jpg',
+    'bg_img01': 'https://inimg02.jiuyan.info/in/2018/03/15/EA7295F6-FDB9-F4BA-2010-4BD4F64F24E5.jpg',
     'bg_img02': 'http://inimg01.jiuyan.info/in/2018/03/11/C8B2440F-D2B6-D3AF-7A56-84F47F134623.jpg',
     'cinema_photos': [
       'http://inimg05.jiuyan.info/in/2018/03/08/FD77BB8D-B9C1-4B45-AE10-4F3CE10E22D0.jpg', 'http://inimg07.jiuyan.info/in/2018/03/08/3E7B9EB2-373E-0E72-36DD-28088A86D4A0.jpg', 'http://inimg07.jiuyan.info/in/2018/03/08/9D2BF834-7010-E636-C38A-9C08879A06AE.jpg', 'http://inimg07.jiuyan.info/in/2018/03/08/84869603-95BD-4112-4B61-FA4D7A414F36.png', 'http://inimg01.jiuyan.info/in/2018/03/08/5A0AACC1-81CA-5C85-D561-51455D5EC6C2.jpg', 'http://inimg07.jiuyan.info/in/2018/03/08/4978F76E-81F3-ACE1-3BDE-B30EB00835C5.jpg', 'http://inimg01.jiuyan.info/in/2018/03/08/5D6D5831-DF1A-D85A-D4B0-18B9AEEB8326.jpg'

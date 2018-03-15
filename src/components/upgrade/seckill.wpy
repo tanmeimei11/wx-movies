@@ -1,5 +1,5 @@
 <template>
-  <view class="c-seckill-wrap">
+  <view class="c-seckill-wrap alone">
     <view class="time-wrap">
       <view class="se-time">
         距离结束<text>{{tools.hour(countDown)}}</text>:
@@ -40,7 +40,6 @@
       background: #000;
       border-radius: 4rpx;
       text-align: center;
-      font-size: 19rpx;
       color: #fff;
       line-height: 27rpx;
       width: 32rpx;
@@ -61,7 +60,21 @@
    .status-1{
    }
    .status-2{}
+   &.alone{
+     white-space: nowrap;
+      .se-time {
+        margin-left: 280rpx;
+        font-size: 27rpx;
+      }
+      text{
+        font-size: 35rpx;
+        line-height: 40rpx;
+        width: 50rpx;
+        height: 40rpx;
+      }
+   }
  }
+ 
 </style>
 
 <script>
