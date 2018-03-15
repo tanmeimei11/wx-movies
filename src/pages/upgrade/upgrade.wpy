@@ -41,7 +41,7 @@
        <video src="{{videoInfo.video_url}}" poster="{{videoInfo.cover_img_url}}" controls autoplay direction='0' bindended="videoEnd"  bindfullscreenchange="videoEnd" >
        </video>
     </view>
-    <upgradePay :ticketid.sync="ticketid" :upgradeInfo.sync="upgradeInfo" :isShowSeckill.sync="isShowSeckill"></upgradePay>
+    <upgradePay :ticketid.sync="ticketid" :upgradeInfo.sync="upgradeInfo" :isShowSeckill.sync="isShowSeckill" :countDown.sync="countDown"></upgradePay>
     <goSeat wx:if="{{isShowGoSeat}}"></goSeat>
   </report>
 </template>

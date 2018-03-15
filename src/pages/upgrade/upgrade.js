@@ -26,7 +26,8 @@ export default class upgrade extends wepy.page {
     upgradeInfo: {},
     ticketid: 1,
     isShowSeckill: false,
-    isShowGoSeat: false
+    isShowGoSeat: false,
+    countDown: 0
   }
 
   events = {
@@ -45,6 +46,9 @@ export default class upgrade extends wepy.page {
     },
     closeGoSeatModal () {
       this.isShowGoSeat = false;
+    },
+    countDownJian ( seconds ) {
+      this.countDown = seconds;
     }
   }
 
@@ -80,10 +84,12 @@ export default class upgrade extends wepy.page {
     await this.init( options );
   }
   initSeckillEnd () {
-    this.isShowSeckill = false;
-    this.upgrade.bg_img01 = this.upgrade.upgradeInfo.bg_img;
-    this.upgradeInfo.all_day_price = this.upgradeInfo.origin_price;
-    this.upgradeInfo.btn_text = this.upgradeInfo.origin_price_btn_text;
+    if ( this.upgradeInfo.is_first ) {
+      this.isShowSeckill = false;
+      this.upgrade.bg_img01 = this.upgradeInfo.bg_img;
+      this.upgradeInfo.all_day_price = this.upgradeInfo.origin_price;
+      this.upgradeInfo.btn_text = this.upgradeInfo.origin_price_btn_text;
+    }
   }
 
   initQrcodeFrom ( options ) {

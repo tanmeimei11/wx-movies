@@ -106,6 +106,7 @@
 
       var cutDownFun = () => {
         this.countDown--;
+        this.$emit( 'countDownJian',this.countDown);
         if ( this.countDown <= 0 ) { // 开始秒杀
           this.$emit( 'seckillEnd');
         } 

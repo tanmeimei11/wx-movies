@@ -73,7 +73,7 @@ export default class ticket extends wepy.page {
 
   methods = {
     showUpgrade ( item ) {
-      var ticketid = item.ticketid;
+      var ticketid = item.id;
       if ( item.ticket_status == '2' || item.ticket_status == '5' ) {
         track( 'fission_upgrade' );
         track( 'fission_upgradebox_expo' );
@@ -210,9 +210,9 @@ export default class ticket extends wepy.page {
     this.upgrade_img = myInfoRes.upgrade_img;
     this.$apply();
   }
-  async onLoad ( c ) {
+  async onLoad ( options ) {
     // track( 'my_page_enter' );
-    this.initQrcodeFrom( this.initQrcodeFrom() );
+    this.initQrcodeFrom( options );
     this.setShare();
     if ( options.qrcode_from ) {
       this.$parent.globalData.qrcode_from = options.qrcode_from;
