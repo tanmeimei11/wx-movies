@@ -20,11 +20,12 @@ module.exports = {
   [`${DOMAIN}/mnp/card/reward`]: 'reward',
   [`${DOMAIN}/mnp/card/cancelreward`]: 'cancelGift',
   [`${DOMAIN}/mnp/card/gifts`]: 'cancelGift',
-  [`${DOMAIN}/mnp/ticket/my2`]: 'ticketInfo',
+  [`${DOMAIN}/mnp/ticket/my3`]: 'ticketInfo',
   [`${DOMAIN}/mnp/ticket/share`]: 'share',
   [`${DOMAIN}/mnp/ticket/fetch`]: 'fetch',
   [`${DOMAIN}/mnp/seckill/attach2remind`]: 'attach2remind',
   [`${DOMAIN}/mnp/custom/leke_reply`]: 'example',
   [`${DOMAIN}/mnp/card/has_card`]: 'example',
+  [`${DOMAIN}/mnp/ticket/upgrade_info2`]: 'upgrade_info',
   [`${payUrl}`]: 'signature'
 };

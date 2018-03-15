@@ -1,0 +1,122 @@
+<template>
+  <view class="c-seckill-wrap">
+    <view class="time-wrap">
+      <view class="se-time">
+        距离结束<text>{{tools.hour(countDown)}}</text>:
+        <text>{{tools.minute(countDown)}}</text>:
+        <text>{{tools.second(countDown)}}</text>
+      </view>
+    </view>
+  </view>
+</template>
+
+<style lang="less">
+ .c-seckill-wrap{
+   /* padding:50rpx; */
+  //  width: 750rpx;
+  //  height: 255rpx;
+  //  position: relative;
+  //  background-repeat: no-repeat;
+  //  background-size: contain;
+  //  background-position: center;
+   .seckill-bg{
+    //  width: 750rpx;
+     /* height: 0rpx; */
+   }
+   .time-wrap{
+    //  position: absolute;
+    //  top:65rpx;
+    //  left:100rpx;
+    //  color: #fff;
+   }
+   .se-time {
+    display: flex;
+    align-items: center;
+    font-size: 19rpx;
+    color: #000;
+    line-height: 27rpx;
+    margin-left:250rpx;
+    text {
+      background: #000;
+      border-radius: 4rpx;
+      text-align: center;
+      font-size: 19rpx;
+      color: #fff;
+      line-height: 27rpx;
+      width: 32rpx;
+      height: 27rpx;
+      margin: 0 5rpx;
+    } 
+    text:first-child {
+      margin-left: 15rpx;
+    }
+    text:last-child {
+      margin-right: 13rpx;
+    }
+  }
+   .status-0{
+     background-image: linear-gradient(-90deg, #8324BC 0%, #5612AB 100%); 
+     color: #B479F0; 
+   }
+   .status-1{
+   }
+   .status-2{}
+ }
+</style>
+
+<script>
+  import wepy from 'wepy';
+  import auth from '@/api/auth';
+  import tools from './tools.wxs';
+  import track from '@/utils/track';
+
+  export default class seckill extends wepy.component {
+    wxs = {
+      tools: tools
+    }
+    data = {
+      countDown: 0,
+      cutDownTimer: null
+    }
+    methods = {
+      async seckill () {
+        await auth.ready();
+        if ( this.seckillInfo.status === '0' && !this.seckillInfo.attached_remind_list ) { // to预约
+          track('page_spike_reserve')
+          this.$emit( 'changeSeckill', {status: '0', attached_remind_list: true} );
+        } else if ( this.seckillInfo.status === '1' ) { // to秒杀
+          track('page_spike_immediately_buy')
+          this.$emit( 'seckill' );
+        }
+      }
+    }
+
+    clearTime () {
+      clearInterval( this.$parent.$parent.globalData.upgradeCutDownTimer );
+    }
+    // 倒计时
+    countdown ( start ) {
+      if ( this.$parent.$parent.globalData.upgradeCutDownTimer ) {
+        this.clearTime();
+      }
+      if ( start > 0 ) { 
+        this.countDown = start;
+      } 
+      this.countDown--;
+
+      var cutDownFun = () => {
+        this.countDown--;
+        if ( this.countDown <= 0 ) { // 开始秒杀
+          this.$emit( 'seckillEnd');
+        } 
+        this.$apply();
+      };
+      
+      this.$parent.$parent.globalData.upgradeCutDownTimer = setInterval( cutDownFun, 1000 );
+    }
+
+    init (seconds) {
+      this.countdown(seconds)
+    }
+  }
+</script>

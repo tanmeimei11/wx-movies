@@ -6,14 +6,17 @@ import report from '@/components/report-submit';
 // import shareConnectMixin from '@/mixins/shareConnectMixin';
 // import receiveFaildModal from '@/components/detail/receiveFaildModal';
 // import adBanner from '@/components/adBanner';
+import seckill from '@/components/upgrade/seckill';
+import goSeat from '@/components/upgrade/goSeat';
 import upgradePay from '@/components/detail/upgradePay';
 import track from '@/utils/track';
+import {getParamV} from '@/utils/common';
 
 export default class upgrade extends wepy.page {
   config = {
     navigationBarTitleText: ''
   }
-  components = {report, upgradePay}
+  components = {report, upgradePay, seckill, goSeat}
   mixins = []
   data = {
     upgrade: {},
@@ -21,10 +24,28 @@ export default class upgrade extends wepy.page {
     videoInfo: {},
     videoShow: false,
     upgradeInfo: {},
-    ticketid: 1
+    ticketid: 1,
+    isShowSeckill: false,
+    isShowGoSeat: false
   }
 
   events = {
+    seckillEnd () {
+      this.initSeckillEnd();
+      this.$apply();
+    },
+    goSeat () {
+      this.$invoke( 'upgradePay', 'jumpToSeat' );
+    },
+    goUpgrade () {
+      this.$invoke( 'upgradePay', 'paypiao' );
+    },
+    openSeatModal () {
+      this.isShowGoSeat = true;
+    },
+    closeGoSeatModal () {
+      this.isShowGoSeat = false;
+    }
   }
 
   methods = {
@@ -43,13 +64,33 @@ export default class upgrade extends wepy.page {
     this.cinema_photos = myInfoRes.cinema_photos;
     this.videoInfo = myInfoRes.video_info;
     this.upgradeInfo = myInfoRes.upgrade_info;
-    console.log( this.upgradeInfo, 'jiemo' );
+    if ( myInfoRes.upgrade_info.is_first && parseInt( myInfoRes.upgrade_info.count_down ) > 0 ) {
+      this.$invoke( 'seckill', 'init', parseInt( myInfoRes.upgrade_info.count_down ) );
+      this.isShowSeckill = true;
+    } else {
+      this.initSeckillEnd();
+    }
     this.$apply();
   }
   async onLoad ( options ) {
     console.log( options );
+    this.initQrcodeFrom( options );
     await auth.ready();
     track( 'fission_ticket_upgrade_page_enter' );
     await this.init( options );
+  }
+  initSeckillEnd () {
+    this.isShowSeckill = false;
+    this.upgrade.bg_img01 = this.upgrade.upgradeInfo.bg_img;
+    this.upgradeInfo.all_day_price = this.upgradeInfo.origin_price;
+    this.upgradeInfo.btn_text = this.upgradeInfo.origin_price_btn_text;
+  }
+
+  initQrcodeFrom ( options ) {
+    console.log( options );
+    var qf = options.qrcode_from || getParamV( options, 'qf' );
+    this.$parent.globalData.qrcode_from = qf;
+    this.qrcode_from = qf;
+    console.log( this.qrcode_from );
   }
 }

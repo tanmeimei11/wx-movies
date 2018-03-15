@@ -136,7 +136,7 @@
 </style>
 <template>
 <view class="upgradePayWrap">
-    <view class="goChooseSeat" @tap="jumpToSeat"></view>
+    <view class="goChooseSeat" @tap="openModal"></view>
     <!-- <view class="upgratedWang" @tap="payka"><view class="txt">{{upgradeInfo.movie_card_price}}</view>元升级王卡</view> -->
     <view class="alreadyupdate" wx:if="{{!upgradeInfo.ticket_upgradable}}">已升级全天场</view>
     <view class="upgrateDay"   @tap="paypiao" wx:if="{{upgradeInfo.ticket_upgradable}}">
@@ -144,6 +144,10 @@
         <view class="txt">{{upgradeInfo.all_day_price}}</view>
         元
         <view class="xianliang" wx:if="{{upgradeInfo.btn_tip}}">{{upgradeInfo.btn_tip}}<icon></icon></view>
+        <!-- <view class="xianliang">
+          <seckill wx:if="{{isShowSeckill}}"></seckill>
+          <icon></icon>
+        </view> -->
     </view>
     
     <view class="succpop" wx:if="{{succpop}}">
@@ -162,9 +166,11 @@ import Upgrade from '@/api/upgrade';
 // import Detail from '@/api/detail';
 import tips from '@/utils/tips';
 import track from '@/utils/track';
+// import seckill from '@/components/upgrade/seckill';
 
 export default class upgradePay extends wepy.component {
   props = {
+    isShowSeckill: Boolean,
     upgradeInfo: {
       type: Object,
       default: {
@@ -184,7 +190,18 @@ export default class upgradePay extends wepy.component {
     alreadyupdate: false,
     succpop: false
   }
+  // components = {seckill}
   methods = {
+    openModal () {
+      if ( this.upgradeInfo.ticket_upgradable ) {
+        this.$emit( 'openSeatModal' );
+      } else {
+        track( 'paypiao_wx_jumpToSeat' );
+        wepy.switchTab( {
+          url: '/pages/seat/seat'
+        } );
+      }
+    },
     async payka () {
       console.log( this.upgradeInfo );
       track( 'ppayka_start' );

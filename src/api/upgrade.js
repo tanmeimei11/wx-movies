@@ -7,7 +7,11 @@ export default class upgrade extends Pagebase {
    */
   static async getUpgradeData ( ticketid ) {
     return await this.request( {
-      url: `/mnp/ticket/upgrade_info?ticket_id=${ticketid}`
+      url: `/mnp/ticket/upgrade_info2`,
+      // url: `/mnp/ticket/upgrade_info`,
+      data: {
+        'ticket_id': ticketid
+      }
     } );
   }
     /**
@@ -31,7 +35,7 @@ export default class upgrade extends Pagebase {
     // ticketId && ( _data.tikect_id = ticketId );
     console.log( wepy.$instance.globalData );
     return await this.request( {
-      url: '/mnp/order/create_tu',
+      url: '/mnp/order/create_tu2',
       method: 'POST',
       data: {
         product_id: 200,
