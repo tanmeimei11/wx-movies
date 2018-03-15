@@ -2,7 +2,10 @@
   <report>
     <view class="container">
       <!-- <view class="banner"></view> -->
-      <image mode="widthFix" class="movielist" wx:if="{{upgrade.bg_img01}}" src="{{upgrade.bg_img01}}"></image>
+      <view class="c-head-img"  wx:if="{{upgrade.bg_img01}}">
+        <image mode="widthFix" class="movielist" src="{{upgrade.bg_img01}}"></image>
+        <seckill wx:if="{{isShowSeckill}}"></seckill>
+      </view>
       <image mode="widthFix" class="movielist" wx:if="{{upgrade.bg_img02}}" src="{{upgrade.bg_img02}}"></image>
       
       <view class="c-part-live">
@@ -32,14 +35,14 @@
       <image mode="widthFix" class="movielist" wx:if="{{upgrade.bg_img04}}" src="{{upgrade.bg_img04}}"></image>
       <!-- <view class="upgrade"></view> -->
 
-      <!-- <view class="compare"></view> -->
     </view>
     <view class="videoWindow" wx:if="{{videoInfo.video_url && videoShow}}">
        <view class="bg" @tap="closeVideo"></view>
        <video src="{{videoInfo.video_url}}" poster="{{videoInfo.cover_img_url}}" controls autoplay direction='0' bindended="videoEnd"  bindfullscreenchange="videoEnd" >
        </video>
     </view>
-    <upgradePay :ticketid.sync="ticketid" :upgradeInfo.sync="upgradeInfo"></upgradePay>
+    <upgradePay :ticketid.sync="ticketid" :upgradeInfo.sync="upgradeInfo" :isShowSeckill.sync="isShowSeckill" :countDown.sync="countDown"></upgradePay>
+    <goSeat wx:if="{{isShowGoSeat}}"></goSeat>
   </report>
 </template>
 <style lang="less" src="./upgrade.less">

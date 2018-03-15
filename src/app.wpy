@@ -105,7 +105,8 @@ export default class extends wepy.app {
   }
 
   async onLaunch ( opts ) {
-    var qf = opts.qrcode_from || getParamV( opts, 'qf' );
+    console.log(opts)
+    var qf = opts.query.qrcode_from || getParamV( opts, 'qf' );
     // 渠道埋点
     this.globalData.qrcode_from = qf || '';
     /**

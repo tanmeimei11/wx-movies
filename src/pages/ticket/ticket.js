@@ -7,6 +7,7 @@ import shareConnectMixin from '@/mixins/shareConnectMixin';
 import receiveFaildModal from '@/components/detail/receiveFaildModal';
 import adBanner from '@/components/adBanner';
 import track from '@/utils/track';
+import {getParamV} from '@/utils/common';
 
 export default class ticket extends wepy.page {
   config = {
@@ -71,12 +72,20 @@ export default class ticket extends wepy.page {
   }
 
   methods = {
-    showUpgrade ( ticketid ) {
-      track( 'fission_upgrade' );
-      track( 'fission_upgradebox_expo' );
-      wepy.navigateTo( {
-        url: `/pages/upgrade/upgrade?ticketid=${ticketid}`
-      } );
+    showUpgrade ( item ) {
+      var ticketid = item.id;
+      if ( item.ticket_status == '2' || item.ticket_status == '5' ) {
+        track( 'fission_upgrade' );
+        track( 'fission_upgradebox_expo' );
+        wepy.navigateTo( {
+          url: `/pages/upgrade/upgrade?ticketid=${ticketid}`
+        } );
+      } else if ( item.ticket_status == '6' ) {
+        wepy.switchTab( {
+          url: '/pages/seat/seat'
+        } );
+      }
+
       // this.isShowUpgrade = true;
       // this.upgradeTicket = e.currentTarget.dataset.ticket;
     },
@@ -203,6 +212,7 @@ export default class ticket extends wepy.page {
   }
   async onLoad ( options ) {
     // track( 'my_page_enter' );
+    this.initQrcodeFrom( options );
     this.setShare();
     if ( options.qrcode_from ) {
       this.$parent.globalData.qrcode_from = options.qrcode_from;
@@ -210,5 +220,13 @@ export default class ticket extends wepy.page {
     await auth.ready();
     track( 'fission_ticket_page_enter' );
     await this.init();
+  }
+
+  initQrcodeFrom ( options ) {
+    console.log( options );
+    var qf = options.qrcode_from || getParamV( options, 'qf' );
+    this.$parent.globalData.qrcode_from = qf;
+    this.qrcode_from = qf;
+    console.log( this.qrcode_from );
   }
 }

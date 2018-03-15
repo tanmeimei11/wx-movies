@@ -48,15 +48,19 @@
         .xianliang{
             position: absolute;
             right: 22rpx;
-            top: -50rpx;
+            top: -57rpx;
             color: #000;
-            height: 35rpx;
+            height: 40rpx;
             font-size: 20rpx;
-            padding: 0 20rpx;
+            box-sizing: border-box;
+            padding: 8rpx 0rpx 0 8rpx;
             background: #fbe808;
             line-height: 35rpx;
             text-align: center;
-            border-radius: 100px;
+            border-radius: 6px;
+            .se-time{
+              margin:0;
+            }
             icon{
                 position: absolute;
                 bottom: -5rpx;
@@ -136,14 +140,26 @@
 </style>
 <template>
 <view class="upgradePayWrap">
-    <view class="goChooseSeat" @tap="jumpToSeat"></view>
+    <view class="goChooseSeat" @tap="openModal"></view>
     <!-- <view class="upgratedWang" @tap="payka"><view class="txt">{{upgradeInfo.movie_card_price}}</view>元升级王卡</view> -->
     <view class="alreadyupdate" wx:if="{{!upgradeInfo.ticket_upgradable}}">已升级全天场</view>
     <view class="upgrateDay"   @tap="paypiao" wx:if="{{upgradeInfo.ticket_upgradable}}">
         {{upgradeInfo.btn_text}}
         <view class="txt">{{upgradeInfo.all_day_price}}</view>
         元
-        <view class="xianliang" wx:if="{{upgradeInfo.btn_tip}}">{{upgradeInfo.btn_tip}}<icon></icon></view>
+        <!-- <view class="xianliang" wx:if="{{upgradeInfo.btn_tip}}">{{upgradeInfo.btn_tip}}<icon></icon></view> -->
+        <view class="xianliang" wx:if="{{isShowSeckill}}">
+          <view class="c-seckill-wrap" >
+            <view class="time-wrap">
+              <view class="se-time">
+                距离优惠结束<text>{{tools.hour(countDown)}}</text>:
+                <text>{{tools.minute(countDown)}}</text>:
+                <text>{{tools.second(countDown)}}</text>
+              </view>
+            </view>
+          </view>
+          <icon></icon>
+        </view>
     </view>
     
     <view class="succpop" wx:if="{{succpop}}">
@@ -162,9 +178,16 @@ import Upgrade from '@/api/upgrade';
 // import Detail from '@/api/detail';
 import tips from '@/utils/tips';
 import track from '@/utils/track';
+import seckill from '@/components/upgrade/seckill';
+import tools from './tools.wxs';
 
 export default class upgradePay extends wepy.component {
+  wxs = {
+    tools: tools
+  }
   props = {
+    countDown: Number,
+    isShowSeckill: Boolean,
     upgradeInfo: {
       type: Object,
       default: {
@@ -184,7 +207,18 @@ export default class upgradePay extends wepy.component {
     alreadyupdate: false,
     succpop: false
   }
+  components = {seckill}
   methods = {
+    openModal () {
+      if ( this.upgradeInfo.ticket_upgradable ) {
+        this.$emit( 'openSeatModal' );
+      } else {
+        track( 'paypiao_wx_jumpToSeat' );
+        wepy.switchTab( {
+          url: '/pages/seat/seat'
+        } );
+      }
+    },
     async payka () {
       console.log( this.upgradeInfo );
       track( 'ppayka_start' );
