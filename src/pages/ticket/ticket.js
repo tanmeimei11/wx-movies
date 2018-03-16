@@ -74,17 +74,22 @@ export default class ticket extends wepy.page {
   methods = {
     showUpgrade ( item ) {
       var ticketid = item.id;
-      if ( item.ticket_status == '2' || item.ticket_status == '5' ) {
-        track( 'fission_upgrade' );
-        track( 'fission_upgradebox_expo' );
-        wepy.navigateTo( {
-          url: `/pages/upgrade/upgrade?ticketid=${ticketid}`
-        } );
-      } else if ( item.ticket_status == '6' ) {
+      if ( item.ticket_status == '6' ) {
         wepy.switchTab( {
           url: '/pages/seat/seat'
         } );
+        return;
       }
+      if ( item.ticket_status == '2' ) {
+        track( 'fission_upgrade' );
+        track( 'fission_upgradebox_expo' );
+      } else if ( item.ticket_status == '5' ) {
+        track( 'ticket_overdue_click' );
+      }
+
+      wepy.navigateTo( {
+        url: `/pages/upgrade/upgrade?ticketid=${ticketid}`
+      } );
 
       // this.isShowUpgrade = true;
       // this.upgradeTicket = e.currentTarget.dataset.ticket;

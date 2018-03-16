@@ -21,7 +21,7 @@
               <view class="avatar" style="background-image:url({{cardInfos.reward_to_info.avatar}})"></view>
               <text class="name">{{cardInfos.reward_to_info.nick_name}}</text>
           </view>
-          <view class="shareToOthers {{cardInfos.cardStatus !== 0 ? 'shared' : ''}}" wx:else @tap="oprateCard">
+          <view wx:elif="{{cardInfos.cardStatus != 4}}" class="shareToOthers {{cardInfos.cardStatus !== 0 ? 'shared' : ''}} "  @tap="oprateCard">
              {{cardInfos.cardBtnText}}
           </view>
         </view>

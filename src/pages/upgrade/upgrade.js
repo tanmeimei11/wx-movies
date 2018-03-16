@@ -69,6 +69,7 @@ export default class upgrade extends wepy.page {
     this.videoInfo = myInfoRes.video_info;
     this.upgradeInfo = myInfoRes.upgrade_info;
     if ( myInfoRes.upgrade_info.is_first && parseInt( myInfoRes.upgrade_info.count_down ) > 0 ) {
+      track( 'ticket_firstenter_discount_expo' );
       this.$invoke( 'seckill', 'init', parseInt( myInfoRes.upgrade_info.count_down ) );
       this.isShowSeckill = true;
     } else {

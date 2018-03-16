@@ -77,9 +77,11 @@ export default class goSeat extends wepy.component {
   methods = {
     goSeat () {
       this.$emit( 'goSeat' );
+      track('ticket_jumpToSeat_box_toseat')
     },
     goUpgrade () {
       this.$emit( 'goUpgrade' );
+      track('ticket_jumpToSeat_box_upgrade')
     },
     close () {
       this.$emit( 'closeGoSeatModal' );
