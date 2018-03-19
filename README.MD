@@ -81,5 +81,9 @@
 ###part-22 @xiangxiang _v:0.4.7
 1选票页面和升级页面的埋点
 
+###part-23 @xiangxiang 
+1 万能订单页面
+2 电信合作
+
 
 
