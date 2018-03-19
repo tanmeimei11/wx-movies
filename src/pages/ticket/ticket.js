@@ -17,6 +17,7 @@ export default class ticket extends wepy.page {
   mixins = [shareConnectMixin]
   data = {
     bannerInfo: [], // 头部广告
+    h5Link: 'http://h5.in66.com/inpromo/in-movies/detail.html',
     rulesShow: false,
     type: '',
     btninfo: {},
@@ -37,6 +38,7 @@ export default class ticket extends wepy.page {
     qrcode_from: '',
     ticket_switch: '',
     upgrade_img: '',
+    abtest: "0",
 
     receiveFaildInfo: {
       msg: '',
@@ -73,6 +75,7 @@ export default class ticket extends wepy.page {
 
   methods = {
     showUpgrade ( item ) {
+
       var ticketid = item.id;
       if ( item.ticket_status == '6' ) {
         wepy.switchTab( {
@@ -83,10 +86,15 @@ export default class ticket extends wepy.page {
       if ( item.ticket_status == '2' ) {
         track( 'fission_upgrade' );
         track( 'fission_upgradebox_expo' );
+        if (this.abtest === '1') {
+          wepy.navigateTo( {
+            url: `/pages/webview/webview?h5url=${encodeURIComponent( this.h5Link )}`
+          } );
+          return
+        }
       } else if ( item.ticket_status == '5' ) {
         track( 'ticket_overdue_click' );
       }
-
       wepy.navigateTo( {
         url: `/pages/upgrade/upgrade?ticketid=${ticketid}`
       } );
@@ -207,6 +215,7 @@ export default class ticket extends wepy.page {
     this.bannerInfo = myInfoRes.ad_info_list || [];
     this.rules = Ticket.initRules( myInfoRes.act_rules );
     this.tickets = Ticket.initTickets( myInfoRes.tickets );
+    this.abtest = myInfoRes.ab_test
     this.share_img = myInfoRes.share_img;
     this.share_code = myInfoRes.share_code;
     this.qrcode_from = myInfoRes.qrcode_from;

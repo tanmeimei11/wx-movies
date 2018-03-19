@@ -94,7 +94,8 @@ module.exports = {
         remark: '仅3月4日至3月8日上午使用，合作影院均可用',
         tips: '24h内有效'
       }
-    ]
+    ],
+    "ab_test":"1"
   },
   'code': '0',
   'msg': ''

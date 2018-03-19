@@ -5,7 +5,7 @@ export default class Ticket extends Pagebase {
    */
   static async getMyInfo () {
     return await this.request( {
-      url: '/mnp/ticket/my3'
+      url: '/mnp/ticket/my4'
     } );
   }
   /**
