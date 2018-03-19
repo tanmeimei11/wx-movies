@@ -111,7 +111,7 @@ module.exports = {
     ],
     movies_bottom_pic: 'https://oimagea5.ydstatic.com/image?id=-7269965680182292610&product=adpublish&w=300&h=250&sc=0&rm=0',
     bg_imgs: {
-        banner: 'https://inimg07.jiuyan.info/in/2018/03/06/2D983AB2-B790-CD39-5A1E-A547976D58B7.jpg',
+        banner: 'http://inimg05.jiuyan.info/in/2018/03/15/1AD2ECC2-E427-546F-B25C-F593E3A13937.jpg',
     },
     course: {
         title: '电影王卡使用说明：',

@@ -8,12 +8,9 @@
       <!-- 视频和图片部分 -->
       <view class="c-bg">
          <!-- 活动规则 -->
-        <!-- <view class="anch" @tap="gotoBottom">活动规则</view> -->
-        <image class="image" mode="widthFix" src="{{bgImages.banner}}" />
+        <view class="image" style="background-image:url({{bgImages.banner}})"></view>
          <!-- 秒杀模块 -->
-        <seckill wx:if="{{seckillInfo.enabled}}" :seckillInfo.sync="seckillInfo" ></seckill>
-        <!-- <image class="img" mode="widthFix" src="{{bgImages[1]}}" wx:else/>
-        <image class="img" mode="widthFix" src="{{bgImages[2]}}" /> -->
+        <!-- <seckill wx:if="{{seckillInfo.enabled}}" :seckillInfo.sync="seckillInfo" ></seckill> -->
         <view class="top">
           <view class="card"></view>
           <view class="icon">
@@ -48,20 +45,20 @@
         </view>
       </view>
 
-      <view class="c-part" id="right">
-
+      <view class="c-part">
+        <view class="scrollTitle" id="right"></view>
          <!-- 电影部分 -->
         <view class="c-one-part movie">
           <view class="topic">{{content.right.title}}</view>
           <view class="s-mid-title movie">{{content.right.desc1}}</view>
           <view class="s-desc">{{content.right.desc2}}</view>
           <view class="s-desc">{{content.right.desc3}}</view>
-          <image class="s-img-movie" mode="widthFix" src="{{content.right.img1}}"></image>
+          <image class="s-img-movie" mode="widthFix" src="{{loadHeight[0] ? content.right.img1 : ''}}"></image>
           <view class="s-mid-title movie">{{content.right.desc4}}</view>
           <scroll-view class="movieList" scroll-x>
             <view class="movies">
               <view class="movie-item"  wx:for="{{movies}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
-                <view class="img" style="background-image:url({{item.movie_img_url}})"></view>
+                <view class="img" style="background-image:url({{loadHeight[0] ? item.movie_img_url : ''}})"></view>
                 <view class="name">{{item.name}}</view>
               </view>
             </view>
@@ -72,23 +69,17 @@
           <view class="s-mid-title ciname">{{content.right.desc5}}</view>
           <view class="s-desc">{{content.right.desc6}}</view>
           <view class="s-desc">{{content.right.desc7}}</view>
-          <image class="s-img-1" mode="aspectFill" src="{{cinemas.img}}"></image>
+          <image class="s-img-1" mode="aspectFill" src="{{loadHeight[1] ? cinemas.img : ''}}"></image>
           <view class="cinemaList">
             <swiper indicator-dots='true' indicator-color='rgba(255, 255, 255, 0.5)' indicator-active-color='#fff'>
               <block wx:for="{{cinemas.list}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
                 <swiper-item>
-                  <image src="{{item}}" mode="widthFix" class="slide-image"></image>
+                  <image src="{{loadHeight[1] ? item : ''}}" mode="widthFix" class="slide-image"></image>
                 </swiper-item>
               </block>
             </swiper>
           </view>
           <view class="cinemaBg"></view>
-          <!-- <view class="s-info-wrap">
-            <view class="cinemas-wrap"  wx:for="{{cinemas.list}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
-              <view class="name">{{item.name}}</view>
-              <view class="addr">{{item.address}}</view>
-            </view>
-          </view> -->
         </view>
        
         <!-- 观看时间部分 -->
@@ -96,17 +87,18 @@
           <view class="s-mid-title">{{content.right.desc8}}</view>
           <view class="s-desc">{{content.right.desc9}}</view>
           <view class="s-desc">{{content.right.desc10}}</view>
-          <image class="s-img-1" mode="widthFix" src="{{content.right.img2}}"></image>
+          <image class="s-img-1" mode="widthFix" src="{{loadHeight[1] ? content.right.img2 : ''}}"></image>
         </view>
       </view>
 
-      <view class="c-part-live" id="cinema_live">
+      <view class="c-part-live">
+        <view class="scrollTitle" id="cinema_live"></view>
         <view class="topic">{{content.cinema_live.title}}</view>
         <view class="liveList">
           <swiper display-multiple-items='1.5'>
             <block wx:for="{{content.cinema_live.pics}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
               <swiper-item>
-                <image src="{{item}}" mode="widthFix" class="slide-image"></image>
+                <image src="{{loadHeight[2] ? item : ''}}" mode="widthFix" class="slide-image"></image>
               </swiper-item>
             </block>
           </swiper>
@@ -114,15 +106,17 @@
         <!-- <view class="area">{{content.cinema_live.area}}</view> -->
       </view>
 
-      <view class="c-part-comment" id="comment">
+      <view class="c-part-comment">
+        <view class="scrollTitle" id="comment"></view>
         <view class="topic">{{content.comment.title}}</view>
         <view class="tabbar-item"  wx:for="{{content.comment.pics}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
-          <image class="pics" mode="widthFix" src="{{item}}"></image>
+          <image class="pics" mode="widthFix" src="{{loadHeight[3] ? item : ''}}"></image>
         </view>
       </view>
 
         <!-- 规则部分 -->
-      <view class="c-last" id="usage">
+      <view class="c-last">
+        <view class="scrollTitle" id="usage"></view>
           <view class="topic">{{content.usage.title}}</view>
           <view class="s-rules"  wx:for="{{rules}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
             <view class="title bold">{{item.title}}</view>
@@ -170,7 +164,7 @@
       <view class="btn-icon btn-contract" @tap="trackContact"> <contact-button session-from="wx_movie_contract"></contact-button>客服</view>
       <!-- <view class="btn btn-cut" @tap="sharePay">{{fixBtnText[0]}}</view> -->
       <!-- 按钮区域  1正常情况 拼团 两个按钮  秒杀情况 一个按钮 -->
-      <view class="btn {{seckillInfo.enabled ? 'btn-cut':'btn-origin'}} {{tabText.length === 1 ? 'btn-red' : ''}}" @tap="openBuyMutiModal">
+      <view class="btn btn-origin {{tabText.length === 1 ? 'btn-red' : ''}}" @tap="openBuyMutiModal">
         <text class="price">{{fixBtnText[0].price}}</text>
         <text wx:if="fixBtnText[0].text" class="{{tabText.length === 1 ? 'btnbig' : ''}}">{{fixBtnText[0].text}}</text>
       </view>

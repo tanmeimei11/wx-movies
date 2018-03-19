@@ -171,6 +171,7 @@
   }
 }
 .c-part-live{
+  position: relative;
   background: #fff;
   swiper{
     height: 400rpx;
@@ -194,6 +195,7 @@
   }
 }
 .c-part-comment{
+  position: relative;
   background: #fff;
   margin-top: 50rpx;
   .pics{
@@ -422,7 +424,11 @@ contact-button {
     width: 100%;
   }
   .image{
-    min-height: 600rpx;
+    width: 750rpx;
+    height: 700rpx;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
   }
   image {
     display: block;
@@ -567,6 +573,7 @@ contact-button {
 }
 
 .c-part{
+  position: relative;
   width: 100%;
   padding: 55rpx 30rpx 0;
   box-sizing: border-box;
@@ -751,6 +758,7 @@ contact-button {
   }
 }
 .c-last{
+  position: relative;
   .topic{
     width: 750rpx;
     margin-left: -60rpx;
@@ -802,4 +810,11 @@ contact-button {
   background: url('https://inimg01.jiuyan.info/in/2018/02/03/1239A1EB-4D5D-221F-DF7F-6A752B648316.jpg') no-repeat;
   background-size: contain;
   background-position: center;
+}
+.scrollTitle{
+  position: absolute;
+  top: -150rpx;
+  left: 0;
+  width: 100%;
+  height: 1rpx;
 }
