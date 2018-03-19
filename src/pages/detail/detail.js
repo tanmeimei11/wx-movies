@@ -330,7 +330,7 @@ export default class Index extends wepy.page {
     this.unionInfo = newRes.union_info;
     this.$apply();
     await auth.ready();
-    track( 'page_entry' );
+    track( 'page_entry1' );
     this.detailStatus = await Detail.getDetailStatus( this.statusQuery );
     this.initReceiveTicketInfo( this.detailStatus );
     this.initChannelDiscount( this.detailStatus );
@@ -338,6 +338,7 @@ export default class Index extends wepy.page {
     this.shareInfo = await Detail.getShareInfo();
     if ( this.cardCode ) { await this.initCardStatus(); };
     this.countHeight()
+    track('page_loading_complete')
     this.$apply();
   }
   initLekeInfo ( status ) {

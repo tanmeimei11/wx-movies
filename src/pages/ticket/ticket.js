@@ -161,6 +161,7 @@ export default class ticket extends wepy.page {
     var thisTicket = this.cardInfo.ticket;
     var thisIndex = this.cardInfo.index;
     var ticketid = this.cardInfo.ticketid;
+    track('fission_select_ticket')
     var card = await Ticket.pickCard( ticketid, thisIndex, this.phone, this.$parent.globalData.shareTicket );
     // await this.init()
     this.cards[thisTicket] = card;
