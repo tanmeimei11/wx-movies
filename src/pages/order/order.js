@@ -91,8 +91,6 @@ export default class order extends wepy.page {
         return;
       }
 
-      console.log( '111' );
-
       var _num = newVal.number;
       let _discountIdx = Math.min( _num - 1, this.discountInfo.length - 1 );
       this.targetDiscount = this.discountInfo[_discountIdx] || {};
@@ -106,6 +104,7 @@ export default class order extends wepy.page {
    *
   */
   async initProductInfo () {
+    console.log( 'ready' );
     let _data = this.getOrderData();
     let data = await Order.getProductInfo( _data );
     if ( !data ) {
@@ -144,7 +143,7 @@ export default class order extends wepy.page {
   getOrderData () {
     return {
       product_id: this.productId,
-      pay_channel: 'wechatpay',
+      pay_channel: paymentChannel,
       buy_num: this.payInfo.number || 1,
       tikect_id: this.tikectId || '',
       is_seckill: this.isSeckill || '',
@@ -240,7 +239,7 @@ export default class order extends wepy.page {
   async onLoad ( options ) {
     this.initOptions( options );
     this.initQrcodeFrom( options );
-    await auth.ready();
+    await auth.ready( true );
     await this.initProductInfo();
   }
 }

@@ -5,16 +5,18 @@ import event from '@/utils/event';
 
 export default class auth extends base {
   static _readyStatus
+  static force
 
   /**
    * 授权登录准备
    * 授权弹窗如果取消 PromiseStatus:pending
    */
-  static async ready () {
+  static async ready ( force ) {
+    this.force = force || false;
     return !this._readyStatus ? this._register() : this._readyStatus;
   }
 
-  static _register () {
+  static async _register () {
     // 注册准备完毕通知
     this._readyStatus = new Promise( resolve => event.$on( 'ready', resolve ) );
     // 授权流程
@@ -41,8 +43,27 @@ export default class auth extends base {
       event.$emit( 'ready' );
     } catch ( e ) {
       if ( e.errMsg.indexOf( 'getUserInfo:fail' ) >= 0 ) {
-        const rst = await wepy.showModal( { title: '授权提示', content: '请开启“用户信息”权限', showCancel: true, cancelText: '拒绝', confirmText: '授权' } );
-        if ( rst.confirm ) wepy.openSetting();
+        var modalJson = {
+          title: '授权提示',
+          content: '请开启“用户信息”权限',
+          confirmText: '授权'
+        };
+        var _json = !this.force ? {
+          showCancel: true,
+          cancelText: '拒绝'
+        } : {
+          showCancel: false
+        };
+        const rst = await wepy.showModal( {
+          ...modalJson,
+          ..._json} );
+        if ( rst.confirm ) {
+          return wepy.openSetting().then( res => {
+            if ( res.authSetting['scope.userInfo'] ) {
+              this.login();
+            }
+          } );
+        };
       }
       this._readyStatus = null;
       throw new Error( '未授权授权' );
