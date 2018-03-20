@@ -61,6 +61,11 @@ export default class auth extends base {
           return wepy.openSetting().then( res => {
             if ( res.authSetting['scope.userInfo'] ) {
               this.login();
+              return;
+            }
+
+            if ( this.force ) {
+              this.login();
             }
           } );
         };

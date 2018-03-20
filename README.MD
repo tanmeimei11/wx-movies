@@ -85,7 +85,10 @@
 1 万能订单页面
 2 电信合作
 
-注意⚠️：增加 qrcodeFromMixin 插件 保证每个页面 都能接收到 qrcode_from 新页面注意引用
+注意⚠️：
+1.增加 qrcodeFromMixin 插件 保证每个页面 都能接收到 qrcode_from 新页面注意引用
+2.修改了授权的逻辑 保证 auth.ready（）执行之后 能继续执行下面的逻辑
+3.强制授权
 
 
 
