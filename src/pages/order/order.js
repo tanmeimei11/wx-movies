@@ -3,7 +3,7 @@ import { paymentChannel, businessParty } from '@/utils/config';
 // import tips from '@/utils/tips';
 import qrcodeFromMixin from '@/mixins/qrcodeFromMixin';
 import auth from '@/api/auth';
-// import track from '@/utils/track';
+import track from '@/utils/track';
 import Order from '@/api/order';
 
 export default class order extends wepy.page {
@@ -41,6 +41,7 @@ export default class order extends wepy.page {
     async pay () {
       try {
         await auth.ready();
+        track('new_page_pay_click')
         let _orderData = this.getOrderData();
         let _createRes = await Order.getOrderInfo( _orderData );
         // if ( _createRes.code === '4000032129' || _createRes.code === '4000031814' ) {
@@ -156,6 +157,7 @@ export default class order extends wepy.page {
    * @param {*} res
    */
   paySucc ( res ) {
+    track('new_page_pay_succssful')
     // 与电信合作 直接跳回他们的小程序
     if ( res ) {
       this.redirect( res );
@@ -240,6 +242,7 @@ export default class order extends wepy.page {
     this.initOptions( options );
     this.initQrcodeFrom( options );
     await auth.ready( true );
+    track('new_page_enter')
     await this.initProductInfo();
   }
 }
