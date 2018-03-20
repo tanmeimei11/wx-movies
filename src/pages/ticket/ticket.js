@@ -17,7 +17,6 @@ export default class ticket extends wepy.page {
   mixins = [shareConnectMixin]
   data = {
     bannerInfo: [], // 头部广告
-    h5Link: 'https://h5.in66.com/inpromo/in-movies/movieList.html',
     rulesShow: false,
     type: '',
     btninfo: {},
@@ -87,8 +86,9 @@ export default class ticket extends wepy.page {
         track( 'fission_upgrade' );
         track( 'fission_upgradebox_expo' );
         if (this.abtest === '1') {
+          var link = `https://h5.in66.com/inpromo/in-movies/movieList.html?ticketID=${ticketid}`
           wepy.navigateTo( {
-            url: `/pages/webview/webview?h5url=${encodeURIComponent( this.h5Link )}`
+            url: `/pages/webview/webview?h5url=${encodeURIComponent( link )}`
           } );
           return
         }
