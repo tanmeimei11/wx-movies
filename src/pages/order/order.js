@@ -15,7 +15,7 @@ export default class order extends wepy.page {
     qrcodeFrom: '',
     partnerCode: '', // 合作方的code
     productId: '', // 商品id
-    tikectId: '', // 票的id
+    ticketId: '', // 票的id
     isSeckill: 0, // 是否秒杀
     promotion: '', // 活动的渠道
     productInfo: {
@@ -43,6 +43,7 @@ export default class order extends wepy.page {
         await auth.ready();
         track('new_page_pay_click')
         let _orderData = this.getOrderData();
+        console.log(_orderData)
         let _createRes = await Order.getOrderInfo( _orderData );
         // if ( _createRes.code === '4000032129' || _createRes.code === '4000031814' ) {
         //   tips.error( _createRes.msg );
@@ -232,7 +233,7 @@ export default class order extends wepy.page {
   initOptions ( options ) {
     this.partnerCode = options.partner_code;
     this.productId = options.product_id;
-    this.tikectId = options.ticket_id;
+    this.ticketId = options.ticket_id;
     this.promotion = options.promotion;
     this.isSeckill = options.is_seckill;
     this.isLimitNum = options.isLimitNum;
