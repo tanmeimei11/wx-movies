@@ -81,9 +81,11 @@
 ###part-22 @xiangxiang _v:0.4.7
 1选票页面和升级页面的埋点
 
-###part-23 @xiangxiang 
+###part-23 @xiangxiang   合到master了 还没发版
 1 万能订单页面
 2 电信合作
+
+注意⚠️：增加 qrcodeFromMixin 插件 保证每个页面 都能接收到 qrcode_from 新页面注意引用
 
 
 
