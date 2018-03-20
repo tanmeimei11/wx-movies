@@ -152,7 +152,7 @@ export default class order extends wepy.page {
       is_seckill: this.isSeckill || '',
       promotion: this.promotion || '',
       partner_code: this.partnerCode || '',
-      movie_id: this.movieID
+      movie_id: this.movieID || ''
     };
   }
   /**
