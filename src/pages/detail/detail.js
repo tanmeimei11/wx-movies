@@ -266,11 +266,16 @@ export default class Index extends wepy.page {
     }
   }
   onShareAppMessage ( res ) {
+    var fun = () => {};
+    if ( res.from === 'button' ) {
+      var that = this;
+      fun = this.shareCallBack( that );
+    }
     return {
       title: this.shareInfo.share_txt,
       path: `/pages/index/index?directTo=detail&qrcode_from=${this.shareInfo.qrcode_from}`,
       imageUrl: this.shareInfo.share_img,
-      success: this.shareCallBack( res )
+      success: fun
     };
   }
   scroll ( e ) {
