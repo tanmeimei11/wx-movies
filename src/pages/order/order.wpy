@@ -2,7 +2,7 @@
   <report>
     <view class="container">
       <view class="s-header-wrap">
-        <view class="img" style="background-image:url('https://inimg02.jiuyan.info/in/2018/03/08/A05C4D69-731F-9CDA-F064-CC50AD023ECA.png')"></view>
+        <view class="img" style="background-image:url({{productInfo.url}})"></view>
         <view class="text-wrap">
           <view class="name">{{productInfo.name}}</view>
           <view class="text">{{productInfo.desc}}</view>
