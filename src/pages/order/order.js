@@ -145,7 +145,7 @@ export default class order extends wepy.page {
       product_id: this.productId,
       pay_channel: paymentChannel,
       buy_num: this.payInfo.number || 1,
-      tikect_id: this.tikectId || '',
+      ticket_id: this.ticketId || '',
       is_seckill: this.isSeckill || '',
       promotion: this.promotion || '',
       partner_code: this.partnerCode || ''
@@ -230,7 +230,7 @@ export default class order extends wepy.page {
   initOptions ( options ) {
     this.partnerCode = options.partner_code;
     this.productId = options.product_id;
-    this.tikectId = options.tikect_id;
+    this.tikectId = options.ticket_id;
     this.promotion = options.promotion;
     this.isSeckill = options.is_seckill;
     this.isLimitNum = options.isLimitNum;
