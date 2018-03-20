@@ -17,7 +17,7 @@ export default class ticket extends wepy.page {
   mixins = [shareConnectMixin]
   data = {
     bannerInfo: [], // 头部广告
-    h5Link: 'http://h5.in66.com/inpromo/in-movies/detail.html',
+    h5Link: 'https://h5.in66.com/inpromo/in-movies/movieList.html',
     rulesShow: false,
     type: '',
     btninfo: {},
