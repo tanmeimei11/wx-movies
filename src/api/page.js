@@ -19,4 +19,9 @@ export default class Pagebase {
     // 方法
     return await axios.request( options );
   }
+  static async go ( promise ) {
+    return promise.then( ( res ) => {
+      return !res.succ ? [new Error( '网络错误' ), res] : [null, res];
+    } ).catch( err => [err] );
+  }
 }

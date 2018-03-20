@@ -1,0 +1,45 @@
+<template>
+  <report>
+    <view class="container">
+      <!-- <adBanner wx:if="{{bannerInfo && bannerInfo.length > 0}}"
+                :bannerInfo.sync="bannerInfo"></adBanner> -->
+      <view class="s-header-wrap">
+        <view class="img" style="background-image:url('https://inimg02.jiuyan.info/in/2018/03/08/A05C4D69-731F-9CDA-F064-CC50AD023ECA.png')"></view>
+        <view class="text-wrap">
+          <view class="name">{{productInfo.name}}</view>
+          <view class="text">{{productInfo.desc}}</view>
+        </view>
+
+      </view>
+      <view class="s-main pay-wrap">
+        <view class="s-desc-text ">购买数量
+          <view class="op-wrap">
+              <view class="op jian" @tap.stop="opJian"></view>
+              <view class="number">{{payInfo.number}}</view>
+              <view class="op jia" @tap.stop="opJia"></view>
+          </view>
+        </view>
+        <view class="s-desc-text all">价格
+          <text>¥{{payInfo.money}}</text>
+        </view>
+        <block wx:if="{{targetDiscount}}">
+          <view class="s-desc-text red">{{targetDiscount.desc}}
+            <text>－¥{{targetDiscount.price}}</text>
+          </view>
+          <view class="s-desc-text real-money">实付
+            <text>¥{{payInfo.realMoney}}</text>
+          </view>
+        </block>
+        <view class="money-desc" >
+          <text>支付说明：</text>
+          <view>请提前到达影城现场，在影片开场前向检票口工作人员出示此页面验票入场。</view>
+        </view>
+      </view>
+      <view class="s-btn" @tap.stop="pay">立即支付</view>
+    </view>
+  </report>
+</template>
+<style lang="less" src="./order.less">
+</style>
+<script src="./order.js">
+</script>

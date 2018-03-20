@@ -27,5 +27,7 @@ module.exports = {
   [`${DOMAIN}/mnp/custom/leke_reply`]: 'example',
   [`${DOMAIN}/mnp/card/has_card`]: 'example',
   [`${DOMAIN}/mnp/ticket/upgrade_info2`]: 'upgrade_info',
+  [`${DOMAIN}/mnp/order/create_common`]: 'order',
+  [`${DOMAIN}/mnp/order/info`]: 'product',
   [`${payUrl}`]: 'signature'
 };
