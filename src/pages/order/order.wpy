@@ -29,8 +29,8 @@
           </view>
         </block>
         <view class="money-desc" >
-          <text>支付说明：</text>
-          <view>请提前到达影城现场，在影片开场前向检票口工作人员出示此页面验票入场。</view>
+          <text>{{explainInfo.name}}</text>
+          <view>{{explainInfo.content}}</view>
         </view>
       </view>
       <view class="s-btn" @tap.stop="pay">立即支付</view>

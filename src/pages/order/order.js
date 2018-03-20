@@ -15,6 +15,7 @@ export default class order extends wepy.page {
     qrcodeFrom: '',
     partnerCode: '', // 合作方的code
     productId: '', // 商品id
+    movieID: '',
     ticketId: '', // 票的id
     isSeckill: 0, // 是否秒杀
     promotion: '', // 活动的渠道
@@ -150,7 +151,8 @@ export default class order extends wepy.page {
       ticket_id: this.ticketId || '',
       is_seckill: this.isSeckill || '',
       promotion: this.promotion || '',
-      partner_code: this.partnerCode || ''
+      partner_code: this.partnerCode || '',
+      movie_id: this.movieID
     };
   }
   /**
@@ -237,6 +239,7 @@ export default class order extends wepy.page {
     this.promotion = options.promotion;
     this.isSeckill = options.is_seckill;
     this.isLimitNum = options.isLimitNum;
+    this.movieID = options.movie_id
   }
 
   async onLoad ( options ) {
