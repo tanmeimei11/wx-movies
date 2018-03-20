@@ -1,26 +1,23 @@
-// import auth from '@/api/auth';
-// import Ticket from '@/api/ticket';
-// import report from '@/components/report-submit';
-// import receiveFaildModal from '@/components/detail/receiveFaildModal';
-// import adBanner from '@/components/adBanner';
 import wepy from 'wepy';
-import tips from '@/utils/tips';
+import { paymentChannel, businessParty } from '@/utils/config';
+// import tips from '@/utils/tips';
 import qrcodeFromMixin from '@/mixins/qrcodeFromMixin';
-import track from '@/utils/track';
+import auth from '@/api/auth';
+// import track from '@/utils/track';
 import Order from '@/api/order';
 
 export default class order extends wepy.page {
+  config = {
+    navigationBarTitleText: '订单详情'
+  }
   data = {
-    number: 1,
-    money: '',
-    realMoney: '',
-    bannerInfo: {},
-    seckillInfo: Object,
-    buyMutiModalInfo: Object,
-    cardImg: String,
-
-    partnerCode:'', // 合作方的code
-
+    isLimitNum: false, // 限制购买的数量
+    qrcodeFrom: '',
+    partnerCode: '', // 合作方的code
+    productId: '', // 商品id
+    tikectId: '', // 票的id
+    isSeckill: 0, // 是否秒杀
+    promotion: '', // 活动的渠道
     productInfo: {
       name: '',
       desc: '',
@@ -39,36 +36,51 @@ export default class order extends wepy.page {
     }, // 支付参数
     targetDiscount: null // 最终的优惠信息
   };
+  mixins = [qrcodeFromMixin]
   methods = {
     async pay () {
       try {
+        await auth.ready();
         let _orderData = this.getOrderData();
         let _createRes = await Order.getOrderInfo( _orderData );
-        if ( _createRes.code === '4000032129' || _createRes.code === '4000031814' ) {
-          tips.error( _createRes.msg );
-          return;
-        }
+        // if ( _createRes.code === '4000032129' || _createRes.code === '4000031814' ) {
+        //   tips.error( _createRes.msg );
+        //   return;
+        // }
+        console.log( _createRes );
 
-        let _payNetworkRes = await Order.getPayNetwork( _createRes );
+        let _createResData = {
+          _token: wepy.$instance.globalData.xToken,
+          payment_channel: paymentChannel,
+          business_party: businessParty,
+          order_detail: _createRes.order_detail,
+          extend_params: JSON.stringify( {
+            open_id: _createRes.open_id
+          } )
+        };
+
+        console.log( _createRes, _createResData );
+
+        let _payNetworkRes = await Order.getPayNetwork( _createResData );
         await wepy.requestPayment( _payNetworkRes.sign );
         this.paySucc( _createRes.redirect_info );
       } catch ( e ) {
-        this.$apply();
-        track( 'page_pay_failed' );
+        console.error( e );
+        // track( 'page_pay_failed' );
       }
     },
     opJia () {
-      if ( this.payInfo.number > 19 ) {
+      if ( this.payInfo.number > 19 || this.isLimitNum ) {
         return;
       }
-      track( 'page_number_box_plus' );
+      // track( 'page_number_box_plus' );
       this.payInfo.number++;
     },
     opJian () {
-      if ( this.payInfo.number < 2 ) {
+      if ( this.payInfo.number < 2 || this.isLimitNum ) {
         return;
       }
-      track( 'page_number_box_minus' );
+      // track( 'page_number_box_minus' );
       this.payInfo.number--;
     }
   };
@@ -78,6 +90,8 @@ export default class order extends wepy.page {
       if ( newVal.number === oldVal.number ) {
         return;
       }
+
+      console.log( '111' );
 
       var _num = newVal.number;
       let _discountIdx = Math.min( _num - 1, this.discountInfo.length - 1 );
@@ -92,7 +106,8 @@ export default class order extends wepy.page {
    *
   */
   async initProductInfo () {
-    let data = await Order.getProductInfo();
+    let _data = this.getOrderData();
+    let data = await Order.getProductInfo( _data );
     if ( !data ) {
       console.log( 'error' );
     } else {
@@ -121,18 +136,20 @@ export default class order extends wepy.page {
         number: 1,
         realMoney: data.origin_price
       }; // 支付参数
+
+      this.$apply();
     }
   }
 
   getOrderData () {
     return {
-      product_id: '',
+      product_id: this.productId,
       pay_channel: 'wechatpay',
-      buy_num: 1,
-      qrcode_from: '',
-      tikect_id: '1',
-      is_seckill: 0,
-      promotion: ''
+      buy_num: this.payInfo.number || 1,
+      tikect_id: this.tikectId || '',
+      is_seckill: this.isSeckill || '',
+      promotion: this.promotion || '',
+      partner_code: this.partnerCode || ''
     };
   }
   /**
@@ -208,21 +225,22 @@ export default class order extends wepy.page {
     }
   }
   /**
-   *初始化参数 订单页面 必要参数：1.商品的id product_id 2.渠道promotion 
+   *初始化参数 订单页面 必要参数：1.商品的id product_id 2.渠道promotion
    * @param {*} options
    */
   initOptions ( options ) {
-    this.productId = options.product_id
-    this.partnerCode = options.partner_code
-    pay_channel: 'wechatpay',
-    qrcode_from: '',
-    tikect_id: '1',
-    is_seckill: 0,
-    promotion: ''
+    this.partnerCode = options.partner_code;
+    this.productId = options.product_id;
+    this.tikectId = options.tikect_id;
+    this.promotion = options.promotion;
+    this.isSeckill = options.is_seckill;
+    this.isLimitNum = options.isLimitNum;
   }
 
   async onLoad ( options ) {
+    this.initOptions( options );
+    this.initQrcodeFrom( options );
+    await auth.ready();
     await this.initProductInfo();
-    // await Order.getOrderInfo();
   }
 }
