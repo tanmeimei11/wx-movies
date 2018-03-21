@@ -37,7 +37,7 @@ export default class ticket extends wepy.page {
     qrcode_from: '',
     ticket_switch: '',
     upgrade_img: '',
-    abtest: "0",
+    abtest: '0',
 
     receiveFaildInfo: {
       msg: '',
@@ -74,7 +74,6 @@ export default class ticket extends wepy.page {
 
   methods = {
     showUpgrade ( item ) {
-
       var ticketid = item.id;
       if ( item.ticket_status == '6' ) {
         wepy.switchTab( {
@@ -85,12 +84,12 @@ export default class ticket extends wepy.page {
       if ( item.ticket_status == '2' ) {
         track( 'fission_upgrade' );
         track( 'fission_upgradebox_expo' );
-        if (this.abtest === '1') {
-          var link = `https://h5.in66.com/inpromo/in-movies/movieList.html?ticketID=${ticketid}`
+        if ( this.abtest === '1' ) {
+          var link = `https://h5.in66.com/inpromo/in-movies/movieList.html?ticketID=${ticketid}&_token=${this.$parent.globalData.xToken}`;
           wepy.navigateTo( {
             url: `/pages/webview/webview?h5url=${encodeURIComponent( link )}`
           } );
-          return
+          return;
         }
       } else if ( item.ticket_status == '5' ) {
         track( 'ticket_overdue_click' );
@@ -169,7 +168,7 @@ export default class ticket extends wepy.page {
     var thisTicket = this.cardInfo.ticket;
     var thisIndex = this.cardInfo.index;
     var ticketid = this.cardInfo.ticketid;
-    track('fission_select_ticket')
+    track( 'fission_select_ticket' );
     var card = await Ticket.pickCard( ticketid, thisIndex, this.phone, this.$parent.globalData.shareTicket );
     // await this.init()
     this.cards[thisTicket] = card;
@@ -215,7 +214,7 @@ export default class ticket extends wepy.page {
     this.bannerInfo = myInfoRes.ad_info_list || [];
     this.rules = Ticket.initRules( myInfoRes.act_rules );
     this.tickets = Ticket.initTickets( myInfoRes.tickets );
-    this.abtest = myInfoRes.ab_test
+    this.abtest = myInfoRes.ab_test;
     this.share_img = myInfoRes.share_img;
     this.share_code = myInfoRes.share_code;
     this.qrcode_from = myInfoRes.qrcode_from;

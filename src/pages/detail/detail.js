@@ -151,10 +151,10 @@ export default class Index extends wepy.page {
     },
     // 关闭渠道红包弹窗
     closeChannelModal () {
-      this.channelModalInfo.show = false;
-      if ( !this.seckillInfo.enabled || ( this.seckillInfo.enabled && this.seckillInfo.status !== '1' ) ) {
-        this.noticeInfo.show = true;
-      }
+      // this.channelModalInfo.show = false;
+      // if ( !this.seckillInfo.enabled || ( this.seckillInfo.enabled && this.seckillInfo.status !== '1' ) ) {
+      //   this.noticeInfo.show = true;
+      // }
     },
     // // 秒杀开始 支付信息初始化
     // seckill () {
@@ -284,20 +284,20 @@ export default class Index extends wepy.page {
     } else {
       this.onTop = false;
     }
-    if (e.detail.scrollTop > this.partHeight[0] && !this.loadHeight[0]) {
-      this.loadHeight[0] = true
-      console.log('load1')
-    } else if (e.detail.scrollTop > this.partHeight[1] && !this.loadHeight[1]) {
-      this.loadHeight[1] = true
-      console.log('load2')
-    } else if (e.detail.scrollTop > this.partHeight[2] && !this.loadHeight[2]) {
-      this.loadHeight[2] = true
-      console.log('load3')
-    } else if (e.detail.scrollTop > this.partHeight[3] && !this.loadHeight[3]) {
-      this.loadHeight[3] = true
-      console.log('load4')
+    if ( e.detail.scrollTop > this.partHeight[0] && !this.loadHeight[0] ) {
+      this.loadHeight[0] = true;
+      console.log( 'load1' );
+    } else if ( e.detail.scrollTop > this.partHeight[1] && !this.loadHeight[1] ) {
+      this.loadHeight[1] = true;
+      console.log( 'load2' );
+    } else if ( e.detail.scrollTop > this.partHeight[2] && !this.loadHeight[2] ) {
+      this.loadHeight[2] = true;
+      console.log( 'load3' );
+    } else if ( e.detail.scrollTop > this.partHeight[3] && !this.loadHeight[3] ) {
+      this.loadHeight[3] = true;
+      console.log( 'load4' );
     }
-    this.$apply()
+    this.$apply();
   }
   onReachBottom () {
     track( 'page_slide_to_end' );
@@ -342,8 +342,8 @@ export default class Index extends wepy.page {
     this.initLekeInfo( this.detailStatus );
     this.shareInfo = await Detail.getShareInfo();
     if ( this.cardCode ) { await this.initCardStatus(); };
-    this.countHeight()
-    track('page_loading_complete')
+    this.countHeight();
+    track( 'page_loading_complete' );
     this.$apply();
   }
   initLekeInfo ( status ) {
@@ -412,12 +412,12 @@ export default class Index extends wepy.page {
       // this.buyMutiModalInfo.basePrice = this.detailStatus.promotion_channel_price || this.payPrice;
     } else {
       // 秒杀
-      if ( this.seckillInfo.enabled && this.seckillInfo.status === '1' ) {
-        track( 'page_spike_limited_buy' );
-        this.seckillPay();
-      } else {
-        this.buyMutiModalInfo.basePrice = this.payPrice;
-      }
+      // if ( this.seckillInfo.enabled && this.seckillInfo.status === '1' ) {
+      //   track( 'page_spike_limited_buy' );
+      //   this.seckillPay();
+      // } else {
+      this.buyMutiModalInfo.basePrice = this.payPrice;
+      // }
       if ( this.discountInfo.ticketId && this.discountInfo.show ) {
         track( 'fission_minus_50_buy' );
       } else {
@@ -640,16 +640,16 @@ export default class Index extends wepy.page {
    * 初始化计算内容高度
    */
   countHeight () {
-    this.windowWidth = wx.getSystemInfoSync().windowWidth
-    var hasBanner = this.bannerInfo ? true : false
+    this.windowWidth = wx.getSystemInfoSync().windowWidth;
+    var hasBanner = !!this.bannerInfo;
     var tabHeight = hasBanner ? 1900 : 1720;
     this.tabHeight = this.windowWidth / 750 * tabHeight;
-    this.partHeight.forEach( (e,i) => {
-      if (hasBanner) {
-        e += 180
+    this.partHeight.forEach( ( e, i ) => {
+      if ( hasBanner ) {
+        e += 180;
       }
-      this.partHeight[i] = this.windowWidth / 750 * e
-    } )
+      this.partHeight[i] = this.windowWidth / 750 * e;
+    } );
   }
   /**
    * 初始化连接上的参数
