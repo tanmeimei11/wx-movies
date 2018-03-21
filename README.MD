@@ -82,16 +82,14 @@
 1选票页面和升级页面的埋点
 
 ###part-23  @xiangxiang   合到master了 _v0.4.9
-1 万能订单页面
-
-2 电信合作
-
+1.万能订单页面
+2.电信合作
+3.小夫的选座 修改 
 注意⚠️：
 1.增加 qrcodeFromMixin 插件 保证每个页面 都能接收到 qrcode_from 新页面注意引用
 2.修改了授权的逻辑 保证 auth.ready（）执行之后 能继续执行下面的逻辑
 3.强制授权
 
-小夫的选座 修改 
 ### master @xiangxiang  _v0.5.0
 1，修改 支付的bug 
 2，增加token
