@@ -230,9 +230,8 @@ export default class ticket extends wepy.page {
         longitude: location.longitude
       })
     } catch(e) {
-      console.log('err'+e.errMsg)
+      console.log(e.errMsg)
     }
-    // console.log(location)
   }
   async onLoad ( options ) {
     // track( 'my_page_enter' );
@@ -251,6 +250,5 @@ export default class ticket extends wepy.page {
     var qf = options.qrcode_from || getParamV( options, 'qf' );
     this.$parent.globalData.qrcode_from = qf;
     this.qrcode_from = qf;
-    console.log( this.qrcode_from );
   }
 }

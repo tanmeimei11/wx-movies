@@ -85,13 +85,10 @@ export default class Ticket extends Pagebase {
   /**
    * 抽奖
    */
-  static async sendGPS ( latitude, longitude ) {
+  static async sendGPS ( data ) {
     return await this.request( {
       url: '/mnp/gps/collect',
-      data: {
-        latitude: latitude,
-        longitude: longitude
-      }
+      data: data
     } );
   }
 }
