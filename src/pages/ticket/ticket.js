@@ -223,6 +223,16 @@ export default class ticket extends wepy.page {
     this.receiveFaildInfo.msg = myInfoRes.ticket_desc;
     this.upgrade_img = myInfoRes.upgrade_img;
     this.$apply();
+    try{
+      var location = await wepy.getLocation({type: 'gcj02'})
+      Ticket.sendGPS({
+        latitude: location.latitude,
+        longitude: location.longitude
+      })
+    } catch(e) {
+      console.log('err'+e.errMsg)
+    }
+    // console.log(location)
   }
   async onLoad ( options ) {
     // track( 'my_page_enter' );

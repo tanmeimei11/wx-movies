@@ -15,6 +15,7 @@ module.exports = {
   [`${DOMAIN}/mnp/account/withdraw`]: 'withdraw',
   [`${DOMAIN}/mnp/card/add_phone`]: 'withdraw',
   [`${DOMAIN}/mnp/card/fetch`]: 'receive',
+  [`${DOMAIN}/mnp/gps/collect`]: 'receive',
   [`${DOMAIN}/mnp/card/reward_info`]: 'cardInfo',
   [`${DOMAIN}/mnp/user/update_phone`]: 'withdraw',
   [`${DOMAIN}/mnp/card/reward`]: 'reward',
