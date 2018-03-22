@@ -94,5 +94,8 @@
 1，修改 支付的bug 
 2，增加token
 
+### part-25 @xiaofu  _v0.5.1
+ticket页面收集gps功能
+
 
 
