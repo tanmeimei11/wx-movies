@@ -247,11 +247,12 @@
             // ctx.drawImage(_body.local, _body.x, _body.y, _body.w, _body.h)
             return util.drawImageInCenter( ctx, _body.local, _body.x, _body.y, _body.w, _body.h )
               .then( () => {
+                console.log(_avatar.local)
                 return util.drawImageInCenter( ctx, _avatar.local, 325 - stringlength / 2, _avatar.y, _avatar.w, _avatar.h );
               } ).then( () => {
                 return util.drawImageInCenter( ctx, _qr.local, _qr.x, _qr.y, _qr.w, _qr.h );
               } ).then( () => {
-                return util.drawImageInCenter( ctx, _qrContain.local, 325 - stringlength / 2, _qrContain.y, _qrContain.w, _qrContain.h );
+                // return util.drawImageInCenter( ctx, _qrContain.local, 325 - stringlength / 2, _qrContain.y, _qrContain.w, _qrContain.h );
               } ).then( () => {
                 ctx.draw( true );
                 // setTimeout( () => {
