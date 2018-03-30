@@ -332,7 +332,7 @@ export default class Index extends wepy.page {
     this.$apply();
     await auth.ready();
     track( 'page_entry1' );
-    this.detailStatus = await Detail.getDetailStatus( this.statusQuery, this.productId );
+    this.detailStatus = await Detail.getDetailStatus(this.productId, this.statusQuery );
     this.initReceiveTicketInfo( this.detailStatus );
     this.initChannelDiscount( this.detailStatus );
     this.initLekeInfo( this.detailStatus );
