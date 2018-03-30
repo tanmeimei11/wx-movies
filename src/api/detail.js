@@ -16,7 +16,7 @@ export default class Detail extends Pagebase {
     //   _data.share_code = shareCode;
     // }
     return await this.request( {
-      url: '/mnp/product/cfStatus2',
+      url: '/mnp/product/detail_common',
       data: _data
     } );
   }
