@@ -68,7 +68,7 @@ export default class Detail extends Pagebase {
    */
   static async getShareInfo () {
     return await this.request( {
-      url: '/mnp/share/wechat/img'
+      url: '/mnp/share/wechat/img2'
     } );
   }
   /**

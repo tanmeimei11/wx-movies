@@ -11,7 +11,7 @@ module.exports = {
   [`${DOMAIN}/promotion/channel/ticket`]: 'upgrade',
   [`${DOMAIN}/mnp/product/cfStatus2`]: 'cfStatus',
   [`${DOMAIN}/mnp/order/result`]: 'result',
-  [`${DOMAIN}/mnp/share/wechat/img`]: 'wechatimg',
+  [`${DOMAIN}/mnp/share/wechat/img2`]: 'wechatimg',
   [`${DOMAIN}/mnp/account/withdraw`]: 'withdraw',
   [`${DOMAIN}/mnp/card/add_phone`]: 'withdraw',
   [`${DOMAIN}/mnp/card/fetch`]: 'receive',
