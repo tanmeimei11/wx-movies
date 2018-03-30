@@ -152,7 +152,7 @@ export default class Index extends wepy.page {
     },
     // 关闭渠道红包弹窗
     closeChannelModal () {
-      // this.channelModalInfo.show = false;
+      this.channelModalInfo.show = false;
       // if ( !this.seckillInfo.enabled || ( this.seckillInfo.enabled && this.seckillInfo.status !== '1' ) ) {
       //   this.noticeInfo.show = true;
       // }
@@ -316,7 +316,7 @@ export default class Index extends wepy.page {
   }
   async init () {
     // var res = await Detail.getDetailData( this.detailCode );
-    console.log(this.detailCode)
+    console.log( this.detailCode );
     var newRes = await Detail.getDetailDataNew( this.productId, this.detailCode );
     this.cinemas = Detail.initCinemas( newRes.cinemas, newRes.all_cinema_addr_img );
     // this.moviesSections = Detail.initMovies( res.movie_sections );
@@ -332,7 +332,7 @@ export default class Index extends wepy.page {
     this.$apply();
     await auth.ready();
     track( 'page_entry1' );
-    this.detailStatus = await Detail.getDetailStatus(this.productId, this.statusQuery );
+    this.detailStatus = await Detail.getDetailStatus( this.productId, this.statusQuery );
     this.initReceiveTicketInfo( this.detailStatus );
     this.initChannelDiscount( this.detailStatus );
     this.initLekeInfo( this.detailStatus );
@@ -679,7 +679,7 @@ export default class Index extends wepy.page {
       this.promotion = getParamV( options, 'promo' );
     }
     if ( options.product_id ) {
-      this.productId = options.product_id
+      this.productId = options.product_id;
     }
 
     this.getDetailStatusQuery();
