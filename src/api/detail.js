@@ -7,6 +7,7 @@ export default class Detail extends Pagebase {
    *  获取众筹状态接口
    */
   static async getDetailStatus ( product_id, queryObj ) {
+    console.log(product_id)
     var _data = {
       product_id: product_id,
       ...queryObj
@@ -31,10 +32,14 @@ export default class Detail extends Pagebase {
   /**
    *  获取详情页页面接口
    */
-  static async getDetailDataNew ( data ) {
+  static async getDetailDataNew ( product_id , data ) {
+    var _data = {
+      product_id: product_id,
+      ...data
+    };
     return await this.request( {
       url: '/info/detail_common',
-      data: data
+      data: _data
     } );
   }
   static initCardNum ( data ) {

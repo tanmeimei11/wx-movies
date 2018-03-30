@@ -317,7 +317,7 @@ export default class Index extends wepy.page {
   async init () {
     // var res = await Detail.getDetailData( this.detailCode );
     console.log(this.detailCode)
-    var newRes = await Detail.getDetailDataNew( this.detailCode );
+    var newRes = await Detail.getDetailDataNew( this.productId, this.detailCode );
     this.cinemas = Detail.initCinemas( newRes.cinemas, newRes.all_cinema_addr_img );
     // this.moviesSections = Detail.initMovies( res.movie_sections );
     // this.detailText = this.initBuyText( res );
