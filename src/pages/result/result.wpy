@@ -338,7 +338,7 @@
       await auth.ready();
       var res = await Result.getContractID( this.productId )
       this.phone = res.phone
-      this.card_img = res.card_img
+      this.card_img = res.card_img_url
       if (this.phone) {
         this.num = this.phone
         this.isFull = true
