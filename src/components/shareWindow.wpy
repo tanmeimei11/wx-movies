@@ -269,7 +269,7 @@
                 ctx.setFillStyle( '#FFFFFF' );
                 ctx.setGlobalAlpha( 0.7 );
                 ctx.setTextAlign( 'left' );
-                ctx.fillText( this.shareInfo.nickname + '  邀请你购买', 375 - stringlength / 2, 1119 );
+                ctx.fillText( this.shareInfo.nickname + '  邀请你购买', 375 - stringlength / 2, 984 );
                 ctx.draw( true );
                 return util.wxPromisify( wx.canvasToTempFilePath )( {
                   canvasId: 'firstCanvas'

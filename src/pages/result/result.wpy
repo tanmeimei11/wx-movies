@@ -58,7 +58,8 @@
       position: absolute;
       top: 30rpx;
       left: 39rpx;
-      background: url('https://inimg07.jiuyan.info/in/2018/03/08/ACF2CF60-45EA-9508-E3E5-56B6AD7CCE61.png') no-repeat;
+      background-: url('https://inimg07.jiuyan.info/in/2018/03/08/ACF2CF60-45EA-9508-E3E5-56B6AD7CCE61.png') no-repeat;
+      background-repeat: no-repeat;
       background-size: contain;
       background-position: center;
       .yuan {
@@ -223,7 +224,7 @@
           <view>支付完成</view>
         </view>
         <view class="content">
-          <view class="card">
+          <view class="card" style="background-image:url({{card_img}})">
             <!-- <view class="yuan" style="background-image: url({{share_card_img}});"></view> -->
             <!-- <text class="cardname">in同城趴·电影王卡</text> -->
             <!-- <text class="cardinfo">三个月电影免费看</text> -->
@@ -271,6 +272,8 @@
     components = { report }
     mixins = []
     data = {
+      productId: 359,
+      card_img: '',
       succ: false,
       isFull: false,
       num: '',
@@ -331,9 +334,11 @@
     async onLoad ( option ) {
       track( 'result_page' );
       this.orderNo = option.orderNo;
+      this.productId = option.product_id
       await auth.ready();
-      var res = await Result.getContractID()
+      var res = await Result.getContractID( this.productId )
       this.phone = res.phone
+      this.card_img = res.card_img
       if (this.phone) {
         this.num = this.phone
         this.isFull = true

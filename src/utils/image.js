@@ -1,6 +1,6 @@
 var images = {
   body: {
-    src: 'https://inimg02.jiuyan.info/in/2018/01/25/8D037795-C46D-6610-0417-53683EC12A5F.jpg',
+    src: 'https://inimg05.jiuyan.info/in/2018/03/30/F7D37080-C9B7-719D-47A6-BF0FCA3CA98A.jpg',
     local: '',
     x: 0,
     y: 0,
@@ -19,7 +19,7 @@ var images = {
     src: 'https://inimg02.jiuyan.info/in/2018/01/25/A7B478C3-E1FB-0831-8050-429FD95E8D11.png',
     local: '',
     x: 286,
-    y: 1088,
+    y: 953,
     w: 40,
     h: 40
   },
@@ -27,7 +27,7 @@ var images = {
     src: 'https://inimg01.jiuyan.info/in/2017/02/28/85929FBE-BB9D-91D5-7BA3-068EE42A6000-1JyqzdYV.jpg',
     local: '',
     x: 286,
-    y: 1088,
+    y: 953,
     w: 40,
     h: 40
   },

@@ -729,7 +729,7 @@ export default class Index extends wepy.page {
   paySucc ( orderNo ) {
     this.clearCutInfo();
     wepy.navigateTo( {
-      url: `../result/result?orderNo=${orderNo}`
+      url: `../result/result?orderNo=${orderNo}&product_id=${this.productId}`
     } );
   }
   payFail () {

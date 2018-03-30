@@ -3,6 +3,7 @@ module.exports = {
     "code": "0",
     "succ": true,
     "data": {
+        card_img: 'http://inimg05.jiuyan.info/in/2018/03/30/8085CE36-DCC4-7087-407A-89F277D30ED8.png',
         contract_id: "",
         qrcode: "https://inimg01.jiuyan.info/in/2018/01/22/5C237BEA-254A-4AB9-9FE4-DA09EAE19919.jpg",
         subtitle: "八大影城任你选，只需99元",
