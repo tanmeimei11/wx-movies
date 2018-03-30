@@ -97,5 +97,10 @@
 ### part-25 @xiaofu  _v0.5.1
 ticket页面收集gps功能
 
+### part-26 @xiangxiang _v:0.5.2
+1.月卡详情页面  @xiaofu
+2.结果页面
+3.我的页面
+
 
 
