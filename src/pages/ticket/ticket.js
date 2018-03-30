@@ -34,6 +34,7 @@ export default class ticket extends wepy.page {
     ticketID: '',
     share_img: '',
     share_code: '',
+    share_title: '',
     qrcode_from: '',
     ticket_switch: '',
     upgrade_img: '',
@@ -57,7 +58,7 @@ export default class ticket extends wepy.page {
       fun = this.shareCallBack( that );
     }
     return {
-      title: '送你们每人3张电影票，杭州好多家影院都能看，快来领取吧！',
+      title: this.share_title,
       path: `/pages/detail/detail${query}`,
       imageUrl: this.share_img,
       // 'http://inimg07.jiuyan.info/in/2018/01/26/20A52317-E4EB-3657-E024-F2EF040B2E86.jpg'
@@ -216,6 +217,7 @@ export default class ticket extends wepy.page {
     this.tickets = Ticket.initTickets( myInfoRes.tickets );
     this.abtest = myInfoRes.ab_test;
     this.share_img = myInfoRes.share_img;
+    this.share_title = myInfoRes.share_title
     this.share_code = myInfoRes.share_code;
     this.qrcode_from = myInfoRes.qrcode_from;
     this.phone = myInfoRes.phone || '';
