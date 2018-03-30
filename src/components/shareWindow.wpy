@@ -266,7 +266,7 @@
                 ctx.setTextAlign( 'center' );
                 ctx.setGlobalAlpha( 0.7 );
                 ctx.fillText( this.shareInfo.subtitle, 375, 150 );
-                ctx.setFillStyle( '#FFFFFF' );
+                ctx.setFillStyle( '#000000' );
                 ctx.setGlobalAlpha( 0.7 );
                 ctx.setTextAlign( 'left' );
                 ctx.fillText( this.shareInfo.nickname + '  邀请你购买', 375 - stringlength / 2, 984 );
