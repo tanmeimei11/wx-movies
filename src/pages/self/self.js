@@ -5,7 +5,7 @@ import tips from '@/utils/tips';
 import { request } from '@/utils/request';
 import report from '@/components/report-submit';
 import track from '@/utils/track';
-import util from "@/utils/util";
+import util from '@/utils/util';
 
 export default class self extends wepy.page {
   config = {
@@ -50,8 +50,8 @@ export default class self extends wepy.page {
     bindKeyInput ( e ) {
       this.num = e.detail.value;
       if ( e.detail.value.length === 11 ) {
-        if (!util.verifyPhone(this.num)) {
-          return 
+        if ( !util.verifyPhone( this.num ) ) {
+          return;
         }
         this.isFull = true;
       } else {
@@ -124,8 +124,8 @@ export default class self extends wepy.page {
           phone: this.phone
         } );
         // 兑换成功
-        this.isShowExchange = false
-        track( 'exchange_successful' )
+        this.isShowExchange = false;
+        track( 'exchange_successful' );
         await this.init();
       } catch ( e ) {
         // 兑换失败

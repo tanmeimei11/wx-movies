@@ -1,12 +1,13 @@
 <template>
   <report>
     <view class="container">
+       <view class="c-bg"></view>
       <view class="c-cards">
-        <view class="s-avatar-wrap">
+        <!-- <view class="s-avatar-wrap">
           <image class="s-avatar" mode="aspectFill" src="{{userInfo.avatar}}"></image>
           <view class="s-name">{{userInfo.name}}</view>
-        </view>
-        <view class="s-card">
+        </view> -->
+        <view class="s-card" style="background-image:url('{{cardInfos.url}}')">
           <!-- <view class="title">{{cardInfos.title}}</view> -->
           <view class="time">{{cardInfos.time}}</view>
           <view class="num">{{cardInfos.num}}</view>
@@ -26,8 +27,8 @@
           </view>
         </view>
       </view>
-      <view class="c-bg"></view>
       <view class="c-rules">
+        <view class="title">in同城趴·电影王卡使用规则</view>
         <view class="rule" wx:for="{{rules}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
           {{item}}
         </view>

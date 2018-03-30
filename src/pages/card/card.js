@@ -22,6 +22,10 @@ export default class cards extends wepy.page {
     giveGiftInfo: {
       show: false,
       tips: []
+    },
+    shareInfo: { // 后台传过来的 分享信息
+      text: '',
+      img: ''
     }
   }
 
@@ -34,9 +38,9 @@ export default class cards extends wepy.page {
       fun = this.shareCallBack( that );
     }
     return {
-      title: '送你一张in同城趴电影王卡，杭州三个月电影无限看！',
+      title: this.shareInfo.text || '送你一张in同城趴电影王卡，杭州电影无限看！',
       path: `/pages/detail/detail${query}`,
-      imageUrl: 'https://inimg01.jiuyan.info/in/2018/01/25/FB5D55FB-986F-6433-18B8-BAF8C0C797E3.jpg',
+      imageUrl: this.shareInfo.img || 'https://inimg01.jiuyan.info/in/2018/03/30/758DF072-762F-DC11-0254-69144EE48481.jpg',
       success: fun
     };
   }
@@ -64,8 +68,8 @@ export default class cards extends wepy.page {
    * 初始化页面信息
    */
   async init () {
-    var page = getCurrentPages()[0].data;
-    this.rules = page.rules;
+    // var page = getCurrentPages()[0].data;
+    // this.rules = page.rules;
     await this.initCardInfo( this.cardId );
     this.$apply();
   }
@@ -81,6 +85,12 @@ export default class cards extends wepy.page {
     if ( res.card && res.card.reward_from_info ) {
       res.reward_status = 3;
     }
+    res.share_info && ( this.shareInfo = {
+      img: res.share_info.share_img_url,
+      text: res.share_info.share_txt
+
+    } );
+    this.rules = res.texts;
     this.changeCardInfo( res.card, res.reward_status, res.btn_txt[ res.reward_status ] );
   }
   /**

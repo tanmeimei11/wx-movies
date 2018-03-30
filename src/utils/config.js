@@ -1,9 +1,9 @@
 module.exports = {
-  _v: '0.5.1',
-  DOMAIN: 'https://crowdfunding.in66.com',
-  // DOMAIN: 'http://qacrowd-zf.in66.com',
+  _v: '0.5.2',
   isMock: false,
   isTrack: false,
+  // DOMAIN: 'https://crowdfunding.in66.com',
+  DOMAIN: 'http://qacrowd-zf.in66.com',
   qnTokenUrl: 'https://www.in66.com/promo/commonapi/qiniutoken',
   // qnUploadUrl: "http://upload.qiniup.com/",
   qnUploadUrl: 'https://upload.qiniup.com/',
