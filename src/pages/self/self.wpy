@@ -22,7 +22,7 @@
         </block>
         <block wx:else>
           <view class="title"></view>
-          <view class="cards {{(item.reward_from_info || item.reward_to_info) ? 'send' : 'unsend'}} {{item.is_bind_owner ? 'own':''}}" wx:for="{{cards}}" wx:for-index="idx" wx:for-item="item" wx:key="idx" @tap="toCard" data-index="{{idx}}" data-id="{{item.id}}">
+          <view class="cards {{(item.reward_from_info || item.reward_to_info) ? 'send' : 'unsend'}} {{item.is_bind_owner ? 'own':''}}" wx:for="{{cards}}" wx:for-index="idx" wx:for-item="item" wx:key="idx" @tap="toCard" data-index="{{idx}}" data-id="{{item.id}}" style="background-image:url('{{item.img_url}}')">
             <view class="id">NO.{{item.card_no}}</view>
             <view class="icon"></view>
           </view>

@@ -55,7 +55,9 @@ export default class Card extends Pagebase {
     return {
       id: item.id,
       title: item.name,
+      type: item.type,
       desc: item.desc,
+      url: item.img_url,
       time: this.getCardTime( item.start_date, item.end_date ),
       num: `NO.${item.card_no}`,
       reward_from_info: item.reward_from_info,
