@@ -99,8 +99,9 @@ ticket页面收集gps功能
 
 ### part-26 @xiangxiang _v:0.5.2
 1.月卡详情页面  @xiaofu
-2.结果页面
-3.我的页面
+2.结果页面 @xiaofu
+3.我的页面 @xiangxiang
+4.我的卡页面  @xiangxiang
 
 
 
