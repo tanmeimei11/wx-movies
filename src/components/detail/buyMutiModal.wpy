@@ -2,8 +2,8 @@
   <view class="c-modal c-buymuti-modal">
     <view class="c-wrap">
       <view class="s-close" @tap.stop="close"></view>
-      <!-- <view class="s-header" style="background-image:url({{cardImg}})"> -->
-      <view class="s-header" style="background-image:url('https://inimg02.jiuyan.info/in/2018/03/08/A05C4D69-731F-9CDA-F064-CC50AD023ECA.png')">
+      <view class="s-header" style="background-image:url({{cardImg}})">
+      <!-- <view class="s-header" style="background-image:url('https://inimg02.jiuyan.info/in/2018/03/08/A05C4D69-731F-9CDA-F064-CC50AD023ECA.png')"> -->
         <!-- <view class="tips">NO.xxxxxxxxxxxxxxxxxx</view>
         <view class="time">三个月电影无限看</view> -->
       </view>

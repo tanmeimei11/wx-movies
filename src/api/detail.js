@@ -6,9 +6,9 @@ export default class Detail extends Pagebase {
   /**
    *  获取众筹状态接口
    */
-  static async getDetailStatus ( queryObj ) {
+  static async getDetailStatus ( queryObj, product_id ) {
     var _data = {
-      product_id: 159,
+      product_id: product_id,
       ...queryObj
     };
     // if ( shareCode ) {
@@ -33,7 +33,7 @@ export default class Detail extends Pagebase {
    */
   static async getDetailDataNew ( data ) {
     return await this.request( {
-      url: '/info/newcinemas',
+      url: '/info/detail_common',
       data: data
     } );
   }
@@ -94,14 +94,14 @@ export default class Detail extends Pagebase {
   /**
    * 创建订单接口
    */
-  static async creatOrder ( buyNumber, _data ) {
+  static async creatOrder ( buyNumber, _data, product_id ) {
     // ticketId && ( _data.tikect_id = ticketId );
     console.log( wepy.$instance.globalData );
     return await this.request( {
       url: '/mnp/order/create',
       data: {
         ..._data,
-        product_id: 159,
+        product_id: product_id,
         pay_channel: paymentChannel,
         buy_num: buyNumber,
         qrcode_from: wepy.$instance.globalData.qrcode_from || ''

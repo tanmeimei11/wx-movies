@@ -12,7 +12,7 @@
          <!-- 秒杀模块 -->
         <!-- <seckill wx:if="{{seckillInfo.enabled}}" :seckillInfo.sync="seckillInfo" ></seckill> -->
         <view class="top">
-          <view class="card"></view>
+          <view class="card" style="background-image:url({{cardImg}})"></view>
           <view class="icon">
             <view class="icon-item"  wx:for="{{icon}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
               <view class="img" style="background-image:url({{item.img}})"></view>

@@ -5,7 +5,7 @@ module.exports = {
   [`${DOMAIN}/mnp/user/my2`]: 'my',
   [`${DOMAIN}/mnp/product/cfStatus`]: 'cfStatus',
   [`${DOMAIN}/info/cinemas`]: 'detail',
-  [`${DOMAIN}/info/newcinemas`]: 'newDetail',
+  [`${DOMAIN}/info/detail_common`]: 'newDetail',
   [`${DOMAIN}/info/research`]: 'research',
   [`${DOMAIN}/index/newinfo`]: 'info',
   [`${DOMAIN}/promotion/channel/ticket`]: 'upgrade',

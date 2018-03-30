@@ -28,6 +28,7 @@ export default class Index extends wepy.page {
   data = {
     windowWidth: 375,
     a: 1,
+    productId: 359,
     promoPrice: '', // 活动价格
     payPrice: '', // 原价 159
     toView: '',
@@ -217,7 +218,6 @@ export default class Index extends wepy.page {
       this.videoShow2 = false;
     },
     videoEnd () {
-      console.log( 'end' );
       this.videoShow = false;
       this.videoShow2 = false;
     },
@@ -286,16 +286,12 @@ export default class Index extends wepy.page {
     }
     if ( e.detail.scrollTop > this.partHeight[0] && !this.loadHeight[0] ) {
       this.loadHeight[0] = true;
-      console.log( 'load1' );
     } else if ( e.detail.scrollTop > this.partHeight[1] && !this.loadHeight[1] ) {
       this.loadHeight[1] = true;
-      console.log( 'load2' );
     } else if ( e.detail.scrollTop > this.partHeight[2] && !this.loadHeight[2] ) {
       this.loadHeight[2] = true;
-      console.log( 'load3' );
     } else if ( e.detail.scrollTop > this.partHeight[3] && !this.loadHeight[3] ) {
       this.loadHeight[3] = true;
-      console.log( 'load4' );
     }
     this.$apply();
   }
@@ -310,7 +306,6 @@ export default class Index extends wepy.page {
     await this.init();
 
     // 数据之后的操作
-    console.log( 'options', options );
     if ( options.show_pay_win ) {
       this.openPayWin();
     }
@@ -321,6 +316,7 @@ export default class Index extends wepy.page {
   }
   async init () {
     // var res = await Detail.getDetailData( this.detailCode );
+    console.log(this.detailCode)
     var newRes = await Detail.getDetailDataNew( this.detailCode );
     this.cinemas = Detail.initCinemas( newRes.cinemas, newRes.all_cinema_addr_img );
     // this.moviesSections = Detail.initMovies( res.movie_sections );
@@ -336,7 +332,7 @@ export default class Index extends wepy.page {
     this.$apply();
     await auth.ready();
     track( 'page_entry1' );
-    this.detailStatus = await Detail.getDetailStatus( this.statusQuery );
+    this.detailStatus = await Detail.getDetailStatus( this.statusQuery, this.productId );
     this.initReceiveTicketInfo( this.detailStatus );
     this.initChannelDiscount( this.detailStatus );
     this.initLekeInfo( this.detailStatus );
@@ -630,11 +626,9 @@ export default class Index extends wepy.page {
     } );
   }
   initQrcodeFrom ( options ) {
-    console.log( options );
     var qf = options.qrcode_from || getParamV( options, 'qf' );
     this.$parent.globalData.qrcode_from = qf;
     this.qrcode_from = qf;
-    console.log( this.qrcode_from );
   }
   /**
    * 初始化计算内容高度
@@ -684,6 +678,9 @@ export default class Index extends wepy.page {
     } else {
       this.promotion = getParamV( options, 'promo' );
     }
+    if ( options.product_id ) {
+      this.productId = options.product_id
+    }
 
     this.getDetailStatusQuery();
   }
@@ -701,7 +698,7 @@ export default class Index extends wepy.page {
   async pay ( ) {
     try {
       await auth.ready();
-      var createRes = await Detail.creatOrder( this.buyMutiModalInfo.number, this.statusQuery );
+      var createRes = await Detail.creatOrder( this.buyMutiModalInfo.number, this.statusQuery, this.productId );
       if ( createRes.code === '4000032129' || createRes.code === '4000031814' ) {
         tips.error( createRes.msg );
         return;
