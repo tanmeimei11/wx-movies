@@ -47,7 +47,10 @@
   background-size: 750rpx 444rpx;
   padding-top: 345rpx;
   .union-wrap{
+    margin: 0 auto;
+    width: 695rpx;
     box-shadow: 0rpx 0rpx 15rpx 5rpx  rgba(251,93,75,0.5);
+    border-radius: 10rpx;
     .card{
       background-image: url('https://inimg01.jiuyan.info/in/2018/04/02/C29E245D-B89D-D0B1-ECD9-391904A8C92E.jpg');
       background-size: cover;
