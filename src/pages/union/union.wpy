@@ -46,6 +46,7 @@
   background-position: top center;
   background-size: 750rpx 444rpx;
   padding-top: 345rpx;
+  min-height: 100vh;
   .union-wrap{
     margin: 0 auto;
     width: 695rpx;
