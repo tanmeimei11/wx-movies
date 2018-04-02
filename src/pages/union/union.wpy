@@ -1,0 +1,60 @@
+<template>
+  <!-- <report> -->
+    <view class="container">
+    <view class="union-wrap">
+      <view class="card"></view>
+      <view class="notice"></view>
+      <view class="btn-wrap">
+         <view class="btn btn-union"></view>
+      </view>
+    </view>
+      <!-- 未拼团 -->
+
+    </view>
+  <!-- </report> -->
+</template>
+
+<script>
+  import wepy from 'wepy';
+  import auth from '@/api/auth';
+  import Union from '@/api/union';
+  import report from '@/components/report-submit';
+  export default class union extends wepy.page {
+    config = {
+      navigationBarTitleText: '拼团'
+    }
+    data = {
+    }
+    components = { report }
+    methods = {}
+    async init () {
+      this.$apply()
+    }
+    async onShow () {
+      await auth.ready();
+      await this.init();
+    }
+  }
+</script>
+
+<style lang="less">
+
+.container{
+  background-color: #fff;
+  background-image: url('https://inimg01.jiuyan.info/in/2018/04/02/53C0EB5B-6084-F954-16B5-F1D03DC8DE77.jpg');
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: 750rpx 444rpx;
+  padding-top: 345rpx;
+  .union-wrap{
+    box-shadow: 0rpx 0rpx 15rpx 5rpx  rgba(251,93,75,0.5);
+    .card{
+      background-image: url('https://inimg01.jiuyan.info/in/2018/04/02/C29E245D-B89D-D0B1-ECD9-391904A8C92E.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: top center;
+    }
+  }
+}
+  
+</style>
