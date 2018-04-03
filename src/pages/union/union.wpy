@@ -92,12 +92,8 @@
     }
     components = { report, newDetail }
     methods = {}
-<<<<<<< HEAD
-    async init() {
-=======
     async init () {
       // this.countdown()
->>>>>>> d88eb35b72c5adbc954eb6eddca021099e8d0733
       this.$apply()
     }
     async onShow() {
@@ -146,27 +142,6 @@
 </script>
 
 <style lang="less">
-<<<<<<< HEAD
-  .container {
-    background-color: #fff;
-    background-image: url('https://inimg01.jiuyan.info/in/2018/04/02/53C0EB5B-6084-F954-16B5-F1D03DC8DE77.jpg');
-    background-repeat: no-repeat;
-    background-position: top center;
-    background-size: 750rpx 444rpx;
-    padding-top: 345rpx;
-    min-height: 100vh;
-    .union-wrap {
-      margin: 0 auto;
-      width: 695rpx;
-      box-shadow: 0rpx 0rpx 15rpx 5rpx rgba(251, 93, 75, 0.5);
-      border-radius: 10rpx;
-      .card {
-        background-image: url('https://inimg01.jiuyan.info/in/2018/04/02/C29E245D-B89D-D0B1-ECD9-391904A8C92E.jpg');
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: top center;
-      }
-=======
 
 .container{
   background-color: #fff;
@@ -191,7 +166,6 @@
       background-size: cover;
       background-repeat: no-repeat;
       background-position: top center;
->>>>>>> d88eb35b72c5adbc954eb6eddca021099e8d0733
     }
     .notice{
       background-color: #eeeeee;
