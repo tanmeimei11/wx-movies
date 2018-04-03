@@ -12,11 +12,11 @@
           </view>
 
           <!-- 倒计时 -->
-          <block>
+          <block wx:if="{{unionIngResult.isShow}}">
           <view class="time-wrap">
               <wxs src="../../components/detail/tools.wxs" module="tools" />
               <view class="se-time">
-                仅剩 <text class="num">3</text>个名额，
+                仅剩 <text class="num">{{unionIngResult.count}}</text>个名额，
                 <text class="t">{{tools.hour(countDown)}}</text>:
                 <text class="t">{{tools.minute(countDown)}}</text>:
                 <text class="t">{{tools.second(countDown)}}</text>
@@ -25,18 +25,17 @@
             </view>
           </block>
           <!-- 拼团成功的提示 -->
-          <block>
-            <view class="succ-wrap">
-            <view class="text">拼团成功</view>
-            <view class="tips">请在in同城趴app中查看已获得的电影票</view>
+          <block wx:if="{{unionResult.isShow}}">
+            <view class="succ-wrap {{unionResult.class}}">
+            <view class="text">{{unionResult.desc}}</view>
+            <view class="tips">{{unionResult.tips}}</view>
             </view>
           </block>
 
         </block>
         <!-- 按钮组 显示和跳转 跳转都由后台控制 -->
         <view class="btn-wrap">
-          <view class="btn btn-union"><button class="share" open-type="share"></button>邀请好友参团</view>
-          <view class="btn btn-buy"><button class="share" open-type="share"></button>邀请好友参团</view>
+          <view wx:for="{{unionBtns}}" wx:for-index="idx" wx:for-item="btn" wx:key="idx"  class="btn {{btn.className}}"><button wx:if="{{btn.type === '2'}}" class="share" open-type="share"></button>邀请好友参团</view>
         </view>
         
         
@@ -86,7 +85,25 @@
           id:'',
           avatar:'https://inimg01.jiuyan.info/in/2018/04/02/DD25B4C7-CBEF-0BE3-265C-694BB9580837.jpg',
         }
-      ]
+      ],
+      unionResult: {
+        isShow: false,
+        desc: '',
+        class: '',
+        tips: ''
+      },
+      unionIngResult:{
+        isShow:false,
+        count:0,
+        duration:1000
+      },
+      unionBtns:[{
+        text: '立即开团',
+        type: '2', //0:小程序跳转路径   1:跨小程序跳转路径   2:转发按钮   3:下单支付
+        path: '', //跳转路径   用于0和1状态
+        appid: '', //跳转小程序appid     用于1状态
+        className: 'btn-union'
+      }]
     }
     components = { report }
     methods = {}
@@ -116,10 +133,54 @@
     * 初始化参团者信息
     */
     initAvatarInfo(data){
-      this.unionAvatars = data.map(item=>{
+      if( !data.joiners.length) return 
+
+      this.unionAvatars = data.joiners.map(item=>{
         return {
           id:item.id,
           avatar:item.avatar
+        }
+      })
+    }
+    /*
+    * 初始化拼团结果
+    */
+    initUnionResult(data){
+      var _result = data.union_result
+      if( !_result || _result.is_show ) return 
+      this.unionResult = {
+        isShow: true,
+        desc: _result.union_result_desc,
+        class: _result.union_class,
+        tips: _result.union_tips
+      }
+    }
+    /*
+    * 初始化倒计时
+    */
+    initUnionCutDown(data){
+      var _cutDown = data.union_ing_result
+      if( !_cutDown || _cutDown.is_show ) return 
+
+     this.unionIngResult = {
+        is_show:false,
+        count:_cutDown.union_need_count,
+        duration: _cutDown.union_remain_time
+      }
+    }
+    /*
+    * 初始化按钮信息
+    */
+    initUnionBtns(data){
+      if( !data.btns.length) return 
+
+      this.unionBtns = data.btns.map(item=>{
+        return {
+          text: item.btn_name,
+          type: item.btn_type,
+          path: item.btn_path,
+          appid: item.btn_app_id,
+          className: item.btn_color
         }
       })
     }
