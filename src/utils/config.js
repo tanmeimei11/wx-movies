@@ -1,6 +1,6 @@
 module.exports = {
   _v: '0.5.2',
-  isMock: false,
+  isMock: true,
   isTrack: false,
   DOMAIN: 'https://crowdfunding.in66.com',
   // DOMAIN: 'http://qacrowd-zf.in66.com',

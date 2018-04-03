@@ -1,16 +1,48 @@
 <template>
   <!-- <report> -->
-  <view class="container">
-    <view class="union-wrap">
-      <view class="card"></view>
-      <view class="notice"></view>
-      <view class="btn-wrap">
-        <view class="btn btn-union"></view>
+    <view class="container">
+      <view class="union-wrap">
+        <view class="card"></view>
+        <view class="notice">购买后7天内有效，仅限周一至周四可用。13家影院可用，影院列表见详情介绍</view>
+
+        <!-- 邀请好友 参团中 -->
+        <block wx:elseif="{{unionStatus === '1' || unionStatus === '2' || unionStatus === '3'}}">
+          <view class="avatar-wrap">
+              <view class="avatar {{item.id ? 'active' :''}}"  wx:for="{{unionAvatars}}" wx:for-index="idx" wx:for-item="item" wx:key="idx" style="background-image:url({{item.avatar}})"></view>
+          </view>
+
+          <!-- 倒计时 -->
+          <block>
+          <view class="time-wrap">
+              <wxs src="../../components/detail/tools.wxs" module="tools" />
+              <view class="se-time">
+                仅剩 <text class="num">3</text>个名额，
+                <text class="t">{{tools.hour(countDown)}}</text>:
+                <text class="t">{{tools.minute(countDown)}}</text>:
+                <text class="t">{{tools.second(countDown)}}</text>
+                后结束
+              </view>
+            </view>
+          </block>
+          <!-- 拼团成功的提示 -->
+          <block>
+            <view class="succ-wrap">
+            <view class="text">拼团成功</view>
+            <view class="tips">请在in同城趴app中查看已获得的电影票</view>
+            </view>
+          </block>
+
+        </block>
+        <!-- 按钮组 显示和跳转 跳转都由后台控制 -->
+        <view class="btn-wrap">
+          <view class="btn btn-union"><button class="share" open-type="share"></button>邀请好友参团</view>
+          <view class="btn btn-buy"><button class="share" open-type="share"></button>邀请好友参团</view>
+        </view>
+        
+        
+      <newDetail></newDetail>
       </view>
     </view>
-    <!-- 未拼团 -->
-    <newDetail></newDetail>
-  </view>
   <!-- </report> -->
 </template>
 
@@ -20,25 +52,101 @@
   import Union from '@/api/union';
   import newDetail from '@/components/newDetail';
   import report from '@/components/report-submit';
+  import cutdownTimer from '@/mixins/cutdownTimer';
+  import tools from '../../components/detail/tools.wxs';
   export default class union extends wepy.page {
     config = {
       navigationBarTitleText: '拼团'
     }
+    wxs = {
+      tools: tools
+    }
+    mixins = [cutdownTimer]
     data = {
+      unionStatus: '2',
+      countDown: 100000,
+      Timer: 'unionCutdownTimer',
+      unionId:'123',
+      shareInfo:{
+        img:'',
+        title:''
+      },
+      unionAvatars:[
+        {
+          id:'1',
+          avatar:'https://inimg01.jiuyan.info/in/2018/04/02/DD25B4C7-CBEF-0BE3-265C-694BB9580837.jpg',
+        },
+        {
+          id:'',
+          avatar:'https://inimg01.jiuyan.info/in/2018/04/02/DD25B4C7-CBEF-0BE3-265C-694BB9580837.jpg',
+        },
+        {
+          id:'',
+          avatar:'https://inimg01.jiuyan.info/in/2018/04/02/DD25B4C7-CBEF-0BE3-265C-694BB9580837.jpg',
+        },
+        {
+          id:'',
+          avatar:'https://inimg01.jiuyan.info/in/2018/04/02/DD25B4C7-CBEF-0BE3-265C-694BB9580837.jpg',
+        }
+      ]
     }
     components = { report, newDetail }
     methods = {}
+<<<<<<< HEAD
     async init() {
+=======
+    async init () {
+      // this.countdown()
+>>>>>>> d88eb35b72c5adbc954eb6eddca021099e8d0733
       this.$apply()
     }
     async onShow() {
       await auth.ready();
       await this.init();
+    } 
+
+    onShareAppMessage ( res ) {
+      return {
+        title: this.shareInfo.title,
+        path: `/pages/union/union?id=${this.unionId}qrcode_from=${this.shareInfo.qrcode_from}`,
+        imageUrl: this.shareInfo.img,
+        success: this.shareCallBack()
+      };
     }
+
+    async refreshUnion(){
+      var data = await Union.getUnionStatus()
+
+    }
+    /*
+    * 初始化参团者信息
+    */
+    initAvatarInfo(data){
+      this.unionAvatars = data.map(item=>{
+        return {
+          id:item.id,
+          avatar:item.avatar
+        }
+      })
+    }
+
+    countdownFinish(){
+      console.log('111')
+    }
+
+    shareCallBack (res) {
+      return async( res ) => {
+        this.countdownFinish()
+        console.log('shareCallBack')
+      }
+    }
+    
+
   }
 </script>
 
 <style lang="less">
+<<<<<<< HEAD
   .container {
     background-color: #fff;
     background-image: url('https://inimg01.jiuyan.info/in/2018/04/02/53C0EB5B-6084-F954-16B5-F1D03DC8DE77.jpg');
@@ -57,6 +165,142 @@
         background-size: cover;
         background-repeat: no-repeat;
         background-position: top center;
+      }
+=======
+
+.container{
+  background-color: #fff;
+  background-image: url('https://inimg01.jiuyan.info/in/2018/04/02/53C0EB5B-6084-F954-16B5-F1D03DC8DE77.jpg');
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: 750rpx 444rpx;
+  padding-top: 345rpx;
+  min-height: 100vh;
+  .union-wrap{
+    margin: 0 auto;
+    width: 695rpx;
+    box-shadow: 0rpx 0rpx 15rpx 5rpx  rgba(251,93,75,0.5);
+    border-radius: 10rpx;
+    background-color: #fff;
+    padding: 50rpx 0;
+    .card{
+      margin: 0 auto;
+      width: 576rpx;
+      height: 279rpx;
+      background-image: url('https://inimg01.jiuyan.info/in/2018/04/02/C29E245D-B89D-D0B1-ECD9-391904A8C92E.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: top center;
+>>>>>>> d88eb35b72c5adbc954eb6eddca021099e8d0733
+    }
+    .notice{
+      background-color: #eeeeee;
+      color: #333333;
+      font-size: 22rpx;
+      box-sizing: border-box;
+      padding: 5rpx 45rpx;
+      margin-top: 30rpx;
+    }
+    .avatar-wrap{
+      width: 480rpx;
+      height: 95rpx;
+      margin:30rpx auto 0;
+      display: flex;
+      flex-direction: row;
+      justify-content:space-between;
+      align-items: center;
+      .avatar{
+        width: 95rpx; 
+        height: 95rpx; 
+        border-radius: 50%;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        position: relative;
+        text-align: center;
+        &:first-child:before{
+          content: '';
+          position: absolute;
+          bottom:-20rpx;
+          left:3rpx;
+          width: 89rpx; 
+          height: 34rpx;
+          background-image: url('https://inimg01.jiuyan.info/in/2018/04/02/047E3833-07E6-92B0-2500-43F156EC8957.jpg');
+          background-size: contain;
+          background-repeat: no-repeat;
+          background-position: center;
+        }
+        &.active{
+          border:1rpx solid #ffd267;
+          background-size: cover;
+        }
+      }
+    }
+    .time-wrap{
+      text-align: center;
+    }
+     .se-time {
+      box-sizing: border-box;
+      padding-left: 150rpx;
+      display: flex;
+      height: 90rpx;
+      align-items: center;
+      font-size: 24rpx;
+      color: #333;
+      line-height: 20rpx;
+      margin:0 auto;
+      text{
+        text-align: center;
+        font-size: 32rpx;
+        line-height: 40rpx;
+        height: 40rpx;
+      }
+      .t {
+        color: #333;
+        width: 40rpx;
+        margin: 0 5rpx;
+      } 
+      .num {
+        color: #f94a3b;
+      } 
+      .t:first-child {
+        margin-left: 15rpx;
+      }
+      .t:last-child {
+        margin-right: 13rpx;
+      }
+    }
+    .time-wrap + .btn-wrap{
+       padding-top:10rpx;
+    }
+    .btn-wrap{
+      padding: 60rpx 0;
+    }
+    .btn{
+      width: 545rpx;
+      height: 80rpx;
+      font-size: 38rpx;
+      border-radius: 100rpx;
+      margin:0 auto;
+      text-align: center;
+      line-height: 79rpx;
+      position: relative;
+      .share{
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        position: absolute;
+        top:0;
+        left:0;
+      }
+      &.btn-union{
+        color: #fff;
+        background-image: linear-gradient(90deg, #f44236 0%, #f85641 100%);
+      }
+      &.btn-buy{
+        margin-top: 20rpx;
+        color: #f44236;
+        border:1rpx solid #f44236;
       }
     }
   }
