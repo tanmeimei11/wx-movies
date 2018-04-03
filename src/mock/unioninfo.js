@@ -6,6 +6,7 @@ module.exports = {
     'bg_img': 'http://xxx/xxxx.jpg',
     'card_img': 'http://xxx/xxxx.jpg',
     'card_rule_desc': '购买后7天内有效，仅限周一至周四可用。13家影院可用，影院 列表见详情介绍',
+    'rule_img': 'https://inimg02.jiuyan.info/in/2018/04/03/3CD3A4EC-0668-C848-B1DF-40AE36F71F05.png',
     'movies': [
         {'movie_name': '黑豹', 'movie_img': 'https://inimg07.jiuyan.info/in/2018/03/08/5483AD34-4EAB-21E0-8077-BF06C683B006.jpg'},
         {'movie_name': '黑豹', 'movie_img': 'https://inimg07.jiuyan.info/in/2018/03/08/5483AD34-4EAB-21E0-8077-BF06C683B006.jpg'},

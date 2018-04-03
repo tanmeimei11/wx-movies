@@ -2,6 +2,7 @@
   <!-- <report> -->
     <view class="container">
       <view class="union-wrap">
+        <view class="rule" @tap="showRulesWindow"></view>
         <view class="card"></view>
         <view class="notice">购买后7天内有效，仅限周一至周四可用。13家影院可用，影院列表见详情介绍</view>
 
@@ -40,6 +41,7 @@
         
         
       </view>
+      <rulesWindow :rulesImg.sync="rulesImg" wx:if="{{rulesWindow}}" @closeRulesWindow.user="closeRulesWindow"></rulesWindow>
       <newDetail :detailInfo.sync="detailInfo"></newDetail>
     </view>
   <!-- </report> -->
@@ -50,6 +52,7 @@
   import auth from '@/api/auth';
   import Union from '@/api/union';
   import newDetail from '@/components/newDetail';
+  import rulesWindow from '@/components/rulesWindow';
   import report from '@/components/report-submit';
   import cutdownTimer from '@/mixins/cutdownTimer';
   import tools from '../../components/detail/tools.wxs';
@@ -62,6 +65,8 @@
     }
     mixins = [cutdownTimer]
     data = {
+      rulesWindow: false,
+      rulesImg: '',
       detailInfo: {},
       unionStatus: '2',
       countDown: 100000,
@@ -108,12 +113,22 @@
         className: 'btn-union'
       }]
     }
-    components = { report, newDetail }
-    methods = {}
+    components = { report, newDetail, rulesWindow }
+    methods = {
+      closeRulesWindow () {
+        this.rulesWindow = false
+        this.$apply()
+      },
+      showRulesWindow () {
+        this.rulesWindow = true
+        this.$apply()
+      }
+    }
     async init () {
       // this.countdown()
       var detailInfo = await Union.getUnionInfo()
       this.detailInfo = detailInfo
+      this.rulesImg = detailInfo.rule_img
       console.log(detailInfo)
       this.$apply()
     }
@@ -209,6 +224,7 @@
 <style lang="less">
 
 .container{
+  position: relative;
   background-color: #fff;
   background-image: url('https://inimg01.jiuyan.info/in/2018/04/02/53C0EB5B-6084-F954-16B5-F1D03DC8DE77.jpg');
   background-repeat: no-repeat;
@@ -223,6 +239,13 @@
     border-radius: 10rpx;
     background-color: #fff;
     padding: 50rpx 0;
+    .rule{
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 150rpx;
+      height: 100rpx;
+    }
     .card{
       margin: 0 auto;
       width: 576rpx;
