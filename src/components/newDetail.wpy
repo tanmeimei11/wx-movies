@@ -1,23 +1,177 @@
 <template>
     <view class="newDetail">
         <view class="movie">
-            <view>正在热映的影片</view>
-            <view></view>
-            <view>*更多热映电影以影院当日排片为准</view>
+            <view class="topic">正在热映的影片</view>
+            <view class="movieList">
+                <view class="movies" wx:for="{{detailInfo.movies}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
+                    <view class="img" style="background-image:url({{item.movie_img}})"></view>
+                    <view class="name">{{item.movie_name}}</view>
+                </view>
+            </view>
+            <view class="tips">*更多热映电影以影院当日排片为准</view>
         </view>
         <view class="cinema">
-
+            <view class="top"></view>
+            <view class="content" style="background-image:url({{detailInfo.cinemas_img}})"></view>
         </view>
-        <view class="rules">
-
+        <image class="rules" mode="widthFix" src="{{detailInfo.product_rule_img}}"/>
+        <view class="video">
+          <image class="cover_img" mode="aspectFill" src="{{detailInfo.rule_video.cover_img_url}}"/>
+          <view class="covertop">
+              <view class="title">视频教程</view>
+          </view>
+          <view class="coverbtn" @tap="showVideo"></view>
         </view>
+    </view>
+    <view class="videoWindow" wx:if="{{videoShow}}">
+       <view class="bg" @tap="closeVideo"></view>
+       <video src="{{detailInfo.rule_video.video_url}}" poster="{{detailInfo.rule_video.cover_img_url}}" controls autoplay direction='0' bindended="closeVideo"  bindfullscreenchange="closeVideo" >
+       </video>
     </view>
 </template>
 
 <style lang="less">
     .newDetail {
         background: #fe5e4d;
+        padding-top: 1rpx;
         width: 100%;
+        .movie {
+            text-align: center;
+            color: #fff;
+            .topic {
+                margin: 50rpx 0;
+                font-size: 35rpx;
+                background: url('https://inimg07.jiuyan.info/in/2018/04/03/3E8D5BF5-302A-1A14-B9C7-5BFF939EBB64.png') no-repeat;
+                background-size: 362rpx 12rpx;
+                background-position: center; 
+            }
+            .movieList{
+                /* width: 100%; */
+                overflow: hidden;
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                padding: 0 30rpx;
+                .movies{
+                    width: 160rpx;
+                    margin-bottom: 25rpx;
+                    .img{
+                        width: 100%;
+                        height: 220rpx;
+                        background-repeat: no-repeat;
+                        background-size: cover;
+                        background-position: center; 
+                    }
+                    .name{
+                        margin-top: 10rpx;
+                        font-size: 18rpx;
+                    }
+                }
+            }
+            .tips{
+                display: block;
+                font-size: 26rpx;
+            }
+        }
+        .cinema{
+            .top{
+                width: 740rpx;
+                height:  58rpx;
+                margin: 50rpx auto;
+                background: url('https://inimg05.jiuyan.info/in/2018/04/02/35781E50-2210-F9CD-8464-5E508247AB7B.png') no-repeat;
+                background-size: contain;
+                background-position: center; 
+            }
+            .content{
+                width: 750rpx;
+                height: 624rpx;
+                margin-top: -110rpx;
+                background-repeat: no-repeat;
+                background-size: contain;
+                background-position: center; 
+            }
+        }
+        .rules{
+            width: 100%;
+            height: auto;
+        }
+        .video{
+            position: relative;
+            margin: 50rpx;
+            .covertop{
+                position: absolute;
+                top: -21rpx;
+                left: 122rpx;
+                width: 401rpx;
+                height: 92rpx;
+                text-align: center;
+                background: url('https://inimg02.jiuyan.info/in/2018/04/03/24AD318A-885F-08D4-A884-6E9ECDBCC0AD.png') no-repeat;
+                background-size: contain;
+                background-position: center;
+                color: #fff;
+                .title{
+                    font-size: 36rpx;
+                    margin-top: 8rpx;
+                    line-height: 70rpx
+                }
+                .desc{
+                    font-size: 19rpx;
+                    line-height: 24rpx;
+                }
+            }
+            .coverbtn{
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: url('https://inimg01.jiuyan.info/in/2018/03/06/EA9A65CE-9D28-7199-F6B0-716F6224A86B.png') no-repeat;
+                background-size: 88rpx;
+                background-position: center;
+            }
+            .cover_img{
+                height: 225px;
+                border: 16rpx solid #fdb042;
+                border-radius: 15rpx;
+                box-shadow: 1px 1px 10px #fdb042;
+                box-sizing: border-box;
+            }
+            video {
+                width: 100%;
+            }
+            .image{
+                width: 750rpx;
+                height: 700rpx;
+                background-repeat: no-repeat;
+                background-size: contain;
+                background-position: center;
+            }
+            image {
+                display: block;
+                width: 100%;
+                height: auto;
+            }
+        }
+    }
+    .videoWindow{
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color:rgba(0,0,0,0.5);
+        z-index: 9990;
+        .bg{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        video{
+            width: 100%;
+            height: 100%;
+        }
     }
 </style>
 
@@ -28,21 +182,27 @@
 
     export default class newDetail extends wepy.component {
         props = {
-            shareInfo: Object
+            detailInfo: Object
         }
         data = {
-            amount: '',
+            videoShow: false,
             bg: 'https://inimg07.jiuyan.info/in/2018/02/07/1E0AE6A1-D2DA-4C00-5D65-69E10B798B08.jpg'
         }
 
         watch = {
-            shareInfo(curVal, oldVal) {
-                console.log(`旧值：${oldVal}，新值：${curVal}`);
-                this.amount = curVal.amount;
-                this.$apply();
-            }
+            // shareInfo(curVal, oldVal) {
+            //     console.log(`旧值：${oldVal}，新值：${curVal}`);
+            //     this.amount = curVal.amount;
+            //     this.$apply();
+            // }
         }
         methods = {
+            showVideo () {
+                this.videoShow = true;
+            },
+            closeVideo () {
+                this.videoShow = false;
+            },
         }
     }
 </script>

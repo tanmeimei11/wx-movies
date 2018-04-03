@@ -39,8 +39,8 @@
         </view>
         
         
-      <newDetail></newDetail>
       </view>
+      <newDetail :detailInfo.sync="detailInfo"></newDetail>
     </view>
   <!-- </report> -->
 </template>
@@ -62,6 +62,7 @@
     }
     mixins = [cutdownTimer]
     data = {
+      detailInfo: {},
       unionStatus: '2',
       countDown: 100000,
       Timer: 'unionCutdownTimer',
@@ -111,6 +112,9 @@
     methods = {}
     async init () {
       // this.countdown()
+      var detailInfo = await Union.getUnionInfo()
+      this.detailInfo = detailInfo
+      console.log(detailInfo)
       this.$apply()
     }
     async onShow() {
@@ -339,4 +343,5 @@
       }
     }
   }
+}
 </style>
