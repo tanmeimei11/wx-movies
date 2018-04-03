@@ -1,0 +1,48 @@
+<template>
+    <view class="newDetail">
+        <view class="movie">
+            <view>正在热映的影片</view>
+            <view></view>
+            <view>*更多热映电影以影院当日排片为准</view>
+        </view>
+        <view class="cinema">
+
+        </view>
+        <view class="rules">
+
+        </view>
+    </view>
+</template>
+
+<style lang="less">
+    .newDetail {
+        background: #fe5e4d;
+        width: 100%;
+    }
+</style>
+
+<script>
+    import wepy from 'wepy';
+    import tips from '@/utils/tips';
+    import track from '@/utils/track';
+
+    export default class newDetail extends wepy.component {
+        props = {
+            shareInfo: Object
+        }
+        data = {
+            amount: '',
+            bg: 'https://inimg07.jiuyan.info/in/2018/02/07/1E0AE6A1-D2DA-4C00-5D65-69E10B798B08.jpg'
+        }
+
+        watch = {
+            shareInfo(curVal, oldVal) {
+                console.log(`旧值：${oldVal}，新值：${curVal}`);
+                this.amount = curVal.amount;
+                this.$apply();
+            }
+        }
+        methods = {
+        }
+    }
+</script>
