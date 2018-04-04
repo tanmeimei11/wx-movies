@@ -199,7 +199,7 @@ export default class Index extends wepy.page {
   methods = {
     toUnion () {
       wepy.navigateTo( {
-        url: `/pages/union/union`
+        url: this.detailStatus.union_path
       } );
     },
     openGroup () {
