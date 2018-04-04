@@ -273,7 +273,7 @@ export default class Index extends wepy.page {
   onShareAppMessage ( res ) {
     var fun = () => {};
     if ( res.from === 'button' ) {
-      var that = this;
+      var that = this; productId;
       fun = this.shareCallBack( that );
     }
     return {

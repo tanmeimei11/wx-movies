@@ -1,61 +1,18 @@
-<style lang="less">
-.c-default-modal {
-  opacity: 0;
-  .c-wrap{
-    box-sizing: border-box;
-    padding-bottom: 50rpx;
-    padding-left: 12rpx;
-    padding-right: 12rpx;
-    padding-top:20rpx;
-  }
-  .s-main{
-    image{
-      display: block;
-      width: 100%;
-    }
-  }
-  .s-btns{
-    width: 100%;
-    height: 84rpx;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 38rpx;
-    color: #fff;
-    margin-top: 40rpx;
-    padding:0 12rpx;
-    box-sizing: border-box;
-    .btn-left{
-      width: 180rpx;
-      height: 84rpx;
-      text-align: center;
-      line-height: 80rpx;
-      border-radius: 200rpx;
-      color:#fd4a2c;
-      border:1rpx solid #fd4a2c;
-    }
-    .btn-right{
-      width: 304rpx;
-      height: 84rpx;
-      line-height: 80rpx;
-      text-align: center;
-      border-radius: 200rpx;
-      background-image: linear-gradient(90deg, #f44236 0%, #f85641 100%);
-      border-radius: 100px;
-    }
-  }
-}
-</style>
 <template>
 <view class="c-modal c-default-modal"  wx:if="{{isShow}}" animation="{{animationData}}" >
     <view class="c-wrap">
       <view class="s-close" @tap="close" ></view>
       <view class="s-main">
-        <image mode="widthFix" src="https://inimg01.jiuyan.info/in/2018/03/15/2DC002C3-DA3B-95BE-6EBC-2EAD6E4C24FB.jpg"></image>
+        <image mode="widthFix" src="https://inimg01.jiuyan.info/in/2018/04/04/815D1F7C-D426-F1DE-E188-93C67955E68E.jpg"></image>
+        <view>{{title}}</view>
+         <image mode="widthFix" src="https://inimg01.jiuyan.info/in/2018/04/04/F0F27A80-AC4A-A97D-AFA6-A7756359FAAE.jpg"></image>
       </view>
-      <view class="s-btns">
-        <view class="btn-left" wx:if="{{btnType == 2}}" bindtap="goFail">取消</view>
-        <view class="btn-right" bindtap="goSucc">{{btnText}}</view>
+      <view class="s-text">
+        {{text}}
+      </view>
+      <view class="s-btns {{btnType == 2 ? '' : 's-btns-1'}}">
+        <view class="btn-left" @tap="goFail">取消</view>
+        <view class="btn-right" @tap="goSucc">{{btnText}}</view>
       </view>
     </view>
   </view>
@@ -65,7 +22,8 @@ import wepy from "wepy";
 
 export default class modal extends wepy.component {
   data = {
-    text:'',
+    title: '温馨提示',
+    text:'出现不可预知的错误啦～请重试哦',
     btnText:'确定',
     btnType:1,
     isShow: false,
@@ -126,3 +84,79 @@ export default class modal extends wepy.component {
   completeCallbackFun () {}
 }
 </script>
+
+<style lang="less">
+.c-default-modal {
+  opacity: 0;
+  .c-wrap{
+    box-sizing: border-box;
+    padding-bottom: 50rpx;
+    padding-left: 12rpx;
+    padding-right: 12rpx;
+    padding-top:20rpx;
+  }
+  .s-main{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 110rpx;
+    image{
+      display: block;
+      width: 70rpx;
+    }
+    >view{
+      font-size: 40rpx;
+      color: #000;
+      margin: 0 10rpx;
+    }
+  }
+  .s-text{
+    font-size: 32rpx;
+    color:#333333;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 40rpx 60rpx;
+  }
+  .s-btns{
+    width: 100%;
+    height: 84rpx;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 38rpx;
+    color: #fff;
+    margin-top: 40rpx;
+    padding:0 12rpx;
+    box-sizing: border-box;
+    &.s-btns-1{
+       justify-content: center;
+      .btn-left{
+        display: none;
+      }
+      .btn-right{
+        width: 420rpx;
+      }
+    }
+    .btn-left{
+      width: 180rpx;
+      height: 84rpx;
+      text-align: center;
+      line-height: 80rpx;
+      border-radius: 200rpx;
+      color:#fd4a2c;
+      border:1rpx solid #fd4a2c;
+    }
+    .btn-right{
+      width: 304rpx;
+      height: 84rpx;
+      line-height: 80rpx;
+      text-align: center;
+      border-radius: 200rpx;
+      background-image: linear-gradient(90deg, #f44236 0%, #f85641 100%);
+      border-radius: 100px;
+    }
+  }
+}
+</style>

@@ -22,4 +22,14 @@ export default class Result extends Pagebase {
       data: data
     } );
   }
+
+   /**
+   * 接口
+   */
+  static async interface ( url, _data ) {
+    return await this.request( {
+      url: url,
+      data: _data
+    } );
+  }
 }

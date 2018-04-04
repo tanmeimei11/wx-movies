@@ -33,5 +33,6 @@ module.exports = {
   [`${DOMAIN}/h5/my/tickets`]: 'tickets',
   [`${DOMAIN}/mnp/union/status`]: 'unionstatus',
   [`${DOMAIN}/info/union/info`]: 'unioninfo',
+  [`${DOMAIN}/mnp/order/create_union`]: 'createUnion',
   [`${payUrl}`]: 'signature'
 };

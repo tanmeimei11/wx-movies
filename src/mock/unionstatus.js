@@ -28,7 +28,7 @@ module.exports = {
       {
         btn_name: '去使用',
         btn_color: 'btn-union',
-        btn_type: '0', // 0:小程序跳转路径   1:跨小程序跳转路径   2:转发按钮   3:下单支付
+        btn_type: '3', // 0:小程序跳转路径   1:跨小程序跳转路径   2:转发按钮   3:下单支付
         btn_path: '/pages/detail/detail', // 跳转路径   用于0和1状态
         btn_app_id: 'xxxxxxx', // 跳转小程序appid     用于1状态
         btn_share_callback_url: 'http://xxxxxx/xxxx.jpg', // 分享成功之后的回调  用于2状态

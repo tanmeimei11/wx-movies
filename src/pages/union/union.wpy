@@ -1,10 +1,10 @@
 <template>
   <!-- <report> -->
-    <view class="container">
+    <view class="container" style="background-image:url('{{mainImgs.bgImg}}')">
       <view class="union-wrap">
         <view class="rule" @tap="showRulesWindow"></view>
-        <view class="card"></view>
-        <view class="notice">购买后7天内有效，仅限周一至周四可用。13家影院可用，影院列表见详情介绍</view>
+        <view class="card" style="background-image:url('{{mainImgs.cardImg}}')"></view>
+        <view class="notice">{{cardDesc}}</view>
 
         <!-- 邀请好友 参团中 -->
         <block wx:if="{{unionAvatars.length}}">
@@ -36,11 +36,12 @@
         </block>
         <!-- 按钮组 显示和跳转 跳转都由后台控制 -->
         <view class="btn-wrap">
-          <view wx:for="{{unionBtns}}" wx:for-index="idx" wx:for-item="btn" wx:key="idx"  class="btn {{btn.className}}"><button wx:if="{{btn.type === '2'}}" class="share" open-type="share"></button>{{btn.text}}</view>
+          <view wx:for="{{unionBtns}}" wx:for-index="idx" wx:for-item="btn" wx:key="idx"  class="btn {{btn.className}}" @tap="operateBtn" data-btn="{{btn}}"><button wx:if="{{btn.type === '2'}}" class="share" open-type="share"></button>{{btn.text}}</view>
         </view>
       </view>
+      <!-- 各种弹窗 -->
       <modal></modal>
-      <rulesWindow :rulesImg.sync="rulesImg" wx:if="{{rulesWindow}}" @closeRulesWindow.user="closeRulesWindow"></rulesWindow>
+      <rulesWindow wx:if="{{rulesWindow}}" :rulesImg.sync="rulesImg"  @closeRulesWindow.user="closeRulesWindow"></rulesWindow>
       <newDetail :detailInfo.sync="detailInfo"></newDetail>
     </view>
   <!-- </report> -->
@@ -50,29 +51,39 @@
   import wepy from 'wepy';
   import auth from '@/api/auth';
   import Union from '@/api/union';
+  import Pay from '@/api/pay';
   import newDetail from '@/components/newDetail';
   import rulesWindow from '@/components/rulesWindow';
   import report from '@/components/report-submit';
   import cutdownTimer from '@/mixins/cutdownTimer';
   import tools from '../../components/detail/tools.wxs';
   import modal from '@/components/modal';
+  import redirectMixin from '@/mixins/redirectMixin';
+  import tips from '@/utils/tips';
   export default class union extends wepy.page {
     config = {
       navigationBarTitleText: '拼团'
     }
+    mixins = [redirectMixin]
     components = { report, newDetail, modal, rulesWindow}
     wxs = {
       tools: tools
     }
     mixins = [cutdownTimer]
     data = {
+      productId: '202',
+      unionId:'',
+      userCode:'',
+      cardDesc:'',
       rulesWindow: false,
       rulesImg: '',
       detailInfo: {},
       unionStatus: '2',
-      countDown: 100000,
       Timer: 'unionCutdownTimer',
-      unionId:'123',
+      mainImgs: {
+        cardImg:'https://inimg01.jiuyan.info/in/2018/04/02/C29E245D-B89D-D0B1-ECD9-391904A8C92E.jpg',
+        bgImg:'https://inimg01.jiuyan.info/in/2018/04/02/53C0EB5B-6084-F954-16B5-F1D03DC8DE77.jpg'
+      },
       shareInfo:{
         img:'',
         title:''
@@ -95,59 +106,113 @@
         path: '', //跳转路径   用于0和1状态
         appid: '', //跳转小程序appid     用于1状态
         className: 'btn-union'
-      }]
+      }],
+      activeBtnn:{}
     }
-    components = { report, newDetail, rulesWindow }
     methods = {
       closeRulesWindow () {
         this.rulesWindow = false
-        this.$apply()
       },
       showRulesWindow () {
         this.rulesWindow = true
-        this.$apply()
+      },
+      async operateBtn (e) { //0:小程序跳转路径   1:跨小程序跳转路径   2:转发按钮   3:下单支付  4:查看自己的团
+        var _btn = e.currentTarget.dataset.btn
+        this.activeBtn = _btn
+        if(_btn.type === '3'){
+          await this.pay(_btn.payInfo.url,_btn.payInfo.data)
+        }else if(_btn.type === '0'){
+          this.redirectPath({
+            landing_path:''
+          })
+        } else if(_btn.type === '1'){
+          this.redirectMiniprogram({
+            app_id:'',
+            landing_path:''
+          })
+        }else if(_btn.type === '4'){
+          this.refreshUnion()
+        }
       }
     }
-    async init () {
-      var detailInfo = await Union.getUnionInfo()
-      this.detailInfo = detailInfo
-      this.rulesImg = detailInfo.rule_img
-      console.log(detailInfo)
-      this.$apply()
-    }
-    async onShow() {
+    async onLoad(options) {
+      let _options = this.initOptions(options)
+      await this.initDetailInfo();
       await auth.ready();
-      await this.init();
+      await this.refreshUnion(_options)
     } 
 
-    showModal () {
-      this.$invoke('modal', 'show', {
-        text:'',
-        btnType:2,
-        success:()=>{
-          console.log('1')
-        },
-        fail:()=>{
-           console.log('2')
-        },
-        complete:()=>{
-          console.log('0')
-          console.log('unionStatus',this.unionStatus)
-        }
+    initOptions (opts) {
+      let _uid = opts.product_id || ''
+      let _pid = opts.union_id || ''
+      let _userCode = opts.user_code || ''
+
+      this.productId = _uid
+      this.unionId = _pid
+      this.userCode = _userCode
+
+      return {
+        productId: _uid,
+        unionId: _pid,
+        userCode: _userCode
+      }
+    }
+    /*
+    * 万能弹窗
+    */
+    showModal (data) {
+      var _data = typeof data === 'string' ? {text:data} :data
+      return new Promise ((resolve, reject)=>{
+        this.$invoke('modal', 'show', {
+          ..._data,
+          success:()=>{
+            console.log('succ')
+            resolve()
+            this.refreshUnion()
+          },
+          fail:()=>{
+            console.log('fail')
+            reject()
+          },
+          complete:()=>{
+            console.log('complete')
+          }
+        })
       })
     }
 
-    onShareAppMessage ( res ) {
-      return {
-        title: this.shareInfo.title,
-        path: `/pages/union/union?id=${this.unionId}qrcode_from=${this.shareInfo.qrcode_from}`,
-        imageUrl: this.shareInfo.img,
-        success: this.shareCallBack()
-      };
+    async initDetailInfo () {
+      var detailInfo = await Union.getUnionInfo({
+        product_id:this.productId
+      })
+      this.detailInfo = detailInfo
+      this.rulesImg = detailInfo.rule_img
+      this.mainImgs = {
+        cardImg:detailInfo.card_img,
+        bgImg:detailInfo.bg_img
+      }
+      this.cardDesc = detailInfo.card_rule_desc
+      this.shareInfo = detailInfo.share_info && {
+        title:detailInfo.share_info.share_title,
+        img:detailInfo.share_info.bg_img
+      }
+      this.$apply()
     }
+    /*
+    *
+    * 更新页面拼团的信息
+    * 
+    */
+    async refreshUnion (opts = {}){
+      var data = await Union.getUnionStatus({
+        user_code: opts.userCode || this.userCode,
+        product_id: opts.productId || this.productId,
+        union_id: opts.unionId || this.unionId,
+      })
 
-    async refreshUnion(){
-      var data = await Union.getUnionStatus()
+      this.unionId = data.union_id || ''
+      this.userCode = data.user_code || ''
+
       this.initAvatarInfo(data)
       this.initUnionResult(data)
       this.initUnionCutDown(data)
@@ -159,13 +224,15 @@
     * 初始化参团者信息
     */
     initAvatarInfo (data) {
-      if( !data.joiners.length) return 
+      var _joiners = data.joiners
+      if( !_joiners.length) return 
 
-      this.unionAvatars = data.joiners.map(item=>{
-        return {
-          id:item.id,
-          avatar:item.avatar
-        }
+      const _l = ['','','','']
+      this.unionAvatars =_l.map((item,idx)=>{
+        return _joiners[idx]  ? {
+          id:_joiners[idx].id,
+          avatar:_joiners[idx].avatar
+        } : {}
       })
     }
     /*
@@ -193,7 +260,13 @@
         count:_cutDown.union_need_count,
         duration: _cutDown.union_remain_time
       }
-      this.countdown()
+      this.countdown(this.unionIngResult.duration,this.Timer)
+    }
+    /*
+    * 倒计时结束
+    */
+    countdownFinish(){
+      this.refreshUnion()     
     }
     /*
     * 初始化按钮信息
@@ -207,19 +280,62 @@
           type: item.btn_type,
           path: item.btn_path,
           appid: item.btn_app_id,
-          className: item.btn_color
+          unionId:item.union_id,
+          className: item.btn_color,
+          payInfo:{
+            url: item.btn_api ? item.btn_api.btn_api_url : '',
+            data: item.btn_api ? item.btn_api.btn_api_params : ''
+          }
         }
       })
     }
+    /*
+    * 支付
+    */
+    async pay  (_url, _data) {
+      await auth.ready();
+      try {
+        
+        var createRes = await Pay.creatOrder(_url, {
+          ..._data,
+          product_id:this.productId,
+          union_id:this.unionId,
+        })
 
-    countdownFinish(){
-      console.log('111')
+         console.log(createRes)
+        if ( createRes.code === '4160033001' || createRes.code === '4160033001' ) {
+          this.showModal(createRes.msg )
+          return;
+        }
+
+        var _orderDetailData = await Pay.getOrderDetail(createRes.data)
+        await wepy.requestPayment( _orderDetailData.sign );
+        this.refreshUnion()
+      } catch (error) {
+        tips.loaded()
+        console.error(error)
+      }
+     
     }
-
+    /*
+    * 分享
+    */
+    onShareAppMessage ( res ) {
+      return {
+        title: this.shareInfo.title,
+        path: `/pages/union/union?product_id=${this.productId}&user_code=${this.userCode}&union_id=${this.unionId}qrcode_from=${this.shareInfo.qrcode_from}`,
+        imageUrl: this.shareInfo.img,
+        success: this.shareCallBack(res)
+      };
+    }
+    /*
+    * 分享回调开团
+    */
     shareCallBack (res) {
       return async( res ) => {
-        this.countdownFinish()
-        console.log('shareCallBack')
+        let  _btn = this.activeBtn
+        let _data = await Union.interface()
+        await this.refreshUnion()
       }
     }
 
@@ -231,14 +347,14 @@
 .container{
   position: relative;
   background-color: #fff;
-  background-image: url('https://inimg01.jiuyan.info/in/2018/04/02/53C0EB5B-6084-F954-16B5-F1D03DC8DE77.jpg');
+  // background-image: url('https://inimg01.jiuyan.info/in/2018/04/02/53C0EB5B-6084-F954-16B5-F1D03DC8DE77.jpg');
   background-repeat: no-repeat;
   background-position: top center;
   background-size: 750rpx 444rpx;
   padding-top: 345rpx;
   min-height: 100vh;
   .union-wrap{
-    margin: 0 auto;
+    margin: 0 auto 30rpx;
     width: 695rpx;
     box-shadow: 0rpx 0rpx 15rpx 5rpx  rgba(251,93,75,0.5);
     border-radius: 10rpx;
@@ -255,7 +371,7 @@
       margin: 0 auto;
       width: 576rpx;
       height: 279rpx;
-      background-image: url('https://inimg01.jiuyan.info/in/2018/04/02/C29E245D-B89D-D0B1-ECD9-391904A8C92E.jpg');
+      // background-image: url('https://inimg01.jiuyan.info/in/2018/04/02/C29E245D-B89D-D0B1-ECD9-391904A8C92E.jpg');
       background-size: cover;
       background-repeat: no-repeat;
       background-position: top center;

@@ -11,50 +11,48 @@
 </template>
 
 <style lang="less">
-    .rulesWindow{
-        .c-wrap{
-            margin: 0 auto;
-            padding: 0 50rpx 50rpx;
-        }
-        .title{
-            height: 150rpx;
-            line-height: 150rpx;
-            font-size: 40rpx;
-            font-weight: bold;
-            text-align: center;
-            background: url('https://inimg07.jiuyan.info/in/2018/04/03/0DD089E7-15ED-61CF-30F7-09BEB87CB365.png') no-repeat;
-            background-size: 338rpx 52rpx;
-            background-position: center; 
-        }
-        .scrollArea{
-            height: 500rpx;
-            overflow: hidden;
-            width: 100%;
-            image{
-                width: 100%;
-            }
-        }
+.rulesWindow {
+  .c-wrap {
+    margin: 0 auto;
+    padding: 0 50rpx 50rpx;
+  }
+  .title {
+    height: 150rpx;
+    line-height: 150rpx;
+    font-size: 40rpx;
+    font-weight: bold;
+    text-align: center;
+    background: url("https://inimg07.jiuyan.info/in/2018/04/03/0DD089E7-15ED-61CF-30F7-09BEB87CB365.png")
+      no-repeat;
+    background-size: 338rpx 52rpx;
+    background-position: center;
+  }
+  .scrollArea {
+    height: 500rpx;
+    overflow: hidden;
+    width: 100%;
+    image {
+      width: 100%;
     }
+  }
+}
 </style>
 
 <script>
-    import wepy from 'wepy';
-    import tips from '@/utils/tips';
-    import track from '@/utils/track';
+import wepy from "wepy";
+import tips from "@/utils/tips";
+import track from "@/utils/track";
 
-    export default class rulesWindow extends wepy.component {
-        props = {
-            rulesImg: String
-        }
-        data = {
-        }
-
-        watch = {
-        }
-        methods = {
-            close () {
-                this.$emit( 'closeRulesWindow' );
-            }
-        }
+export default class rulesWindow extends wepy.component {
+  props = {
+    rulesImg: String
+  };
+  data = {};
+  watch = {};
+  methods = {
+    close() {
+      this.$emit("closeRulesWindow");
     }
+  };
+}
 </script>

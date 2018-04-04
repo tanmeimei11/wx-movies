@@ -28,12 +28,13 @@ function getQueryParams ( str ) {
  */
 export default class http {
   static async request ( config ) {
+    let isBackRes = config.isBackRes || false;
     tips.loading();
     this._fixRequest( config ); // 支付宝小程序特有
     const myres = await wepy.request( config );
     tips.loaded();
     if ( this.isSuccess( myres ) ) {
-      return myres.data.data;
+      return isBackRes ? myres.data : myres.data.data;
     } else {
       console.error( Object.assign( config, myres ) );
       throw this.requestException( myres );

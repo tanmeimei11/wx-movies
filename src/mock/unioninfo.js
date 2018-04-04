@@ -27,6 +27,11 @@ module.exports = {
     'rule_video': {
       'cover_img_url': 'http://p1.music.126.net/xdgsjM7uQxR7o1xSKGXlCg==/109951163099447939.jpg?param=440y440',
       'video_url': 'http://video01.jiuyan.info/in/2018/02/08/3792ADED-AFA5-8C6F-652B-26CE8C10AFC6-1JyjwzaG.mp4'
+    },
+    share_info: {
+      bg_img: 'http://p1.music.126.net/xdgsjM7uQxR7o1xSKGXlCg==/109951163099447939.jpg?param=440y440',
+      share_title: 'xxx',
+      share_desc: 'xxx'
     }
   }
 };
