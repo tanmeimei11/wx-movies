@@ -295,8 +295,8 @@
           unionId:item.union_id,
           className: item.btn_color,
           payInfo:{
-            url: item.btn_api ? item.btn_pay.btn_api_url : '',
-            data: item.btn_api ? item.btn_pay.btn_api_params : ''
+            url: item.btn_pay ? item.btn_pay.btn_api_url : '',
+            data: item.btn_pay ? item.btn_pay.btn_api_params : ''
           },
           callback:{
             url: item.btn_callback ? item.btn_callback.btn_api_url : '',
