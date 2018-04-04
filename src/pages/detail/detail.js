@@ -197,6 +197,11 @@ export default class Index extends wepy.page {
     }
   }
   methods = {
+    toUnion () {
+      wepy.navigateTo( {
+        url: `/pages/union/union`
+      } );
+    },
     openGroup () {
       track( 'page_open_group' );
       wepy.navigateToMiniProgram( {

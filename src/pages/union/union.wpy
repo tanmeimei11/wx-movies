@@ -2,6 +2,7 @@
   <!-- <report> -->
     <view class="container">
       <view class="union-wrap">
+        <view class="rule" @tap="showRulesWindow"></view>
         <view class="card"></view>
         <view class="notice">购买后7天内有效，仅限周一至周四可用。13家影院可用，影院列表见详情介绍</view>
 
@@ -37,9 +38,10 @@
         <view class="btn-wrap">
           <view wx:for="{{unionBtns}}" wx:for-index="idx" wx:for-item="btn" wx:key="idx"  class="btn {{btn.className}}"><button wx:if="{{btn.type === '2'}}" class="share" open-type="share"></button>{{btn.text}}</view>
         </view>
-      <newDetail></newDetail>
       </view>
       <modal></modal>
+      <rulesWindow :rulesImg.sync="rulesImg" wx:if="{{rulesWindow}}" @closeRulesWindow.user="closeRulesWindow"></rulesWindow>
+      <newDetail :detailInfo.sync="detailInfo"></newDetail>
     </view>
   <!-- </report> -->
 </template>
@@ -49,6 +51,7 @@
   import auth from '@/api/auth';
   import Union from '@/api/union';
   import newDetail from '@/components/newDetail';
+  import rulesWindow from '@/components/rulesWindow';
   import report from '@/components/report-submit';
   import cutdownTimer from '@/mixins/cutdownTimer';
   import tools from '../../components/detail/tools.wxs';
@@ -63,6 +66,9 @@
     }
     mixins = [cutdownTimer]
     data = {
+      rulesWindow: false,
+      rulesImg: '',
+      detailInfo: {},
       unionStatus: '2',
       countDown: 100000,
       Timer: 'unionCutdownTimer',
@@ -91,9 +97,29 @@
         className: 'btn-union'
       }]
     }
+<<<<<<< HEAD
     methods = {}
     async init () {
       
+=======
+    components = { report, newDetail, rulesWindow }
+    methods = {
+      closeRulesWindow () {
+        this.rulesWindow = false
+        this.$apply()
+      },
+      showRulesWindow () {
+        this.rulesWindow = true
+        this.$apply()
+      }
+    }
+    async init () {
+      // this.countdown()
+      var detailInfo = await Union.getUnionInfo()
+      this.detailInfo = detailInfo
+      this.rulesImg = detailInfo.rule_img
+      console.log(detailInfo)
+>>>>>>> 708ba01530c4e38d827f206410e44f61cd9abc2d
       this.$apply()
     }
     async onShow() {
@@ -211,6 +237,7 @@
 <style lang="less">
 
 .container{
+  position: relative;
   background-color: #fff;
   background-image: url('https://inimg01.jiuyan.info/in/2018/04/02/53C0EB5B-6084-F954-16B5-F1D03DC8DE77.jpg');
   background-repeat: no-repeat;
@@ -225,6 +252,13 @@
     border-radius: 10rpx;
     background-color: #fff;
     padding: 50rpx 0;
+    .rule{
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 150rpx;
+      height: 100rpx;
+    }
     .card{
       margin: 0 auto;
       width: 576rpx;
