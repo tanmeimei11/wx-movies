@@ -110,7 +110,8 @@
         type: '2', //0:小程序跳转路径   1:跨小程序跳转路径   2:转发按钮   3:下单支付
         path: '', //跳转路径   用于0和1状态
         appid: '', //跳转小程序appid     用于1状态
-        className: 'btn-union'
+        className: 'btn-union',
+        isOrigin:true
       }],
       activeBtn:{}
     }
@@ -128,6 +129,10 @@
       },
       async operateBtn (e) { //0:小程序跳转路径   1:跨小程序跳转路径   2:转发按钮   3:下单支付  4:查看自己的团
         var _btn = e.currentTarget.dataset.btn
+        if(_btn.isOrigin){
+          await auth.ready()
+          return 
+        }
         if(_btn.type === '3'){
           console.log(_btn.payInfo.url)
           await this.pay(_btn.payInfo.url,_btn.payInfo.data)
@@ -235,6 +240,7 @@
         union_id: opts.unionId || this.unionId,
       })
 
+       tips.loading()
       this.unionId = data.union_id || ''
       this.curUserCode = data.current_user_code || ''
 
@@ -243,6 +249,7 @@
       this.initUnionCutDown(data)
       this.initUnionBtns(data)
       this.$apply()
+      tips.loaded()
 
     }
     /*

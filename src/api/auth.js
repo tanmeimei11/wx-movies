@@ -34,7 +34,8 @@ export default class auth extends base {
    */
   static async login () {
     try {
-      tips.setLoading();
+      // tips.setLoading();
+      tips.loading();
       const { code } = await wepy.login();
       const { encryptedData, iv } = await wepy.getUserInfo( { lang: 'zh_CN' } );
       // console.log( encryptedData )
