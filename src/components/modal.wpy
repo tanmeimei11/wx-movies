@@ -1,0 +1,128 @@
+<style lang="less">
+.c-default-modal {
+  opacity: 0;
+  .c-wrap{
+    box-sizing: border-box;
+    padding-bottom: 50rpx;
+    padding-left: 12rpx;
+    padding-right: 12rpx;
+    padding-top:20rpx;
+  }
+  .s-main{
+    image{
+      display: block;
+      width: 100%;
+    }
+  }
+  .s-btns{
+    width: 100%;
+    height: 84rpx;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 38rpx;
+    color: #fff;
+    margin-top: 40rpx;
+    padding:0 12rpx;
+    box-sizing: border-box;
+    .btn-left{
+      width: 180rpx;
+      height: 84rpx;
+      text-align: center;
+      line-height: 80rpx;
+      border-radius: 200rpx;
+      color:#fd4a2c;
+      border:1rpx solid #fd4a2c;
+    }
+    .btn-right{
+      width: 304rpx;
+      height: 84rpx;
+      line-height: 80rpx;
+      text-align: center;
+      border-radius: 200rpx;
+      background-image: linear-gradient(90deg, #f44236 0%, #f85641 100%);
+      border-radius: 100px;
+    }
+  }
+}
+</style>
+<template>
+<view class="c-modal c-default-modal"  wx:if="{{isShow}}" animation="{{animationData}}" >
+    <view class="c-wrap">
+      <view class="s-close" @tap="close" ></view>
+      <view class="s-main">
+        <image mode="widthFix" src="https://inimg01.jiuyan.info/in/2018/03/15/2DC002C3-DA3B-95BE-6EBC-2EAD6E4C24FB.jpg"></image>
+      </view>
+      <view class="s-btns">
+        <view class="btn-left" wx:if="{{btnType == 2}}" bindtap="goFail">取消</view>
+        <view class="btn-right" bindtap="goSucc">{{btnText}}</view>
+      </view>
+    </view>
+  </view>
+</template>
+<script>
+import wepy from "wepy";
+
+export default class modal extends wepy.component {
+  data = {
+    text:'',
+    btnText:'确定',
+    btnType:1,
+    isShow: false,
+    animationData: "",
+    animationConfig: {
+      duration: 2000,
+      timingFunction: 'ease',
+    }
+  };
+
+  methods = {
+    goSucc () {
+      this.succCallbackFun()
+      this.completeCallbackFun()
+      this.hide()
+    },
+    goFail () {
+      this.failCallbackFun()
+      this.completeCallbackFun()
+      this.hide()
+    },
+    close () {
+      this.hide()
+    }
+  };
+
+  show(data = {}) {
+    if(this.isShow){
+      console.log('已经有一个弹窗了')
+      return 
+    }
+
+    for (let k in data) {
+      this[k] = data[k];
+    }
+   
+    let animation = wx.createAnimation(this.animationConfig);
+    animation.opacity(1).step();
+    this.animationData = animation.export();
+    this.isShow = true;
+    this.$apply();
+
+    typeof data.success === "function" && (this.succCallbackFun = data.success)
+    typeof data.fail === "function" && (this.failCallbackFun = data.fail)
+    typeof data.complete === "function" && (this.completeCallbackFun = data.complete)
+  }
+
+  hide() {
+    this.isShow = false;
+    let animation = wx.createAnimation(this.animationConfig);
+    animation.opacity(0).step();
+    this.animationData = animation.export();
+    this.isShow = false;
+    this.$apply();
+  }
+  succCallbackFun () {}
+  failCallbackFun () {}
+  completeCallbackFun () {}
+}
+</script>

@@ -6,9 +6,9 @@
         <view class="notice">购买后7天内有效，仅限周一至周四可用。13家影院可用，影院列表见详情介绍</view>
 
         <!-- 邀请好友 参团中 -->
-        <block wx:elseif="{{unionStatus === '1' || unionStatus === '2' || unionStatus === '3'}}">
+        <block wx:if="{{unionAvatars.length}}">
           <view class="avatar-wrap">
-              <view class="avatar {{item.id ? 'active' :''}}"  wx:for="{{unionAvatars}}" wx:for-index="idx" wx:for-item="item" wx:key="idx" style="background-image:url({{item.avatar}})"></view>
+            <view class="avatar {{item.id ? 'active' :''}}"  wx:for="{{unionAvatars}}" wx:for-index="idx" wx:for-item="item" wx:key="idx" style="{{item.avatar ? 'background-image:url('+item.avatar+')' : ''}}"></view>
           </view>
 
           <!-- 倒计时 -->
@@ -35,12 +35,11 @@
         </block>
         <!-- 按钮组 显示和跳转 跳转都由后台控制 -->
         <view class="btn-wrap">
-          <view wx:for="{{unionBtns}}" wx:for-index="idx" wx:for-item="btn" wx:key="idx"  class="btn {{btn.className}}"><button wx:if="{{btn.type === '2'}}" class="share" open-type="share"></button>邀请好友参团</view>
+          <view wx:for="{{unionBtns}}" wx:for-index="idx" wx:for-item="btn" wx:key="idx"  class="btn {{btn.className}}"><button wx:if="{{btn.type === '2'}}" class="share" open-type="share"></button>{{btn.text}}</view>
         </view>
-        
-        
       <newDetail></newDetail>
       </view>
+      <modal></modal>
     </view>
   <!-- </report> -->
 </template>
@@ -53,10 +52,12 @@
   import report from '@/components/report-submit';
   import cutdownTimer from '@/mixins/cutdownTimer';
   import tools from '../../components/detail/tools.wxs';
+  import modal from '@/components/modal';
   export default class union extends wepy.page {
     config = {
       navigationBarTitleText: '拼团'
     }
+    components = { report, newDetail, modal}
     wxs = {
       tools: tools
     }
@@ -70,24 +71,7 @@
         img:'',
         title:''
       },
-      unionAvatars:[
-        {
-          id:'1',
-          avatar:'https://inimg01.jiuyan.info/in/2018/04/02/DD25B4C7-CBEF-0BE3-265C-694BB9580837.jpg',
-        },
-        {
-          id:'',
-          avatar:'https://inimg01.jiuyan.info/in/2018/04/02/DD25B4C7-CBEF-0BE3-265C-694BB9580837.jpg',
-        },
-        {
-          id:'',
-          avatar:'https://inimg01.jiuyan.info/in/2018/04/02/DD25B4C7-CBEF-0BE3-265C-694BB9580837.jpg',
-        },
-        {
-          id:'',
-          avatar:'https://inimg01.jiuyan.info/in/2018/04/02/DD25B4C7-CBEF-0BE3-265C-694BB9580837.jpg',
-        }
-      ],
+      unionAvatars:[],
       unionResult: {
         isShow: false,
         desc: '',
@@ -107,13 +91,29 @@
         className: 'btn-union'
       }]
     }
-    components = { report, newDetail }
     methods = {}
     async init () {
-      // this.countdown()
+      
       this.$apply()
     }
     async onShow() {
+      this.$invoke('modal', 'show', {
+        text:'',
+        btnType:2,
+        btnText:'确认',
+        success:()=>{
+          console.log('1')
+        },
+        fail:()=>{
+           console.log('2')
+        },
+        complete:()=>{
+          console.log('0')
+          console.log('unionStatus',this.unionStatus)
+        }
+      });
+     
+      
       await auth.ready();
       await this.init();
     } 
@@ -129,6 +129,11 @@
 
     async refreshUnion(){
       var data = await Union.getUnionStatus()
+      this.initAvatarInfo(data)
+      this.initUnionResult(data)
+      this.initUnionCutDown(data)
+      this.initUnionBtns(data)
+      this.$apply()
 
     }
     /*
@@ -164,11 +169,12 @@
       var _cutDown = data.union_ing_result
       if( !_cutDown || _cutDown.is_show ) return 
 
-     this.unionIngResult = {
+      this.unionIngResult = {
         is_show:false,
         count:_cutDown.union_need_count,
         duration: _cutDown.union_remain_time
       }
+      this.countdown()
     }
     /*
     * 初始化按钮信息
@@ -249,6 +255,7 @@
         height: 95rpx; 
         border-radius: 50%;
         background-size: contain;
+        background-image: url('https://inimg01.jiuyan.info/in/2018/04/02/DD25B4C7-CBEF-0BE3-265C-694BB9580837.jpg');
         background-repeat: no-repeat;
         background-position: center;
         position: relative;
@@ -339,4 +346,5 @@
       }
     }
   }
+}
 </style>
