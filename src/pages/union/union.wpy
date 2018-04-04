@@ -72,6 +72,7 @@
     }
     mixins = [cutdownTimer]
     data = {
+      sharePath:'', // 分享的路径
       showDetail: false,
       productId: '202',
       unionId:'',
@@ -110,7 +111,7 @@
         appid: '', //跳转小程序appid     用于1状态
         className: 'btn-union'
       }],
-      activeBtnn:{}
+      activeBtn:{}
     }
     events = {
       countdownFinish(){
@@ -302,6 +303,7 @@
           unionId:item.union_id,
           className: item.btn_color,
           btnUnionId:item.btn_union_id,
+          sharePath: item.btn_share_path,
           payInfo:{
             url: item.btn_pay ? item.btn_pay.btn_api_url : '',
             data: item.btn_pay ? item.btn_pay.btn_api_params : ''
@@ -363,9 +365,10 @@
     * 分享
     */
     onShareAppMessage ( res ) {
-      console.log('share',this.curUserCode)
-      let _path = `/pages/union/union?product_id=${this.productId}&user_code=${this.curUserCode}&union_id=${this.unionId}&qrcode_from=${this.shareInfo.qrcode_from}`
-      console.log(_path)
+      let _path = `/pages/union/union?product_id=${this.productId}`
+      if(res.from === 'button' && this.activeBtn.sharePath){
+        _path = this.activeBtn.sharePath
+      }
       return {
         title: this.shareInfo.title,
         path: _path,
