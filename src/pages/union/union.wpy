@@ -248,7 +248,10 @@
     */
     initAvatarInfo (data) {
       var _joiners = data.joiners
-      if( !_joiners.length) return 
+      if( !_joiners.length){
+        this.unionAvatars = []
+        return 
+      } 
 
       const _l = ['','','','']
       this.unionAvatars =_l.map((item,idx)=>{
