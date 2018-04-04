@@ -51,7 +51,12 @@
                 /* display: flex;
                 justify-content: space-between;
                 flex-wrap: wrap; */
-                padding: 0 12rpx;
+                padding-left:20rpx;
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: flex-start;
+                flex-wrap: wrap;
                 /* &::after{
                     content: "";
                     flex: auto;
@@ -60,10 +65,12 @@
                     width: 160rpx;
                     margin: 0 10rpx;
                     margin-bottom: 25rpx;
-                    float: left;
+                    // float: left;
+                    overflow: hidden;
                     .img{
-                        width: 100%;
+                        width: 160rpx;
                         height: 220rpx;
+                        overflow: hidden;
                         background-repeat: no-repeat;
                         background-size: cover;
                         background-position: center; 
