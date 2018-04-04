@@ -6,10 +6,10 @@ export default class pay extends Pagebase {
   /**
    * 创建订单接口
    */
-  static async creatOrder ( _data ) {
+  static async creatOrder ( url, _data ) {
     console.log( wepy.$instance.globalData );
     return await this.request( {
-      url: '/mnp/order/create_union',
+      url: url,
       isBackRes: true,
       data: {
         ..._data,

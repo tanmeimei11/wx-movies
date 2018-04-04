@@ -1,10 +1,10 @@
 <template>
   <!-- <report> -->
-    <view class="container">
+    <view class="container" style="background-image:url('{{mainImgs.bgImg}}')">
       <view class="union-wrap">
         <view class="rule" @tap="showRulesWindow"></view>
-        <view class="card"></view>
-        <view class="notice">购买后7天内有效，仅限周一至周四可用。13家影院可用，影院列表见详情介绍</view>
+        <view class="card" style="background-image:url('{{mainImgs.cardImg}}')"></view>
+        <view class="notice">{{cardDesc}}</view>
 
         <!-- 邀请好友 参团中 -->
         <block wx:if="{{unionAvatars.length}}">
@@ -74,11 +74,16 @@
       productId: '202',
       unionId:'',
       userCode:'',
+      cardDesc:'',
       rulesWindow: false,
       rulesImg: '',
       detailInfo: {},
       unionStatus: '2',
       Timer: 'unionCutdownTimer',
+      mainImgs: {
+        cardImg:'https://inimg01.jiuyan.info/in/2018/04/02/C29E245D-B89D-D0B1-ECD9-391904A8C92E.jpg',
+        bgImg:'https://inimg01.jiuyan.info/in/2018/04/02/53C0EB5B-6084-F954-16B5-F1D03DC8DE77.jpg'
+      },
       shareInfo:{
         img:'',
         title:''
@@ -101,7 +106,8 @@
         path: '', //跳转路径   用于0和1状态
         appid: '', //跳转小程序appid     用于1状态
         className: 'btn-union'
-      }]
+      }],
+      activeBtnn:{}
     }
     methods = {
       closeRulesWindow () {
@@ -110,10 +116,11 @@
       showRulesWindow () {
         this.rulesWindow = true
       },
-      operateBtn (e) { //0:小程序跳转路径   1:跨小程序跳转路径   2:转发按钮   3:下单支付  4:查看自己的团
+      async operateBtn (e) { //0:小程序跳转路径   1:跨小程序跳转路径   2:转发按钮   3:下单支付  4:查看自己的团
         var _btn = e.currentTarget.dataset.btn
+        this.activeBtn = _btn
         if(_btn.type === '3'){
-          this.pay()
+          await this.pay(_btn.payInfo.url,_btn.payInfo.data)
         }else if(_btn.type === '0'){
           this.redirectPath({
             landing_path:''
@@ -180,6 +187,11 @@
       })
       this.detailInfo = detailInfo
       this.rulesImg = detailInfo.rule_img
+      this.mainImgs = {
+        cardImg:detailInfo.card_img,
+        bgImg:detailInfo.bg_img
+      }
+      this.cardDesc = detailInfo.card_rule_desc
       this.shareInfo = detailInfo.share_info && {
         title:detailInfo.share_info.share_title,
         img:detailInfo.share_info.bg_img
@@ -269,18 +281,23 @@
           path: item.btn_path,
           appid: item.btn_app_id,
           unionId:item.union_id,
-          className: item.btn_color
+          className: item.btn_color,
+          payInfo:{
+            url: item.btn_api ? item.btn_api.btn_api_url : '',
+            data: item.btn_api ? item.btn_api.btn_api_params : ''
+          }
         }
       })
     }
     /*
     * 支付
     */
-    async pay  () {
+    async pay  (_url, _data) {
       await auth.ready();
       try {
         
-        var createRes = await Pay.creatOrder({
+        var createRes = await Pay.creatOrder(_url, {
+          ..._data,
           product_id:this.productId,
           union_id:this.unionId,
         })
@@ -293,6 +310,7 @@
 
         var _orderDetailData = await Pay.getOrderDetail(createRes.data)
         await wepy.requestPayment( _orderDetailData.sign );
+        this.refreshUnion()
       } catch (error) {
         tips.loaded()
         console.error(error)
@@ -307,15 +325,17 @@
         title: this.shareInfo.title,
         path: `/pages/union/union?product_id=${this.productId}&user_code=${this.userCode}&union_id=${this.unionId}qrcode_from=${this.shareInfo.qrcode_from}`,
         imageUrl: this.shareInfo.img,
-        success: this.shareCallBack()
+        success: this.shareCallBack(res)
       };
     }
     /*
-    * 分享回调 
+    * 分享回调开团
     */
     shareCallBack (res) {
       return async( res ) => {
-       this.refreshUnion()
+        let  _btn = this.activeBtn
+        let _data = await Union.interface()
+        await this.refreshUnion()
       }
     }
 
@@ -327,7 +347,7 @@
 .container{
   position: relative;
   background-color: #fff;
-  background-image: url('https://inimg01.jiuyan.info/in/2018/04/02/53C0EB5B-6084-F954-16B5-F1D03DC8DE77.jpg');
+  // background-image: url('https://inimg01.jiuyan.info/in/2018/04/02/53C0EB5B-6084-F954-16B5-F1D03DC8DE77.jpg');
   background-repeat: no-repeat;
   background-position: top center;
   background-size: 750rpx 444rpx;
@@ -351,7 +371,7 @@
       margin: 0 auto;
       width: 576rpx;
       height: 279rpx;
-      background-image: url('https://inimg01.jiuyan.info/in/2018/04/02/C29E245D-B89D-D0B1-ECD9-391904A8C92E.jpg');
+      // background-image: url('https://inimg01.jiuyan.info/in/2018/04/02/C29E245D-B89D-D0B1-ECD9-391904A8C92E.jpg');
       background-size: cover;
       background-repeat: no-repeat;
       background-position: top center;
