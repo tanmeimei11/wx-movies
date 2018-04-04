@@ -60,17 +60,17 @@
   import tools from '../../components/detail/tools.wxs';
   import modal from '@/components/modal';
   import redirectMixin from '@/mixins/redirectMixin';
+  import qrcodeFromMixin from '@/mixins/qrcodeFromMixin';
   import tips from '@/utils/tips';
   export default class union extends wepy.page {
     config = {
       navigationBarTitleText: '拼团'
     }
-    mixins = [redirectMixin]
+    mixins = [redirectMixin, qrcodeFromMixin, cutdownTimer]
     components = { report, newDetail, modal, rulesWindow}
     wxs = {
       tools: tools
     }
-    mixins = [cutdownTimer]
     data = {
       sharePath:'', // 分享的路径
       showDetail: false,
@@ -158,6 +158,7 @@
     }
     async onLoad(options) {
       let _options = this.initOptions(options)
+      this.initQrcodeFrom(options)
       await this.initDetailInfo();
       await auth.ready();
       await this.refreshUnion(_options)
@@ -232,10 +233,8 @@
         union_id: opts.unionId || this.unionId,
       })
 
-      console.log(data)
       this.unionId = data.union_id || ''
       this.curUserCode = data.current_user_code || ''
-      console.log(this.unionId,this.curUserCode)
 
       this.initAvatarInfo(data)
       this.initUnionResult(data)

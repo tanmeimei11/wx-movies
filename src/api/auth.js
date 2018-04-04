@@ -19,7 +19,6 @@ export default class auth extends base {
   static async _register () {
     // 注册准备完毕通知
     this._readyStatus = new Promise( resolve => event.$on( 'ready', resolve ) );
-    console.log( '------', wepy.$instance.globalData.xToken );
     if ( wepy.$instance.globalData.xToken && wepy.$instance.globalData.xAries ) {
       event.$emit( 'ready' );
       return;
