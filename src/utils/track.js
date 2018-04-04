@@ -45,7 +45,6 @@ GAtracker = initGaTrack();
  */
 function GAtrackReq ( data ) {
   var _action = data.action;
-  var _query = data.query || '';
   var GAtrackerAct = '';
   if ( /.*_screen/.exec( _action ) ) {  // 屏幕
     GAtracker.setScreenName( _action );

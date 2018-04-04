@@ -26,9 +26,21 @@ export default class Result extends Pagebase {
    /**
    * 接口
    */
-  static async interface ( url, _data ) {
+  static async interface ( url, _data, method ) {
     return await this.request( {
       url: url,
+      method: method || 'GET',
+      data: _data
+    } );
+  }
+
+  /**
+   * 接口
+   */
+  static async cancelUnion ( _data ) {
+    return await this.request( {
+      url: '/mnp/union/cancel',
+      method: 'POST',
       data: _data
     } );
   }

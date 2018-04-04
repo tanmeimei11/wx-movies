@@ -1,39 +1,41 @@
 module.exports = {
-  'msg': '',
-  'code': '200003',
+  'timestamp': '1522829432',
   'succ': true,
-  data: {
-    joiners: [
-      {
-        id: 'xxx',
-        avatar: 'http://xxx/xxx.jpg',
-        role: 1 // 0：参与者，1：发起者
-      },
-      {
-        id: 'xxx',
-        avatar: 'http://xxx/xxx.jpg'
-      }
-    ],
-    union_result_desc: '拼团成功',
-    union_tips: '请在in同城趴app中查看已获得的电影票',
-    union_need_count: 3,
-    union_remain_time: 1000, // 倒计时剩余秒数
-    unionResult: {
-      isShow: false,
-      desc: '',
-      class: '',
-      tips: ''
+  'data': {
+    'union_result': {
+      'is_show': false,
+      union_result_desc: '134321423',
+      union_class: 'fail',
+      union_tips: '13241324'
     },
-    btns: [
-      {
-        btn_name: '去使用',
-        btn_color: 'btn-union',
-        btn_type: '3', // 0:小程序跳转路径   1:跨小程序跳转路径   2:转发按钮   3:下单支付
-        btn_path: '/pages/detail/detail', // 跳转路径   用于0和1状态
-        btn_app_id: 'xxxxxxx', // 跳转小程序appid     用于1状态
-        btn_share_callback_url: 'http://xxxxxx/xxxx.jpg', // 分享成功之后的回调  用于2状态
-        btn_create_order_url: 'http://xxxxxx/xxxx.jpg' // 点击下单接口  用于3状态
-      }
-    ]
-  }
+    'joiners': [],
+    'union_ing_result': {
+      union_need_count: 3,
+      union_remain_time: 6, // 倒计时剩余秒数
+      is_show: false
+    },
+    'btns': [{
+      'btn_callback': {
+        'btn_api_url': '/mnp/union/launch',
+        'btn_api_params': {}
+      },
+      'btn_name': '立即开团',
+      'btn_path': '',
+      'btn_color': 'btn-union',
+      'btn_type': '2'
+    }, {
+      'btn_pay': {
+        'btn_api_url': '/mnp/order/create_common',
+        'btn_api_params': {
+          'product_id': '202'
+        }
+      },
+      'btn_name': '原价35元购买 ',
+      'btn_path': '/mnp/order/create_union',
+      'btn_color': 'btn-buy',
+      'btn_type': '3'
+    }]
+  },
+  'code': '0',
+  'msg': ''
 };

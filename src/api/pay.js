@@ -11,6 +11,7 @@ export default class pay extends Pagebase {
     return await this.request( {
       url: url,
       isBackRes: true,
+      method: 'POST',
       data: {
         ..._data,
         pay_channel: paymentChannel

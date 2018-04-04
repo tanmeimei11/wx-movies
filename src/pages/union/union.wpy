@@ -11,29 +11,30 @@
           <view class="avatar-wrap">
             <view class="avatar {{item.id ? 'active' :''}}"  wx:for="{{unionAvatars}}" wx:for-index="idx" wx:for-item="item" wx:key="idx" style="{{item.avatar ? 'background-image:url('+item.avatar+')' : ''}}"></view>
           </view>
-
-          <!-- 倒计时 -->
-          <block wx:if="{{unionIngResult.isShow}}">
-          <view class="time-wrap">
-              <wxs src="../../components/detail/tools.wxs" module="tools" />
-              <view class="se-time">
-                仅剩 <text class="num">{{unionIngResult.count}}</text>个名额，
-                <text class="t">{{tools.hour(countDown)}}</text>:
-                <text class="t">{{tools.minute(countDown)}}</text>:
-                <text class="t">{{tools.second(countDown)}}</text>
-                后结束
-              </view>
+        </block>
+        <!-- 倒计时 -->
+        <block wx:if="{{unionIngResult.isShow}}">
+        <view class="time-wrap">
+            <wxs src="../../components/detail/tools.wxs" module="tools" />
+            <view class="se-time">
+              仅剩 <text class="num">{{unionIngResult.count}}</text>个名额，
+              <text class="t">{{tools.hour(countDownSecond)}}</text>:
+              <text class="t">{{tools.minute(countDownSecond)}}</text>:
+              <text class="t">{{tools.second(countDownSecond)}}</text>
+              后结束
             </view>
-          </block>
-          <!-- 拼团成功的提示 -->
-          <block wx:if="{{unionResult.isShow}}">
-            <view class="succ-wrap {{unionResult.class}}">
+          </view>
+        </block>
+
+        <!-- 拼团成功的提示 -->
+        <block wx:if="{{unionResult.isShow}}">
+          <view class="tips-wrap {{unionResult.class}}">
             <view class="text">{{unionResult.desc}}</view>
             <view class="tips">{{unionResult.tips}}</view>
-            </view>
-          </block>
-
+          </view>
         </block>
+
+      
         <!-- 按钮组 显示和跳转 跳转都由后台控制 -->
         <view class="btn-wrap">
           <view wx:for="{{unionBtns}}" wx:for-index="idx" wx:for-item="btn" wx:key="idx"  class="btn {{btn.className}}" @tap="operateBtn" data-btn="{{btn}}"><button wx:if="{{btn.type === '2'}}" class="share" open-type="share"></button>{{btn.text}}</view>
@@ -74,7 +75,7 @@
       productId: '202',
       unionId:'',
       userCode:'',
-      cardDesc:'',
+      cardDesc:'购买后7天内有效，仅限周一至周四可用。13家影院可用，影院 列表见详情介绍',
       rulesWindow: false,
       rulesImg: '',
       detailInfo: {},
@@ -109,6 +110,11 @@
       }],
       activeBtnn:{}
     }
+    events = {
+      countdownFinish(){
+        this.refreshUnion()     
+      }
+    }
     methods = {
       closeRulesWindow () {
         this.rulesWindow = false
@@ -132,6 +138,8 @@
           })
         }else if(_btn.type === '4'){
           this.refreshUnion()
+        }else if(_btn.type === '5'){
+          this.cancalUnion()
         }
       }
     }
@@ -240,7 +248,7 @@
     */
     initUnionResult(data){
       var _result = data.union_result
-      if( !_result || _result.is_show ) return 
+      if( !_result || !_result.is_show ) return 
       this.unionResult = {
         isShow: true,
         desc: _result.union_result_desc,
@@ -253,20 +261,16 @@
     */
     initUnionCutDown(data){
       var _cutDown = data.union_ing_result
-      if( !_cutDown || _cutDown.is_show ) return 
+      if( !_cutDown || !_cutDown.is_show ) return 
 
       this.unionIngResult = {
-        is_show:false,
+        isShow:true,
         count:_cutDown.union_need_count,
-        duration: _cutDown.union_remain_time
+        duration: parseInt(_cutDown.union_remain_time)
       }
-      this.countdown(this.unionIngResult.duration,this.Timer)
-    }
-    /*
-    * 倒计时结束
-    */
-    countdownFinish(){
-      this.refreshUnion()     
+
+      this.countDownSecond = parseInt(_cutDown.union_remain_time)
+      this.countdown(this.countDownSecond,this.Timer)
     }
     /*
     * 初始化按钮信息
@@ -283,8 +287,12 @@
           unionId:item.union_id,
           className: item.btn_color,
           payInfo:{
-            url: item.btn_api ? item.btn_api.btn_api_url : '',
-            data: item.btn_api ? item.btn_api.btn_api_params : ''
+            url: item.btn_api ? item.btn_pay.btn_api_url : '',
+            data: item.btn_api ? item.btn_pay.btn_api_params : ''
+          },
+          callback:{
+            url: item.btn_callback ? item.btn_callback.btn_api_url : '',
+            data: item.btn_callback ? item.btn_callback.btn_api_params : ''
           }
         }
       })
@@ -318,6 +326,16 @@
      
     }
     /*
+    * 取消拼团
+    */
+    async cancalUnion () {
+      var res = await Union.cancelUnion({
+        union_id:this.unionId
+      })
+
+      this.refreshUnion()
+    }
+    /*
     * 分享
     */
     onShareAppMessage ( res ) {
@@ -334,7 +352,8 @@
     shareCallBack (res) {
       return async( res ) => {
         let  _btn = this.activeBtn
-        let _data = await Union.interface()
+        if(!_btn.callback || !_btn.callback.url) return 
+        let _data = await Union.interface(_btn.callback.url,_btn.callback.data,'POST')
         await this.refreshUnion()
       }
     }
@@ -420,6 +439,35 @@
         }
       }
     }
+    .tips-wrap{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-top:20rpx;
+       &.success{
+         .text{ background-image: url('https://inimg01.jiuyan.info/in/2018/04/04/11311EF3-DA7B-FDEF-9436-C1E15BF280E5.jpg');
+          color: #62cd2e;}
+        }
+        &.fail{
+          .text{background-image: url('https://inimg01.jiuyan.info/in/2018/04/04/08393897-294A-D9DD-D9D2-076964133BE5.jpg');
+          color: #f44236;}
+        }
+      .text{
+        display: inline-block;
+        padding-left: 40rpx;
+        font-size: 32rpx;
+        background-size: 36rpx 36rpx;
+        background-repeat: no-repeat;
+        background-position: left center;
+       
+      } 
+      .tips{
+        text-align: center;
+        font-size: 22rpx;
+        color:#333;
+      }
+    }
     .time-wrap{
       text-align: center;
     }
@@ -446,6 +494,7 @@
       } 
       .num {
         color: #f94a3b;
+        margin: 0 5rpx;
       } 
       .t:first-child {
         margin-left: 15rpx;
