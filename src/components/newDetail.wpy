@@ -4,8 +4,8 @@
             <view class="topic">正在热映的影片</view>
             <view class="movieList">
                 <view class="movies" wx:for="{{detailInfo.movies}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
-                    <view class="img" style="background-image:url({{item.movie_img}})"></view>
-                    <view class="name">{{item.movie_name}}</view>
+                    <view class="img" style="background-image:url({{item.movie_img_url}})"></view>
+                    <view class="name">{{item.name}}</view>
                 </view>
             </view>
             <view class="tips">*更多热映电影以影院当日排片为准</view>
@@ -48,13 +48,19 @@
             .movieList{
                 /* width: 100%; */
                 overflow: hidden;
-                display: flex;
+                /* display: flex;
                 justify-content: space-between;
-                flex-wrap: wrap;
-                padding: 0 30rpx;
+                flex-wrap: wrap; */
+                padding: 0 12rpx;
+                /* &::after{
+                    content: "";
+                    flex: auto;
+                } */
                 .movies{
                     width: 160rpx;
+                    margin: 0 12rpx;
                     margin-bottom: 25rpx;
+                    float: left;
                     .img{
                         width: 100%;
                         height: 220rpx;
