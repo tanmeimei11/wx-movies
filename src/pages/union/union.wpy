@@ -65,7 +65,7 @@
   import track from '@/utils/track';
   export default class union extends wepy.page {
     config = {
-      navigationBarTitleText: '拼团'
+      navigationBarTitleText: '9.9看电影'
     }
     mixins = [redirectMixin, qrcodeFromMixin, cutdownTimer]
     components = { report, newDetail, modal, rulesWindow}
