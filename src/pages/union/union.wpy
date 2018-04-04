@@ -97,11 +97,6 @@
         className: 'btn-union'
       }]
     }
-<<<<<<< HEAD
-    methods = {}
-    async init () {
-      
-=======
     components = { report, newDetail, rulesWindow }
     methods = {
       closeRulesWindow () {
@@ -119,14 +114,19 @@
       this.detailInfo = detailInfo
       this.rulesImg = detailInfo.rule_img
       console.log(detailInfo)
->>>>>>> 708ba01530c4e38d827f206410e44f61cd9abc2d
       this.$apply()
     }
     async onShow() {
+      
+      });
+      await auth.ready();
+      await this.init();
+    } 
+
+    showModal () {
       this.$invoke('modal', 'show', {
         text:'',
         btnType:2,
-        btnText:'确认',
         success:()=>{
           console.log('1')
         },
@@ -136,13 +136,8 @@
         complete:()=>{
           console.log('0')
           console.log('unionStatus',this.unionStatus)
-        }
-      });
-     
-      
-      await auth.ready();
-      await this.init();
-    } 
+      }
+    }
 
     onShareAppMessage ( res ) {
       return {
