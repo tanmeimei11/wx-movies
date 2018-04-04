@@ -13,7 +13,6 @@ export default class cutdownTimer extends wepy.mixin {
     var cutDownFun = () => {
       this.countDownSecond--;
       if ( this.countDownSecond <= 0 ) { // 倒计时结束
-        console.log( '0000' );
         this.$emit( 'countdownFinish' );
         this.clearTime( timer );
       }

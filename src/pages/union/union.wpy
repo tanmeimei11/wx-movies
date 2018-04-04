@@ -341,7 +341,7 @@
     * 分享
     */
     onShareAppMessage ( res ) {
-      let _path = `/pages/union/union?product_id=${this.productId}&user_code=${this.userCode}&union_id=${this.unionId}qrcode_from=${this.shareInfo.qrcode_from}`
+      let _path = `/pages/union/union?product_id=${this.productId}&user_code=${this.userCode}&union_id=${this.unionId}&qrcode_from=${this.shareInfo.qrcode_from}`
       console.log(_path)
       return {
         title: this.shareInfo.title,
