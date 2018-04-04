@@ -30,6 +30,7 @@ module.exports = {
   [`${DOMAIN}/mnp/ticket/upgrade_info2`]: 'upgrade_info',
   [`${DOMAIN}/mnp/order/create_common`]: 'order',
   [`${DOMAIN}/mnp/order/info`]: 'product',
+  [`${DOMAIN}/h5/my/tickets`]: 'tickets',
   [`${DOMAIN}/mnp/union/status`]: 'unionstatus',
   [`${DOMAIN}/info/union/info`]: 'unioninfo',
   [`${DOMAIN}/mnp/order/create_union`]: 'createUnion',

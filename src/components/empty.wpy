@@ -1,0 +1,48 @@
+<template lang="wxml">
+  <view class="c-empty-wrap" >
+     <view class="image"></view>
+     <view class="text">{{text}}</view>
+  </view>
+</template>
+
+<style lang="scss">
+ .c-empty-wrap{
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    // box-shadow: 0 -4rpx 16rpx 0 rgba(219,219,219,0.35);
+    padding: 100rpx 0;
+    .image{
+      width: 200rpx;
+      height: 200rpx;
+       background-image: url('https://inimg01.jiuyan.info/in/2018/03/28/9B96A4B2-FF1E-5E02-07BC-3697E7F0F8FC.jpg');
+      background-repeat: no-repeat;
+      background-size: contain ;
+      background-position: center;
+    }
+    .text{
+      padding-top: 30rpx;
+      text-align: center;
+      font-size: 24rpx;
+      color: #B0B0B0;
+    }
+  }
+</style>
+
+<script>
+  import wepy from 'wepy';
+  import track from '@/utils/track';
+  export default class empty extends wepy.component {
+    props = {
+      text:{
+        type:String,
+        default:'你还没有哦～'
+      }
+    }
+  }
+</script>

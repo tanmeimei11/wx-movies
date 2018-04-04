@@ -150,7 +150,7 @@ export default class extends wepy.app {
   }
 
   config = {
-    pages: ['pages/union/union', 'pages/index/index', 'pages/self/self', 'pages/detail/detail', 'pages/seat/seat', 'pages/result/result', 'pages/card/card', 'pages/ticket/ticket', 'pages/webview/webview', 'pages/leke/leke', 'pages/upgrade/upgrade','pages/order/order'],
+    pages: ['pages/union/union', 'pages/index/index', 'pages/self/self', 'pages/detail/detail', 'pages/seat/seat', 'pages/result/result', 'pages/card/card', 'pages/ticket/ticket', 'pages/webview/webview', 'pages/leke/leke', 'pages/upgrade/upgrade','pages/order/order', 'pages/coupon/coupon'],
     tabBar: {
       'color': '#4A4A4A',
       'selectedColor': '#D0A661',

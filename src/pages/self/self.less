@@ -140,7 +140,7 @@ page{
   }
 }
 
-.exchange {
+.selfBtn {
   position: absolute;
   top: 350rpx;
   left: 0;
@@ -149,24 +149,26 @@ page{
   min-height: auto;
   border-radius: 0;
   background: rgba(0,0,0,.15);
-
+  display: flex;
+  flex-direction: row;
+  // align-content: space-between;
   color: #fff;
-  font-size: 32rpx;
+  font-size: 22rpx;
   line-height: 120rpx;
-
-  &:before {
-    content: '';
-    display: inline-block;
-    width: 40rpx;
-    height: 40rpx;
-    margin-right: 14rpx;
-    background: no-repeat url(https://inimg01.jiuyan.info/in/2018/02/06/91753D7B-9C0E-7959-5C50-B22BC1D6CA73.jpg);
-    background-size: 100%;
-    vertical-align: middle;
+  view{
+    flex-grow: 1;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-size: 60rpx;
+    background-position: center 14rpx;
+    text-align: center;
+    line-height: 180rpx;
   }
-
-  &:after {
-    content: none;
+  .exchange{
+    background-image: url('http://inimg07.jiuyan.info/in/2018/04/04/8E0F7796-BB28-D5E5-8CD0-F44682747C09.png');
+  }
+  .coupon{
+    background-image: url('http://inimg07.jiuyan.info/in/2018/04/04/B036F730-D698-AA4D-A56F-7A450D4BC2B7.png')
   }
 }
 
