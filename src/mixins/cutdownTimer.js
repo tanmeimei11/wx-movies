@@ -1,16 +1,19 @@
 import wepy from 'wepy';
 
 export default class cutdownTimer extends wepy.mixin {
+  data = {
+    countDownSecond: 0
+  }
   // 倒计时
   countdown ( duration, timer ) {
     this.clearTime( this.globalTimerName );
-    if ( duration > 0 ) { // 进入倒计时
-      this.countDown = duration;
-    }
-    this.countDown--;
+    if ( duration <= 0 ) return;
+    this.countDownSecond = duration;
+    this.countDownSecond--;
     var cutDownFun = () => {
-      this.countDown--;
-      if ( this.countDown <= 0 ) { // 倒计时结束
+      this.countDownSecond--;
+      if ( this.countDownSecond <= 0 ) { // 倒计时结束
+        console.log( '0000' );
         this.$emit( 'countdownFinish' );
         this.clearTime( timer );
       }
