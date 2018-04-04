@@ -47,6 +47,11 @@ export default class self extends wepy.page {
   }
 
   methods = {
+    toCoupon () {
+      wepy.navigateTo( {
+        url: '/pages/coupon/coupon'
+      } );
+    },
     bindKeyInput ( e ) {
       this.num = e.detail.value;
       if ( e.detail.value.length === 11 ) {

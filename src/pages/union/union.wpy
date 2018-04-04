@@ -60,7 +60,7 @@
     config = {
       navigationBarTitleText: '拼团'
     }
-    components = { report, newDetail, modal}
+    components = { report, newDetail, modal, rulesWindow}
     wxs = {
       tools: tools
     }

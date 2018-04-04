@@ -156,7 +156,7 @@
     <!--fix 获得电影卡-->
     <view class="get-movies-ticket" wx:if="{{detailStatus.fetch_ticket}}" @tap="getMovieTicket"></view>
     <!--fix 9.9看电影-->
-    <view class="get-cheap-ticket" wx:if="{{detailStatus.fetch_ticket}}" @tap="toUnion"></view>
+    <view class="get-cheap-ticket" wx:if="{{detailStatus.has_union}}" @tap="toUnion"></view>
     <!-- leke 获得卡的弹窗 -->
     <lekeReceiveModal :lekePromoInfo.sync="lekePromoInfo" wx:if="{{lekePromoInfo.isShow}}"></lekeReceiveModal>
     <!--fix 按钮-->
