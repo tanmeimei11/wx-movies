@@ -238,7 +238,7 @@
       const _l = ['','','','']
       this.unionAvatars =_l.map((item,idx)=>{
         return _joiners[idx]  ? {
-          id:_joiners[idx].id,
+          id:_joiners[idx].user_id,
           avatar:_joiners[idx].avatar
         } : {}
       })
@@ -248,9 +248,9 @@
     */
     initUnionResult(data){
       var _result = data.union_result
-      if( !_result || !_result.is_show ) return 
+      if( !_result  ) return 
       this.unionResult = {
-        isShow: true,
+        isShow: _result.is_show,
         desc: _result.union_result_desc,
         class: _result.union_class,
         tips: _result.union_tips
@@ -261,10 +261,10 @@
     */
     initUnionCutDown(data){
       var _cutDown = data.union_ing_result
-      if( !_cutDown || !_cutDown.is_show ) return 
+      if( !_cutDown ) return 
 
       this.unionIngResult = {
-        isShow:true,
+        isShow: _cutDown.is_show,
         count:_cutDown.union_need_count,
         duration: parseInt(_cutDown.union_remain_time)
       }
@@ -339,9 +339,11 @@
     * 分享
     */
     onShareAppMessage ( res ) {
+      let _path = `/pages/union/union?product_id=${this.productId}&user_code=${this.userCode}&union_id=${this.unionId}qrcode_from=${this.shareInfo.qrcode_from}`
+      console.log(_path)
       return {
         title: this.shareInfo.title,
-        path: `/pages/union/union?product_id=${this.productId}&user_code=${this.userCode}&union_id=${this.unionId}qrcode_from=${this.shareInfo.qrcode_from}`,
+        path: _path,
         imageUrl: this.shareInfo.img,
         success: this.shareCallBack(res)
       };
@@ -353,7 +355,11 @@
       return async( res ) => {
         let  _btn = this.activeBtn
         if(!_btn.callback || !_btn.callback.url) return 
-        let _data = await Union.interface(_btn.callback.url,_btn.callback.data,'POST')
+        let _data = await Union.interface(_btn.callback.url,{
+          ..._btn.callback.data,
+          product_id:this.productId,
+          user_code:this.userCode
+        },'POST')
         await this.refreshUnion()
       }
     }
