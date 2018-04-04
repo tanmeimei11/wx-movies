@@ -128,6 +128,7 @@
         var _btn = e.currentTarget.dataset.btn
         this.activeBtn = _btn
         if(_btn.type === '3'){
+          console.log(_btn.payInfo.url)
           await this.pay(_btn.payInfo.url,_btn.payInfo.data)
         }else if(_btn.type === '0'){
           this.redirectPath({
@@ -226,6 +227,7 @@
 
       this.unionId = data.union_id || ''
       this.curUserCode = data.current_user_code || ''
+      console.log(this.unionId,this.curUserCode)
 
       this.initAvatarInfo(data)
       this.initUnionResult(data)
@@ -345,6 +347,7 @@
     * 分享
     */
     onShareAppMessage ( res ) {
+      console.log('share',this.curUserCode)
       let _path = `/pages/union/union?product_id=${this.productId}&user_code=${this.curUserCode}&union_id=${this.unionId}&qrcode_from=${this.shareInfo.qrcode_from}`
       console.log(_path)
       return {
@@ -362,6 +365,7 @@
         let  _btn = this.activeBtn
         if(!_btn.callback || !_btn.callback.url) return 
         let _data = await Union.interface(_btn.callback.url, _btn.callback.data,'POST')
+        this.unionId = _data.union_id
         await this.refreshUnion()
       }
     }
