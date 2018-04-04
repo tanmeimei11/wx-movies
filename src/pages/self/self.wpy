@@ -12,7 +12,7 @@
       <!-- 兑换电影王卡 -->
       <!-- <button class="exchange" @tap="triggerExchange">兑换电影王卡</button> -->
       <view class="selfBtn">
-        <view class="exchange" @tap="toCoupon">优惠券</view>
+        <view class="exchange" @tap="toCoupon">电影票</view>
         <view class="coupon" @tap="triggerExchange">兑换卡/票</view>
       </view>
       <!-- 天空背景 -->
