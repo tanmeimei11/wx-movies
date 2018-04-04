@@ -76,6 +76,7 @@
       productId: '202',
       unionId:'',
       userCode:'',
+      curUserCode:'',
       cardDesc:'购买后7天内有效，仅限周一至周四可用。13家影院可用，影院 列表见详情介绍',
       rulesWindow: false,
       rulesImg: '',
@@ -127,6 +128,7 @@
         var _btn = e.currentTarget.dataset.btn
         this.activeBtn = _btn
         if(_btn.type === '3'){
+          console.log(_btn.payInfo.url)
           await this.pay(_btn.payInfo.url,_btn.payInfo.data)
         }else if(_btn.type === '0'){
           this.redirectPath({
@@ -140,7 +142,10 @@
         }else if(_btn.type === '4'){
           this.refreshUnion()
         }else if(_btn.type === '5'){
-          this.cancalUnion()
+          this.showModal()
+          .then(()=>{
+             this.cancalUnion()
+          })
         }
       }
     }
@@ -221,7 +226,8 @@
       })
 
       this.unionId = data.union_id || ''
-      this.userCode = data.user_code || ''
+      this.curUserCode = data.current_user_code || ''
+      console.log(this.unionId,this.curUserCode)
 
       this.initAvatarInfo(data)
       this.initUnionResult(data)
@@ -272,7 +278,7 @@
       }
 
       this.countDownSecond = parseInt(_cutDown.union_remain_time)
-      this.countdown(this.countDownSecond,this.Timer)
+      this.countDownSecond > 0  && this.countdown(this.countDownSecond,this.Timer)
     }
     /*
     * 初始化按钮信息
@@ -341,7 +347,8 @@
     * 分享
     */
     onShareAppMessage ( res ) {
-      let _path = `/pages/union/union?product_id=${this.productId}&user_code=${this.userCode}&union_id=${this.unionId}&qrcode_from=${this.shareInfo.qrcode_from}`
+      console.log('share',this.curUserCode)
+      let _path = `/pages/union/union?product_id=${this.productId}&user_code=${this.curUserCode}&union_id=${this.unionId}&qrcode_from=${this.shareInfo.qrcode_from}`
       console.log(_path)
       return {
         title: this.shareInfo.title,
@@ -357,11 +364,8 @@
       return async( res ) => {
         let  _btn = this.activeBtn
         if(!_btn.callback || !_btn.callback.url) return 
-        let _data = await Union.interface(_btn.callback.url,{
-          ..._btn.callback.data,
-          product_id:this.productId,
-          user_code:this.userCode
-        },'POST')
+        let _data = await Union.interface(_btn.callback.url, _btn.callback.data,'POST')
+        this.unionId = _data.union_id
         await this.refreshUnion()
       }
     }
