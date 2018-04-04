@@ -71,7 +71,7 @@
     }
     mixins = [cutdownTimer]
     data = {
-      productId: '159',
+      productId: '202',
       unionId:'',
       userCode:'',
       rulesWindow: false,
@@ -175,7 +175,9 @@
     }
 
     async initDetailInfo () {
-      var detailInfo = await Union.getUnionInfo()
+      var detailInfo = await Union.getUnionInfo({
+        product_id:this.productId
+      })
       this.detailInfo = detailInfo
       this.rulesImg = detailInfo.rule_img
       this.shareInfo = detailInfo.share_info && {
@@ -191,7 +193,7 @@
     */
     async refreshUnion (opts = {}){
       var data = await Union.getUnionStatus({
-        userCode: opts.userCode || this.userCode,
+        user_code: opts.userCode || this.userCode,
         product_id: opts.productId || this.productId,
         union_id: opts.unionId || this.unionId,
       })
@@ -212,7 +214,7 @@
     initAvatarInfo (data) {
       var _joiners = data.joiners
       if( !_joiners.length) return 
-      
+
       const _l = ['','','','']
       this.unionAvatars =_l.map((item,idx)=>{
         return _joiners[idx]  ? {
