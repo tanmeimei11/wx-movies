@@ -50,7 +50,7 @@ export default class http {
       return false;
     }
     // 服务响应错误
-    return !( data && parseInt( data.code ) !== 0 );
+    return !( data && !data.succ );
   }
 
   /**

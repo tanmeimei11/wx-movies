@@ -140,7 +140,10 @@
             landing_path:''
           })
         }else if(_btn.type === '4'){
-          this.refreshUnion()
+          this.refreshUnion({
+            userCode: this.curUserCode,
+            unionId: _btn.btnUnionId
+          })
         }else if(_btn.type === '5'){
           this.showModal({
             text:'确定取消吗，取消后朋友们将无法参与你的团',
@@ -228,6 +231,7 @@
         union_id: opts.unionId || this.unionId,
       })
 
+      console.log(data)
       this.unionId = data.union_id || ''
       this.curUserCode = data.current_user_code || ''
       console.log(this.unionId,this.curUserCode)
@@ -297,6 +301,7 @@
           appid: item.btn_app_id,
           unionId:item.union_id,
           className: item.btn_color,
+          btnUnionId:item.btn_union_id,
           payInfo:{
             url: item.btn_pay ? item.btn_pay.btn_api_url : '',
             data: item.btn_pay ? item.btn_pay.btn_api_params : ''
@@ -343,8 +348,16 @@
       var res = await Union.cancelUnion({
         union_id:this.unionId
       })
+      console.error('res',res.code === '4160033003',res.msg)
+      if(res.code === '4160033003'){
+        tips.error(res.msg)
+      }
 
-      this.refreshUnion()
+      // 弹窗消失后 才进行刷新
+      setTimeout(() => {
+         this.refreshUnion()
+      }, 1500);
+     
     }
     /*
     * 分享
