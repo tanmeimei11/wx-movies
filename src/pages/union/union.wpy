@@ -142,7 +142,10 @@
         }else if(_btn.type === '4'){
           this.refreshUnion()
         }else if(_btn.type === '5'){
-          this.showModal()
+          this.showModal({
+            text:'确定取消吗，取消后朋友们将无法参与你的团',
+            btnType:2
+          })
           .then(()=>{
              this.cancalUnion()
           })
