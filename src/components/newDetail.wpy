@@ -58,7 +58,7 @@
                 } */
                 .movies{
                     width: 160rpx;
-                    margin: 0 12rpx;
+                    margin: 0 10rpx;
                     margin-bottom: 25rpx;
                     float: left;
                     .img{

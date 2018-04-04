@@ -2,7 +2,7 @@
 <template>
   <report>
     <view class="container">
-        <empty wx:if="{{!list.length}}"></empty>
+        <empty wx:if="{{!list.length && show}}"></empty>
         <view class="tickets">
           <view wx:for="{{list}}" wx:for-index="idx" wx:for-item="item" wx:key="idx" class="li {{item.status==0 ? 'use' : ''}}">
             <view class="title">{{item.name}} </view>
@@ -34,8 +34,8 @@
       navigationBarTitleText: '优惠券'
     }
     data = {
-      list: []
-      // loginIn: null
+      list: [],
+      show: false
     }
     components = { report, empty }
     methods = {
@@ -48,6 +48,7 @@
     async init () {
       var res = await Coupon.getTicketInfo()
       this.list = res.ticket_list
+      this.show = true
       this.$apply()
     }
     async onShow () {

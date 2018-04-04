@@ -43,7 +43,7 @@
       <!-- 各种弹窗 -->
       <modal></modal>
       <rulesWindow wx:if="{{rulesWindow}}" :rulesImg.sync="rulesImg"  @closeRulesWindow.user="closeRulesWindow"></rulesWindow>
-      <newDetail :detailInfo.sync="detailInfo"></newDetail>
+      <newDetail :detailInfo.sync="detailInfo" wx:if="{{showDetail}}"></newDetail>
     </view>
   <!-- </report> -->
 </template>
@@ -72,6 +72,7 @@
     }
     mixins = [cutdownTimer]
     data = {
+      showDetail: false,
       productId: '202',
       unionId:'',
       userCode:'',
@@ -193,6 +194,7 @@
       var detailInfo = await Union.getUnionInfo({
         product_id:this.productId
       })
+      this.showDetail = true
       this.detailInfo = detailInfo
       this.rulesImg = detailInfo.rule_img
       this.mainImgs = {
