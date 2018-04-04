@@ -76,6 +76,7 @@
       productId: '202',
       unionId:'',
       userCode:'',
+      curUserCode:'',
       cardDesc:'购买后7天内有效，仅限周一至周四可用。13家影院可用，影院 列表见详情介绍',
       rulesWindow: false,
       rulesImg: '',
@@ -140,7 +141,10 @@
         }else if(_btn.type === '4'){
           this.refreshUnion()
         }else if(_btn.type === '5'){
-          this.cancalUnion()
+          this.showModal()
+          .then(()=>{
+             this.cancalUnion()
+          })
         }
       }
     }
@@ -221,7 +225,7 @@
       })
 
       this.unionId = data.union_id || ''
-      this.userCode = data.user_code || ''
+      this.curUserCode = data.current_user_code || ''
 
       this.initAvatarInfo(data)
       this.initUnionResult(data)
@@ -272,7 +276,7 @@
       }
 
       this.countDownSecond = parseInt(_cutDown.union_remain_time)
-      this.countdown(this.countDownSecond,this.Timer)
+      this.countDownSecond > 0  && this.countdown(this.countDownSecond,this.Timer)
     }
     /*
     * 初始化按钮信息
@@ -341,7 +345,7 @@
     * 分享
     */
     onShareAppMessage ( res ) {
-      let _path = `/pages/union/union?product_id=${this.productId}&user_code=${this.userCode}&union_id=${this.unionId}&qrcode_from=${this.shareInfo.qrcode_from}`
+      let _path = `/pages/union/union?product_id=${this.productId}&user_code=${this.curUserCode}&union_id=${this.unionId}&qrcode_from=${this.shareInfo.qrcode_from}`
       console.log(_path)
       return {
         title: this.shareInfo.title,
