@@ -100,7 +100,7 @@ export default class Tips {
   static error ( title, onHide ) {
     wx.showToast( {
       title: title,
-      image: '/images/icons/error.png',
+      image: 'http://inimg01.jiuyan.info/in/2018/04/04/1D5A40EE-F8FD-CBA1-A570-F97315744EE7.png',
       mask: true,
       duration: 1500
     } );
