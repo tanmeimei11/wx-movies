@@ -128,7 +128,6 @@
       },
       async operateBtn (e) { //0:小程序跳转路径   1:跨小程序跳转路径   2:转发按钮   3:下单支付  4:查看自己的团
         var _btn = e.currentTarget.dataset.btn
-        this.activeBtn = _btn
         if(_btn.type === '3'){
           console.log(_btn.payInfo.url)
           await this.pay(_btn.payInfo.url,_btn.payInfo.data)
@@ -229,6 +228,7 @@
     * 
     */
     async refreshUnion (opts = {}){
+      console.log('opts', opts)
       var data = await Union.getUnionStatus({
         user_code: opts.userCode || this.userCode,
         product_id: opts.productId || this.productId,
@@ -299,7 +299,7 @@
       if( !data.btns.length) return 
 
       this.unionBtns = data.btns.map(item=>{
-        return {
+        let _btn =  {
           text: item.btn_name,
           type: item.btn_type,
           path: item.btn_path,
@@ -317,6 +317,8 @@
             data: item.btn_callback ? item.btn_callback.btn_api_params : ''
           }
         }
+        if(_btn.type === '2'){this.activeBtn = _btn}
+        return _btn
       })
     }
     /*
@@ -332,7 +334,6 @@
           union_id:this.unionId,
         })
 
-         console.log(createRes)
         if ( createRes.code === '4160033001' || createRes.code === '4160033001' ) {
           this.showModal(createRes.msg )
           return;
@@ -373,6 +374,7 @@
       if(res.from === 'button' && this.activeBtn.sharePath){
         _path = this.activeBtn.sharePath
       }
+
       return {
         title: this.shareInfo.title,
         path: _path,
