@@ -196,7 +196,6 @@
           success:()=>{
             console.log('succ')
             resolve()
-            this.refreshUnion()
           },
           fail:()=>{
             console.log('fail')
@@ -365,13 +364,12 @@
       console.error('res',res.code === '4160033003',res.msg)
       if(res.code === '4160033003'){
         tips.error(res.msg)
-      }
 
-      // 弹窗消失后 才进行刷新
-      setTimeout(() => {
-         this.refreshUnion()
-      }, 1500);
-     
+         // 弹窗消失后 才进行刷新
+        setTimeout(() => {
+          this.refreshUnion()
+        }, 1500);
+      }
     }
     /*
     * 分享
