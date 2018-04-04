@@ -39,6 +39,7 @@ export default class Result extends Pagebase {
    */
   static async cancelUnion ( _data ) {
     return await this.request( {
+      isBackRes: true,
       url: '/mnp/union/cancel',
       method: 'POST',
       data: _data
