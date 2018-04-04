@@ -8,10 +8,6 @@ module.exports = {
         id: 'xxx',
         avatar: 'http://xxx/xxx.jpg',
         role: 1 // 0：参与者，1：发起者
-      }, {
-
-      }, {
-
       },
       {
         id: 'xxx',

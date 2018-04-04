@@ -78,7 +78,6 @@
       rulesImg: '',
       detailInfo: {},
       unionStatus: '2',
-      countDown: 100000,
       Timer: 'unionCutdownTimer',
       shareInfo:{
         img:'',
@@ -129,18 +128,8 @@
         }
       }
     }
-    async initDetailInfo () {
-      var detailInfo = await Union.getUnionInfo()
-      this.detailInfo = detailInfo
-      this.rulesImg = detailInfo.rule_img
-      this.shareInfo = detailInfo.share_info && {
-        title:detailInfo.share_info.share_title,
-        img:detailInfo.share_info.bg_img
-      }
-      this.$apply()
-    }
     async onLoad(options) {
-      _options = this.initOptions(options)
+      let _options = this.initOptions(options)
       await this.initDetailInfo();
       await auth.ready();
       await this.refreshUnion(_options)
@@ -161,7 +150,9 @@
         userCode: _userCode
       }
     }
-
+    /*
+    * 万能弹窗
+    */
     showModal (data) {
       var _data = typeof data === 'string' ? {text:data} :data
       return new Promise ((resolve, reject)=>{
@@ -181,24 +172,32 @@
           }
         })
       })
-      
     }
 
-    onShareAppMessage ( res ) {
-      return {
-        title: this.shareInfo.title,
-        path: `/pages/union/union?product_id=${this.productId}&user_code=${this.userCode}&union_id=${this.unionId}qrcode_from=${this.shareInfo.qrcode_from}`,
-        imageUrl: this.shareInfo.img,
-        success: this.shareCallBack()
-      };
+    async initDetailInfo () {
+      var detailInfo = await Union.getUnionInfo()
+      this.detailInfo = detailInfo
+      this.rulesImg = detailInfo.rule_img
+      this.shareInfo = detailInfo.share_info && {
+        title:detailInfo.share_info.share_title,
+        img:detailInfo.share_info.bg_img
+      }
+      this.$apply()
     }
-
-    async refreshUnion(opts = {}){
+    /*
+    *
+    * 更新页面拼团的信息
+    * 
+    */
+    async refreshUnion (opts = {}){
       var data = await Union.getUnionStatus({
         userCode: opts.userCode || this.userCode,
         product_id: opts.productId || this.productId,
         union_id: opts.unionId || this.unionId,
       })
+
+      this.unionId = data.union_id || ''
+      this.userCode = data.user_code || ''
 
       this.initAvatarInfo(data)
       this.initUnionResult(data)
@@ -211,13 +210,15 @@
     * 初始化参团者信息
     */
     initAvatarInfo (data) {
-      if( !data.joiners.length) return 
-
-      this.unionAvatars = data.joiners.map(item=>{
-        return {
-          id:item.id,
-          avatar:item.avatar
-        }
+      var _joiners = data.joiners
+      if( !_joiners.length) return 
+      
+      const _l = ['','','','']
+      this.unionAvatars =_l.map((item,idx)=>{
+        return _joiners[idx]  ? {
+          id:_joiners[idx].id,
+          avatar:_joiners[idx].avatar
+        } : {}
       })
     }
     /*
@@ -245,7 +246,13 @@
         count:_cutDown.union_need_count,
         duration: _cutDown.union_remain_time
       }
-      this.countdown()
+      this.countdown(this.unionIngResult.duration,this.Timer)
+    }
+    /*
+    * 倒计时结束
+    */
+    countdownFinish(){
+      this.refreshUnion()     
     }
     /*
     * 初始化按钮信息
@@ -264,7 +271,9 @@
         }
       })
     }
-
+    /*
+    * 支付
+    */
     async pay  () {
       await auth.ready();
       try {
@@ -288,15 +297,23 @@
       }
      
     }
-
-    countdownFinish(){
-      console.log('111')
+    /*
+    * 分享
+    */
+    onShareAppMessage ( res ) {
+      return {
+        title: this.shareInfo.title,
+        path: `/pages/union/union?product_id=${this.productId}&user_code=${this.userCode}&union_id=${this.unionId}qrcode_from=${this.shareInfo.qrcode_from}`,
+        imageUrl: this.shareInfo.img,
+        success: this.shareCallBack()
+      };
     }
-
+    /*
+    * 分享回调 
+    */
     shareCallBack (res) {
       return async( res ) => {
-        this.countdownFinish()
-        console.log('shareCallBack')
+       this.refreshUnion()
       }
     }
 
