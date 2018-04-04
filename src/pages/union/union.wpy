@@ -36,11 +36,12 @@
         </block>
         <!-- 按钮组 显示和跳转 跳转都由后台控制 -->
         <view class="btn-wrap">
-          <view wx:for="{{unionBtns}}" wx:for-index="idx" wx:for-item="btn" wx:key="idx"  class="btn {{btn.className}}"><button wx:if="{{btn.type === '2'}}" class="share" open-type="share"></button>{{btn.text}}</view>
+          <view wx:for="{{unionBtns}}" wx:for-index="idx" wx:for-item="btn" wx:key="idx"  class="btn {{btn.className}}" @tap="operateBtn" data-btn="{{btn}}"><button wx:if="{{btn.type === '2'}}" class="share" open-type="share"></button>{{btn.text}}</view>
         </view>
       </view>
+      <!-- 各种弹窗 -->
       <modal></modal>
-      <rulesWindow :rulesImg.sync="rulesImg" wx:if="{{rulesWindow}}" @closeRulesWindow.user="closeRulesWindow"></rulesWindow>
+      <rulesWindow wx:if="{{rulesWindow}}" :rulesImg.sync="rulesImg"  @closeRulesWindow.user="closeRulesWindow"></rulesWindow>
       <newDetail :detailInfo.sync="detailInfo"></newDetail>
     </view>
   <!-- </report> -->
@@ -50,29 +51,35 @@
   import wepy from 'wepy';
   import auth from '@/api/auth';
   import Union from '@/api/union';
+  import Pay from '@/api/pay';
   import newDetail from '@/components/newDetail';
   import rulesWindow from '@/components/rulesWindow';
   import report from '@/components/report-submit';
   import cutdownTimer from '@/mixins/cutdownTimer';
   import tools from '../../components/detail/tools.wxs';
   import modal from '@/components/modal';
+  import redirectMixin from '@/mixins/redirectMixin';
+  import tips from '@/utils/tips';
   export default class union extends wepy.page {
     config = {
       navigationBarTitleText: '拼团'
     }
-    components = { report, newDetail, modal}
+    mixins = [redirectMixin]
+    components = { report, newDetail, modal, rulesWindow}
     wxs = {
       tools: tools
     }
     mixins = [cutdownTimer]
     data = {
+      productId: '159',
+      unionId:'',
+      userCode:'',
       rulesWindow: false,
       rulesImg: '',
       detailInfo: {},
       unionStatus: '2',
       countDown: 100000,
       Timer: 'unionCutdownTimer',
-      unionId:'123',
       shareInfo:{
         img:'',
         title:''
@@ -97,57 +104,102 @@
         className: 'btn-union'
       }]
     }
-    components = { report, newDetail, rulesWindow }
     methods = {
       closeRulesWindow () {
         this.rulesWindow = false
-        this.$apply()
       },
       showRulesWindow () {
         this.rulesWindow = true
-        this.$apply()
+      },
+      operateBtn (e) { //0:小程序跳转路径   1:跨小程序跳转路径   2:转发按钮   3:下单支付  4:查看自己的团
+        var _btn = e.currentTarget.dataset.btn
+        if(_btn.type === '3'){
+          this.pay()
+        }else if(_btn.type === '0'){
+          this.redirectPath({
+            landing_path:''
+          })
+        } else if(_btn.type === '1'){
+          this.redirectMiniprogram({
+            app_id:'',
+            landing_path:''
+          })
+        }else if(_btn.type === '4'){
+          this.refreshUnion()
+        }
       }
     }
-    async init () {
+    async initDetailInfo () {
       var detailInfo = await Union.getUnionInfo()
       this.detailInfo = detailInfo
       this.rulesImg = detailInfo.rule_img
-      console.log(detailInfo)
+      this.shareInfo = detailInfo.share_info && {
+        title:detailInfo.share_info.share_title,
+        img:detailInfo.share_info.bg_img
+      }
       this.$apply()
     }
-    async onShow() {
+    async onLoad(options) {
+      _options = this.initOptions(options)
+      await this.initDetailInfo();
       await auth.ready();
-      await this.init();
+      await this.refreshUnion(_options)
     } 
 
-    showModal () {
-      this.$invoke('modal', 'show', {
-        text:'',
-        btnType:2,
-        success:()=>{
-          console.log('1')
-        },
-        fail:()=>{
-           console.log('2')
-        },
-        complete:()=>{
-          console.log('0')
-          console.log('unionStatus',this.unionStatus)
-        }
+    initOptions (opts) {
+      let _uid = opts.product_id || ''
+      let _pid = opts.union_id || ''
+      let _userCode = opts.user_code || ''
+
+      this.productId = _uid
+      this.unionId = _pid
+      this.userCode = _userCode
+
+      return {
+        productId: _uid,
+        unionId: _pid,
+        userCode: _userCode
+      }
+    }
+
+    showModal (data) {
+      var _data = typeof data === 'string' ? {text:data} :data
+      return new Promise ((resolve, reject)=>{
+        this.$invoke('modal', 'show', {
+          ..._data,
+          success:()=>{
+            console.log('succ')
+            resolve()
+            this.refreshUnion()
+          },
+          fail:()=>{
+            console.log('fail')
+            reject()
+          },
+          complete:()=>{
+            console.log('complete')
+          }
+        })
       })
+      
     }
 
     onShareAppMessage ( res ) {
       return {
         title: this.shareInfo.title,
-        path: `/pages/union/union?id=${this.unionId}qrcode_from=${this.shareInfo.qrcode_from}`,
+        path: `/pages/union/union?product_id=${this.productId}&user_code=${this.userCode}&union_id=${this.unionId}qrcode_from=${this.shareInfo.qrcode_from}`,
         imageUrl: this.shareInfo.img,
         success: this.shareCallBack()
       };
     }
 
-    async refreshUnion(){
-      var data = await Union.getUnionStatus()
+    async refreshUnion(opts = {}){
+      var data = await Union.getUnionStatus({
+        userCode: opts.userCode || this.userCode,
+        product_id: opts.productId || this.productId,
+        union_id: opts.unionId || this.unionId,
+      })
+
       this.initAvatarInfo(data)
       this.initUnionResult(data)
       this.initUnionCutDown(data)
@@ -207,9 +259,34 @@
           type: item.btn_type,
           path: item.btn_path,
           appid: item.btn_app_id,
+          unionId:item.union_id,
           className: item.btn_color
         }
       })
+    }
+
+    async pay  () {
+      await auth.ready();
+      try {
+        
+        var createRes = await Pay.creatOrder({
+          product_id:this.productId,
+          union_id:this.unionId,
+        })
+
+         console.log(createRes)
+        if ( createRes.code === '4160033001' || createRes.code === '4160033001' ) {
+          this.showModal(createRes.msg )
+          return;
+        }
+
+        var _orderDetailData = await Pay.getOrderDetail(createRes.data)
+        await wepy.requestPayment( _orderDetailData.sign );
+      } catch (error) {
+        tips.loaded()
+        console.error(error)
+      }
+     
     }
 
     countdownFinish(){
@@ -238,7 +315,7 @@
   padding-top: 345rpx;
   min-height: 100vh;
   .union-wrap{
-    margin: 0 auto;
+    margin: 0 auto 30rpx;
     width: 695rpx;
     box-shadow: 0rpx 0rpx 15rpx 5rpx  rgba(251,93,75,0.5);
     border-radius: 10rpx;

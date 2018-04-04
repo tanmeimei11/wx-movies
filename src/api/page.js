@@ -14,7 +14,8 @@ export default class Pagebase {
       if ( !m.succ ) {
         throw new Error( 'false' );
       }
-      return m.data;
+      let isBackRes = options.isBackRes || false;
+      return isBackRes ? m : m.data;
     }
     // 方法
     return await axios.request( options );

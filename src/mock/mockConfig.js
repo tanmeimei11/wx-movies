@@ -32,5 +32,6 @@ module.exports = {
   [`${DOMAIN}/mnp/order/info`]: 'product',
   [`${DOMAIN}/mnp/union/status`]: 'unionstatus',
   [`${DOMAIN}/info/union/info`]: 'unioninfo',
+  [`${DOMAIN}/mnp/order/create_union`]: 'createUnion',
   [`${payUrl}`]: 'signature'
 };
