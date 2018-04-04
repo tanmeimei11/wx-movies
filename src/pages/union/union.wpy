@@ -191,22 +191,22 @@
     }
 
     async initDetailInfo () {
-      // var detailInfo = await Union.getUnionInfo({
-      //   product_id:this.productId
-      // })
-      // this.showDetail = true
-      // this.detailInfo = detailInfo
-      // this.rulesImg = detailInfo.rule_img
-      // this.mainImgs = {
-      //   cardImg:detailInfo.card_img,
-      //   bgImg:detailInfo.bg_img
-      // }
-      // this.cardDesc = detailInfo.card_rule_desc
-      // this.shareInfo = detailInfo.share_info && {
-      //   title:detailInfo.share_info.share_title,
-      //   img:detailInfo.share_info.bg_img
-      // }
-      // this.$apply()
+      var detailInfo = await Union.getUnionInfo({
+        product_id:this.productId
+      })
+      this.showDetail = true
+      this.detailInfo = detailInfo
+      this.rulesImg = detailInfo.rule_img
+      this.mainImgs = {
+        cardImg:detailInfo.card_img,
+        bgImg:detailInfo.bg_img
+      }
+      this.cardDesc = detailInfo.card_rule_desc
+      this.shareInfo = detailInfo.share_info && {
+        title:detailInfo.share_info.share_title,
+        img:detailInfo.share_info.bg_img
+      }
+      this.$apply()
     }
     /*
     *
