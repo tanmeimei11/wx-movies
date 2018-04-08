@@ -1,8 +1,10 @@
 <template>
-  <!-- <report> -->
+  <report>
     <view class="container" style="background-image:url('{{mainImgs.bgImg}}')">
       <view class="union-wrap">
         <view class="rule" @tap="showRulesWindow"></view>
+         <!-- 气泡 -->
+        <bubble :productId.sync="productId"></bubble>
         <view class="card" style="background-image:url('{{mainImgs.cardImg}}')"></view>
         <view class="notice">{{cardDesc}}</view>
 
@@ -45,7 +47,7 @@
       <rulesWindow wx:if="{{rulesWindow}}" :rulesImg.sync="rulesImg"  @closeRulesWindow.user="closeRulesWindow"></rulesWindow>
       <newDetail :detailInfo.sync="detailInfo" wx:if="{{showDetail}}"></newDetail>
     </view>
-  <!-- </report> -->
+  </report>
 </template>
 
 <script>
@@ -59,6 +61,7 @@
   import cutdownTimer from '@/mixins/cutdownTimer';
   import tools from '../../components/detail/tools.wxs';
   import modal from '@/components/modal';
+  import bubble from '@/components/union/bubble';
   import redirectMixin from '@/mixins/redirectMixin';
   import qrcodeFromMixin from '@/mixins/qrcodeFromMixin';
   import tips from '@/utils/tips';
@@ -68,7 +71,7 @@
       navigationBarTitleText: '9.9看电影'
     }
     mixins = [redirectMixin, qrcodeFromMixin, cutdownTimer]
-    components = { report, newDetail, modal, rulesWindow}
+    components = { report, newDetail, modal, rulesWindow, bubble}
     wxs = {
       tools: tools
     }
@@ -133,6 +136,14 @@
           await auth.ready()
           return 
         }
+
+        // 埋点
+
+        if(_btn.track){
+          track(_btn.track)
+        }
+
+
         if(_btn.type === '3'){
           console.log(_btn.payInfo.url)
           await this.pay(_btn.payInfo.url,_btn.payInfo.data)
@@ -168,6 +179,7 @@
       await this.initDetailInfo();
       await auth.ready();
       await this.refreshUnion(_options)
+      this.$invoke('bubble','getBulle')
     } 
 
     initOptions (opts) {
@@ -287,7 +299,7 @@
     */
     initUnionCutDown(data){
       var _cutDown = data.union_ing_result
-      if( !_cutDown ) return 
+      if( !_cutDown || !_cutDown.is_show ) return 
 
       this.unionIngResult = {
         isShow: _cutDown.is_show,
@@ -314,6 +326,7 @@
           className: item.btn_color,
           btnUnionId:item.btn_union_id,
           sharePath: item.btn_share_path,
+          track: item.btn_buried_point,
           payInfo:{
             url: item.btn_pay ? item.btn_pay.btn_api_url : '',
             data: item.btn_pay ? item.btn_pay.btn_api_params : ''
@@ -415,6 +428,7 @@
   padding-top: 345rpx;
   min-height: 100vh;
   .union-wrap{
+    position: relative;
     margin: 0 auto 30rpx;
     width: 695rpx;
     box-shadow: 0rpx 0rpx 15rpx 5rpx  rgba(251,93,75,0.5);

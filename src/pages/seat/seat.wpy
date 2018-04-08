@@ -42,8 +42,11 @@
       }
       .txt{
         margin-top: 12rpx;
-        font-size: 32rpx;
-        color: #666;
+        font-size: 36rpx;
+        color: #333;
+        text{
+          color:#FF4338;
+        }
       }
       .session{
         margin: 70rpx auto;
@@ -104,9 +107,9 @@
         <!-- <view class="mask"></view> -->
         <view class="bg"></view>
         <view class="seat">
-          <view class="topic">开放选座啦</view>
-          <view class="txt">选座功能已在“in同城趴”app开放</view>
-          <view class="txt">请下载app进行选座</view>
+          <view class="topic"></view>
+          <view class="txt">请下载“in同城趴”app进行选座</view>
+          <view class="txt">点击按钮，回复关键字“<text>in</text>”获取下载链接</view>
           <view class="session">
             <div class="btnarea" @tap="checkLogin">
               <view class="btn">

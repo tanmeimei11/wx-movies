@@ -1,4 +1,5 @@
 import Pagebase from './page';
+import tips from '@/utils/tips';
 export default class Result extends Pagebase {
   /**
    *
@@ -43,6 +44,14 @@ export default class Result extends Pagebase {
       url: '/mnp/union/cancel',
       method: 'POST',
       data: _data
+    } );
+  }
+  // 获取气泡接口
+  static async getBulleInfo ( data ) {
+    tips.setLoading();
+    return await this.request( {
+      url: '/info/union/others',
+      data: data
     } );
   }
 }
