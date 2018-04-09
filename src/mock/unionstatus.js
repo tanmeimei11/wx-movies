@@ -15,9 +15,12 @@ module.exports = {
       is_show: false
     },
     'btns': [{
+      btn_tip: '团长免单', // 团长免单提示
       'btn_callback': {
         'btn_api_url': '/mnp/union/launch',
-        'btn_api_params': {}
+        'btn_api_params': {
+          share_buried_point: 'share_kaituan'
+        }
       },
       'btn_name': '立即开团',
       'btn_path': '',
@@ -27,7 +30,8 @@ module.exports = {
       'btn_pay': {
         'btn_api_url': '/mnp/order/create_common',
         'btn_api_params': {
-          'product_id': '202'
+          'product_id': '202',
+          pay_buried_point: 'union' // union   oringal
         }
       },
       'btn_name': '原价35元购买 ',

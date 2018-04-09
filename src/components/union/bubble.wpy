@@ -15,7 +15,7 @@
 <style lang="less">
   .bubble{
     position: fixed;
-    top: 360rpx;
+    top: 80rpx;
     left: 45rpx;
     width: 340rpx;
     height: 60rpx;

@@ -45,6 +45,7 @@ GAtracker = initGaTrack();
  */
 function GAtrackReq ( data ) {
   var _action = data.action;
+  var _label = data.label || '';
   var GAtrackerAct = '';
   if ( /.*_screen/.exec( _action ) ) {  // 屏幕
     GAtracker.setScreenName( _action );
@@ -52,8 +53,8 @@ function GAtrackReq ( data ) {
   } else { // 行为
     GAtrackerAct = new HitBuilders.EventBuilder()
         .setCategory( _action )
-        .setAction( `${wepy.$instance.globalData.qrcode_from || 'none'}` );
-        // .setLabel( `from_${wepy.$instance.globalData.qrcode_from}` ); // 可选
+        .setAction( `${wepy.$instance.globalData.qrcode_from || 'none'}` )
+        .setLabel( _label ); // 可选
   }
   GAtracker.send( GAtrackerAct );
 };

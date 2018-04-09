@@ -1,8 +1,8 @@
 <template>
   <report>
     <view class="container" style="background-image:url('{{mainImgs.bgImg}}')">
+      <view class="rule" @tap="showRulesWindow"></view>
       <view class="union-wrap">
-        <view class="rule" @tap="showRulesWindow"></view>
          <!-- 气泡 -->
         <bubble :productId.sync="productId"></bubble>
         <view class="card" style="background-image:url('{{mainImgs.cardImg}}')"></view>
@@ -39,8 +39,15 @@
       
         <!-- 按钮组 显示和跳转 跳转都由后台控制 -->
         <view class="btn-wrap">
-          <view wx:for="{{unionBtns}}" wx:for-index="idx" wx:for-item="btn" wx:key="idx"  class="btn {{btn.className}}" @tap="operateBtn" data-btn="{{btn}}"><button wx:if="{{btn.type === '2'}}" class="share" open-type="share"></button>{{btn.text}}</view>
+          <view wx:for="{{unionBtns}}" wx:for-index="idx" wx:for-item="btn" wx:key="idx"  class="btn {{btn.className}} {{btn.tips ? 'tips' : ''}}" @tap="operateBtn" data-btn="{{btn}}">
+            <view class="btn-overflow" wx:if="{{btn.tips}}"><view class="btn-overflow-arrow"></view>{{btn.tips}}</view>
+            <button wx:if="{{btn.type === '2'}}" class="share" open-type="share"></button>
+            {{btn.text}}
+          </view>
         </view>
+
+        <!-- 箭头 -->
+        <view class="arrow"></view>
       </view>
       <!-- 各种弹窗 -->
       <modal></modal>
@@ -65,7 +72,18 @@
   import redirectMixin from '@/mixins/redirectMixin';
   import qrcodeFromMixin from '@/mixins/qrcodeFromMixin';
   import tips from '@/utils/tips';
-  import track from '@/utils/track';
+  import * as track1 from '@/utils/track';
+
+  function track (action, label) {
+    let parmas = {}
+    try {
+      parmas.label =  wepy.$instance.$pages['/pages/union/union'].data.ownStatus
+    } catch (error) {}
+    const _track = track1.default || track1;
+    _track (action,parmas) 
+  }
+
+
   export default class union extends wepy.page {
     config = {
       navigationBarTitleText: '9.9看电影'
@@ -76,6 +94,7 @@
       tools: tools
     }
     data = {
+      ownStatus: '', // 埋点参数
       sharePath:'', // 分享的路径
       showDetail: false,
       productId: '202',
@@ -138,11 +157,9 @@
         }
 
         // 埋点
-
         if(_btn.track){
           track(_btn.track)
         }
-
 
         if(_btn.type === '3'){
           console.log(_btn.payInfo.url)
@@ -251,9 +268,10 @@
         union_id: opts.unionId || this.unionId,
       })
 
-       tips.loading()
+      tips.loading()
       this.unionId = data.union_id || ''
       this.curUserCode = data.current_user_code || ''
+      this.ownStatus = data.btn_buried_point_ext || 'none'
 
       this.initAvatarInfo(data)
       this.initUnionResult(data)
@@ -327,13 +345,16 @@
           btnUnionId:item.btn_union_id,
           sharePath: item.btn_share_path,
           track: item.btn_buried_point,
+          tips:item.btn_tip || '',
           payInfo:{
             url: item.btn_pay ? item.btn_pay.btn_api_url : '',
-            data: item.btn_pay ? item.btn_pay.btn_api_params : ''
+            data: item.btn_pay ? item.btn_pay.btn_api_params : '',
+            track: item.btn_pay ?  (item.pay_buried_point || '') : ''
           },
           callback:{
             url: item.btn_callback ? item.btn_callback.btn_api_url : '',
-            data: item.btn_callback ? item.btn_callback.btn_api_params : ''
+            data: item.btn_callback ? item.btn_callback.btn_api_params : '',
+            track: item.btn_callback ? (item.pay_buried_point || '') : ''
           }
         }
         if(_btn.type === '2'){this.activeBtn = _btn}
@@ -360,6 +381,8 @@
 
         var _orderDetailData = await Pay.getOrderDetail(createRes.data)
         await wepy.requestPayment( _orderDetailData.sign );
+        let _btn = this.activeBtn
+         _btn.payInfo &&  _btn.payInfo.track && track(btn.payInfo.track)
         this.refreshUnion()
       } catch (error) {
         tips.loaded()
@@ -405,7 +428,8 @@
     */
     shareCallBack (res) {
       return async( res ) => {
-        let  _btn = this.activeBtn
+        let _btn = this.activeBtn
+        _btn.callback &&  _btn.callback.track && track(btn.callback.track)
         if(!_btn.callback || !_btn.callback.url) return 
         let _data = await Union.interface(_btn.callback.url, _btn.callback.data,'POST')
         this.unionId = _data.union_id
@@ -565,6 +589,7 @@
     .btn-wrap{
       padding: 60rpx 0;
     }
+   
     .btn{
       width: 545rpx;
       height: 80rpx;
@@ -574,6 +599,32 @@
       text-align: center;
       line-height: 79rpx;
       position: relative;
+      &.tips{
+        margin-top:30rpx
+      }
+      .btn-overflow{
+        position: absolute;
+        top: -67rpx;
+        right:0;
+        height: 45rpx;
+        font-size: 24rpx;
+        color: #ffffff;
+        background-color: #67a7f6;
+        border-radius: 100rpx;
+        padding:3rpx 20rpx;
+        line-height:45rpx;
+      }
+      .btn-overflow-arrow{
+        position: absolute;
+        top:100%;
+        left:50%;
+        transform: translate(-50%,0);
+        height: 0rpx;
+        width: 0rpx;
+        border-top:8rpx solid #67a7f6;
+        border-right: 8rpx solid transparent;
+        border-left: 8rpx solid transparent;
+      }
       .share{
         width: 100%;
         height: 100%;
@@ -591,6 +642,33 @@
         color: #f44236;
         border:1rpx solid #f44236;
       }
+    }
+    .arrow{
+      position: fixed;
+      bottom: 40rpx;
+      left: 50%;
+      transform: translate(-50%,0);
+      width: 35rpx;
+      height: 15rpx;
+      background-image: url(' https://inimg01.jiuyan.info/in/2018/04/09/37FCDEC0-C81C-4D1F-B14E-B9603EC99A4D.jpg');
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
+      animation: 1.2s arrowani ease-in infinite;
+    }
+  }
+  @keyframes arrowani {
+    0%{
+      transform: translate(-50%,-20rpx);
+      opacity: 0;
+    }
+    50%{
+      transform: translate(-50%,0rpx);
+      opacity: 1;
+    }
+    100%{
+      transform: translate(-50%,20rpx);
+      opacity: 0;
     }
   }
 }
