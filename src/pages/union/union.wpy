@@ -163,7 +163,7 @@
 
         if(_btn.type === '3'){
           console.log(_btn.payInfo.url)
-          await this.pay(_btn.payInfo.url,_btn.payInfo.data)
+          await this.pay(_btn.payInfo.url,_btn.payInfo.data, _btn.payInfo.track)
         }else if(_btn.type === '0'){
           this.redirectPath({
             landing_path:_btn.path
@@ -271,7 +271,7 @@
       tips.loading()
       this.unionId = data.union_id || ''
       this.curUserCode = data.current_user_code || ''
-      this.ownStatus = data.btn_buried_point_ext || 'none'
+      this.ownStatus = data.buried_point_ext || 'none'
 
       this.initAvatarInfo(data)
       this.initUnionResult(data)
@@ -349,12 +349,12 @@
           payInfo:{
             url: item.btn_pay ? item.btn_pay.btn_api_url : '',
             data: item.btn_pay ? item.btn_pay.btn_api_params : '',
-            track: item.btn_pay ?  (item.pay_buried_point || '') : ''
+            track: item.btn_pay ?  (item.btn_pay.btn_api_params.pay_buried_point || '') : ''
           },
           callback:{
             url: item.btn_callback ? item.btn_callback.btn_api_url : '',
             data: item.btn_callback ? item.btn_callback.btn_api_params : '',
-            track: item.btn_callback ? (item.pay_buried_point || '') : ''
+            track: item.btn_callback ? (item.btn_callback.btn_api_params.share_buried_point || '') : ''
           }
         }
         if(_btn.type === '2'){this.activeBtn = _btn}
@@ -364,7 +364,7 @@
     /*
     * 支付
     */
-    async pay  (_url, _data) {
+    async pay  (_url, _data, trackInfo) {
       await auth.ready();
       try {
         
@@ -381,8 +381,7 @@
 
         var _orderDetailData = await Pay.getOrderDetail(createRes.data)
         await wepy.requestPayment( _orderDetailData.sign );
-        let _btn = this.activeBtn
-         _btn.payInfo &&  _btn.payInfo.track && track(btn.payInfo.track)
+        trackInfo && track(trackInfo)
         this.refreshUnion()
       } catch (error) {
         tips.loaded()
@@ -429,7 +428,7 @@
     shareCallBack (res) {
       return async( res ) => {
         let _btn = this.activeBtn
-        _btn.callback &&  _btn.callback.track && track(btn.callback.track)
+        _btn.callback &&  _btn.callback.track && track(_btn.callback.track)
         if(!_btn.callback || !_btn.callback.url) return 
         let _data = await Union.interface(_btn.callback.url, _btn.callback.data,'POST')
         this.unionId = _data.union_id
