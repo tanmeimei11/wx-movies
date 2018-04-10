@@ -1,12 +1,14 @@
 <template>
   <report>
-    <scroll-view class="container" scroll-y scroll-with-animation scroll-into-view="{{toView}}" bindscroll="scroll">
+    <scroll-view class="container {{bubbleClass}}" scroll-y scroll-with-animation scroll-into-view="{{toView}}" bindscroll="scroll">
     <view class="container">
       <!-- banner部分 -->
     <adBanner wx:if="{{bannerInfo && bannerInfo.length > 0}}"
               :bannerInfo.sync="bannerInfo"></adBanner>
       <!-- 视频和图片部分 -->
       <view class="c-bg">
+        <!-- 气泡 -->
+        <bubble></bubble>
          <!-- 活动规则 -->
         <view class="image" style="background-image:url({{bgImages.banner}})"></view>
          <!-- 秒杀模块 -->

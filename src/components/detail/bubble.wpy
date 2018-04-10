@@ -1,14 +1,9 @@
 <template>
-  <view class="bubble {{bubbleInfo.length ? '':'hide'}}">
-     <!-- <swiper autoplay @change="changeSwiper" interval="5000" vertical=true>
-        <swiper-item wx:for="{{bubbleInfo}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
-          <view class="bubble-wrap">
-            <view class="bubble">{{item}}</view>
-          </view>
-        </swiper-item>
-    </swiper> -->
-    <view class="bubble-wrap" animation="{{animationIf}}">{{text}}</view>
-    <!-- <view class="bubble-wrap" animation="{{animationData1}}">2</view> -->
+   <view class="bubble {{bubbleInfo.length ? '':'hide'}}">
+    <view class="bubble-wrap" animation="{{animationIf}}">
+      <view class="avatar" style="background-image:url('{{avatar}}')"></view>
+      <text>{{text}}</text>
+    </view>
   </view>
 </template>
       
@@ -18,14 +13,13 @@
       opacity: 0;
     }
     position: fixed;
-    top: 110rpx;
+    top: 220rpx;
     left: 45rpx;
     width: 340rpx;
     height: 60rpx;
     // height: 245rpx;
     z-index: 5;
     background-color: transparent;
-   
      swiper{
       width: 100%;
       height: 100%;
@@ -35,31 +29,34 @@
       }
     }
     .bubble-wrap{
-      background: rgba(0, 0, 0, 0.5);
+      background-color: rgba(0, 0, 0, 0.5);
       width: 325rpx;
       height: 45rpx;
       font-size: 24rpx;
       color: #fff;
-      box-sizing: border-box;
       padding: 6rpx 10rpx;
       border-radius: 6rpx;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      border-radius: 100rpx;
+      .avatar{
+        border-radius: 50%;
+        margin:0 10rpx 0 5rpx;
+        width: 44rpx;
+        height: 44rpx;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+      }
     }
-    // .bubble-wrap{
-    //   width: 100%;
-    //   height: 100%;
-    //   display: flex;
-    //   justify-content: center;
-    //   align-items: center;
-     
-    // }
   }
 </style>
 
 <script>
   import wepy from 'wepy';
-  import { request } from '@/utils/request';
   import track from '@/utils/track';
-  import Union from '@/api/union';
+  import detail from '@/api/detail';
 
   export default class bubble extends wepy.component {
     props = {
@@ -80,14 +77,17 @@
         timingFunction: "ease",
         delay: 1000
       },
-      isShow:true,
+      isShow:false,
       text:'',
-      showDuration: 3000,
+      showDuration: 2000,
       bubbleInfo:[],
-      isGetBubble:false
+      isGetBubble:false,
+      avatar:'http://requirejs.org/i/logo.png'
     }
 
-    show () {
+     show () {
+      // this.isShow = true
+      this.$apply()
       this._animation.translateY(-20).opacity(1).step()
       this.animationIf = this._animation.export()
       this.$apply()
@@ -99,18 +99,16 @@
       this.animationIf = this._animation.export()
       this.$apply()
       await this.setTimeoutPromise(700)
+      // this.isShow = false
+      this.$apply()
     }
   
+  
     async loopBubble () {
-      console.log('union')
-      var pages = getCurrentPages()
-      if(pages[pages.length-1].route !== 'pages/union/union'){
-        return 
-      }
       var len = this.bubbleInfo.length
       var _item = this.bubbleInfo.splice(0,1)
       if(_item[0] && _item[0].text && _item[0].time){
-        await this.showBubble(_item[0].text, _item[0].time)
+        await this.showBubble(_item[0].text, _item[0].time, _item[0].avatar)
       }else {
         this.getBulle()
       }
@@ -124,8 +122,9 @@
       })
     }
 
-    async showBubble (text, time) {
+    async showBubble (text, time,avatar) {
       this.text = text
+      this.avatar = avatar
       await this.setTimeoutPromise(time * 1000)
       this.show()
       await this.setTimeoutPromise(this.showDuration)
@@ -136,12 +135,11 @@
     async getBulle () {
       if( this.isGetBubble) {return }
       this.isGetBubble = true
-      var data = await Union.getBulleInfo({
+      var data = await detail.getBulleInfo({
         product_id: this.productId
       })
       this.isGetBubble = false
-      this.bubbleInfo =  data.bubble_info.slice()
-      // this.bubbleInfo =  [{text:'333',time:3}].slice()
+      this.bubbleInfo = data.bubble_info.slice()
       if( this.bubbleInfo.length == 0 ){return }
       await this.loopBubble()
     }

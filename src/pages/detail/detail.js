@@ -12,7 +12,7 @@ import channelModal from '@/components/detail/channelModal';
 import notice from '@/components/detail/notice';
 import moviePart from '@/components/detail/moviePart';
 import adBanner from '@/components/adBanner';
-// import seckill from '@/components/detail/seckill';
+import bubble from '@/components/detail/bubble';
 import lekeReceiveModal from '@/components/leke/lekeReceiveModal';
 import shareLekeMixin from '@/mixins/shareLekeMixin';
 import loadingMixin from '@/mixins/loadingMixin';
@@ -23,9 +23,10 @@ export default class Index extends wepy.page {
   config = {
     navigationBarTitleText: 'in同城趴·电影王卡'
   }
-  components = {report, shareWindow, receiveGiftModal, buyMutiModal, receiveFaildModal, receiveTicketModal, channelModal, notice, moviePart, adBanner, lekeReceiveModal}
+  components = {report, shareWindow, receiveGiftModal, buyMutiModal, receiveFaildModal, receiveTicketModal, channelModal, notice, moviePart, adBanner, lekeReceiveModal, bubble}
   mixins = [loadingMixin, shareLekeMixin]
   data = {
+    bubbleClass: '',
     windowWidth: 375,
     a: 1,
     productId: 359,
@@ -273,7 +274,7 @@ export default class Index extends wepy.page {
   onShareAppMessage ( res ) {
     var fun = () => {};
     if ( res.from === 'button' ) {
-      var that = this; productId;
+      var that = this;
       fun = this.shareCallBack( that );
     }
     return {
@@ -286,9 +287,16 @@ export default class Index extends wepy.page {
   scroll ( e ) {
     if ( e.detail.scrollTop > this.tabHeight ) {
       this.onTop = true;
+      this.bubbleClass = 'bubble-have-tabbar';
     } else {
       this.onTop = false;
+      this.bubbleClass = 'bubble-no-banner';
     }
+
+    if ( e.detail.scrollTop < 50 && this.bannerInfo.length && this.bubbleClass !== 'bubble-have-banner' ) {
+      this.bubbleClass = 'bubble-have-banner';
+    }
+    this.$apply();
     if ( e.detail.scrollTop > this.partHeight[0] && !this.loadHeight[0] ) {
       this.loadHeight[0] = true;
     } else if ( e.detail.scrollTop > this.partHeight[1] && !this.loadHeight[1] ) {
@@ -320,18 +328,14 @@ export default class Index extends wepy.page {
     }
   }
   async init () {
-    // var res = await Detail.getDetailData( this.detailCode );
     console.log( this.detailCode );
     var newRes = await Detail.getDetailDataNew( this.productId, this.detailCode );
     this.cinemas = Detail.initCinemas( newRes.cinemas, newRes.all_cinema_addr_img );
-    // this.moviesSections = Detail.initMovies( res.movie_sections );
-    // this.detailText = this.initBuyText( res );
     this.rules = this.initRulesText( newRes.desc );
     this.initBannerInfo( newRes );
     this.initVideoInfo( newRes );
     this.initBuyInfo( newRes );
     this.initFixBtnText( newRes );
-    // this.initSeckillInfo( newRes );
     this.initBgImages( newRes );
     this.unionInfo = newRes.union_info;
     this.$apply();
@@ -344,6 +348,7 @@ export default class Index extends wepy.page {
     this.shareInfo = await Detail.getShareInfo();
     if ( this.cardCode ) { await this.initCardStatus(); };
     this.countHeight();
+    this.$invoke( 'bubble', 'getBulle' );
     track( 'page_loading_complete' );
     this.$apply();
   }
@@ -377,6 +382,8 @@ export default class Index extends wepy.page {
     // this.bannerInfo = res.ad_info;
     this.bannerInfo = res.ad_info_list || [];
     if ( res.ad_info ) {
+      this.bubbleClass = 'bubble-have-banner';
+      this.$apply();
       track( 'page_ad_expo' );
     }
   }
@@ -393,16 +400,6 @@ export default class Index extends wepy.page {
     }
     this.videoConf = res.video_info;
   }
-  // /**
-  //  * @memberof Index
-  //  */
-  // seckillPay () {
-  //   this.statusQuery = {
-  //     is_seckill: 1
-  //   };
-  //   this.buyMutiModalInfo.basePrice = this.seckillInfo.price;
-  //   this.buyMutiModalInfo.show = true;
-  // }
   /**
    * 支付弹窗
    */
@@ -429,63 +426,6 @@ export default class Index extends wepy.page {
     this.buyMutiModalInfo.show = true;
     this.$apply();
   }
-  // /**
-  //  *
-  //  *
-  //  * @param {any} res
-  //  * @returns
-  //  * @memberof Index
-  //  */
-  // initSeckillInfo ( res ) {
-  //   if ( !res.seckill_info ) { return; }
-  //   this.seckillInfo = res.seckill_info;
-  //   // if ( false ) {
-  //   if ( this.seckillInfo.enabled ) {
-  //     track( 'page_spike_expo' );
-  //     // 这里传值是因为 界面还没有更新 调了组件的方法 所以直接船只过去保证能立刻取到真实的值
-  //     this.$invoke( 'seckill', 'countdown', {
-  //       start: res.seckill_info.start_countdown,
-  //       duration: res.seckill_info.duration
-  //     } );
-  //     this.changeToSecKillInfo();
-  //   }
-  // }
-
-  // /**
-  //  *
-  //  * 秒杀的时候改变支付的状态 清除优惠信息
-  //  * @memberof Index
-  //  */
-  // changeToSecKillInfo () {
-  //   // 如果变成立即秒杀的时候修改
-  //   // 1.fixbtn的样式和文案
-  //   // 2.去掉优惠信息
-
-  //   if ( this.seckillInfo.status === '1' ) {
-  //     this.fixBtnText = [
-  //       {
-  //         price: `${this.seckillInfo.price}立即秒杀`,
-  //         text: '限时限量秒杀火热进行中'
-  //       }
-  //     ];
-  //   } else if ( this.seckillInfo.status === '2' ) {
-  //     this.fixBtnText = this.tabText;
-  //   } else {
-  //     this.fixBtnText = [
-  //       {
-  //         price: `${this.payPrice}立即抢购`
-  //       }
-  //     ];
-  //   }
-  //   console.log( this.fixBtnText );
-  //   if ( this.seckillInfo.status === '1' ) {
-  //     this.discountInfo = {
-  //       show: false,
-  //       ticketId: '',
-  //       detail: []
-  //     };
-  //   }
-  // }
 
   /**
    * 初始化fixed按钮的文案

@@ -20,7 +20,8 @@ module.exports = {
       'nick_name': '一休', // 分享人昵称
       'avatar': 'https://inimg01.jiuyan.info/in/2018/02/03/4FEB6B74-F97B-063D-148C-C17FCFCB275A.jpg'// 头像
     }, // 分享用户信息可能为空
-    "has_union": true
+    'has_union': true,
+    'union_path': '/pages/union/union?product_id=202&qrcode_from=wx_union_01'
     // rp_price: 10,
     // rp_deduction: [
     //   {d_price: 50, d_desc: '滴滴红包抵扣'},

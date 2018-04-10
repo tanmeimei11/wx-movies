@@ -1,15 +1,16 @@
 import wepy from 'wepy';
 import Pagebase from './page';
+import tips from '@/utils/tips';
 import { paymentChannel, businessParty, payUrl, token } from '@/utils/config';
 
 export default class Detail extends Pagebase {
   /**
    *  获取众筹状态接口
    */
-  static async getDetailStatus ( product_id, queryObj ) {
-    console.log(product_id)
+  static async getDetailStatus ( productId, queryObj ) {
+    console.log( productId );
     var _data = {
-      product_id: product_id,
+      product_id: productId,
       ...queryObj
     };
     // if ( shareCode ) {
@@ -32,7 +33,7 @@ export default class Detail extends Pagebase {
   /**
    *  获取详情页页面接口
    */
-  static async getDetailDataNew ( product_id , data ) {
+  static async getDetailDataNew ( product_id, data ) {
     var _data = {
       product_id: product_id,
       ...data
@@ -171,6 +172,15 @@ export default class Detail extends Pagebase {
     return await this.request( {
       url: '/mnp/seckill/attach2remind',
       method: 'POST'
+    } );
+  }
+
+  // 获取气泡接口
+  static async getBulleInfo ( data ) {
+    tips.setLoading();
+    return await this.request( {
+      url: '/info/detail/bubble',
+      data: data
     } );
   }
 }

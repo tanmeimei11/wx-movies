@@ -1,6 +1,6 @@
 <template lang="wxml">
     <view class="c-banner-wrap" >
-      <image class="img" mode="widthFix" @tap="goBnner" src="{{bannerInfo[0].img_url}}"  wx:if="{{bannerInfo.length == 1}}"></image>
+      <image class="img"  mode="widthFix"  @tap="goBnner" src="{{bannerInfo[0].img_url}}"  wx:if="{{bannerInfo.length == 1}}"></image>
       <swiper indicator-dots='true' autoplay indicator-color='#d8d8d8' indicator-active-color='#fff' wx:else @change="changeSwiper" @tap="goRedrect">
           <swiper-item wx:for="{{bannerInfo}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
             <image src="{{item.img_url}}" mode="widthFix" class="slide-image"></image>
