@@ -8,7 +8,7 @@
       <!-- 视频和图片部分 -->
       <view class="c-bg">
         <!-- 气泡 -->
-        <bubble></bubble>
+        <bubble :productId.sync="productId"></bubble>
          <!-- 活动规则 -->
         <view class="image" style="background-image:url({{bgImages.banner}})"></view>
          <!-- 秒杀模块 -->
