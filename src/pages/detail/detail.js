@@ -26,6 +26,13 @@ export default class Index extends wepy.page {
   components = {report, shareWindow, receiveGiftModal, buyMutiModal, receiveFaildModal, receiveTicketModal, channelModal, notice, moviePart, adBanner, lekeReceiveModal, bubble}
   mixins = [loadingMixin, shareLekeMixin]
   data = {
+    gaProductInfo: {
+      id: 1,
+      name: '网卡',
+      price: 29,
+      quantity: 1,
+      type: 'ACTION_DETAIL'
+    },
     bubbleClass: '',
     windowWidth: 375,
     a: 1,
@@ -228,6 +235,12 @@ export default class Index extends wepy.page {
       this.videoShow2 = false;
     },
     openBuyMutiModal () {
+      track( 'open_pay_win', {
+        gaProductInfo: {
+          ...this.gaProductInfo,
+          type: 'ACTION_DETAIL'
+        }
+      } );
       this.openPayWin();
     },
     toIndex () {
@@ -332,6 +345,7 @@ export default class Index extends wepy.page {
     var newRes = await Detail.getDetailDataNew( this.productId, this.detailCode );
     this.cinemas = Detail.initCinemas( newRes.cinemas, newRes.all_cinema_addr_img );
     this.rules = this.initRulesText( newRes.desc );
+    this.initGaProductInfo( newRes );
     this.initBannerInfo( newRes );
     this.initVideoInfo( newRes );
     this.initBuyInfo( newRes );
@@ -349,9 +363,19 @@ export default class Index extends wepy.page {
     if ( this.cardCode ) { await this.initCardStatus(); };
     this.countHeight();
     this.$invoke( 'bubble', 'getBulle' );
-    track( 'page_loading_complete' );
+    track( 'page_loading_complete', {
+      gaProductInfo: this.gaProductInfo
+    } );
     this.$apply();
   }
+
+  initGaProductInfo ( res ) {
+    this.gaProductInfo = {
+      ...res.product_info,
+      type: 'ACTION_CLICK'
+    };
+  }
+
   initLekeInfo ( status ) {
     if ( !status.leke_info || this.cardCode ) { return; }
     this.lekePromoInfo = {
@@ -648,11 +672,27 @@ export default class Index extends wepy.page {
         tips.error( createRes.msg );
         return;
       }
+      if ( createRes.product_info ) {
+        this.gaProductInfo = {
+          ...createRes.product_info,
+          price: parseInt( createRes.product_info.price ) / parseInt( createRes.product_info.quantity ),
+          type: 'ACTION_ADD'
+        };
+      }
+
+      track( 'page_wx_creat_order', {
+        gaProductInfo: this.gaProductInfo
+      } );
 
       var getOrderRes = await Detail.getOrderDetail( createRes );
       track( 'page_wx_pay_start' );
       await wepy.requestPayment( getOrderRes.sign );
-      track( 'page_pay_successful' );
+      track( 'page_pay_successful', {
+        gaProductInfo: {
+          ...this.gaProductInfo,
+          type: 'ACTION_PURCHASE'
+        }
+      } );
       this.paySucc( createRes.order_no );
     } catch ( e ) {
       // this.buyMutiModalInfo.show = false;

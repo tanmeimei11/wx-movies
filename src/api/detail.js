@@ -33,9 +33,9 @@ export default class Detail extends Pagebase {
   /**
    *  获取详情页页面接口
    */
-  static async getDetailDataNew ( product_id, data ) {
+  static async getDetailDataNew ( productId, data ) {
     var _data = {
-      product_id: product_id,
+      product_id: productId,
       ...data
     };
     return await this.request( {
