@@ -109,6 +109,8 @@ export default class extends wepy.app {
     var qf = opts.query.qrcode_from || getParamV( opts, 'qf' );
     // 渠道埋点
     this.globalData.qrcode_from = qf || '';
+    // 场景值
+    this.globalData.gaSence =  (opts && opts.scene) ? opts.scene :''
     /**
      * try
      *   收集微信机型数据

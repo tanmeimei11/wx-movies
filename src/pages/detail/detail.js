@@ -345,7 +345,7 @@ export default class Index extends wepy.page {
     var newRes = await Detail.getDetailDataNew( this.productId, this.detailCode );
     this.cinemas = Detail.initCinemas( newRes.cinemas, newRes.all_cinema_addr_img );
     this.rules = this.initRulesText( newRes.desc );
-    this.initGaProductInfo( newRes );
+
     this.initBannerInfo( newRes );
     this.initVideoInfo( newRes );
     this.initBuyInfo( newRes );
@@ -356,6 +356,7 @@ export default class Index extends wepy.page {
     await auth.ready();
     track( 'page_entry1' );
     this.detailStatus = await Detail.getDetailStatus( this.productId, this.statusQuery );
+    this.initGaProductInfo( this.detailStatus );
     this.initReceiveTicketInfo( this.detailStatus );
     this.initChannelDiscount( this.detailStatus );
     this.initLekeInfo( this.detailStatus );
@@ -370,6 +371,7 @@ export default class Index extends wepy.page {
   }
 
   initGaProductInfo ( res ) {
+    console.log( res );
     this.gaProductInfo = {
       ...res.product_info,
       type: 'ACTION_CLICK'
@@ -687,12 +689,19 @@ export default class Index extends wepy.page {
       var getOrderRes = await Detail.getOrderDetail( createRes );
       track( 'page_wx_pay_start' );
       await wepy.requestPayment( getOrderRes.sign );
+      track( 'page_pay_checkout', {
+        gaProductInfo: {
+          ...this.gaProductInfo,
+          type: 'ACTION_CHECKOUT'
+        }
+      } );
       track( 'page_pay_successful', {
         gaProductInfo: {
           ...this.gaProductInfo,
           type: 'ACTION_PURCHASE'
         }
       } );
+
       this.paySucc( createRes.order_no );
     } catch ( e ) {
       // this.buyMutiModalInfo.show = false;

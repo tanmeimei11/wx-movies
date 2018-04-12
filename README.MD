@@ -122,6 +122,8 @@ ticket页面收集gps功能
 
 ### part-30  @xiangxiang 
 1.详情页气泡
+### part-31  @xiangxiang 
+1.电子商务 埋点
 
 
 

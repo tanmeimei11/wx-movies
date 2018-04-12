@@ -74,8 +74,8 @@
   import tips from '@/utils/tips';
   import * as track1 from '@/utils/track';
 
-  function track (action, label) {
-    let parmas = {}
+  function track (action, _parmas = {}) {
+    let parmas = _parmas
     try {
       console.log('ownStatus',wepy.$instance.$pages['/pages/union/union'].data.ownStatus)
       parmas.label =  wepy.$instance.$pages['/pages/union/union'].data.ownStatus
@@ -95,6 +95,13 @@
       tools: tools
     }
     data = {
+      gaProductInfo: { // 电子商务的埋点
+        id: 1,
+        name: '网卡',
+        price: 0,
+        quantity: 1,
+        type: 'ACTION_DETAIL'
+      },
       ownStatus: '', // 埋点参数
       sharePath:'', // 分享的路径
       showDetail: false,
@@ -196,7 +203,8 @@
       this.initQrcodeFrom(options)
       await this.initDetailInfo();
       await auth.ready();
-      await this.refreshUnion(_options)
+      let data = await this.refreshUnion(_options)
+      this.initViewgaProduct(data)
       this.$invoke('bubble','getBulle')
     } 
 
@@ -278,9 +286,23 @@
       this.initUnionResult(data)
       this.initUnionCutDown(data)
       this.initUnionBtns(data)
+
+      
       this.$apply()
       tips.loaded()
 
+      return data
+
+    }
+
+    initViewgaProduct (data) {
+      this.gaProductInfo = {
+        ...data.product_info,
+        type: 'ACTION_DETAIL'
+      }
+      track('union_view_page',{
+        gaProductInfo:this.gaProductInfo
+      })
     }
     /*
     * 初始化参团者信息
@@ -368,6 +390,11 @@
     async pay  (_url, _data, trackInfo) {
       await auth.ready();
       try {
+        track('union_pay_click', {
+          gaProductInfo:{
+          ...this.gaProductInfo,
+          type: 'ACTION_CLICK'
+        }})
         
         var createRes = await Pay.creatOrder(_url, {
           ..._data,
@@ -380,9 +407,36 @@
           return;
         }
 
+      if ( createRes.product_info ) {
+        this.gaProductInfo = {
+          ...createRes.product_info,
+          price: parseInt( createRes.product_info.price ) / parseInt( createRes.product_info.quantity ),
+        };
+      }
+        track('union_creat_order', {
+            gaProductInfo:{
+              ...this.gaProductInfo,
+              type: 'ACTION_ADD'
+            }
+        })
+
         var _orderDetailData = await Pay.getOrderDetail(createRes.data)
         await wepy.requestPayment( _orderDetailData.sign );
         trackInfo && track(trackInfo)
+
+        track('union_pay_checkout_info', {
+           gaProductInfo:{
+            ...this.gaProductInfo,
+            type: 'ACTION_CHECKOUT'
+           }
+        })
+        track('union_pay_succ_info', {
+           gaProductInfo:{
+            ...this.gaProductInfo,
+            type: 'ACTION_PURCHASE'
+           }
+        })
+
         this.refreshUnion()
       } catch (error) {
         tips.loaded()

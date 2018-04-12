@@ -35,22 +35,39 @@ export default class order extends wepy.page {
       number: 0,
       realMoney: 0
     }, // 支付参数
-    targetDiscount: null // 最终的优惠信息
+    targetDiscount: null, // 最终的优惠信息
+    gaProductInfo: null
   };
   mixins = [qrcodeFromMixin]
   methods = {
     async pay () {
       try {
         await auth.ready();
-        track('new_page_pay_click')
+        track( 'new_page_pay_click', {
+          gaProductInfo: {
+            ...this.gaProductInfo,
+            type: 'ACTION_CLICK'
+          }} );
+
         let _orderData = this.getOrderData();
-        console.log(_orderData)
+        console.log( _orderData );
         let _createRes = await Order.getOrderInfo( _orderData );
-        // if ( _createRes.code === '4000032129' || _createRes.code === '4000031814' ) {
-        //   tips.error( _createRes.msg );
-        //   return;
-        // }
+
         console.log( _createRes );
+        if ( _createRes.product_info ) {
+          let _info = _createRes.product_info;
+          this.gaProductInfo = {
+            ..._info,
+            price: parseInt( _info.price ) / parseInt( _info.quantity )
+          };
+        }
+
+        track( 'union_creat_order', {
+          gaProductInfo: {
+            ...this.gaProductInfo,
+            type: 'ACTION_ADD'
+          }
+        } );
 
         let _createResData = {
           _token: wepy.$instance.globalData.xToken,
@@ -139,6 +156,14 @@ export default class order extends wepy.page {
         realMoney: data.origin_price
       }; // 支付参数
 
+      this.gaProductInfo = {
+        ...data.product_info,
+        type: 'ACTION_DETAIL'
+      };
+      track( 'order_view_onload', {
+        gaProductInfo: this.gaProductInfo
+      } );
+
       this.$apply();
     }
   }
@@ -160,7 +185,19 @@ export default class order extends wepy.page {
    * @param {*} res
    */
   paySucc ( res ) {
-    track('new_page_pay_succssful')
+    track( 'new_page_pay_succssful', {
+      gaProductInfo: {
+        ...this.gaProductInfo,
+        type: 'ACTION_CHECKOUT'
+      }
+    } );
+    track( 'new_page_pay_succssful', {
+      gaProductInfo: {
+        ...this.gaProductInfo,
+        type: 'ACTION_PURCHASE'
+      }
+    } );
+
     // 与电信合作 直接跳回他们的小程序
     if ( res ) {
       this.redirect( res );
@@ -239,14 +276,14 @@ export default class order extends wepy.page {
     this.promotion = options.promotion;
     this.isSeckill = options.is_seckill;
     this.isLimitNum = options.isLimitNum;
-    this.movieID = options.movie_id
+    this.movieID = options.movie_id;
   }
 
   async onLoad ( options ) {
     this.initOptions( options );
     this.initQrcodeFrom( options );
     await auth.ready( true );
-    track('new_page_enter')
+    track( 'new_page_enter' );
     await this.initProductInfo();
   }
 }

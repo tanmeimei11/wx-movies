@@ -1,5 +1,5 @@
 import wepy from 'wepy';
-import {GoogleAnalytics, HitBuilders, Product, ProductAction} from '@/lib/ga.js';
+import {GoogleAnalytics, HitBuilders, Product, ProductAction, CampaignParams} from '@/lib/ga.js';
 const trackPrefix = 'h5_tcpa_movie_';
 const trackUrl = 'https://stats1.jiuyan.info/onepiece/router.html';
 var GAtracker = null;
@@ -59,27 +59,52 @@ function GAtrackReq ( data ) {
   }
 
   // 电子商务
-  if ( data.gaProductInfo ) {
+  if ( data.gaProductInfo && data.gaProductInfo.id ) {
     let _product = data.gaProductInfo;
-    GAtrackerAct.addImpression( _product )
-      .addProduct( getProduct( _product ) )
+    !_product.quantity && ( _product.quantity = 1 );
+    // let _product = {
+    //   id: 123,
+    //   name: '香香',
+    //   price: 10,
+    //   quantity: 1,
+    //   type: data.gaProductInfo.type
+    // };
+
+    if ( _product.type === ACTION_DETAIL ) {
+      GAtrackerAct.addImpression( getProduct( _product ), _product.name );
+    }
+    GAtrackerAct.setNewSession().addProduct( getProduct( _product ) )
       .setProductAction( getProductAction( _product ) );
   }
+  // 场景值
+  if ( wepy.$instance.globalData.gaSence ) {
+    let _sence = wepy.$instance.globalData.gaSence;
+    var campaignUrl = CampaignParams.buildFromWeappScene( _sence ).toUrl();
+    GAtracker.setCampaignParamsOnNextHit( campaignUrl );
+  }
+
   GAtracker.send( GAtrackerAct.build() );
 };
 
 const ACTION_CLICK = 'ACTION_CLICK'; //  1.点击商品
 const ACTION_DETAIL = 'ACTION_DETAIL'; //  1.查看商品页面
 const ACTION_ADD = 'ACTION_ADD'; // 2.购买按钮
+const ACTION_CHECKOUT = 'ACTION_CHECKOUT'; // 3.购买成功
 const ACTION_PURCHASE = 'ACTION_PURCHASE'; // 3.购买成功
 
 // 获得商品
 function getProduct ( _product ) {
+  console.log( _product );
   return new Product()
     .setId( _product.id )
     .setName( _product.name )
-    .setPrice( 29.20 )
-    .setQuantity( 1 );
+    .setPrice( _product.price )
+    .setQuantity( 1 )
+    .setCategory( _product.name )
+    .setBrand( _product.name )
+    .setVariant( _product.name )
+    .setPosition( _product.id )
+    .setCustomDimension( 1, _product.name ); // 产品范围的自定义维度#1
 }
 
 // 操作商品
@@ -87,12 +112,13 @@ function getProductAction ( _product ) {
   var productAction;
   var _type = _product.type;
   if ( _type === ACTION_DETAIL || _type === ACTION_CLICK ) {
-    productAction = new ProductAction( ProductAction[ACTION_DETAIL] );
+    productAction = new ProductAction( ProductAction[_type] )
+    .setProductActionList( _product.name );
   } else if ( _type === ACTION_ADD ) {
-    productAction = new ProductAction( ProductAction[ACTION_DETAIL] )
+    productAction = new ProductAction( ProductAction[_type] )
     .setTransactionId( _product.id );
-  } else if ( _type === ACTION_PURCHASE ) {
-    productAction = new ProductAction( ProductAction[ACTION_DETAIL] )
+  } else if ( _type === ACTION_PURCHASE || _type === ACTION_CHECKOUT ) {
+    productAction = new ProductAction( ProductAction[_type] )
     .setTransactionId( _product.id )
     .setTransactionRevenue( _product.price * _product.quantity ); // 【重要】这个是订单总价
   }
