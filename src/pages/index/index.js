@@ -3,6 +3,7 @@ import Index from '@/api/index';
 import report from '@/components/report-submit';
 import researchWindow from '@/components/researchWindow';
 import track from '@/utils/track';
+import auth from '@/api/auth';
 
 export default class index extends wepy.page {
   config = {
@@ -52,6 +53,7 @@ export default class index extends wepy.page {
   }
 
   async onLoad ( option ) {
+    await auth.SilReady();
     if ( option.qrcode_from ) {
       this.$parent.globalData.qrcode_from = option.qrcode_from;
     }

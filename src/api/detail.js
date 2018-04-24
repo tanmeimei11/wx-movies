@@ -39,7 +39,7 @@ export default class Detail extends Pagebase {
       ...data
     };
     return await this.request( {
-      url: '/info/detail_common',
+      url: '/stc/info/detail_common',
       data: _data
     } );
   }

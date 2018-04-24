@@ -18,6 +18,7 @@ import shareLekeMixin from '@/mixins/shareLekeMixin';
 import loadingMixin from '@/mixins/loadingMixin';
 import track from '@/utils/track';
 import {getParamV} from '@/utils/common';
+import { constants } from 'os';
 
 export default class Index extends wepy.page {
   config = {
@@ -342,6 +343,7 @@ export default class Index extends wepy.page {
   }
   async init () {
     console.log( this.detailCode );
+    await auth.SilReady();
     var newRes = await Detail.getDetailDataNew( this.productId, this.detailCode );
     this.cinemas = Detail.initCinemas( newRes.cinemas, newRes.all_cinema_addr_img );
     this.rules = this.initRulesText( newRes.desc );
@@ -353,6 +355,7 @@ export default class Index extends wepy.page {
     this.initBgImages( newRes );
     this.unionInfo = newRes.union_info;
     this.$apply();
+    console.log('error')
     await auth.ready();
     track( 'page_entry1' );
     this.detailStatus = await Detail.getDetailStatus( this.productId, this.statusQuery );

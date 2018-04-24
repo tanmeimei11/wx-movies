@@ -128,7 +128,7 @@ export default class extends wepy.app {
    * 构造权限头部
    */
   createAuthHeader () {
-    const { WechatApp, xToken, xAries, qrcode_from } = this.globalData;
+    const { WechatApp, xToken, xAries, qrcode_from, cfToken, cfAries } = this.globalData;
     const header = { 'WechatApp': WechatApp };
     if ( xToken ) {
       header['tg_auth'] = xToken;
@@ -137,6 +137,11 @@ export default class extends wepy.app {
 
     if ( qrcode_from ) {
       header['qrcode_from'] = qrcode_from;
+    }
+
+    if ( cfToken ) {
+      header['cf_tg_auth'] = cfToken;
+      header['_cf_aries'] = cfAries;
     }
 
     return header;
@@ -148,7 +153,11 @@ export default class extends wepy.app {
     /** 用户唯一标识符 */
     xToken: null,
     /** 设备失效期 */
-    xAries: null
+    xAries: null,
+    
+    /** 静默授权新标识符 */
+    cfAries: null,
+    cfToken: null
   }
 
   config = {

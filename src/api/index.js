@@ -5,7 +5,7 @@ export default class Index extends Pagebase {
    */
   static async getIndexInfo () {
     return await this.request( {
-      url: '/index/newinfo'
+      url: '/stc/index/info'
     } );
   }
   /**
