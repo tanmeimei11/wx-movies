@@ -17,7 +17,7 @@ export default class Detail extends Pagebase {
     //   _data.share_code = shareCode;
     // }
     return await this.request( {
-      url: '/mnp/product/detail_common',
+      url: '/stc/product/detail_common',
       data: _data
     } );
   }
@@ -74,7 +74,7 @@ export default class Detail extends Pagebase {
    */
   static async getShareInfo () {
     return await this.request( {
-      url: '/mnp/share/wechat/img2'
+      url: '/stc/share/wechat/img'
     } );
   }
   /**

@@ -125,7 +125,9 @@ ticket页面收集gps功能
 ### part-31  @xiangxiang   _v:0.5.9
 1.电子商务 埋点
 
-
+### part-32 @xiaofu _v:0.6.0
+1，首页 + 详情页 静默授权
+2，万能弹窗
 
 
 

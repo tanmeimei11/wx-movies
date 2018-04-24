@@ -202,6 +202,7 @@
       let _options = this.initOptions(options)
       this.initQrcodeFrom(options)
       await this.initDetailInfo();
+      await auth.SilReady();
       await auth.ready();
       let data = await this.refreshUnion(_options)
       this.initViewgaProduct(data)

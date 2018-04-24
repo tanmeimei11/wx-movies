@@ -335,6 +335,7 @@
       track( 'result_page' );
       this.orderNo = option.orderNo;
       this.productId = option.product_id
+      await auth.SilReady();
       await auth.ready();
       var res = await Result.getContractID( this.productId )
       this.phone = res.phone

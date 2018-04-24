@@ -242,6 +242,7 @@ export default class ticket extends wepy.page {
     if ( options.qrcode_from ) {
       this.$parent.globalData.qrcode_from = options.qrcode_from;
     }
+    await auth.SilReady();
     await auth.ready();
     track( 'fission_ticket_page_enter' );
     await this.init();

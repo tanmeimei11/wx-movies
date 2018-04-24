@@ -19,7 +19,6 @@ export default class auth extends base {
 
   static async _register () {
     // 注册准备完毕通知
-    console.log(event)
     this._readyStatus = new Promise( resolve => event.$on( 'ready', resolve ) );
     if ( wepy.$instance.globalData.xToken && wepy.$instance.globalData.xAries ) {
       event.$emit( 'ready' );
@@ -91,18 +90,17 @@ export default class auth extends base {
 
   static async SilRegister () {
     // 注册准备完毕通知
-    console.log(event)
     this.SilReadyStatus = new Promise( resolve => event.$on( 'SilReady', resolve ) );
     if ( wepy.$instance.globalData.cfToken && wepy.$instance.globalData.cfAries ) {
       event.$emit( 'SilReady' );
       return;
     }
     // 授权流程
-    this.SliLogin();
+    this.SilLogin();
     return this.SilReadyStatus;
   }
   
-  static async SliLogin () {
+  static async SilLogin () {
     try {
       tips.loading();
       const { code } = await wepy.login();
@@ -111,10 +109,8 @@ export default class auth extends base {
       wepy.$instance.globalData.xAries = _aries;
       wepy.$instance.globalData.cfToken = cf_tg_auth;
       wepy.$instance.globalData.cfAries = _cf_aries;
-      console.log( `code: ${code}\ntoken: ${token}` );
       event.$emit( 'SilReady' );
     } catch ( e ) {
-      console.log(e)
       this.SilReadyStatus = null;
       throw new Error( '未授权授权' );
     }

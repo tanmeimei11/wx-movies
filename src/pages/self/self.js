@@ -186,6 +186,7 @@ export default class self extends wepy.page {
   }
   async onShow () {
     track( 'my_page_screen' );
+    await auth.SilReady();
     await auth.ready();
     await this.init();
   }

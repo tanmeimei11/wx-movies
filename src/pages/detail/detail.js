@@ -18,7 +18,6 @@ import shareLekeMixin from '@/mixins/shareLekeMixin';
 import loadingMixin from '@/mixins/loadingMixin';
 import track from '@/utils/track';
 import {getParamV} from '@/utils/common';
-import { constants } from 'os';
 
 export default class Index extends wepy.page {
   config = {
@@ -355,8 +354,9 @@ export default class Index extends wepy.page {
     this.initBgImages( newRes );
     this.unionInfo = newRes.union_info;
     this.$apply();
-    console.log('error')
-    await auth.ready();
+    if ( this.channelModalInfo.rp_code ) {
+      await auth.ready();
+    }
     track( 'page_entry1' );
     this.detailStatus = await Detail.getDetailStatus( this.productId, this.statusQuery );
     this.initGaProductInfo( this.detailStatus );

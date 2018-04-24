@@ -133,6 +133,7 @@
     }
 
     async onShow () {
+      await auth.SilReady();
       await auth.ready();
       await this.getCardInfo();
     }
