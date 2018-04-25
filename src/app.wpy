@@ -114,6 +114,8 @@ export default class extends wepy.app {
     this.globalData.gaSence =  (opts && opts.scene) ? opts.scene :''
     // 万能弹窗参数
     this.globalData.windowCode = windowCode
+    // 万能弹窗参数
+    this.globalData.query =  opts.query
     /**
      * try
      *   收集微信机型数据
@@ -159,6 +161,8 @@ export default class extends wepy.app {
     xAries: null,
     // 万能弹窗参数
     windowCode: null,
+    windowInfo: {},
+    query: {},
     /** 静默授权新标识符 */
     cfAries: null,
     cfToken: null

@@ -54,6 +54,7 @@ export default class index extends wepy.page {
 
   async onLoad ( option ) {
     await auth.SilReady();
+    this.$invoke('report', 'change')
     if ( option.qrcode_from ) {
       this.$parent.globalData.qrcode_from = option.qrcode_from;
     }

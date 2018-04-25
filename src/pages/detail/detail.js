@@ -343,6 +343,7 @@ export default class Index extends wepy.page {
   async init () {
     console.log( this.detailCode );
     await auth.SilReady();
+    this.$invoke('report', 'change')
     var newRes = await Detail.getDetailDataNew( this.productId, this.detailCode );
     this.cinemas = Detail.initCinemas( newRes.cinemas, newRes.all_cinema_addr_img );
     this.rules = this.initRulesText( newRes.desc );

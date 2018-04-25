@@ -142,7 +142,6 @@
         try {
           await auth.ready();
           await Seat.getSessionFrom();
-          console.log(1)
           this.loginIn = true
           this.$apply()
         } catch (e) {
@@ -156,6 +155,7 @@
     }
     async onShow () {
       await auth.SilReady();
+      this.$invoke('report', 'change')
       await auth.ready();
       await this.init();
     }

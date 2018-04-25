@@ -81,6 +81,7 @@ export default class upgrade extends wepy.page {
     console.log( options );
     this.initQrcodeFrom( options );
     await auth.SilReady();
+    this.$invoke('report', 'change')
     await auth.ready();
     track( 'fission_ticket_upgrade_page_enter' );
     await this.init( options );

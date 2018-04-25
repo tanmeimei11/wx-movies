@@ -106,6 +106,7 @@ export default class cards extends wepy.page {
   async onLoad ( options ) {
     track( 'mycard_page_screen' );
     await auth.SilReady();
+    this.$invoke('report', 'change')
     await auth.ready();
     this.cardId = options.card_id;
     await this.init();

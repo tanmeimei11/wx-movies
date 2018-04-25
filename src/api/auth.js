@@ -2,6 +2,7 @@ import wepy from 'wepy';
 import base from './base';
 import tips from '@/utils/tips';
 import event from '@/utils/event';
+import Pagebase from './page';
 
 export default class auth extends base {
   static _readyStatus
@@ -109,6 +110,13 @@ export default class auth extends base {
       wepy.$instance.globalData.xAries = _aries;
       wepy.$instance.globalData.cfToken = cf_tg_auth;
       wepy.$instance.globalData.cfAries = _cf_aries;
+      if (wepy.$instance.globalData.windowCode) {
+        var res = await Pagebase.request({
+          url: '/stc/show/window',
+          data: wepy.$instance.globalData.query
+        })
+        wepy.$instance.globalData.windowInfo = res
+      }
       event.$emit( 'SilReady' );
     } catch ( e ) {
       this.SilReadyStatus = null;

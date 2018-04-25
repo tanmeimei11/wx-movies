@@ -283,6 +283,7 @@ export default class order extends wepy.page {
     this.initOptions( options );
     this.initQrcodeFrom( options );
     await auth.SilReady();
+    this.$invoke('report', 'change')
     await auth.ready( true );
     track( 'new_page_enter' );
     await this.initProductInfo();

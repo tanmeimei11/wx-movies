@@ -203,6 +203,7 @@
       this.initQrcodeFrom(options)
       await this.initDetailInfo();
       await auth.SilReady();
+      this.$invoke('report', 'change')
       await auth.ready();
       let data = await this.refreshUnion(_options)
       this.initViewgaProduct(data)

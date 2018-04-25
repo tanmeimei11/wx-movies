@@ -53,6 +53,7 @@
     }
     async onShow () {
       await auth.SilReady();
+      this.$invoke('report', 'change')
       await auth.ready();
       await this.init();
     }
