@@ -10,7 +10,7 @@
       <image mode="widthFix" src="{{windowInfo.img_url}}"></image>
       <!-- <image mode="widthFix" src="https://inimg05.jiuyan.info/in/2018/01/26/D79557A6-9FBD-C33A-2298-C262E84FA7CA.png"></image> -->
       <view class="close" @tap.stop="close"></view>
-      <contact-button session-from="{{windowInfo.session_from}}" class="custom" wx:if="{{windowInfo.action.action_type === 'custom'}}"></contact-button>
+      <contact-button session-from="{{windowInfo.session_from}}" class="custom" wx:if="{{windowInfo.type === 'custom'}}"></contact-button>
     </view>
   </view>
 </template>
