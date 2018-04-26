@@ -114,13 +114,14 @@ export default class ReportSubmit extends wepy.component {
       } );
     },
     close () {
+      wepy.$instance.globalData.windowInfo = ''
+      wepy.$instance.globalData.windowCode = ''
       this.windowShow = false
     },
     redirect () {
       var info = wepy.$instance.globalData.windowInfo
       wepy.$instance.globalData.windowInfo = ''
       wepy.$instance.globalData.windowCode = ''
-      console.log(wepy.$instance.globalData.windowCode)
       this.windowShow = false
       switch ( info.type ) {
         case 'h5':this.redirectH5( info ); break;
