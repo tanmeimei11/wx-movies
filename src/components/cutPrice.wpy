@@ -1,0 +1,272 @@
+<style lang="less">
+.price-wrap {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+  .cut-pop {
+    width: 560rpx;
+    height: 510rpx;
+    border-radius: 8rpx;
+    background: #fff;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate3d(-50%, -50%, 0);
+    .avater {
+      width: 100rpx;
+      height: 100rpx;
+      border-radius: 100%;
+      background-image: url("https://inimg02.jiuyan.info/in/2015/06/08/3C86C234-D785-DFAC-0D1C-6F0EF8F33088.jpg");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center;
+      position: absolute;
+      left: 230rpx;
+      top: 60rpx;
+    }
+    .tit {
+      width: 100%;
+      text-align: center;
+      color: #000;
+      font-size: 32rpx;
+      position: absolute;
+      left: 0;
+      top: 210rpx;
+    }
+    .subtit {
+      width: 100%;
+      text-align: center;
+      color: #000;
+      font-size: 28rpx;
+      position: absolute;
+      left: 0;
+      top: 275rpx;
+    }
+    .cut-btn {
+      width: 460rpx;
+      height: 80rpx;
+      line-height: 80rpx;
+      text-align: center;
+      color: #fff;
+      background-image: linear-gradient(to bottom, #ff4338, #ff7869);
+      border-radius: 100rpx;
+      position: absolute;
+      left: 50rpx;
+      top: 370rpx;
+      font-size: 32rpx;
+    }
+    .close-btn {
+      position: absolute;
+      right: 20rpx;
+      top: 20rpx;
+      width: 50rpx;
+      height: 50rpx;
+      background-repeat: no-repeat;
+      background-size: 24rpx 24rpx;
+      background-position: center center;
+      background-image: url("https://inimg01.jiuyan.info/in/2018/04/17/3DE8DBB7-D682-1D20-C924-15C4F523932E.png");
+    }
+  }
+  .bag-pop {
+    position: relative;
+    width: 560rpx;
+    min-height: 300rpx;
+    border-radius: 8rpx;
+    background: #fff;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate3d(-50%, -50%, 0);
+    padding-bottom: 30rpx;
+    .avater {
+      width: 100rpx;
+      height: 100rpx;
+      border-radius: 100%;
+      background-image: url("https://inimg02.jiuyan.info/in/2015/06/08/3C86C234-D785-DFAC-0D1C-6F0EF8F33088.jpg");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center;
+      position: absolute;
+      left: 230rpx;
+      top: 60rpx;
+    }
+    .txt1 {
+      width: 100%;
+      text-align: center;
+      color: #000;
+      font-size: 32rpx;
+      margin-top: 180rpx;
+      text {
+        color: #ff4338;
+      }
+    }
+    .txt2 {
+      width: 100%;
+      text-align: center;
+      color: #000;
+      font-size: 28rpx;
+      margin-top: 20rpx;
+      text {
+        color: #ff4338;
+      }
+    }
+    .red-box {
+      display: flex;
+      width: 450rpx;
+      justify-content:space-around;
+      margin-top: 40rpx;
+      height: 169rpx;
+      padding-left: 30rpx;
+    }
+    .red-bag {
+      background-image: url("https://inimg01.jiuyan.info/in/2018/04/17/257BCC35-5016-3A8D-750C-28B261E825AE.png");
+      width: 135rpx;
+      height: 169rpx;
+      background-repeat: no-repeat;
+      background-size: contain;
+      padding: 40rpx 0;
+      margin-left: 30rpx;
+    }
+    .use-bag {
+      width: 220rpx;
+      height: 80rpx;
+      line-height: 80rpx;
+      text-align: center;
+      color: #fff;
+      background: #ff5448;
+      border-radius: 100rpx;
+      margin-left: 50rpx;
+      display: inline-block;
+      font-size: 28rpx;
+      margin-top: 30rpx;
+    }
+    .me-cut {
+      width: 220rpx;
+      height: 78rpx;
+      line-height: 80rpx;
+      text-align: center;
+      color: #ff5448;
+      background: #fff;
+      border-radius: 100rpx;
+      display: inline-block;
+      font-size: 28rpx;
+      border: 1rpx solid #ff5448;
+      margin-top: 30rpx;
+      margin-left: 30rpx;
+    }
+    .close-btn {
+      position: absolute;
+      right: 20rpx;
+      top: 20rpx;
+      width: 50rpx;
+      height: 50rpx;
+      background-repeat: no-repeat;
+      background-size: 24rpx 24rpx;
+      background-image: url("https://inimg01.jiuyan.info/in/2018/04/17/3DE8DBB7-D682-1D20-C924-15C4F523932E.png");
+    }
+  }
+}
+</style>
+<template>
+<view  wx:if="{{popshow}}">
+    <view class="price-wrap" wx:if="{{popshow}}">
+        <view class="cut-pop" wx:if="{{cutshow}}">
+            <view class="avater" style="background-image:url({{cutData.avatar}})"></view>
+            <view class="tit">{{cutData.up_desc}}</view>
+            <view class="subtit"  wx:if="{{cutData.under_desc}}">{{cutData.under_desc}}</view>
+            <view class="cut-btn" @tap="cut"  wx:if="{{cutData.cut_status === '0'}}">立即帮砍价</view>
+            <view class="cut-btn"  wx:if="{{cutData.cut_status === '1'}}" @tap="mecutFun">我也要砍价</view>
+            <view class="cut-btn"  wx:if="{{cutData.cut_status === '2'}}" @tap="usebagFun">去使用红包</view>
+            <view class="close-btn" @tap="closeFuna"></view>
+        </view>
+        <view class="bag-pop" wx:if="{{cutResult}}">
+            <view class="avater" style="background-image:url({{cutresultData.avatar}})"></view>
+            <view class="txt1" wx:if="{{cutresultData.cut_amount}}">谢谢你帮我砍了<text>{{cutresultData.cut_amount}}</text>元</view>
+            <view class="txt2" wx:if="{{cutresultData.red_package_amount}}">送你 <text>{{cutresultData.red_package_count}}</text> 个电影红包共计 <text>{{cutresultData.red_package_amount}}</text> 元</view>
+            <view class="red-box"  wx:if="{{cutresultData.red_package_img.length > 0}}">
+                <view class="red-bag" wx:for="{{cutresultData.red_package_img}}" wx:for-index="idx" wx:for-item="item" wx:key="{{idx}}"  style="background-image:url({{item}})"></view>
+            </view>
+            <view class="use-bag" @tap="usebagFun">去使用红包</view>
+            <view class="me-cut" @tap="mecutFun" >我也要砍价</view>
+            <view class="close-btn" @tap="closeFunb"></view>
+        </view>
+    </view>
+</view>
+</template>
+<script>
+import wepy from 'wepy';
+import Cut from '@/api/cut';
+import track from '@/utils/track';
+
+export default class cutPrice extends wepy.component {
+  data = {
+    cutResult: false,
+    cutshow: true,
+    popshow: true,
+    cutresultData: null,
+    cutData: null
+    // isself: this.props.cut_status
+  };
+  props = {
+    cutData: Object,
+    cutId: String
+  }
+
+  watch = {
+    cutData () {
+      if ( this.cutData.cut_status === '3' ) {
+        wepy.redirectTo( {
+          url: '/pages/cut/cut'
+        });
+      }
+    }
+  }
+
+  methods = {
+    async cut () {
+        track('bargin_box_help_bargain')
+      console.log( this.cutId, 'jjjjj' );
+      let res = await Cut.action( this.cutId );
+      this.cutresultData = res;
+      console.log( res );
+      this.cutshow = false;
+      this.cutResult = true;
+      this.$apply();
+    },
+    closeFuna () {
+        track('bargin_box_x1')
+      this.popshow = false;
+      this.$apply();
+    },
+    closeFunb () {
+        track('bargin_box_x2')
+      this.popshow = false;
+      this.$apply();
+    },
+    usebagFun () {
+        track('bargin_box_redpack_use')
+      wepy.navigateTo( {
+        url: '/pages/cutinfo/cutinfo'
+      } );
+    },
+    mecutFun () {
+        track('bargin_box_bargin_too')
+      wepy.navigateTo( {
+        url: '/pages/cut/cut'
+      } );
+    }
+  };
+
+  async onLoad () {
+    // console.log( 'jiemo' );
+    // var res = await Cut.friendDetail();
+    // this.cutData = res;
+    // this.$apply();
+    // console.log( 'res', res );
+  }
+}
+</script>

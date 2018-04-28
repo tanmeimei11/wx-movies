@@ -3,6 +3,7 @@ module.exports = {
   'code': '200003',
   'succ': true,
   'data': {
+    "cf_close": '',
     'leke_info': {
       'leke_code': '9kslls', // 乐刻码
       'bgs': [

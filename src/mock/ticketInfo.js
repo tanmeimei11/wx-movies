@@ -20,11 +20,11 @@ module.exports = {
     'ticket_desc': '今日电影票已领完',
     'ticket_switch': false,
     'tickets': [
-      // {
-      //   share_code: 'jdjdjfjdf', // 分享code
-      //   ticket_status: '0', // 初始未分享的状态
-      //   id: 45
-      // },
+      {
+        share_code: 'jdjdjfjdf', // 分享code
+        ticket_status: '0', // 初始未分享的状态
+        id: 45
+      },
       // {
       //   share_code: 'jdjdjfjdf', // 分享code
       //   ticket_status: '1', // 初始未分享的状态
@@ -95,7 +95,12 @@ module.exports = {
         tips: '24h内有效'
       }
     ],
-    "ab_test":"1"
+    'location_info': {
+      gps_authorized: false,
+      tip_txt: '请开启授权',
+      tip_desc: '该票仅限「上海用户」使用，请开启授权'
+    },
+    'ab_test': '1'
   },
   'code': '0',
   'msg': ''
