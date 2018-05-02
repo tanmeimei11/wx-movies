@@ -7,7 +7,8 @@
     "dev": "wepy build --watch",
     "build": "cross-env NODE_ENV=production wepy build --no-cache",
     "upload": "node assets/qiniu",
-    "tiny": "node assets/tiny"
+    "tiny": "node assets/tiny",
+    "clean": "find ./dist -maxdepth 1 -not -name 'project.config.json' -not -name 'dist' | xargs rm -rf"
   },
   "author": "",
   "license": "MIT",

@@ -1,0 +1,50 @@
+<template>
+  <report>
+    <view class="container">
+      <!-- <view class="banner"></view> -->
+      <view class="c-head-img"  wx:if="{{upgrade.bg_img01}}">
+        <image mode="widthFix" class="movielist" src="{{upgrade.bg_img01}}"></image>
+        <seckill wx:if="{{isShowSeckill}}"></seckill>
+      </view>
+      <image mode="widthFix" class="movielist" wx:if="{{upgrade.bg_img02}}" src="{{upgrade.bg_img02}}"></image>
+      
+      <view class="c-part-live">
+        <view class="topic"></view>
+        <view class="liveList">
+          <swiper display-multiple-items='1.5'>
+            <block wx:for="{{cinema_photos}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
+              <swiper-item>
+                <image src="{{item}}" mode="widthFix" class="slide-image"></image>
+              </swiper-item>
+            </block>
+          </swiper>
+        </view>
+      </view>
+
+      <image mode="widthFix" class="movielist" src="{{upgrade.movie_list}}"></image>
+
+      <view class="video" wx:if="{{videoInfo.video_url}}">
+        <view class="topic"></view>
+        <view class="videoBox">
+          <image class="cover_img" mode="aspectFill" src="{{videoInfo.cover_img_url}}"/>
+          <view class="covertop"></view>
+          <view class="coverbtn" @tap="showVideo"></view>
+        </view>
+      </view>   
+      <image mode="widthFix" class="movielist" wx:if="{{upgrade.bg_img03}}" src="{{upgrade.bg_img03}}"></image>
+      <image mode="widthFix" class="movielist" wx:if="{{upgrade.bg_img04}}" src="{{upgrade.bg_img04}}"></image>
+      <!-- <view class="upgrade"></view> -->
+
+    </view>
+    <view class="videoWindow" wx:if="{{videoInfo.video_url && videoShow}}">
+       <view class="bg" @tap="closeVideo"></view>
+       <video src="{{videoInfo.video_url}}" poster="{{videoInfo.cover_img_url}}" controls autoplay direction='0' bindended="videoEnd"  bindfullscreenchange="videoEnd" >
+       </video>
+    </view>
+    <goSeat wx:if="{{isShowGoSeat}}"></goSeat>
+  </report>
+</template>
+<style lang="less" src="./template.less">
+</style>
+<script src="./template.js">
+</script>

@@ -105,17 +105,17 @@ export default class extends wepy.app {
   }
 
   async onLaunch ( opts ) {
-    console.log(opts)
-    var windowCode = opts.query.window_code || ''
+    console.log( opts );
+    var windowCode = opts.query.window_code || '';
     var qf = opts.query.qrcode_from || getParamV( opts, 'qf' );
     // 渠道埋点
     this.globalData.qrcode_from = qf || '';
     // 场景值
-    this.globalData.gaSence =  (opts && opts.scene) ? opts.scene :''
+    this.globalData.gaSence = ( opts && opts.scene ) ? opts.scene : '';
     // 万能弹窗参数
-    this.globalData.windowCode = windowCode
+    this.globalData.windowCode = windowCode;
     // 万能弹窗参数
-    this.globalData.query =  opts.query
+    this.globalData.query = opts.query;
     /**
      * try
      *   收集微信机型数据
@@ -169,7 +169,7 @@ export default class extends wepy.app {
   }
 
   config = {
-    pages: ['pages/index/index','pages/union/union',  'pages/self/self', 'pages/detail/detail', 'pages/seat/seat', 'pages/result/result', 'pages/card/card', 'pages/ticket/ticket', 'pages/webview/webview', 'pages/leke/leke', 'pages/upgrade/upgrade','pages/order/order', 'pages/coupon/coupon'],
+    pages: ['pages/index/index', 'pages/template/template', 'pages/union/union', 'pages/self/self', 'pages/detail/detail', 'pages/seat/seat', 'pages/result/result', 'pages/card/card', 'pages/ticket/ticket', 'pages/webview/webview', 'pages/leke/leke', 'pages/upgrade/upgrade', 'pages/order/order', 'pages/coupon/coupon'],
     tabBar: {
       'color': '#4A4A4A',
       'selectedColor': '#D0A661',

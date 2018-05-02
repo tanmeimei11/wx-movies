@@ -38,5 +38,6 @@ module.exports = {
   [`${DOMAIN}/mnp/union/cancel`]: 'ccancelUnion',
   [`${DOMAIN}/info/union/others`]: 'othersUnion',
   [`${DOMAIN}/info/detail/bubble`]: 'othersUnion',
+  [`${DOMAIN}/stc/promo/page`]: 'template',
   [`${payUrl}`]: 'signature'
 };
