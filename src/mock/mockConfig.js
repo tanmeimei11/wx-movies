@@ -11,7 +11,7 @@ module.exports = {
   [`${DOMAIN}/promotion/channel/ticket`]: 'upgrade',
   [`${DOMAIN}/stc/product/detail_common`]: 'cfStatus',
   [`${DOMAIN}/mnp/order/result`]: 'result',
-  [`${DOMAIN}/mnp/share/wechat/img2`]: 'wechatimg',
+  [`${DOMAIN}/stc/share/wechat/img`]: 'wechatimg',
   [`${DOMAIN}/mnp/account/withdraw`]: 'withdraw',
   [`${DOMAIN}/stc/show/window`]: 'window',
   [`${DOMAIN}/mnp/card/add_phone`]: 'withdraw',
@@ -38,5 +38,8 @@ module.exports = {
   [`${DOMAIN}/mnp/union/cancel`]: 'ccancelUnion',
   [`${DOMAIN}/info/union/others`]: 'othersUnion',
   [`${DOMAIN}/info/detail/bubble`]: 'othersUnion',
+  [`${DOMAIN}/mnp/cut/friendDetail`]: 'friendDetail',
+  [`${DOMAIN}/mnp/cut/action`]: 'action',
+  [`${DOMAIN}/mnp/cut/detail`]: 'cutdetail',
   [`${payUrl}`]: 'signature'
 };

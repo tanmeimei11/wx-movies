@@ -2,6 +2,7 @@ module.exports = {
     "timestamp": "1520838405",
     "succ": true,
     "data": {
+      "cut_btn": "", 
       "card": 'http://inimg05.jiuyan.info/in/2018/03/30/8085CE36-DCC4-7087-407A-89F277D30ED8.png',
       "icon": [{
         "title": "多家影院",
@@ -33,9 +34,6 @@ module.exports = {
       "union_btn_txts": [{
         "text": "立即抢购",
         "price": "159"
-      }, {
-        "text": "一键拼团",
-        "price": "119"
       }],
       "tabbar": [{
         "id": "right",

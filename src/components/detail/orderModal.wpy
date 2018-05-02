@@ -1,0 +1,151 @@
+<template>
+  <view class="c-modal c-receive-modal">
+    <view class="c-wrap">
+      <view class="s-close" @tap="close" ></view>
+      <view class="s-main">
+        <!-- 手机号输入 -->
+        <view class="phone-wrap">
+          <view class="desc">请输入手机号</view>
+          <input placeholder="输入手机号" type="number" value="{{phoneNum}}" maxlength="11" bindinput="getPhoneNum" placeholder-style="color:#B0B0B0"/>
+        </view>
+      </view>
+      <view class="s-btn {{orderWindow.btnStatus ? '':'disabled'}}" bindtap="receive">确认预约</view>
+    </view>
+  </view>
+</template>
+<style lang="less">
+
+.c-receive-modal {
+  .c-wrap{
+    padding-bottom: 50rpx;
+  }
+  .s-close {
+    background-image: url("http://inimg01.jiuyan.info/in/2018/04/19/F164E971-4728-4A7B-F8D6-469C39CADE93.png")!important;
+  }
+  .s-header {
+    color: #fff;
+    height: 189rpx;
+    background-image: url(http://inimg05.jiuyan.info/in/2017/11/05/83797657-FB5E-CC5A-AB81-B1412FE62751.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding-top: 50rpx;
+    box-sizing: border-box;
+    .nick-wrap {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      font-size: 24rpx;
+      justify-content: center;
+      margin-bottom: 23rpx;
+      .avatar {
+        width: 40rpx;
+        height: 40rpx;
+        overflow: hidden;
+        border-radius: 50%;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        margin-right: 10rpx;
+      }
+      .name {
+        display: inline-block;
+        max-width: 200rpx;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+    .text {
+      font-size: 28rpx;
+    }
+  }
+  .s-main{
+    text-align: left;
+    .phone-wrap{
+      width: 100%;
+      box-sizing:border-box;
+      padding: 50rpx ;
+      color: #666666;
+      font-size:28rpx;
+      .desc{
+       margin-bottom: 12rpx;
+      }
+      input{
+        height: 70rpx;
+        background-color: #F7F7F7;
+         box-sizing:border-box;
+        padding: 0 10rpx ;
+      }
+    }
+  }
+  .s-btn {
+    width: 460rpx;
+    height: 80rpx;
+    line-height: 80rpx;
+    font-size: 28rpx;
+    text-align: center;
+    margin: 0 auto 0;
+    border-radius: 200rpx;
+    color: #fff;
+    background-image: linear-gradient(90deg, #fd9c6c 0%, #f95557 100%);
+    border-radius: 100px;
+    font-size: 28rpx;
+    position: relative;
+     &.disabled{
+       pointer-events: none;
+     }
+    &.disabled:before{
+      content: '';
+      position: absolute;
+      left: 0;
+      top:0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.7)
+    }
+  }
+}
+</style>
+<script>
+import wepy from "wepy";
+import util from "@/utils/util";
+import { request } from "@/utils/request";
+import tips from "@/utils/tips";
+import track from "@/utils/track";
+
+export default class orderModal extends wepy.component {
+  props = {
+    orderWindow: Object,
+  };
+  data = {
+    phoneNum:''
+  };
+  methods = {
+    getPhoneNum(v){
+      this.phoneNum = v.detail.value
+    },
+    receive(){
+      this.$emit('receiveOrder')
+    },
+    close(){
+      this.$emit('closeOrderModal')
+    }
+  };
+  watch= {
+    phoneNum (newVal,oldVal){
+      if((util.verifyPhone(newVal)) && !this.orderWindow.btnStatus){
+        this.$emit('changeOrderBtnStatus', true, newVal)
+      }else {
+        this.orderWindow.btnStatus && this.$emit('changeOrderBtnStatus', false, newVal)
+      }
+    },
+    orderWindow (newVal){
+      if(newVal.phoneNum !== this.phoneNum){
+        this.phoneNum = newVal.phoneNum
+        this.$apply()
+      }
+    }
+  }
+}
+</script>

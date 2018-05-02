@@ -1,0 +1,590 @@
+<template>
+  <report>
+    <view class="container">
+      <view class="tips">
+        <text wx:if="{{timesUp}}">你的电影红包已过期</text>
+        <text wx:if="{{!timesUp}}">你还有总价值<text class="red">{{rp_price*rp_count}}</text>元电影红包待使用</text>
+        <text class="right" @tap="openrule">使用规则</text>
+      </view>
+      <view class="middle">
+        <view class="countDown" wx:if="{{!timesUp}}">{{countNum}}后红包过期</view>
+        <scroll-view class="movieList" scroll-x>
+          <view class="movies">
+            <view class="movie-item {{currentIndex==idx ? 'on' : ''}}"  wx:for="{{movies}}" wx:for-index="idx" wx:for-item="item" wx:key="idx" @tap="chooseMoive" data-id="{{idx}}">
+              <view class="img" style="background-image:url({{item.poster_url}})">
+                <view class="check {{item.active ? 'on' : ''}}"></view>
+              </view>
+              <view class="name">{{item.name}}</view>
+              <view class="type">{{item.movie_desc}}</view>
+              <view class="want">{{item.wantCountStr}}</view>
+              <view class="price">￥{{origin}}</view>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+      <view class="bottom">
+        <view class="icon"></view>
+        <view class="checkedNum">已选电影：{{checked}}部</view>
+        <view class="checkedPrice">合计金额：<text class="realPrice">￥{{realPrice}}</text><text class="originPrice">原价 ￥{{originPrice}}</text></view>
+        <view class="ticketBtn" @tap="payTicket"></view>
+        <view class="discount">红包已抵扣{{discount}}元</view>
+        <view class="cardArea" @tap="payCard">
+          <view class="title" style="background-image:url({{config.img_title}})"></view>
+          <view class="card" style="background-image:url({{config.card_icon}})"></view>
+          <view class="desc">{{config.word_title}}</view>
+          <view class="price">￥<text class="real">{{info.card_price}}</text><text class="origin">原价{{info.card_origin_price}}</text></view>
+          <text class="cardBtn">去支付 ></text>
+          <view class="discount">专享限时优惠</view>
+        </view>
+      </view>
+    </view>
+    <!-- <modal></modal> -->
+    <view class="paysuc c-modal" wx:if="{{showWindow}}">
+      <view class="paysucWindow c-wrap">
+        <view class="s-close" @tap="close"></view>
+        <view style="font-size: 40rpx">支付成功！</view>
+        <view class="toTicket" @tap="toTicket">查看我的票</view>
+      </view>
+    </view>
+    <view class="rulepop" wx:if="{{isrule}}">
+        <view class="closecont">
+            <view class="close-btn" @tap="closepop"></view>
+            <image mode="widthFix" src="{{config.rule_img}}"></image>
+        </view>
+    </view>
+  </report>
+</template>
+
+<script>
+  import wepy from 'wepy';
+  import auth from '@/api/auth';
+  import Pay from '@/api/pay';
+  import cutInfo from '@/api/cutInfo';
+  import report from '@/components/report-submit';
+  import tips from '@/utils/tips';
+  import modal from '@/components/modal';
+  import track from '@/utils/track';
+
+  function timer (num) {
+    var h = toDouble(num / 3600)
+    var m = toDouble(num % 3600 / 60)
+    var s = toDouble(num % 60)
+    var newnum = h + ':' + m + ':' + s
+    return newnum
+  }
+
+  function toDouble (num) {
+    var newnum = parseInt(num)
+    if (newnum < 10) {
+      newnum = '0' + newnum
+    }
+    return newnum
+  }
+
+  export default class cutinfo extends wepy.page {
+    config = {
+      navigationBarTitleText: '电影王卡预热优惠'
+    }
+    mixins = []
+    components = {modal,report}
+    data = {
+      isrule: false,
+      currentIndex: '',
+      info: {},
+      movies: [],
+      timesUp: true,
+      countNum: '',
+      checked: 0,
+      origin: 0,
+      realPrice: 0,
+      rp_count: 0,
+      rp_price: 0,
+      originPrice: 0,
+      discount: 0,
+      card_product_id: 0,
+      ticket_product_id: 0,
+      rp_code: '',
+      config: {},
+      showWindow: false
+    }
+    events = {
+    }
+    methods = {
+      openrule () {
+        this.isrule = true;
+        this.$apply();
+      },
+      closepop () {
+        this.isrule = false;
+        this.$apply();
+      },
+      close () {
+        this.showWindow = false
+        this.$apply()
+      },
+      toTicket () {
+        wepy.navigateTo( {
+          url: `/pages/coupon/coupon`
+        } );
+      },
+      chooseMoive (e) {
+        track('bargain_movie_select')
+        let item = this.movies[e.currentTarget.dataset.id]
+        if (item.active) {
+          item.active = false
+          this.checked --
+        } else {
+          item.active = true
+          this.checked ++
+        }
+        this.priceChange()
+        this.$apply()
+      },
+      payTicket () {
+        if ( !this.checked ) return
+        track('bargain_pay_movie')
+        this.pay ( '/mnp/order/create_common', {
+          'rp_code': this.rp_code,
+          'buy_num': this.checked,
+          'product_id': this.ticket_product_id
+        },()=>{
+          track('bargain_pay_movie_successful')
+          this.showWindow = true
+          this.$apply()
+        } )
+      },
+      payCard () {
+        track('bargain_pay_card')
+        this.pay ( '/mnp/order/create_common', {
+          'by_share': 1,
+          'product_id': this.card_product_id
+        },(e)=>{
+          track('bargain_pay_card_successful')
+          wepy.navigateTo( {
+            url: `/pages/result/result?orderNo=${e}&product_id=${this.card_product_id}`
+          } );
+        } )
+      }
+    }
+    async onLoad(options) {
+      await auth.SilReady();
+      this.$invoke('report', 'change')
+      await auth.ready();
+      this.init()
+    } 
+    async init () {
+      let res = await cutInfo.getCutInfo();
+      this.info = res
+      this.movies = res.movie_list
+      this.checked = res.movie_list.length
+      this.rp_price = res.rp_price
+      this.rp_count = res.rp_count
+      this.origin = res.ticket_origin_price
+
+      this.card_product_id = res.card_product_id
+      this.ticket_product_id = res.ticket_product_id
+
+      this.rp_code = res.rp_code
+      this.config = res.config
+      this.movies.forEach((item, i) => {
+        Object.assign(item, {
+          'active':true
+        })
+      });
+      if (parseInt(res.rp_expiry_time)) {
+        this.timesUp = false
+      }
+      // this.countNum = '01:01:01'
+      this.priceChange()
+      this.countDown(parseInt(res.rp_expiry_time))
+      this.$apply()
+    }
+    /*
+    * 支付
+    */
+    async pay  (_url, _data, cb ) {
+      await auth.ready();
+      try {
+        var createRes = await Pay.creatOrder(_url, _data)
+
+        if ( createRes.code === '4160033001' || createRes.code === '4160033001' ) {
+          this.showModal(createRes.msg )
+          return;
+        }
+
+      // if ( createRes.product_info ) {
+      //   this.gaProductInfo = {
+      //     ...createRes.product_info,
+      //     price: parseInt( createRes.product_info.price ) / parseInt( createRes.product_info.quantity ),
+      //   };
+      // }
+
+        var _orderDetailData = await Pay.getOrderDetail(createRes.data)
+        await wepy.requestPayment( _orderDetailData.sign );
+
+        cb && cb(createRes.order_no)
+        // this.refreshUnion()
+      } catch (error) {
+        tips.loaded()
+        console.error(error)
+      }
+     
+    }
+    priceChange () {
+      this.originPrice = this.checked * this.origin
+      if (this.rp_count > this.checked) {
+        this.realPrice = this.originPrice - this.rp_price * this.checked
+        this.discount = this.rp_price * this.checked
+      } else {
+        this.realPrice = this.originPrice - this.rp_price * this.rp_count
+        this.discount = this.rp_price * this.rp_count
+      }
+    }
+    countDown (num) {
+      if (this.timesUp) return
+      num--
+      if (num < 0) {
+        this.init()
+        return
+      }
+      this.timesUp = false
+      this.countNum = timer(num)
+      this.$apply()
+      setTimeout(() => {
+        this.countDown(num)
+      }, 1000)
+      return num
+    }
+    /*
+    * 万能弹窗
+    */
+    showModal (data) {
+      var _data = typeof data === 'string' ? {text:data} :data
+      return new Promise ((resolve, reject)=>{
+        this.$invoke('modal', 'show', {
+          ..._data,
+          success:()=>{
+            console.log('succ')
+            resolve()
+          },
+          fail:()=>{
+            console.log('fail')
+            reject()
+          },
+          complete:()=>{
+            console.log('complete')
+          }
+        })
+      })
+    }
+  }
+</script>
+
+<style lang="less">
+
+.container{
+  background: #666;
+  min-height: 100vh;
+  display: block;
+  .tips{
+    font-size: 24rpx;
+    color: #f1524a;
+    width: 100%;
+    height: 106rpx;
+    line-height: 106rpx;
+    background: rgba(246,246,246,1);
+    &::before {
+      display: inline-block;
+      vertical-align: middle;
+      margin: 0 20rpx 0 40rpx;
+      content: '';
+      width: 50rpx;
+      height: 50rpx;
+      background: url('http://inimg02.jiuyan.info/in/2018/03/16/5DFD04E9-0D0D-6CA4-1879-00FB733ADB47.png') no-repeat;
+      background-size: 50rpx;
+      background-position: center;
+    }
+    .right{
+      float: right;
+      margin-right: 20rpx
+    }
+  }
+  .middle{
+    background: #666;
+    width: 100%;
+    position: relative;
+    padding-top: 1rpx;
+    .countDown{
+      font-size: 22rpx;
+      color: #fff;
+      text-align: center;
+      background: rgba(0,0,0,0.8);
+      position: absolute;
+      top: 20rpx;
+      left: 241rpx;
+      width: 268rpx;
+      height: 54rpx;
+      line-height: 54rpx;
+      border-radius: 100rpx;
+    }
+    .movieList{
+      margin-top: 94rpx;
+      width: 750rpx;
+      padding-bottom: 50rpx;
+      .movies{
+        padding-left: 30rpx;
+        display: flex;
+        flex-direction: row;
+        .movie-item{
+          display: inline-block;
+          margin: 0 13rpx;
+          position: relative;
+          .check{
+            position: absolute;
+            top: 10rpx;
+            right: 10rpx;
+            width: 48rpx;
+            height: 48rpx;
+            background-image: url('http://inimg01.jiuyan.info/in/2018/04/17/35CF1F77-1816-C49F-8CBB-0EF818F37753.png');
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+            &.on{
+              background-image: url('http://inimg01.jiuyan.info/in/2018/04/17/972F7474-C068-0CFC-7374-1C5A34C6C846.png');
+            }
+          }
+          .img{
+            position: relative;
+            width: 200rpx;
+            height: 284rpx;
+            border-radius: 6rpx;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+          }
+          .name{
+            font-size: 28rpx;
+            margin-top: 10rpx;
+            color: #fff;
+            margin: 10rpx;
+          }
+          .type{
+            font-size: 24rpx;
+            color: #e0e0e0;
+            line-height: 30rpx;
+            margin: 10rpx;
+            width: 200rpx;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap
+          }
+          .want{
+            font-size: 20rpx;
+            color: #e0e0e0;
+            line-height: 24rpx;
+            margin: 10rpx;
+          }
+          .price{
+            font-size: 32rpx;
+            color: #fff;
+            line-height: 34rpx;
+            margin: 10rpx;
+          }
+        }
+      }
+    }
+  }
+  .bottom{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 493rpx;
+    background-image: linear-gradient(-180deg, #FF8467 0%, #E35650 100%);
+    .icon{
+      position: absolute;
+      top: -46rpx;
+      left: 20rpx;
+      width: 111rpx;
+      height: 111rpx;
+      background: url('http://inimg02.jiuyan.info/in/2018/04/17/C42B280B-8379-8443-C600-BAC070045784.png') no-repeat;
+      background-size: contain;
+      background-position: center;
+    }
+    .checkedNum{
+      font-size: 28rpx;
+      color: #fff;
+      position: absolute;
+      top: 75rpx;
+      left: 30rpx;
+    }
+    .checkedPrice{
+      position: absolute;
+      top: 111rpx;
+      left: 30rpx;
+      font-size: 28rpx;
+      color: #fff;
+      .realPrice{
+        font-size: 44rpx;
+        font-weight: bold;
+      }
+      .originPrice{
+        margin-left: 10rpx;
+        font-size: 20rpx;
+        color: #e0e0e0;
+        text-decoration: line-through;
+      }
+    }
+    .ticketBtn{
+      position: absolute;
+      top: 98rpx;
+      right: 30rpx;
+      width: 184rpx;
+      height: 72rpx;
+      background: url('http://inimg02.jiuyan.info/in/2018/04/17/9EDC1BB1-63F4-C210-FB96-55D34C933C68.png') no-repeat;
+      background-size: contain;
+      background-position: center;
+    }
+    .discount{
+      position: absolute;
+      top: 170rpx;
+      left: 160rpx;
+      width: 164rpx;
+      height: 34rpx;
+      background-image: linear-gradient(90deg, #FCB43D 0%, #FEC872 100%);
+      box-shadow: 0 2rpx 7rpx 0 rgba(0,0,0,0.10);
+      border-radius: 6rpx;
+      line-height: 34rpx;
+      text-align: center;
+      font-size: 20rpx;
+      color: #fff;
+    }
+    .cardArea{
+      width: 690rpx;
+      height: 240rpx;
+      position: absolute;
+      top: 230rpx;
+      left: 30rpx;
+      background: #FFFFFF;
+      box-shadow: 0 0 10px 0 rgba(0,0,0,0.10);
+      border-radius: 8rpx;
+      .title{
+        margin: 26rpx auto;
+        width: 392rpx;
+        height: 24rpx;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+      }
+      .card{
+        position: absolute;
+        top: 88rpx;
+        left: 30rpx;
+        width: 210rpx;
+        height: 130rpx;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+      }
+      .desc{
+        position: absolute;
+        top: 88rpx;
+        left: 250rpx;
+        font-size: 28rpx;
+        color: #000;
+      }
+      .price{
+        position: absolute;
+        bottom: 60rpx;
+        left: 250rpx;
+        font-size: 28rpx;
+        color: #ff5e51;
+        .real{
+          font-size: 42rpx;
+        }
+        .origin{
+          font-size: 24rpx;
+          color: #b0b0b0;
+          text-decoration: line-through;
+          margin-left: 10rpx;
+        }
+      }
+      .cardBtn{
+        font-size: 24rpx;
+        color: #ff5e51;
+        position: absolute;
+        bottom: 30rpx;
+        right: 30rpx;
+        line-height: 42rpx;
+      }
+      .discount{
+        position: absolute;
+        top: 180rpx;
+        left: 250rpx;
+        width: 164rpx;
+        height: 34rpx;
+        background-image: linear-gradient(90deg, #FCB43D 0%, #FEC872 100%);
+        box-shadow: 0 2rpx 7rpx 0 rgba(0,0,0,0.10);
+        border-radius: 6rpx;
+        line-height: 34rpx;
+        text-align: center;
+        font-size: 20rpx;
+        color: #fff;
+      }
+    }
+  }
+}
+.paysuc{
+  .paysucWindow{
+    padding: 50rpx 0 10rpx;
+    .toTicket{
+      margin: 50rpx auto;
+      width: 304rpx;
+      height: 84rpx;
+      color: #fff;
+      line-height: 80rpx;
+      text-align: center;
+      border-radius: 200rpx;
+      background-image: linear-gradient(90deg, #f44236 0%, #f85641 100%);
+      border-radius: 100px;
+    }
+  }
+}
+.rulepop{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: rgba(0,0,0,0.6);
+    .closecont{
+        width: 520rpx;
+        padding: 20rpx;
+        background: #fff;
+        min-height: 300rpx;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate3d(-50%,-50%,0);
+        padding: 40rpx;
+        border-radius: 8rpx;
+    }
+    image{
+        width: 90%;
+        margin-top: 40rpx;
+    }
+     .close-btn {
+      position: absolute;
+      right: 20rpx;
+      top: 20rpx;
+      width: 24rpx;
+      height: 24rpx;
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-image: url("https://inimg01.jiuyan.info/in/2018/04/17/3DE8DBB7-D682-1D20-C924-15C4F523932E.png");
+    }
+}
+.red{
+  color: #f1524a;
+}
+</style>

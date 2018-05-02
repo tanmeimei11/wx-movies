@@ -14,18 +14,27 @@ import moviePart from '@/components/detail/moviePart';
 import adBanner from '@/components/adBanner';
 import bubble from '@/components/detail/bubble';
 import lekeReceiveModal from '@/components/leke/lekeReceiveModal';
+import cutPrice from '@/components/cutPrice';
+import orderModal from '@/components/detail/orderModal';
 import shareLekeMixin from '@/mixins/shareLekeMixin';
 import loadingMixin from '@/mixins/loadingMixin';
 import track from '@/utils/track';
 import {getParamV} from '@/utils/common';
 
-export default class Index extends wepy.page {
+export default class detail extends wepy.page {
   config = {
     navigationBarTitleText: 'in同城趴·电影王卡'
   }
-  components = {report, shareWindow, receiveGiftModal, buyMutiModal, receiveFaildModal, receiveTicketModal, channelModal, notice, moviePart, adBanner, lekeReceiveModal, bubble}
+  components = {report, shareWindow, receiveGiftModal, buyMutiModal, receiveFaildModal, receiveTicketModal, channelModal, notice, moviePart, adBanner, lekeReceiveModal, bubble, cutPrice, orderModal}
   mixins = [loadingMixin, shareLekeMixin]
   data = {
+    orderWindow: {
+      btnStatus: false,
+      phoneNum: '',
+      show: false
+    },
+    cutBtn: '',
+    order: '',
     gaProductInfo: {
       id: 1,
       name: '网卡',
@@ -36,7 +45,7 @@ export default class Index extends wepy.page {
     bubbleClass: '',
     windowWidth: 375,
     a: 1,
-    productId: 359,
+    productId: '',
     promoPrice: '', // 活动价格
     payPrice: '', // 原价 159
     toView: '',
@@ -130,11 +139,17 @@ export default class Index extends wepy.page {
     tabText: [],
     lekePromoInfo: {  // leke活动信息
       isShow: false
-    }
+    },
+    isCut: false, // 砍价弹窗
+    cutData: null,
+    cutId: null
   }
   events = {
     closeLekeModal () {
       this.lekePromoInfo.isShow = false;
+    },
+    closeOrderModal () {
+      this.orderWindow.show = false
     },
     closeBuyMutiModal () {
       this.buyMutiModalInfo.show = false;
@@ -145,6 +160,10 @@ export default class Index extends wepy.page {
     changeReceBtnStatus ( val, phoneNum ) {
       this.receiveGiftInfo.btnStatus = val;
       phoneNum && ( this.receiveGiftInfo.phoneNum = phoneNum );
+    },
+    changeOrderBtnStatus ( val, phoneNum ) {
+      this.orderWindow.btnStatus = val;
+      phoneNum && ( this.orderWindow.phoneNum = phoneNum );
     },
     closeRecevieFaild () {
       this.receiveFaildInfo.show = false;
@@ -200,11 +219,28 @@ export default class Index extends wepy.page {
         this.$apply();
       }
     },
+    async receiveOrder () {
+      try {
+        await Detail.order( this.orderWindow.phoneNum );
+        this.orderWindow.show = false
+        this.order = '2'
+        this.$apply()
+        wx.showModal( {
+          // title: '提示',
+          content: '预约成功，活动上线后将以短信的形式通知到您',
+          showCancel: false
+        } );
+      } catch ( e ) {
+      }
+    },
     async payOrder () {
       await this.payOrderReal();
     }
   }
   methods = {
+    showOrderModal () {
+      this.orderWindow.show = true
+    },
     toUnion () {
       wepy.navigateTo( {
         url: this.detailStatus.union_path
@@ -282,6 +318,12 @@ export default class Index extends wepy.page {
     },
     trackContact () {
       track( 'page_custom_service' );
+    },
+    jumpToCut () {
+      track( 'bargain_get_ticket' );
+      wepy.navigateTo( {
+        url: '/pages/cut/cut'
+      } );
     }
   }
   onShareAppMessage ( res ) {
@@ -329,7 +371,7 @@ export default class Index extends wepy.page {
     this.initOptions( options );
     this.setShare();
     track( 'page_enter' );
-    await this.init();
+    await this.init( options );
 
     // 数据之后的操作
     if ( options.show_pay_win ) {
@@ -340,11 +382,26 @@ export default class Index extends wepy.page {
       this.payOrderReal();// 立即支付
     }
   }
-  async init () {
+
+  // 砍价页面分享进入
+  async cutFun ( options ) {
+    console.log( options );
+    if ( options.cut ) {
+      track( 'bargain_box_expo' );
+      this.cutId = options.cutId;
+      let res = await Detail.friendDetail( options.cutId );
+      this.isCut = true;
+      this.cutData = res;
+      this.$apply();
+    }
+  }
+
+  async init ( options ) {
     console.log( this.detailCode );
     await auth.SilReady();
     this.$invoke('report', 'change')
     var newRes = await Detail.getDetailDataNew( this.productId, this.detailCode );
+    this.productId = newRes.product_id
     this.cinemas = Detail.initCinemas( newRes.cinemas, newRes.all_cinema_addr_img );
     this.rules = this.initRulesText( newRes.desc );
 
@@ -355,11 +412,10 @@ export default class Index extends wepy.page {
     this.initBgImages( newRes );
     this.unionInfo = newRes.union_info;
     this.$apply();
-    if ( this.channelModalInfo.rp_code ) {
-      await auth.ready();
-    }
+    await auth.ready();
     track( 'page_entry1' );
-    this.detailStatus = await Detail.getDetailStatus( this.productId, this.statusQuery );
+    this.detailStatus = await Detail.getDetailStatus( this.productId, this.statusQuery, options.cutId ? options.cutId : '' );
+    this.cutFun( options );
     this.initGaProductInfo( this.detailStatus );
     this.initReceiveTicketInfo( this.detailStatus );
     this.initChannelDiscount( this.detailStatus );
@@ -371,6 +427,8 @@ export default class Index extends wepy.page {
     track( 'page_loading_complete', {
       gaProductInfo: this.gaProductInfo
     } );
+    // 关闭购买
+    this.order = this.detailStatus.cf_close || false
     this.$apply();
   }
 
@@ -464,6 +522,7 @@ export default class Index extends wepy.page {
   initFixBtnText ( res ) {
     this.tabText = res.union_btn_txts;
     this.fixBtnText = res.union_btn_txts;
+    this.cutBtn = res.cut_btn
   }
   /**
    *  初始化从哪里进来  // 1.立即升级 2.分享送三张电影票 3.红包
@@ -491,7 +550,14 @@ export default class Index extends wepy.page {
     }
 
     // 分享三张电影票点进来
-    if ( res.ticket_switch ) { // 票已经领完了
+    if ( res.ticket_switch) { // 票已经领完了
+      track( 'fission_other_soldout_expo' );
+      this.receiveFaildInfo = {
+        type: 'notGetTicket',
+        show: true,
+        msg: res.ticket_desc
+      };
+    } else if ( res.cut_switch) { // 票已经领完了
       track( 'fission_other_soldout_expo' );
       this.receiveFaildInfo = {
         type: 'notGetTicket',

@@ -66,7 +66,7 @@ form{
 
 <script>
 import wepy from 'wepy';
-import { token, _v } from './utils/config.js';
+import { token, _v, station } from './utils/config.js';
 import {getParamV} from '@/utils/common';
 // 支付宝小程序 ES next 语法转换: async await
 import 'wepy-async-function';
@@ -87,9 +87,11 @@ export default class extends wepy.app {
         p.header = this.createAuthHeader();
         p.header['Content-Type'] = 'application/x-www-form-urlencoded';
         p.header['_v'] = _v;
+        p.header['station'] = station || '';
 
         p.data = p.data || {};
         p.data['privateKey'] = this.globalData.xToken || token;
+        p.data['station'] = station || '';
         return p;
       }
     } );
@@ -169,7 +171,23 @@ export default class extends wepy.app {
   }
 
   config = {
-    pages: ['pages/index/index','pages/union/union',  'pages/self/self', 'pages/detail/detail', 'pages/seat/seat', 'pages/result/result', 'pages/card/card', 'pages/ticket/ticket', 'pages/webview/webview', 'pages/leke/leke', 'pages/upgrade/upgrade','pages/order/order', 'pages/coupon/coupon'],
+    pages: [
+      'pages/index/index', 
+      'pages/union/union', 
+      'pages/self/self', 
+      'pages/detail/detail', 
+      'pages/seat/seat', 
+      'pages/result/result', 
+      'pages/card/card', 
+      'pages/ticket/ticket', 
+      'pages/webview/webview', 
+      'pages/leke/leke', 
+      'pages/upgrade/upgrade', 
+      'pages/order/order', 
+      'pages/coupon/coupon', 
+      'pages/cutinfo/cutinfo',
+      'pages/cut/cut'
+    ],
     tabBar: {
       'color': '#4A4A4A',
       'selectedColor': '#D0A661',
