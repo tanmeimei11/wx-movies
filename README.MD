@@ -133,3 +133,6 @@ ticket页面收集gps功能
 1，上海代码合并到杭州
 2，product_id后端传递
 
+## part-33 @xiangxiang 
+1.万能模版
+
