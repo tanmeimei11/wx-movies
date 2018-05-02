@@ -134,5 +134,10 @@ ticket页面收集gps功能
 2，product_id后端传递
 
 ## part-34 @xiangxiang 
-1.万能模版
+1.万能模版  // 搁置了
+
+## part-35 @xiangxiang 
+1.优化上海小程序
+2.地理位置优化
+
 
