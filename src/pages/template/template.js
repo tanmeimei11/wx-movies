@@ -1,6 +1,6 @@
 import wepy from 'wepy';
 import auth from '@/api/auth';
-import Upgrade from '@/api/upgrade';
+import Template from '@/api/template';
 // import tips from '@/utils/tips';
 import report from '@/components/report-submit';
 // import shareConnectMixin from '@/mixins/shareConnectMixin';
@@ -31,10 +31,6 @@ export default class upgrade extends wepy.page {
   }
 
   events = {
-    seckillEnd () {
-      this.initSeckillEnd();
-      this.$apply();
-    },
     goSeat () {
       this.$invoke( 'upgradePay', 'jumpToSeat' );
     },
@@ -62,14 +58,7 @@ export default class upgrade extends wepy.page {
   }
 
   async init ( options ) {
-    this.ticketid = options.ticketid;
-    var myInfoRes = await Upgrade.getUpgradeData( options.ticketid );
-    this.upgrade = myInfoRes;
-    this.cinema_photos = myInfoRes.cinema_photos;
-    this.videoInfo = myInfoRes.video_info;
-    this.upgradeInfo = myInfoRes.upgrade_info;
-    this.$invoke( 'seckill', 'init', parseInt( myInfoRes.upgrade_info.count_down ) );
-    this.isShowSeckill = true;
+    var _modules = await Template.getModules();
     this.$apply();
   }
   async onLoad ( options ) {
@@ -77,9 +66,12 @@ export default class upgrade extends wepy.page {
     this.initQrcodeFrom( options );
     await auth.SilReady();
     this.$invoke( 'report', 'change' );
-    await auth.ready();
     track( 'fission_ticket_upgrade_page_enter' );
     await this.init( options );
+  }
+
+  initData () {
+
   }
 
   initQrcodeFrom ( options ) {
