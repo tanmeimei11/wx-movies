@@ -54,7 +54,7 @@
       </view>
     </view>
     <!-- 箭头 -->
-    <view class="arrow"></view>
+    <view class="arrow" wx:if="{{isShowArrow}}"></view>
     <!-- <modal></modal> -->
     <view class="paysuc c-modal" wx:if="{{showWindow}}">
       <view class="paysucWindow c-wrap">
@@ -123,6 +123,7 @@
       rp_code: '',
       config: {},
       detail_path:'',
+      isShowArrow: true,
       showWindow: false
     }
     events = {
@@ -223,6 +224,13 @@
       this.priceChange()
       this.countDown(parseInt(res.rp_expiry_time))
       this.$apply()
+    }
+    onReachBottom () {
+      if(this.isShowArrow ){
+        this.isShowArrow = false
+        this.$apply()
+      }
+      
     }
     /*
     * 支付

@@ -242,16 +242,16 @@ export default class cutPrice extends wepy.component {
     closeFuna () {
       track('bargin_box_x1')
       this.popshow = false;
-      this.$emit('showLeaveModal')
       this.$apply();
     },
     closeFunb () {
-        track('bargin_box_x2')
+      track('bargin_box_x2')
       this.popshow = false;
+      this.$emit('showLeaveModal')
       this.$apply();
     },
     usebagFun () {
-        track('bargin_box_redpack_use')
+      track('bargin_box_redpack_use')
       wepy.navigateTo( {
         url: '/pages/cutinfo/cutinfo'
       } );

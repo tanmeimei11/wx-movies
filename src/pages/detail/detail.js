@@ -144,7 +144,7 @@ export default class detail extends wepy.page {
     isCut: false, // 砍价弹窗
     cutData: null,
     cutId: null,
-    isShowLeave: true // 砍价确认离开弹窗
+    isShowLeave: false // 砍价确认离开弹窗
   }
   events = {
     showLeaveModal () {
