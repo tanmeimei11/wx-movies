@@ -53,6 +53,8 @@
         </view>
       </view>
     </view>
+    <!-- 箭头 -->
+    <view class="arrow"></view>
     <!-- <modal></modal> -->
     <view class="paysuc c-modal" wx:if="{{showWindow}}">
       <view class="paysucWindow c-wrap">
@@ -120,6 +122,7 @@
       ticket_product_id: 0,
       rp_code: '',
       config: {},
+      detail_path:'',
       showWindow: false
     }
     events = {
@@ -169,9 +172,8 @@
         } )
       },
       knowCard () {
-        // 塞一个红包
          wepy.reLaunch( {
-          url: `/pages/detail/detail`
+          url: this.detail_path
         } );
       },
       payCard () {
@@ -204,6 +206,8 @@
 
       this.card_product_id = res.card_product_id
       this.ticket_product_id = res.ticket_product_id
+
+      this.detail_path = res.ticket_product_id
 
       this.rp_code = res.rp_code
       this.config = res.config
@@ -337,11 +341,11 @@
   .middle{
     // background-color: #666;
     background-image: url('https://inimg01.jiuyan.info/in/2018/05/03/AA797E9E-72D3-C963-29C9-CC52244B8C98.jpg');
-    background-position: center;
-    background-size: cover;
+    background-position: center bottom;
+    background-size: 750rpx 704rpx;
     background-repeat: no-repeat;
     width: 100%;
-    height: 704rpx;
+    height: 680rpx;
     position: relative;
     padding-top: 1rpx;
     .countDown{
@@ -442,6 +446,8 @@
      .checkedNum{
       font-size: 28rpx;
       color: #fff;
+      margin-top:20rpx;
+      line-height: 3;
       // position: absolute;
       // top: 75rpx;
       // left: 30rpx;
@@ -467,7 +473,7 @@
     }
     .ticketBtn{
       position: absolute;
-      top: 98rpx;
+      top: 200rpx;
       right: 30rpx;
       width: 184rpx;
       height: 72rpx;
@@ -479,7 +485,8 @@
       // position: absolute;
       // top: 170rpx;
       // left: 160rpx;
-      margin-left: 140rpx;
+      margin-top:10rpx;
+      margin-left: 160rpx;
       width: 164rpx;
       height: 34rpx;
       background-image: linear-gradient(90deg, #FCB43D 0%, #FEC872 100%);
@@ -664,4 +671,31 @@
 .red{
   color: #f1524a;
 }
+ .arrow{
+    position: fixed;
+    bottom: 40rpx;
+    left: 50%;
+    transform: translate(-50%,0);
+    width: 35rpx;
+    height: 15rpx;
+    background-image: url(' https://inimg01.jiuyan.info/in/2018/04/09/37FCDEC0-C81C-4D1F-B14E-B9603EC99A4D.jpg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    animation: 1.2s arrowani ease-in infinite;
+  }
+  @keyframes arrowani {
+    0%{
+      transform: translate(-50%,-20rpx);
+      opacity: 0;
+    }
+    50%{
+      transform: translate(-50%,0rpx);
+      opacity: 1;
+    }
+    100%{
+      transform: translate(-50%,20rpx);
+      opacity: 0;
+    }
+  }
 </style>
