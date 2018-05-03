@@ -136,7 +136,7 @@ ticket页面收集gps功能
 ## part-34 @xiangxiang 
 1.万能模版  // 搁置了
 
-## part-35 @xiangxiang 
+## part-35 @xiangxiang  _v:0.6.3
 1.优化上海小程序
 2.地理位置优化
 
