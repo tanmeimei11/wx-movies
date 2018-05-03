@@ -16,7 +16,7 @@
               </view>
               <view class="name">{{item.name}}</view>
               <view class="type">{{item.movie_desc}}</view>
-              <view class="want">{{item.wantCountStr}}</view>
+              <view class="want">{{item.want_count_str}}</view>
               <view class="price">￥{{origin}}</view>
             </view>
           </view>
@@ -208,7 +208,7 @@
       this.card_product_id = res.card_product_id
       this.ticket_product_id = res.ticket_product_id
 
-      this.detail_path = res.ticket_product_id
+      this.detail_path = res.detail_path
 
       this.rp_code = res.rp_code
       this.config = res.config
