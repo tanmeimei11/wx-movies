@@ -10,6 +10,7 @@ import buyMutiModal from '@/components/detail/buyMutiModal';
 import receiveFaildModal from '@/components/detail/receiveFaildModal';
 import channelModal from '@/components/detail/channelModal';
 import notice from '@/components/detail/notice';
+import leaveModal from '@/components/detail/leaveModal';
 import moviePart from '@/components/detail/moviePart';
 import adBanner from '@/components/adBanner';
 import bubble from '@/components/detail/bubble';
@@ -25,7 +26,7 @@ export default class detail extends wepy.page {
   config = {
     navigationBarTitleText: 'in同城趴·电影王卡'
   }
-  components = {report, shareWindow, receiveGiftModal, buyMutiModal, receiveFaildModal, receiveTicketModal, channelModal, notice, moviePart, adBanner, lekeReceiveModal, bubble, cutPrice, orderModal}
+  components = { report, shareWindow, receiveGiftModal, buyMutiModal, receiveFaildModal, receiveTicketModal, channelModal, notice, moviePart, adBanner, lekeReceiveModal, bubble, cutPrice, orderModal, leaveModal }
   mixins = [loadingMixin, shareLekeMixin]
   data = {
     orderWindow: {
@@ -142,14 +143,23 @@ export default class detail extends wepy.page {
     },
     isCut: false, // 砍价弹窗
     cutData: null,
-    cutId: null
+    cutId: null,
+    isShowLeave: true // 砍价确认离开弹窗
   }
   events = {
+    showLeaveModal () {
+      this.isShowLeave = true;
+      this.$apply();
+    },
+    hideLeaveModal () {
+      this.isShowLeave = false;
+      this.$apply();
+    },
     closeLekeModal () {
       this.lekePromoInfo.isShow = false;
     },
     closeOrderModal () {
-      this.orderWindow.show = false
+      this.orderWindow.show = false;
     },
     closeBuyMutiModal () {
       this.buyMutiModalInfo.show = false;
@@ -222,9 +232,9 @@ export default class detail extends wepy.page {
     async receiveOrder () {
       try {
         await Detail.order( this.orderWindow.phoneNum );
-        this.orderWindow.show = false
-        this.order = '2'
-        this.$apply()
+        this.orderWindow.show = false;
+        this.order = '2';
+        this.$apply();
         wx.showModal( {
           // title: '提示',
           content: '预约成功，活动上线后将以短信的形式通知到您',
@@ -239,7 +249,7 @@ export default class detail extends wepy.page {
   }
   methods = {
     showOrderModal () {
-      this.orderWindow.show = true
+      this.orderWindow.show = true;
     },
     toUnion () {
       wepy.navigateTo( {
@@ -386,7 +396,7 @@ export default class detail extends wepy.page {
   // 砍价页面分享进入
   async cutFun ( options ) {
     console.log( options );
-    if ( options.cut ) {
+    if ( options.cutId ) {
       track( 'bargain_box_expo' );
       this.cutId = options.cutId;
       let res = await Detail.friendDetail( options.cutId );
@@ -399,9 +409,9 @@ export default class detail extends wepy.page {
   async init ( options ) {
     console.log( this.detailCode );
     await auth.SilReady();
-    this.$invoke('report', 'change')
+    this.$invoke( 'report', 'change' );
     var newRes = await Detail.getDetailDataNew( this.productId, this.detailCode );
-    this.productId = newRes.product_id
+    this.productId = newRes.product_id;
     this.cinemas = Detail.initCinemas( newRes.cinemas, newRes.all_cinema_addr_img );
     this.rules = this.initRulesText( newRes.desc );
 
@@ -428,7 +438,7 @@ export default class detail extends wepy.page {
       gaProductInfo: this.gaProductInfo
     } );
     // 关闭购买
-    this.order = this.detailStatus.cf_close || false
+    this.order = this.detailStatus.cf_close || false;
     this.$apply();
   }
 
@@ -522,7 +532,7 @@ export default class detail extends wepy.page {
   initFixBtnText ( res ) {
     this.tabText = res.union_btn_txts;
     this.fixBtnText = res.union_btn_txts;
-    this.cutBtn = res.cut_btn
+    this.cutBtn = res.cut_btn;
   }
   /**
    *  初始化从哪里进来  // 1.立即升级 2.分享送三张电影票 3.红包
@@ -550,14 +560,14 @@ export default class detail extends wepy.page {
     }
 
     // 分享三张电影票点进来
-    if ( res.ticket_switch) { // 票已经领完了
+    if ( res.ticket_switch ) { // 票已经领完了
       track( 'fission_other_soldout_expo' );
       this.receiveFaildInfo = {
         type: 'notGetTicket',
         show: true,
         msg: res.ticket_desc
       };
-    } else if ( res.cut_switch) { // 票已经领完了
+    } else if ( res.cut_switch ) { // 票已经领完了
       track( 'fission_other_soldout_expo' );
       this.receiveFaildInfo = {
         type: 'notGetTicket',

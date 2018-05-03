@@ -183,4 +183,14 @@ export default class Detail extends Pagebase {
       data: data
     } );
   }
+
+// 获取砍价弹窗信息
+  static async friendDetail ( cutId ) {
+    return await this.request( {
+      url: '/mnp/cut/friendDetail',
+      data: {
+        cut_id: cutId
+      }
+    } );
+  }
 }

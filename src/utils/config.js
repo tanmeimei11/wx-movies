@@ -2,8 +2,8 @@ module.exports = {
   _v: '0.6.2',
   isMock: false,
   isTrack: false,
-  station: '2101', // 杭州
-  // station: '02',  // 上海
+  // station: '2101', // 杭州
+  station: '02',  // 上海
   DOMAIN: 'https://crowdfunding.in66.com',
   // DOMAIN: 'http://qacrowd-zf.in66.com',
   qnTokenUrl: 'https://www.in66.com/promo/commonapi/qiniutoken',

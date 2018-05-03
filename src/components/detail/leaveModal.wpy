@@ -1,0 +1,113 @@
+<style lang="less">
+.leave-modal-wrap {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+ 
+  .bag-pop {
+    position: relative;
+    width: 560rpx;
+    min-height: 300rpx;
+    border-radius: 8rpx;
+    background: #fff;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate3d(-50%, -50%, 0);
+    padding-bottom: 30rpx;
+    text{
+      display: block;
+      text-align: center;
+      font-size: 36rpx;
+      color:#333333;
+      margin: 110rpx auto 70rpx;
+    }
+    .red-box {
+      display: flex;
+      width: 450rpx;
+      justify-content:space-around;
+      margin-top: 40rpx;
+      height: 169rpx;
+      padding-left: 30rpx;
+    }
+    .red-bag {
+      background-image: url("https://inimg01.jiuyan.info/in/2018/04/17/257BCC35-5016-3A8D-750C-28B261E825AE.png");
+      width: 135rpx;
+      height: 169rpx;
+      background-repeat: no-repeat;
+      background-size: contain;
+      padding: 40rpx 0;
+      margin-left: 30rpx;
+    }
+    .use-bag {
+      width: 220rpx;
+      height: 80rpx;
+      line-height: 80rpx;
+      text-align: center;
+      color: #fff;
+      background: #ff5448;
+      border-radius: 100rpx;
+      margin-left: 50rpx;
+      display: inline-block;
+      font-size: 28rpx;
+    }
+    .me-cut {
+      width: 220rpx;
+      height: 78rpx;
+      line-height: 80rpx;
+      text-align: center;
+      color: #ff5448;
+      background: #fff;
+      border-radius: 100rpx;
+      display: inline-block;
+      font-size: 28rpx;
+      border: 1rpx solid #ff5448;
+      margin-left: 30rpx;
+    }
+    .close-btn {
+      position: absolute;
+      right: 20rpx;
+      top: 20rpx;
+      width: 50rpx;
+      height: 50rpx;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 24rpx 24rpx;
+      background-image: url("https://inimg01.jiuyan.info/in/2018/04/17/3DE8DBB7-D682-1D20-C924-15C4F523932E.png");
+    }
+  }
+}
+</style>
+<template>
+  <view class="leave-modal-wrap">
+      <view class="bag-pop">
+          <text>退出将错过免费电影的机会哦</text>
+          <view class="me-cut" @tap="closeFuna">离开</view>
+          <view class="use-bag" @tap="usebagFun" >立即领取</view>
+          <!-- <view class="close-btn" @tap="closeFunb"></view> -->
+      </view>
+  </view>
+</template>
+<script>
+import wepy from 'wepy';
+import Cut from '@/api/cut';
+import track from '@/utils/track';
+
+export default class leaveModal extends wepy.component {
+  methods = {
+    closeFuna () {
+      this.$emit('hideLeaveModal')
+    },
+    usebagFun () {
+      track('bargin_box_redpack_use')
+      wepy.navigateTo( {
+        url: '/pages/cutinfo/cutinfo'
+      } );
+    }
+  };
+}
+</script>

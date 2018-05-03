@@ -41,5 +41,6 @@ module.exports = {
   [`${DOMAIN}/mnp/cut/friendDetail`]: 'friendDetail',
   [`${DOMAIN}/mnp/cut/action`]: 'action',
   [`${DOMAIN}/mnp/cut/detail`]: 'cutdetail',
+  [`${DOMAIN}/mnp/cut/rp/page_info`]: 'cutInfo',
   [`${payUrl}`]: 'signature'
 };

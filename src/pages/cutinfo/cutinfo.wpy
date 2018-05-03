@@ -3,7 +3,7 @@
     <view class="container">
       <view class="tips">
         <text wx:if="{{timesUp}}">你的电影红包已过期</text>
-        <text wx:if="{{!timesUp}}">你还有总价值<text class="red">{{rp_price*rp_count}}</text>元电影红包待使用</text>
+        <text wx:if="{{!timesUp}}">你还有<text class="red">{{rp_count}}</text>个电影红包(每个抵扣<text class="red">{{rp_price}}</text>元)</text>
         <text class="right" @tap="openrule">使用规则</text>
       </view>
       <view class="middle">
@@ -22,19 +22,34 @@
           </view>
         </scroll-view>
       </view>
-      <view class="bottom">
+      <view class="cut-car">
         <view class="icon"></view>
         <view class="checkedNum">已选电影：{{checked}}部</view>
         <view class="checkedPrice">合计金额：<text class="realPrice">￥{{realPrice}}</text><text class="originPrice">原价 ￥{{originPrice}}</text></view>
         <view class="ticketBtn" @tap="payTicket"></view>
         <view class="discount">红包已抵扣{{discount}}元</view>
+      </view>
+      <view class="bottom">
+        <view class="title" style="background-image:url({{config.img_title}})"></view>
         <view class="cardArea" @tap="payCard">
-          <view class="title" style="background-image:url({{config.img_title}})"></view>
-          <view class="card" style="background-image:url({{config.card_icon}})"></view>
-          <view class="desc">{{config.word_title}}</view>
-          <view class="price">￥<text class="real">{{info.card_price}}</text><text class="origin">原价{{info.card_origin_price}}</text></view>
-          <text class="cardBtn">去支付 ></text>
-          <view class="discount">专享限时优惠</view>
+          <view class="card-wrap">
+            <view class="card" style="background-image:url({{config.card_icon}})"></view>
+            <view class="desc-wrap">
+              <view class="desc">{{config.word_title}}</view>
+              <view class="price">￥<text class="real">{{info.card_price}}</text><text class="origin">≈ 价值{{realPrice}}元  ({{checked}}部电影x{{origin}}元)</text></view>
+            </view>
+          </view>
+          <view class="discount-wrap">
+            <view class="discount">专享限时优惠</view>
+            <text>| 原价</text>
+            <text class="red">{{info.card_origin_price}}</text>
+            <text>，红包立减</text>
+            <text class="red">{{rp_price * rp_count}}</text>
+          </view>
+        </view>
+        <view class="cardBtn">
+          <view class="know" @tap="knowCard"></view>
+          <view class="buy" @tap="payCard"></view>
         </view>
       </view>
     </view>
@@ -152,6 +167,12 @@
           this.showWindow = true
           this.$apply()
         } )
+      },
+      knowCard () {
+        // 塞一个红包
+         wepy.reLaunch( {
+          url: `/pages/detail/detail`
+        } );
       },
       payCard () {
         track('bargain_pay_card')
@@ -283,21 +304,24 @@
 <style lang="less">
 
 .container{
-  background: #666;
+  background: #4C4C4C;
   min-height: 100vh;
   display: block;
   .tips{
+    color: #70CCFF;
     font-size: 24rpx;
-    color: #f1524a;
     width: 100%;
     height: 106rpx;
     line-height: 106rpx;
     background: rgba(246,246,246,1);
+    .red{
+       color: #f1524a;
+    }
     &::before {
+      content: '';
       display: inline-block;
       vertical-align: middle;
       margin: 0 20rpx 0 40rpx;
-      content: '';
       width: 50rpx;
       height: 50rpx;
       background: url('http://inimg02.jiuyan.info/in/2018/03/16/5DFD04E9-0D0D-6CA4-1879-00FB733ADB47.png') no-repeat;
@@ -306,12 +330,18 @@
     }
     .right{
       float: right;
-      margin-right: 20rpx
+      margin-right: 20rpx;
+      color: #70CCFF;
     }
   }
   .middle{
-    background: #666;
+    // background-color: #666;
+    background-image: url('https://inimg01.jiuyan.info/in/2018/05/03/AA797E9E-72D3-C963-29C9-CC52244B8C98.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
     width: 100%;
+    height: 704rpx;
     position: relative;
     padding-top: 1rpx;
     .countDown{
@@ -394,34 +424,34 @@
       }
     }
   }
-  .bottom{
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 493rpx;
-    background-image: linear-gradient(-180deg, #FF8467 0%, #E35650 100%);
+  .cut-car{
+    position: relative;
+    margin-top: -100rpx;
+    box-sizing: border-box;
+    padding: 10rpx 20rpx 60rpx;
     .icon{
-      position: absolute;
-      top: -46rpx;
-      left: 20rpx;
+      // position: absolute;
+      // top: -46rpx;
+      // left: 20rpx;
       width: 111rpx;
       height: 111rpx;
       background: url('http://inimg02.jiuyan.info/in/2018/04/17/C42B280B-8379-8443-C600-BAC070045784.png') no-repeat;
       background-size: contain;
       background-position: center;
     }
-    .checkedNum{
+     .checkedNum{
       font-size: 28rpx;
       color: #fff;
-      position: absolute;
-      top: 75rpx;
-      left: 30rpx;
+      // position: absolute;
+      // top: 75rpx;
+      // left: 30rpx;
+      margin-left: 10rpx;
     }
     .checkedPrice{
-      position: absolute;
-      top: 111rpx;
-      left: 30rpx;
+      // position: absolute;
+      // top: 111rpx;
+      // left: 30rpx;
+      margin-left: 10rpx;
       font-size: 28rpx;
       color: #fff;
       .realPrice{
@@ -441,14 +471,15 @@
       right: 30rpx;
       width: 184rpx;
       height: 72rpx;
-      background: url('http://inimg02.jiuyan.info/in/2018/04/17/9EDC1BB1-63F4-C210-FB96-55D34C933C68.png') no-repeat;
+      background: url('https://inimg01.jiuyan.info/in/2018/05/03/8FC31B51-E137-919C-A9B8-74499F316CCF.jpg') no-repeat;
       background-size: contain;
       background-position: center;
     }
     .discount{
-      position: absolute;
-      top: 170rpx;
-      left: 160rpx;
+      // position: absolute;
+      // top: 170rpx;
+      // left: 160rpx;
+      margin-left: 140rpx;
       width: 164rpx;
       height: 34rpx;
       background-image: linear-gradient(90deg, #FCB43D 0%, #FEC872 100%);
@@ -459,68 +490,92 @@
       font-size: 20rpx;
       color: #fff;
     }
-    .cardArea{
-      width: 690rpx;
-      height: 240rpx;
-      position: absolute;
-      top: 230rpx;
-      left: 30rpx;
-      background: #FFFFFF;
-      box-shadow: 0 0 10px 0 rgba(0,0,0,0.10);
+  }
+  .bottom{
+    // position: fixed;
+    // bottom: 0;
+    padding: 30rpx 0;
+    border-top-left-radius: 16rpx;
+    border-top-right-radius: 16rpx;
+    position: relative;
+    width: 100%;
+    background-image: linear-gradient(-180deg, #FF8467 0%, #E35650 100%);
+    .title{
+      margin: 30rpx auto 36rpx auto;
+      width: 542rpx;
+      height: 36rpx;
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
+    }
+   .cardArea{
+      width: 710rpx;
+      height: 301rpx;
+      margin: 0 auto;
+      background-image: url('https://inimg01.jiuyan.info/in/2018/05/03/1C5CD151-D60A-B073-076D-7B09DB9ECBCD.jpg');
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
+      // box-shadow: 0 0 10px 0 rgba(0,0,0,0.10);
       border-radius: 8rpx;
-      .title{
-        margin: 26rpx auto;
-        width: 392rpx;
-        height: 24rpx;
-        background-repeat: no-repeat;
-        background-size: contain;
-        background-position: center;
-      }
-      .card{
-        position: absolute;
-        top: 88rpx;
-        left: 30rpx;
-        width: 210rpx;
-        height: 130rpx;
-        background-repeat: no-repeat;
-        background-size: contain;
-        background-position: center;
-      }
-      .desc{
-        position: absolute;
-        top: 88rpx;
-        left: 250rpx;
-        font-size: 28rpx;
-        color: #000;
-      }
-      .price{
-        position: absolute;
-        bottom: 60rpx;
-        left: 250rpx;
-        font-size: 28rpx;
-        color: #ff5e51;
-        .real{
-          font-size: 42rpx;
+      position: relative;
+      overflow: hidden;
+      padding: 38rpx 0 0 38rpx;
+      box-sizing: border-box;
+      .card-wrap{
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        .card{
+          width: 210rpx;
+          height: 130rpx;
+          background-repeat: no-repeat;
+          background-size: contain;
+          background-position: center;
         }
-        .origin{
-          font-size: 24rpx;
-          color: #b0b0b0;
-          text-decoration: line-through;
-          margin-left: 10rpx;
+        .desc-wrap{
+          height: 120rpx;
+          margin-left:15rpx;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          align-items: flex-start;
+          .desc{
+            font-size: 32rpx;
+            color: #000000;
+          }
+          .price{
+            font-size: 28rpx;
+            color: #ff5e51;
+            .real{
+              font-size: 42rpx;
+            }
+            .origin{
+              font-size: 24rpx;
+              color: #b0b0b0;
+              // text-decoration: line-through;
+              margin-left: 10rpx;
+            }
+          }
         }
       }
-      .cardBtn{
-        font-size: 24rpx;
-        color: #ff5e51;
+      .discount-wrap{
         position: absolute;
-        bottom: 30rpx;
-        right: 30rpx;
-        line-height: 42rpx;
+        bottom: 40rpx;
+        left: 40rpx;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        font-size: 28rpx;
+        color: #666666;
+        .red{
+          color: #FF5E51;
+        }
       }
       .discount{
-        position: absolute;
-        top: 180rpx;
-        left: 250rpx;
         width: 164rpx;
         height: 34rpx;
         background-image: linear-gradient(90deg, #FCB43D 0%, #FEC872 100%);
@@ -530,7 +585,29 @@
         text-align: center;
         font-size: 20rpx;
         color: #fff;
+        margin-right: 10rpx;
       }
+    }
+  }
+  .cardBtn{
+    margin:0 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 710rpx;
+    height: 120rpx;
+    background-image: url('https://inimg01.jiuyan.info/in/2018/05/03/652F0F1D-890F-468B-015B-18DD87848EA9.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    .know{
+      width: 292rpx;
+      height: 100%;
+    }
+    .buy{
+      height: 100%;
+      flex: 1;
     }
   }
 }

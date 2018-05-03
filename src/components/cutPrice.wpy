@@ -112,6 +112,7 @@
       margin-top: 20rpx;
       text {
         color: #ff4338;
+        margin: 0 2rpx;
       }
     }
     .red-box {
@@ -165,6 +166,7 @@
       width: 50rpx;
       height: 50rpx;
       background-repeat: no-repeat;
+      background-position: center;
       background-size: 24rpx 24rpx;
       background-image: url("https://inimg01.jiuyan.info/in/2018/04/17/3DE8DBB7-D682-1D20-C924-15C4F523932E.png");
     }
@@ -186,7 +188,7 @@
         <view class="bag-pop" wx:if="{{cutResult}}">
             <view class="avater" style="background-image:url({{cutresultData.avatar}})"></view>
             <view class="txt1" wx:if="{{cutresultData.cut_amount}}">谢谢你帮我砍了<text>{{cutresultData.cut_amount}}</text>元</view>
-            <view class="txt2" wx:if="{{cutresultData.red_package_amount}}">送你 <text>{{cutresultData.red_package_count}}</text> 个电影红包共计 <text>{{cutresultData.red_package_amount}}</text> 元</view>
+            <view class="txt2" wx:if="{{cutresultData.red_package_amount}}">送你 <text>{{cutresultData.red_package_count}}</text> 个电影红包，每次购票抵扣 <text>{{cutresultData.red_package_amount}}</text> 元</view>
             <view class="red-box"  wx:if="{{cutresultData.red_package_img.length > 0}}">
                 <view class="red-bag" wx:for="{{cutresultData.red_package_img}}" wx:for-index="idx" wx:for-item="item" wx:key="{{idx}}"  style="background-image:url({{item}})"></view>
             </view>
@@ -238,8 +240,9 @@ export default class cutPrice extends wepy.component {
       this.$apply();
     },
     closeFuna () {
-        track('bargin_box_x1')
+      track('bargin_box_x1')
       this.popshow = false;
+      this.$emit('showLeaveModal')
       this.$apply();
     },
     closeFunb () {

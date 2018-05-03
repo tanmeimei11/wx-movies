@@ -194,6 +194,13 @@
     <!-- 其他渠道红包（比如滴滴） -->
     <channelModal wx:if="{{channelModalInfo.show}}" :channelModalInfo.sync="channelModalInfo"></channelModal>
     <notice wx:if="{{noticeInfo.show}}" :noticeInfo.sync="noticeInfo"></notice>
+
+
+    <!-- 砍价弹窗 -->
+    <cutPrice wx:if="{{isCut}}" :cutData.sync="cutData" :cutId.sync="cutId"></cutPrice>
+
+     <!-- 取消砍价弹窗 -->
+    <leaveModal wx:if="{{isShowLeave}}"></leaveModal>
   </report>
 </template>
 <style lang="less" src="./detail.less"></style>
