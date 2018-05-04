@@ -144,7 +144,10 @@ export default class detail extends wepy.page {
     isCut: false, // 砍价弹窗
     cutData: null,
     cutId: null,
-    isShowLeave: false // 砍价确认离开弹窗
+    isShowLeave: false, // 砍价确认离开弹窗
+    cinemaAddrList: [],
+    isAuthLocation: false, // 是否授权
+    curLocation: ''// 当前位置
   }
   events = {
     showLeaveModal () {
@@ -248,10 +251,25 @@ export default class detail extends wepy.page {
     }
   }
   methods = {
+    openAddressLocation ( e ) {
+      let _item = e.currentTarget.dataset.item;
+      wepy.openLocation( {
+        latitude: parseFloat( _item.latitude ),
+        longitude: parseFloat( _item.longitude )
+      } );
+    },
     async  getLocationByButton () {
       try {
+        var authRes = await wepy.getSetting( {authSetting: 'scope.userLocation'} );
+        if ( authRes.authSetting['scope.userLocation'] === false ) {
+          await this.openSettingAuthLocation();
+          return;
+        }
         let _location = await wepy.getLocation();
-        console.log( _location );
+        var res = await Detail.getLocationToCinema( {
+          _gps: `${_location.longitude},${_location.latitude}`
+        } );
+        this.initCinemaAddr( res.is_auth_location, res.current_location, res.lbs_cinemas );
       } catch ( e ) {
         console.log( e );
       }
@@ -422,6 +440,7 @@ export default class detail extends wepy.page {
     this.productId = newRes.product_id;
     this.cinemas = Detail.initCinemas( newRes.cinemas, newRes.all_cinema_addr_img );
     this.rules = this.initRulesText( newRes.desc );
+    this.initCinemaAddr( newRes.is_auth_location, newRes.current_location, newRes.lbs_cinemas );
 
     this.initBannerInfo( newRes );
     this.initVideoInfo( newRes );
@@ -447,6 +466,30 @@ export default class detail extends wepy.page {
     } );
     // 关闭购买
     this.order = this.detailStatus.cf_close || false;
+    this.$apply();
+  }
+
+  initCinemaAddr ( isAuth, location, lbsCinemas ) {
+    console.log( lbsCinemas );
+    this.isAuthLocation = isAuth || false;
+    this.curLocation = location || '';
+    if ( !lbsCinemas || !lbsCinemas.length ) { return; }
+    let _list = lbsCinemas.map( ( item ) => {
+      return {
+        name: item.name,
+        address: item.address,
+        time: item.public_transit_time,
+        distance: item.distance,
+        latitude: item.gps.split( ',' )[1],
+        longitude: item.gps.split( ',' )[0]
+      };
+    } );
+    console.log( _list );
+    let result = [];
+    for ( var i = 0, len = _list.length; i < len; i += 4 ) {
+      result.push( _list.slice( i, i + 4 ) );
+    }
+    this.cinemaAddrList = result;
     this.$apply();
   }
 
@@ -835,5 +878,16 @@ export default class detail extends wepy.page {
     this.cardCode = this.lekePromoInfo.leke_code;
     this.$apply();
     await this.init();
+  }
+
+  async openSettingAuthLocation () {
+    await wepy.openSetting( {
+      authSetting: 'scope.userLocation'
+    } );
+    let _location = await wepy.getLocation();
+    var res = await Detail.getLocationToCinema( {
+      _gps: `${_location.latitude},${_location.longitude}`
+    } );
+    this.initCinemaAddr( res.is_auth_location, res.current_location, res.lbs_cinemas );
   }
 }

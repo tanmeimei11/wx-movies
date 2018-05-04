@@ -338,5 +338,17 @@
 	"location 2.png": {
 		"hash": "Fu0wihA3wWL3hn8I0PyYcIrr5RUy",
 		"qiniuUrl": "https://inimg01.jiuyan.info/in/2018/05/04/BB6DEBA7-5A43-B350-9DA1-5F0023B2583F.jpg"
+	},
+	"change@3x.png": {
+		"hash": "FsSzDvlzf-OBLDDQmfG1hRCisva-",
+		"qiniuUrl": "https://inimg01.jiuyan.info/in/2018/05/04/B576C3CC-73A5-DE06-2AC2-1C476ABEF411.jpg"
+	},
+	"地铁.png": {
+		"hash": "FhLXNTTFr8kQF_hsMRdETwYlnQwF",
+		"qiniuUrl": "https://inimg01.jiuyan.info/in/2018/05/04/A2D45F95-A138-36C8-DCEC-FAF5F8D4EF32.jpg"
+	},
+	"change@2x.png": {
+		"hash": "Fm8SjGYhRhVEolN9FDCmxr47ccuT",
+		"qiniuUrl": "https://inimg01.jiuyan.info/in/2018/05/04/46B09699-ED0F-EEC3-32EC-03041EE2170D.jpg"
 	}
 }

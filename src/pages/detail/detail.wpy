@@ -72,21 +72,28 @@
           <view class="s-desc">{{content.right.desc6}}</view>
           <view class="s-desc">{{content.right.desc7}}</view>
           <image class="s-img-1" mode="aspectFill" src="{{loadHeight[1] ? cinemas.img : ''}}"></image>
-          <view class="cinemaList">
+          <view class="cinemaListTitle">合作影院列表 <text>in同城趴.专属影厅</text></view>
+          <view class="cinemaList" >
             <swiper indicator-dots='true' indicator-color='rgba(255, 255, 255, 0.5)' indicator-active-color='#fff'>
-              <swiper-item wx:for="{{cinemas.list}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
+              <swiper-item wx:for="{{cinemaAddrList}}" wx:for-index="idx" wx:for-item="itemList" wx:key="idxList">
+              <!-- <swiper-item wx:for="{{cinemas}}" wx:for-index="idx" wx:for-item="itemList" wx:key="idxList"> -->
                 <!-- <image src="{{loadHeight[1] ? item : ''}}" mode="widthFix" class="slide-image"></image> -->
-                <view class="address-wrap">
-                  <view class="address-header">1343214<view class="button" @tap="getLocationByButton">点击获取</view></view>
+                <view class="address-wrap {{isAuthLocation ? 'active':''}}">
+                  <view class="address-header">
+                    <text>{{curLocation}}</text>
+                    <view class="button" wx:if="{{!isAuthLocation}}" @tap="getLocationByButton">点击获取</view>
+                    <view class="update" wx:else  @tap="getLocationByButton">更新定位</view>
+                  </view>
                   <view class="address-list">
-                      <view class="cinema-wrap" wx:for="{{[0,1,2,3]}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
+                      <view class="cinema-wrap" wx:for="{{itemList}}" wx:for-index="idx" wx:for-item="item" wx:key="idx" @tap="openAddressLocation" data-item="{{item}}">
+                      <!-- <view class="cinema-wrap" wx:for="{{[0,1,2,3]}}" wx:for-index="idx" wx:for-item="item" wx:key="idx" @tap="openAddressLocation" data-item="{{item}}"> -->
                         <view class="cinema-name between">
-                          <view class="name">杭州万达影城水晶城店</view>
-                          <view class="time">约 15min</view>
+                          <view class="name">{{item.name}}</view>
+                          <view class="time">{{item.time}}</view>
                         </view>
                         <view class="cinema-addr between">
-                          <view class="address">拱墅区上塘路458号水晶购物中心7楼</view>
-                          <view class="distance">800米</view>
+                          <view class="address">{{item.address}}</view>
+                          <view class="distance">{{item.distance}}</view>
                         </view>
                       </view>
                   </view>

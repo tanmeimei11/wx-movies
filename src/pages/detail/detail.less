@@ -671,9 +671,9 @@ contact-button {
       width: 106%;
       margin-left: -3%;
       position: relative;
-      height: 489rpx;
+      height: 579rpx;
       swiper{
-        height: 555rpx;
+        height: 650rpx;
         swiper-item{
           overflow: auto;
         }
@@ -849,13 +849,27 @@ contact-button {
   background-size: contain;
   background-position: center;
 }
+.cinemaListTitle{
+  text-align: center;
+  font-size: 30rpx;
+  padding: 0rpx 0 80rpx 0;
+  text{
+    color: #F94D3E;
+  }
+}
 .address-wrap{
   width: 100%;
-  height: 85%;
+  height: 88%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+  &.active{
+    .distance{
+      color: #666666 !important;
+      background-image: url(' https://inimg01.jiuyan.info/in/2018/05/04/0575C19C-3F1E-0780-7B67-F1EF42AB1845.jpg') !important;
+    }
+  }
   .address-header{
     box-sizing: border-box;
     width: 100%;
@@ -865,13 +879,19 @@ contact-button {
     line-height: 90rpx;
     background-image: url(' https://inimg01.jiuyan.info/in/2018/05/04/BB6DEBA7-5A43-B350-9DA1-5F0023B2583F.jpg');
     background-repeat: no-repeat;
-    background-size: 27rpx 27rpx;
-    background-position: 30rpx center;
+    background-size: 40rpx 40rpx;
+    background-position: 23rpx center;
     font-size: 24rpx;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    text{
+      max-width: 440rpx;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
     .button{
       background-color: #F94D3E;
       font-size: 18rpx;
@@ -879,6 +899,17 @@ contact-button {
       border-radius: 100rpx;
       line-height: 1.5;
       color: #fff;
+      white-space: nowrap;
+    }
+    .update{
+      color: #666666;
+      font-size: 24rpx;
+      padding-left: 25rpx;
+      background-image: url('  https://inimg01.jiuyan.info/in/2018/05/04/46B09699-ED0F-EEC3-32EC-03041EE2170D.jpg');
+      background-repeat: no-repeat;
+      background-size: 22rpx 22rpx;
+      background-position: left center;
+      white-space: nowrap;
     }
   }
   .address-list{
@@ -925,12 +956,9 @@ contact-button {
       padding-left: 27rpx;
       background-image: url(' https://inimg01.jiuyan.info/in/2018/05/04/33485F83-D8A1-A5BD-C454-6FAC9C28B81E.jpg');
       background-repeat: no-repeat;
-      background-size: 27rpx 27rpx;
+      background-size: 20rpx 20rpx;
       background-position: left center;
-      &.active{
-        color: #666666;
-        background-image: url(' https://inimg01.jiuyan.info/in/2018/05/04/0575C19C-3F1E-0780-7B67-F1EF42AB1845.jpg');
-      }
+      
     }
   }
   .between{

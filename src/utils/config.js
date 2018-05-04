@@ -2,12 +2,12 @@
 var _station = '02'; // 上海
 // var _station = '2101'; // 杭州
 module.exports = {
-  _v: '0.6.3',
+  _v: '0.6.4',
   isMock: false,
   isTrack: false,
   station: _station,
-  DOMAIN: 'https://crowdfunding.in66.com',
-  // DOMAIN: 'http://qacrowd-zf.in66.com',
+  // DOMAIN: 'https://crowdfunding.in66.com',
+  DOMAIN: 'http://qacrowd-zf.in66.com',
   qnTokenUrl: 'https://www.in66.com/promo/commonapi/qiniutoken',
   // qnUploadUrl: "http://upload.qiniup.com/",
   qnUploadUrl: 'https://upload.qiniup.com/',
