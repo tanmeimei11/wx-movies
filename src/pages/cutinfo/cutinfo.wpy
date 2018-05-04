@@ -36,7 +36,8 @@
             <view class="card" style="background-image:url({{config.card_icon}})"></view>
             <view class="desc-wrap">
               <view class="desc">{{config.word_title}}</view>
-              <view class="price">￥<text class="real">{{info.card_price}}</text><text class="origin">≈ 价值{{realPrice}}元  ({{checked}}部电影x{{origin}}元)</text></view>
+              <!-- <view class="price">￥<text class="real">{{info.card_price}}</text><text class="origin">≈ 价值{{realPrice}}元  ({{checked}}部电影x{{origin}}元)</text></view> -->
+              <view class="price">￥<text class="real">{{info.card_price}}</text><text class="origin">{{info.card_desc}}</text></view>
             </view>
           </view>
           <view class="discount-wrap">
@@ -44,7 +45,8 @@
             <text>| 原价</text>
             <text class="red">{{info.card_origin_price}}</text>
             <text>，红包立减</text>
-            <text class="red">{{rp_price * rp_count}}</text>
+            <!-- <text class="red">{{rp_price * rp_count}}</text> -->
+            <text class="red">{{info.card_deduct_price}}</text>
           </view>
         </view>
         <view class="cardBtn">

@@ -8,6 +8,8 @@ module.exports = {
   station: _station,
   // DOMAIN: 'https://crowdfunding.in66.com',
   DOMAIN: 'http://qacrowd-zf.in66.com',
+  trackId: _station === '02' ? 'UA-117482838-1' : 'UA-113017547-1',
+  // DOMAIN: 'http://qacrowd-zf.in66.com',
   qnTokenUrl: 'https://www.in66.com/promo/commonapi/qiniutoken',
   // qnUploadUrl: "http://upload.qiniup.com/",
   qnUploadUrl: 'https://upload.qiniup.com/',
