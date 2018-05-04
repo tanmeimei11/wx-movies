@@ -184,13 +184,21 @@ export default class Detail extends Pagebase {
     } );
   }
 
-// 获取砍价弹窗信息
+  // 获取砍价弹窗信息
   static async friendDetail ( cutId ) {
     return await this.request( {
       url: '/mnp/cut/friendDetail',
       data: {
         cut_id: cutId
       }
+    } );
+  }
+
+  // 获取地理位置和影院信息
+  static async getLocationToCinema ( data ) {
+    return await this.request( {
+      url: '/lbs/cinema/list',
+      data: data
     } );
   }
 }

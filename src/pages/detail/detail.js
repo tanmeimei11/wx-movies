@@ -248,6 +248,14 @@ export default class detail extends wepy.page {
     }
   }
   methods = {
+    async  getLocationByButton () {
+      try {
+        let _location = await wepy.getLocation();
+        console.log( _location );
+      } catch ( e ) {
+        console.log( e );
+      }
+    },
     showOrderModal () {
       this.orderWindow.show = true;
     },
