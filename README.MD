@@ -139,7 +139,7 @@ ticket页面收集gps功能
 ## part-35 @xiangxiang  _v:0.6.3
 1.优化上海小程序
 
-## part-36 上海&杭州 @xiangxiang  _v:0.6.4 
+## part-36 上海&杭州 @xiangxiang  _v:0.6.4  已经合到master了
 2.地理位置优化
 
 ## master 上海 @xiangxiang 
