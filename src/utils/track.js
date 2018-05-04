@@ -1,5 +1,6 @@
 import wepy from 'wepy';
 import {GoogleAnalytics, HitBuilders, Product, ProductAction, CampaignParams} from '@/lib/ga.js';
+import {trackId} from './config';
 const trackPrefix = 'h5_tcpa_movie_';
 const trackUrl = 'https://stats1.jiuyan.info/onepiece/router.html';
 var GAtracker = null;
@@ -10,6 +11,7 @@ var GAtracker = null;
  * @param {*} params 辅助对象参数
  * @param {*} prefix 埋点前缀默认 h5_wechat_
  */
+
 export default async function track ( action, params ) {
   var _data = {
     action: `${trackPrefix}${action}`,
@@ -34,7 +36,7 @@ function initGaTrack () {
   // 初始化GoogleAnalytics Tracker
   return GoogleAnalytics.getInstance( )
   .setAppName( 'in同城趴电影' )
-  .newTracker( 'UA-113017547-1' ); // 用你的 Tracking ID 代替
+  .newTracker( trackId ); // 用你的 Tracking ID 代替
 }
 GAtracker = initGaTrack();
 

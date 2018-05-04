@@ -133,13 +133,16 @@ ticket页面收集gps功能
 1，上海代码合并到杭州
 2，product_id后端传递
 
-## part-34 @xiangxiang 
-1.万能模版  // 搁置了
+## part-34 @xiangxiang  // 搁置了
+1.万能模版  
 
 ## part-35 @xiangxiang  _v:0.6.3
 1.优化上海小程序
 
-## part-36 @xiangxiang
+## part-36 @xiangxiang // 搁置了放到下一个版本 
 2.地理位置优化
+
+## master 上海 @xiangxiang 
+1.修改一部分文案
 
 
