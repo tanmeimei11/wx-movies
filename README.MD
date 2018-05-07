@@ -145,7 +145,8 @@ ticket页面收集gps功能
 ## master 上海 @xiangxiang 
 1.修改一部分文案
 
-## part-37 上海&杭州 @xiangxiang  
+## part-37 上海&杭州 @xiangxiang  _v:0.6.5  已经合到master了
 1.地理位置优化  加上地铁
+2.尖头位置的修改
 
 

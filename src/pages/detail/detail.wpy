@@ -88,7 +88,12 @@
                       <view class="cinema-wrap" wx:for="{{itemList}}" wx:for-index="idx" wx:for-item="item" wx:key="idx" @tap="openAddressLocation" data-item="{{item}}">
                       <!-- <view class="cinema-wrap" wx:for="{{[0,1,2,3]}}" wx:for-index="idx" wx:for-item="item" wx:key="idx" @tap="openAddressLocation" data-item="{{item}}"> -->
                         <view class="cinema-name between">
-                          <view class="name">{{item.name}}</view>
+                          <view class="name">
+                            {{item.name}}
+                            <view class="subway" wx:if="{{item.subway}}">
+                               <view class="way" wx:for="{{item.subway}}" wx:for-index="subIdx" wx:for-item="subItem" wx:key="subIdx">{{subItem}}</view>
+                            </view>
+                            </view>
                           <view class="time">{{item.time}}</view>
                         </view>
                         <view class="cinema-addr between">

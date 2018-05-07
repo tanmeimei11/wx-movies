@@ -481,7 +481,8 @@ export default class detail extends wepy.page {
         time: item.public_transit_time,
         distance: item.distance,
         latitude: item.gps.split( ',' )[1],
-        longitude: item.gps.split( ',' )[0]
+        longitude: item.gps.split( ',' )[0],
+        subway: item.subway_lines
       };
     } );
     console.log( _list );

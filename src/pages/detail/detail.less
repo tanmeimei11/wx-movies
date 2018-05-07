@@ -931,12 +931,41 @@ contact-button {
     justify-content: center;
     align-items: flex-start;
     .name{
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
       color:#000000;
       font-size: 28rpx;
       max-width: 470rpx;
       text-overflow: ellipsis;
       overflow: hidden;
       white-space: nowrap;
+      .subway{
+        margin-left: 10rpx;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        border: 1rpx solid #F94D3E;
+        border-radius: 6rpx;
+        padding: 6rpx 6rpx 6rpx 38rpx;
+        background-image: url('  https://inimg01.jiuyan.info/in/2018/05/04/A2D45F95-A138-36C8-DCEC-FAF5F8D4EF32.jpg');
+        background-repeat: no-repeat;
+        background-size: 22rpx 25rpx;
+        background-position: 8rpx center;
+        .way{
+          font-size: 16rpx;
+          line-height: 1.8;
+          text-align: center;
+          width: 20rpx;
+          background-color: #F94D3E;
+          color: #fff;
+          padding: 0 5rpx;
+          border-radius: 6rpx;
+          margin:0 3rpx;
+        }
+      }
     }
     .address{
       color: #B0B0B0;
