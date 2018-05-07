@@ -197,22 +197,6 @@ export default class detail extends wepy.page {
       //   this.noticeInfo.show = true;
       // }
     },
-    // // 秒杀开始 支付信息初始化
-    // seckill () {
-    //   if ( this.seckillInfo.status === '1' ) {
-    //     this.seckillPay();
-    //   }
-    // },
-    // // 修改秒杀信息
-    // changeSeckill ( status ) {
-    //   if ( typeof status === 'string' ) { status = {status: status}; }
-    //   this.seckillInfo = {
-    //     ...this.seckillInfo,
-    //     ...status
-    //   };
-    //   this.changeToSecKillInfo();
-    //   this.$apply();
-    // },
     async receive () {
       try {
         track( 'page_receive_box_confirm' );
@@ -258,21 +242,15 @@ export default class detail extends wepy.page {
         longitude: parseFloat( _item.longitude )
       } );
     },
-    async  getLocationByButton () {
-      try {
-        var authRes = await wepy.getSetting( {authSetting: 'scope.userLocation'} );
-        if ( authRes.authSetting['scope.userLocation'] === false ) {
-          await this.openSettingAuthLocation();
-          return;
-        }
-        let _location = await wepy.getLocation();
-        var res = await Detail.getLocationToCinema( {
-          _gps: `${_location.longitude},${_location.latitude}`
-        } );
-        this.initCinemaAddr( res.is_auth_location, res.current_location, res.lbs_cinemas );
-      } catch ( e ) {
-        console.log( e );
-      }
+    async getLocationByButton () {
+      this.setLocation()
+    },
+    async changeLocation () {
+      var _location = await wepy.chooseLocation()
+      var res = await Detail.getLocationToCinema( {
+        _gps: `${_location.latitude},${_location.longitude}`
+      } );
+      this.initCinemaAddr( res.is_auth_location, res.current_location, res.lbs_cinemas );
     },
     showOrderModal () {
       this.orderWindow.show = true;
@@ -421,7 +399,6 @@ export default class detail extends wepy.page {
 
   // 砍价页面分享进入
   async cutFun ( options ) {
-    console.log( options );
     if ( options.cutId ) {
       track( 'bargain_box_expo' );
       this.cutId = options.cutId;
@@ -452,6 +429,7 @@ export default class detail extends wepy.page {
     await auth.ready();
     track( 'page_entry1' );
     this.detailStatus = await Detail.getDetailStatus( this.productId, this.statusQuery, options.cutId ? options.cutId : '' );
+    this.setLocation()
     this.cutFun( options );
     this.initGaProductInfo( this.detailStatus );
     this.initReceiveTicketInfo( this.detailStatus );
@@ -468,7 +446,26 @@ export default class detail extends wepy.page {
     this.order = this.detailStatus.cf_close || false;
     this.$apply();
   }
-
+  async setLocation () {
+    try {
+      var authRes = await wepy.getSetting( {authSetting: 'scope.userLocation'} );
+      if ( authRes.authSetting['scope.userLocation'] === false ) {
+        tips.confirm('需要获取您的地理位置，请确认授权，否则地图功能将无法使用').then((res)=>{
+          this.openSettingAuthLocation();
+        },(rej)=>{
+          console.log('cancel')
+        })
+        return;
+      }
+      let _location = await wepy.getLocation();
+      var res = await Detail.getLocationToCinema( {
+        _gps: `${_location.longitude},${_location.latitude}`
+      } );
+      this.initCinemaAddr( res.is_auth_location, res.current_location, res.lbs_cinemas );
+    } catch ( e ) {
+      console.log( e );
+    }
+  }
   initCinemaAddr ( isAuth, location, lbsCinemas ) {
     console.log( lbsCinemas );
     this.isAuthLocation = isAuth || false;
