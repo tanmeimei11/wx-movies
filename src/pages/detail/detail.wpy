@@ -203,7 +203,7 @@
         <text class="btn btn-origin btn-red" wx:if="{{order==2}}">已预约</text>
       </block>
       <block wx:if="{{!order}}">
-        <view class="btn btn-origin free-btn" style="font-size:28rpx;" @tap="jumpToCut" wx:if="{{cutBtn}}">免费得电影票</view>
+        <view class="btn btn-origin free-btn" style="font-size:28rpx;" @tap="jumpToCut" wx:if="{{cutBtn}}">{{cutDesc}}</view>
         <view class="btn btn-origin btn-red {{tabText.length === 1 ? 'btn-red' : ''}}" @tap="openBuyMutiModal">
           <text class="price">{{fixBtnText[0].price}}</text>
           <text wx:if="{{fixBtnText[0].text}}" class="{{tabText.length === 1 ? 'btnbig' : ''}}">{{fixBtnText[0].text}}</text>

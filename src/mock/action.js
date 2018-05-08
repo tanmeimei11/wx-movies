@@ -9,6 +9,9 @@ module.exports = {
     'nick_name': '测试用户甲',
     'red_package_amount': '60',
     'red_package_count': '3',
+    'up_desc': '你已为自己砍价',
+    'under_Desc': '分享给好友，帮你0元看电影',
+    'share_group_desc': '分享到群，立砍5元',
     'red_package_img': [
       'http://inimg05.jiuyan.info/in/2018/04/17/7F527A05-42C2-4F82-6977-7B055B1FDD4E.png',
       'http://inimg05.jiuyan.info/in/2018/04/17/7F527A05-42C2-4F82-6977-7B055B1FDD4E.png',

@@ -35,6 +35,7 @@ export default class detail extends wepy.page {
       show: false
     },
     cutBtn: '',
+    cutDesc: '',
     order: '',
     gaProductInfo: {
       id: 1,
@@ -582,6 +583,7 @@ export default class detail extends wepy.page {
     this.tabText = res.union_btn_txts;
     this.fixBtnText = res.union_btn_txts;
     this.cutBtn = res.cut_btn;
+    this.cutDesc = res.cut_btn_desc
   }
   /**
    *  初始化从哪里进来  // 1.立即升级 2.分享送三张电影票 3.红包

@@ -24,4 +24,15 @@ export default class cut extends Pagebase {
       url: '/mnp/cut/detail'
     } );
   }
+  /**
+   *  分享群
+   */
+  static async shareGroup ( cutId ) {
+    return await this.request( {
+      url: '/mnp/cut/action_4_share_group',
+      data: {
+        cut_id: cutId
+      }
+    } );
+  }
 }
