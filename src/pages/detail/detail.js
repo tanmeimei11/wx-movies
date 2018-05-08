@@ -248,7 +248,7 @@ export default class detail extends wepy.page {
     async changeLocation () {
       var _location = await wepy.chooseLocation()
       var res = await Detail.getLocationToCinema( {
-        _gps: `${_location.latitude},${_location.longitude}`
+        _gps: `${_location.longitude},${_location.latitude}`
       } );
       this.initCinemaAddr( res.is_auth_location, res.current_location, res.lbs_cinemas );
     },
@@ -884,7 +884,7 @@ export default class detail extends wepy.page {
     } );
     let _location = await wepy.getLocation();
     var res = await Detail.getLocationToCinema( {
-      _gps: `${_location.latitude},${_location.longitude}`
+      _gps: `${_location.longitude},${_location.latitude}`
     } );
     this.initCinemaAddr( res.is_auth_location, res.current_location, res.lbs_cinemas );
   }
