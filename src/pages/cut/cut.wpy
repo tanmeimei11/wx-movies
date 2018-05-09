@@ -418,7 +418,7 @@ import wepy from 'wepy';
 import Cut from '@/api/cut';
 import track from '@/utils/track';
 import auth from '@/api/auth';
-import    from '@/utils/tips';
+import tips from '@/utils/tips';
 import report from '@/components/report-submit';
 export default class cut extends wepy.page {
   config = {
