@@ -100,9 +100,11 @@ import track from '@/utils/track';
 export default class leaveModal extends wepy.component {
   methods = {
     closeFuna () {
+      track('bargain_leavebox_leave')
       this.$emit('hideLeaveModal')
     },
     usebagFun () {
+      track('bargain_leavebox_get')
       track('bargin_box_redpack_use')
       wepy.navigateTo( {
         url: '/pages/cutinfo/cutinfo'

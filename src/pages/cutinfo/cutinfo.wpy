@@ -175,6 +175,7 @@
         } )
       },
       knowCard () {
+        track('bargain_pay_card_gettoknow')
          wepy.reLaunch( {
           url: this.detail_path
         } );

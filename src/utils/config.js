@@ -2,7 +2,7 @@
 // var _station = '02'; // 上海
 var _station = '2101'; // 杭州
 module.exports = {
-  _v: '0.6.7',
+  _v: '0.6.8',
   isMock: false,
   isTrack: false,
   station: _station,

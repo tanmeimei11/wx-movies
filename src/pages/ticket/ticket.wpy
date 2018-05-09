@@ -6,8 +6,17 @@
       <view class="banner">
         <view class="rule" @tap="openRules"></view>
       </view>
+      <view class="noTicket" wx:if="{{receive.ticket_switch=='true'}}">
+        <view class="title">{{receive.receive_ticket_empty_desc}}</view>
+        <view class="babycry"></view>
+        <view class="tips1">{{receive.receive_ticket_subscribe_desc_one}}<text class="red">{{receive.receive_ticket_subscribe_desc_two}}</text>{{receive.receive_ticket_subscribe_desc_three}}</view>
+        <view class="tips2">{{receive.receive_ticket_try_desc}}</view>
+        <view class="btn" @tap="toCut">{{receive.receive_ticket_cut_btn_desc_one}}<text class="num">{{receive.receive_ticket_cut_btn_desc_two}}</text></view>
+        <view class="tips3">{{receive.receive_ticket_cut_remind_desc}}</view>
+      </view>
       <view class="myTicket">
         <view class="title">我的电影票</view>
+        <view class="receice_ticket">{{receive.receice_ticket_rules_desc}}</view>
         <view class="ticket status{{item.ticket_status}} {{(item.ticket_status === '2' || item.ticket_status === '4' || item.ticket_status === '5' || item.ticket_status === '6') ? 'received' : ''}}" wx:for="{{tickets}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
           <view wx:if="{{item.ticket_status === '0'}}" @tap="alert">
             <button open-type="share" data-id="{{item.share_code}}" data-index="{{idx}}" data-code="{{item.id}}" wx:if="{{!ticket_switch}}"></button>

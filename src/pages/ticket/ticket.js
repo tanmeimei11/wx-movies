@@ -39,6 +39,7 @@ export default class ticket extends wepy.page {
     ticket_switch: '',
     upgrade_img: '',
     abtest: '0',
+    receive: {},
 
     receiveFaildInfo: {
       msg: '',
@@ -74,6 +75,12 @@ export default class ticket extends wepy.page {
   }
 
   methods = {
+    toCut () {
+      track("bargain_get_ticket_songpiao")
+      wepy.navigateTo( {
+        url: `/pages/cut/cut`
+      } );
+    },
     showUpgrade ( item ) {
       var ticketid = item.id;
       if ( item.ticket_status == '6' ) {
@@ -215,6 +222,10 @@ export default class ticket extends wepy.page {
     this.bannerInfo = myInfoRes.ad_info_list || [];
     this.rules = Ticket.initRules( myInfoRes.act_rules );
     this.tickets = Ticket.initTickets( myInfoRes.tickets );
+    this.receive = myInfoRes
+    if (myInfoRes.ticket_switch == 'true') {
+      track('bargain_get_ticket_show')
+    }
     this.abtest = myInfoRes.ab_test;
     this.share_img = myInfoRes.share_img;
     this.share_title = myInfoRes.share_title

@@ -115,9 +115,9 @@ page{
         .cutinfo{
             width: 736rpx;
             height: 246rpx;
-            background: url('http://inimg01.jiuyan.info/in/2018/05/08/7B3970E0-BB97-04C3-8B8C-AF6C020470DA.png') no-repeat;
             background-size: contain;
             background-position: center;
+            background-repeat: no-repeat;
         }
         .emptydes{
             color: #fff;
@@ -234,7 +234,34 @@ page{
             background-size: contain;
         }
         .movieImg{
-            width: 100%;
+            display:flex;
+            flex-direction:row;
+            justify-content:flex-start;
+            align-items:flex-start;
+            flex-wrap:wrap;
+            width: 690rpx;
+            margin: 10rpx auto;
+            .item{
+                text-align: center;
+                color: #fff;
+                font-size: 28rpx;
+                margin: 10rpx 15rpx;
+                width: 200rpx;
+                .pic{
+                    width: 200rpx;
+                    height: 284rpx;
+                    margin-bottom: 12rpx;
+                    background-size: cover;
+                    background-repeat: no-repeat;
+                    background-position: center center;
+                }
+                .name{
+                    width: 100%;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+            }
         }
     }
 }
@@ -342,7 +369,7 @@ page{
     </view>
     <view class="bottom-box">
         <button class="cut-btn huxi" wx:if="{{initData.cut_status === '0'}}" open-type="share">喊好友砍一刀</button>
-        <view class="cutinfo"></view>
+        <view class="cutinfo" style="background-image:url({{initData.cut_rules_img}})"></view>
         <view class="cut-btn" wx:if="{{initData.cut_status === '1'}}" @tap="lookcoupon">查看我的体验券</view>
         <view class="emptydes" wx:if="{{initData.empty_record_desc}}">{{initData.empty_record_desc}}</view>
         <view class="cut-list" wx:if="{{initData.record.length > 0}}">
@@ -358,8 +385,13 @@ page{
         </view>
     </view>
     <view class="movieList">
-        <view class="movieTitle" style="background-image:url({{initData.movie_list_img}})"></view>
-        <image class="movieImg" mode="widthFix" src="{{initData.movie_list_img}}"></image>
+        <view class="movieTitle" style="background-image:url({{initData.movie_list_title}})"></view>
+        <view class="movieImg">
+            <view class="item" wx:for="{{initData.movie_list_img}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
+                <view style="background-image:url({{item.value}})" class="pic"></view>
+                <view class="name">{{item.name}}</view>
+            </view>
+        </view>
     </view>
     <view class="rulepop" wx:if="{{isrule}}">
         <view class="closecont">
@@ -369,13 +401,13 @@ page{
         </view>
     </view>
     <view class="c-modal" wx:if="{{cutWindow}}">
-        <view class="c-wrap" @tap="closeWindow">
-            <view class="s-close"></view>
+        <view class="c-wrap">
+            <view class="s-close" @tap="closeWindow"></view>
             <view class="avater" style="background-image:url({{initData.avatar}})"></view>
             <view>{{cutdesc.up_desc}}<text class="red">{{cutdesc.cut_amount}}</text>元</view>
             <view>{{cutdesc.under_desc}}</view>
             <view class="FF413D">{{cutdesc.share_group_desc}}</view>
-            <button class="btn" open-type="share">立即分享</button>
+            <button class="btn" open-type="share" @tap="track">立即分享</button>
         </view>
     </view>
 </view>
@@ -386,6 +418,7 @@ import wepy from 'wepy';
 import Cut from '@/api/cut';
 import track from '@/utils/track';
 import auth from '@/api/auth';
+import    from '@/utils/tips';
 import report from '@/components/report-submit';
 export default class cut extends wepy.page {
   config = {
@@ -402,6 +435,9 @@ export default class cut extends wepy.page {
   }
 
   methods = {
+    track () {
+        track('bargain_call_friends_0')
+    },
     closeWindow () {
         this.cutWindow = false
         this.init()
@@ -434,10 +470,10 @@ export default class cut extends wepy.page {
     let cutdesc = await Cut.action(res.cut_id)
     this.initData = res;
     this.cutdesc = cutdesc
+    this.cutWindow = false
     if (cutdesc.cut_status == 4) {
         this.cutWindow = true
     }
-    console.log(cutdesc)
     this.$apply();
   }
 
@@ -450,6 +486,7 @@ export default class cut extends wepy.page {
       if (res.shareTickets) {
           await Cut.shareGroup(this.initData.cut_id)
           this.init()
+          tips.toast( '分享成功' );
       } else {
           console.log('single')
       }
@@ -461,8 +498,12 @@ export default class cut extends wepy.page {
         path: `/pages/detail/detail?cut=true&cutId=${this.initData.cut_id}`,
         imageUrl: this.initData.share_img,
         success: (res) => {
-        track( 'bargain_call_friends' );
-        this.shareBack(res)
+            if (this.cutWindow) {
+                track('bargain_call_friends_0_successful')
+            } else {
+                track( 'bargain_call_friends' );
+            }
+            this.shareBack(res)
         }
     };
   }
