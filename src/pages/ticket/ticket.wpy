@@ -6,7 +6,7 @@
       <view class="banner">
         <view class="rule" @tap="openRules"></view>
       </view>
-      <view class="noTicket" wx:if="{{receive.ticket_switch=='true'}}">
+      <view class="noTicket" wx:if="{{receive.ticket_switch}}">
         <view class="title">{{receive.receive_ticket_empty_desc}}</view>
         <view class="babycry"></view>
         <view class="tips1">{{receive.receive_ticket_subscribe_desc_one}}<text class="red">{{receive.receive_ticket_subscribe_desc_two}}</text>{{receive.receive_ticket_subscribe_desc_three}}</view>

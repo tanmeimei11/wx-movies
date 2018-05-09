@@ -223,7 +223,7 @@ export default class ticket extends wepy.page {
     this.rules = Ticket.initRules( myInfoRes.act_rules );
     this.tickets = Ticket.initTickets( myInfoRes.tickets );
     this.receive = myInfoRes
-    if (myInfoRes.ticket_switch == 'true') {
+    if (myInfoRes.ticket_switch) {
       track('bargain_get_ticket_show')
     }
     this.abtest = myInfoRes.ab_test;

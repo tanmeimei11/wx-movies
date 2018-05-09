@@ -72,7 +72,7 @@ module.exports = {
     "receive_ticket_cut_btn_desc_two":"(4312已得)",
     "receive_ticket_cut_remind_desc":"提醒：砍价票与免费票活的可叠加哦！",
     "receice_ticket_rules_desc":"【每天1/3/5/8点 送1000张】" ,
-    "ticket_switch":"true" 
+    "ticket_switch":true 
   },
   "code": "0",
   "msg": ""
