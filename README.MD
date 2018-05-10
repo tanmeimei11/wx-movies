@@ -159,5 +159,6 @@ ticket页面收集gps功能
 
 ## part-40 上海&杭州 @xiangxiang 
 1.评价模块更改
+2.领票页面搬迁gps模块
 
 
