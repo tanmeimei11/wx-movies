@@ -148,7 +148,9 @@ export default class detail extends wepy.page {
     isShowLeave: false, // 砍价确认离开弹窗
     cinemaAddrList: [],
     isAuthLocation: false, // 是否授权
-    curLocation: ''// 当前位置
+    curLocation: '', // 当前位置
+    animationIf: [], // 影院现场图片动画
+    imgChange: []
   }
   events = {
     showLeaveModal () {
@@ -244,10 +246,10 @@ export default class detail extends wepy.page {
       } );
     },
     async getLocationByButton () {
-      this.setLocation()
+      this.setLocation();
     },
     async changeLocation () {
-      var _location = await wepy.chooseLocation()
+      var _location = await wepy.chooseLocation();
       var res = await Detail.getLocationToCinema( {
         _gps: `${_location.longitude},${_location.latitude}`
       } );
@@ -411,7 +413,6 @@ export default class detail extends wepy.page {
   }
 
   async init ( options ) {
-    console.log( this.detailCode );
     await auth.SilReady();
     this.$invoke( 'report', 'change' );
     var newRes = await Detail.getDetailDataNew( this.productId, this.detailCode );
@@ -430,7 +431,7 @@ export default class detail extends wepy.page {
     await auth.ready();
     track( 'page_entry1' );
     this.detailStatus = await Detail.getDetailStatus( this.productId, this.statusQuery, options.cutId ? options.cutId : '' );
-    this.setLocation()
+    this.setLocation();
     this.cutFun( options );
     this.initGaProductInfo( this.detailStatus );
     this.initReceiveTicketInfo( this.detailStatus );
@@ -440,6 +441,7 @@ export default class detail extends wepy.page {
     if ( this.cardCode ) { await this.initCardStatus(); };
     this.countHeight();
     this.$invoke( 'bubble', 'getBulle' );
+    this.initAnimationChangePicture( ); // 图片动画
     track( 'page_loading_complete', {
       gaProductInfo: this.gaProductInfo
     } );
@@ -451,11 +453,11 @@ export default class detail extends wepy.page {
     try {
       var authRes = await wepy.getSetting( {authSetting: 'scope.userLocation'} );
       if ( authRes.authSetting['scope.userLocation'] === false ) {
-        tips.confirm('需要获取您的地理位置，请确认授权，否则地图功能将无法使用').then((res)=>{
+        tips.confirm( '需要获取您的地理位置，请确认授权，否则地图功能将无法使用' ).then( ( res ) => {
           this.openSettingAuthLocation();
-        },(rej)=>{
-          console.log('cancel')
-        })
+        }, ( rej ) => {
+          console.log( 'cancel' );
+        } );
         return;
       }
       let _location = await wepy.getLocation();
@@ -468,7 +470,6 @@ export default class detail extends wepy.page {
     }
   }
   initCinemaAddr ( isAuth, location, lbsCinemas ) {
-    console.log( lbsCinemas );
     this.isAuthLocation = isAuth || false;
     this.curLocation = location || '';
     if ( !lbsCinemas || !lbsCinemas.length ) { return; }
@@ -483,7 +484,6 @@ export default class detail extends wepy.page {
         subway: item.subway_lines
       };
     } );
-    console.log( _list );
     let result = [];
     for ( var i = 0, len = _list.length; i < len; i += 4 ) {
       result.push( _list.slice( i, i + 4 ) );
@@ -493,7 +493,6 @@ export default class detail extends wepy.page {
   }
 
   initGaProductInfo ( res ) {
-    console.log( res );
     this.gaProductInfo = {
       ...res.product_info,
       type: 'ACTION_CLICK'
@@ -583,7 +582,7 @@ export default class detail extends wepy.page {
     this.tabText = res.union_btn_txts;
     this.fixBtnText = res.union_btn_txts;
     this.cutBtn = res.cut_btn;
-    this.cutDesc = res.cut_btn_desc
+    this.cutDesc = res.cut_btn_desc;
   }
   /**
    *  初始化从哪里进来  // 1.立即升级 2.分享送三张电影票 3.红包
@@ -889,5 +888,51 @@ export default class detail extends wepy.page {
       _gps: `${_location.longitude},${_location.latitude}`
     } );
     this.initCinemaAddr( res.is_auth_location, res.current_location, res.lbs_cinemas );
+  }
+
+  initAnimationChangePicture ( ) {
+    var pictures = this.content.cinema_live_new.pics;
+    var _animation = [ wx.createAnimation( {
+      duration: 0,
+      timingFunction: 'ease'
+    } ), wx.createAnimation( {
+      duration: 300,
+      timingFunction: 'ease'
+    } )];
+    var len = pictures.length;
+    var curIndx = 0;
+    var that = this;
+    loopBubble();
+    // console.log( picture );
+
+    async function setTimeoutPromise ( time ) {
+      return new Promise( ( resolve, reject ) => {
+        setTimeout( () => {
+          resolve();
+        }, time );
+      } );
+    }
+
+    function show () {
+      that.$apply();
+      _animation[0].opacity( 1 ).step( {duration: 0} );
+      that.animationIf[0] = _animation[0].export();
+      that.$apply();
+    }
+
+    async function hide () {
+      _animation[0].opacity( 0.5 ).step( {duration: 300} );
+      that.animationIf[0] = _animation[0].export( );
+      that.$apply();
+    }
+
+    async function loopBubble ( time = 2 ) {
+      curIndx = ++curIndx % len;
+      that.imgChange[0] = pictures[curIndx];
+      show();
+      await setTimeoutPromise( 2 * 1000 );
+      await hide();
+      loopBubble();
+    }
   }
 }

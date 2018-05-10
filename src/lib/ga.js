@@ -890,7 +890,6 @@ function buildUserAgentFromSystemInfo ( si ) {
 // Parses and translates utm campaign parameters to analytics campaign parameters and returns them as a map.
 // @param String  Example: http://examplepetstore.com/index.html?utm_source=email&utm_medium=email_marketing&utm_campaign=summer&utm_content=email_variation_1
 function parseUtmParams ( url ) {
-  console.log( '2' );
   var cp = CampaignParams.parseFromUrl( url );
   var map = cp.params_map;
   var hit = {};

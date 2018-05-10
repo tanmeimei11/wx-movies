@@ -120,25 +120,22 @@
 
       <view class="c-part-live">
         <view class="scrollTitle" id="cinema_live"></view>
-        <view class="topic">{{content.cinema_live.title}}</view>
-        <view class="liveList">
-          <swiper display-multiple-items='1.5'>
-            <block wx:for="{{content.cinema_live.pics}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
-              <swiper-item>
-                <image src="{{loadHeight[2] ? item : ''}}" mode="widthFix" class="slide-image"></image>
-              </swiper-item>
-            </block>
-          </swiper>
+        <view class="topic">{{content.cinema_live_new.title}}</view>
+        <view class="image-change-items">
+           <image class="title-image" src="{{imgChange[0]}}" mode="aspectFit" animation="{{animationIf[0]}}"></image>
         </view>
-        <!-- <view class="area">{{content.cinema_live.area}}</view> -->
+        <view class="area">{{content.cinema_live_new.area}}</view>
       </view>
 
       <view class="c-part-comment">
         <view class="scrollTitle" id="comment"></view>
-        <view class="topic">{{content.comment.title}}</view>
-        <view class="tabbar-item"  wx:for="{{content.comment.pics}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
-          <image class="pics" mode="widthFix" src="{{loadHeight[3] ? item : ''}}"></image>
-        </view>
+        <view class="topic">{{content.comment_new.title}}</view>
+         <image src="{{content.comment_new.tags_img}}" mode="widthFix" class="title-image"></image>
+        <swiper autoplay >
+            <swiper-item wx:for="{{content.comment_new.pics}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
+              <image src="{{loadHeight[3] ? item : ''}}" mode="widthFix" ></image>
+            </swiper-item>
+          </swiper>
       </view>
 
         <!-- 规则部分 -->

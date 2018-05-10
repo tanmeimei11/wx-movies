@@ -44,6 +44,11 @@ export default class ticket extends wepy.page {
     receiveFaildInfo: {
       msg: '',
       show: false
+    },
+    locationInfo: {
+      isLocated: false,
+      desc: '点击去开启地理位置',
+      modalText: '该票仅限「当地」使用，请开启授权'
     }
   }
 
@@ -75,8 +80,12 @@ export default class ticket extends wepy.page {
   }
 
   methods = {
+    async getLocation ( e ) {
+      if ( e.target.dataset.islocated === '1' ) return;
+      await this.goSettingLocation();
+    },
     toCut () {
-      track("bargain_get_ticket_songpiao")
+      track( 'bargain_get_ticket_songpiao' );
       wepy.navigateTo( {
         url: `/pages/cut/cut`
       } );
@@ -140,8 +149,11 @@ export default class ticket extends wepy.page {
     closePhone () {
       this.isShowMobile = false;
     },
-    havePhone ( e ) {
+    async havePhone ( e ) {
       this.cardInfo = e.currentTarget.dataset;
+      if ( !this.locationInfo.isLocated && await this.showLocationModal() === 'succ' ) {
+        await this.goSettingLocation( true );
+      }
       if ( this.phone ) {
         this.openCard();
       } else {
@@ -222,13 +234,13 @@ export default class ticket extends wepy.page {
     this.bannerInfo = myInfoRes.ad_info_list || [];
     this.rules = Ticket.initRules( myInfoRes.act_rules );
     this.tickets = Ticket.initTickets( myInfoRes.tickets );
-    this.receive = myInfoRes
-    if (myInfoRes.ticket_switch) {
-      track('bargain_get_ticket_show')
+    this.receive = myInfoRes;
+    if ( myInfoRes.ticket_switch ) {
+      track( 'bargain_get_ticket_show' );
     }
     this.abtest = myInfoRes.ab_test;
     this.share_img = myInfoRes.share_img;
-    this.share_title = myInfoRes.share_title
+    this.share_title = myInfoRes.share_title;
     this.share_code = myInfoRes.share_code;
     this.qrcode_from = myInfoRes.qrcode_from;
     this.phone = myInfoRes.phone || '';
@@ -236,15 +248,23 @@ export default class ticket extends wepy.page {
     this.receiveFaildInfo.msg = myInfoRes.ticket_desc;
     this.upgrade_img = myInfoRes.upgrade_img;
     this.$apply();
-    try{
-      var location = await wepy.getLocation({type: 'gcj02'})
-      Ticket.sendGPS({
-        latitude: location.latitude,
-        longitude: location.longitude
-      })
-    } catch(e) {
-      console.log(e.errMsg)
-    }
+
+    this.locationInfo = {
+      isLocated: myInfoRes.location_info ? myInfoRes.location_info.gps_authorized : false,
+      desc: myInfoRes.location_info ? myInfoRes.location_info.tip_txt : '',
+      modalText: myInfoRes.location_info ? myInfoRes.location_info.tip_desc : ''
+    };
+    this.$apply();
+    !this.locationInfo.isLocated && this.initLocation();
+    // try {
+    //   var location = await wepy.getLocation( {type: 'gcj02'} );
+    //   Ticket.sendGPS( {
+    //     latitude: location.latitude,
+    //     longitude: location.longitude
+    //   } );
+    // } catch ( e ) {
+    //   console.log( e.errMsg );
+    // }
   }
   async onLoad ( options ) {
     // track( 'my_page_enter' );
@@ -254,16 +274,50 @@ export default class ticket extends wepy.page {
       this.$parent.globalData.qrcode_from = options.qrcode_from;
     }
     await auth.SilReady();
-    this.$invoke('report', 'change')
+    this.$invoke( 'report', 'change' );
     await auth.ready();
     track( 'fission_ticket_page_enter' );
     await this.init();
   }
 
   initQrcodeFrom ( options ) {
-    console.log( options );
     var qf = options.qrcode_from || getParamV( options, 'qf' );
     this.$parent.globalData.qrcode_from = qf;
     this.qrcode_from = qf;
+  }
+
+  async initLocation () {
+    try {
+      var location = await wepy.getLocation( {type: 'gcj02'} );
+      await Ticket.sendGPS( {
+        latitude: location.latitude,
+        longitude: location.longitude
+      } );
+      // this.init();
+    } catch ( e ) {
+      console.error( e.errMsg );
+    }
+  }
+
+  async showLocationModal () {
+    try {
+      var modalRes = await wepy.showModal( {
+        title: '地理授权提示',
+        content: this.locationInfo.modalText,
+        showCancel: true
+      } );
+      if ( modalRes.confirm ) {
+        return 'succ';
+      } else if ( modalRes.cancel ) {
+        return 'cancel';
+      }
+    } catch ( e ) {}
+  }
+
+  async goSettingLocation ( notRefresh ) {
+    let res = await wepy.openSetting();
+    if ( res.authSetting['scope.userLocation'] ) {
+      !notRefresh && this.init();
+    }
   }
 }

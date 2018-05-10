@@ -4,6 +4,7 @@
       <adBanner wx:if="{{bannerInfo && bannerInfo.length > 0}}"
                 :bannerInfo.sync="bannerInfo"></adBanner>
       <view class="banner">
+        <view class="location" data-islocated="{{locationInfo.isLocated ? '1':'0'}}" @tap="getLocation"><image src="https://inimg01.jiuyan.info/in/2018/04/13/5E73D0DB-4CFE-8D4B-D062-99BA0A1CFF33.jpg" mode="widthFix"></image>{{locationInfo.desc}}</view>
         <view class="rule" @tap="openRules"></view>
       </view>
       <view class="noTicket" wx:if="{{receive.ticket_switch}}">

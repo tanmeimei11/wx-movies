@@ -124,12 +124,18 @@ export default class self extends wepy.page {
       }
 
       try {
-        await Self.cardChange( {
+        var res = await Self.cardChange( {
           change_code: this.change_code,
           phone: this.phone
         } );
         // 兑换成功
         this.isShowExchange = false;
+        console.log( res );
+        if ( res && res.redirect_path ) {
+          wepy.navigateTo( {
+            url: res.redirect_path
+          } );
+        }
         track( 'exchange_successful' );
         await this.init();
       } catch ( e ) {
@@ -172,7 +178,6 @@ export default class self extends wepy.page {
     var myInfoRes = await Self.getMyInfo();
     this.btninfo = myInfoRes;
     this.cards = myInfoRes.cards;
-    console.log( myInfoRes.cards );
     this.cardInfos = Self.initCardInfo( myInfoRes.cards );
     this.userInfo = Self.initUserInfo( myInfoRes );
     this.rules = Self.initRules( myInfoRes.texts );
@@ -187,7 +192,7 @@ export default class self extends wepy.page {
   async onShow () {
     track( 'my_page_screen' );
     await auth.SilReady();
-    this.$invoke('report', 'change')
+    this.$invoke( 'report', 'change' );
     await auth.ready();
     await this.init();
   }

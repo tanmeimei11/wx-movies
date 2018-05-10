@@ -8,7 +8,6 @@ export default class Detail extends Pagebase {
    *  获取众筹状态接口
    */
   static async getDetailStatus ( productId, queryObj ) {
-    console.log( productId );
     var _data = {
       product_id: productId,
       ...queryObj

@@ -77,7 +77,6 @@
   function track (action, _parmas = {}) {
     let parmas = _parmas
     try {
-      console.log('ownStatus',wepy.$instance.$pages['/pages/union/union'].data.ownStatus)
       parmas.label =  wepy.$instance.$pages['/pages/union/union'].data.ownStatus
     } catch (error) {}
     const _track = track1.default || track1;
@@ -170,7 +169,6 @@
         }
 
         if(_btn.type === '3'){
-          console.log(_btn.payInfo.url)
           await this.pay(_btn.payInfo.url,_btn.payInfo.data, _btn.payInfo.track)
         }else if(_btn.type === '0'){
           this.redirectPath({
@@ -272,7 +270,6 @@
     * 
     */
     async refreshUnion (opts = {}){
-      console.log('opts', opts)
       var data = await Union.getUnionStatus({
         user_code: opts.userCode || this.userCode,
         product_id: opts.productId || this.productId,

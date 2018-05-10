@@ -50,10 +50,8 @@ export default class order extends wepy.page {
           }} );
 
         let _orderData = this.getOrderData();
-        console.log( _orderData );
         let _createRes = await Order.getOrderInfo( _orderData );
 
-        console.log( _createRes );
         if ( _createRes.product_info ) {
           let _info = _createRes.product_info;
           this.gaProductInfo = {
@@ -78,8 +76,6 @@ export default class order extends wepy.page {
             open_id: _createRes.open_id
           } )
         };
-
-        console.log( _createRes, _createResData );
 
         let _payNetworkRes = await Order.getPayNetwork( _createResData );
         await wepy.requestPayment( _payNetworkRes.sign );
@@ -124,7 +120,6 @@ export default class order extends wepy.page {
    *
   */
   async initProductInfo () {
-    console.log( 'ready' );
     let _data = this.getOrderData();
     let data = await Order.getProductInfo( _data );
     if ( !data ) {
@@ -283,7 +278,7 @@ export default class order extends wepy.page {
     this.initOptions( options );
     this.initQrcodeFrom( options );
     await auth.SilReady();
-    this.$invoke('report', 'change')
+    this.$invoke( 'report', 'change' );
     await auth.ready( true );
     track( 'new_page_enter' );
     await this.initProductInfo();

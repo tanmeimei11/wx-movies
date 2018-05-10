@@ -252,9 +252,10 @@ export default class cutPrice extends wepy.component {
     },
     usebagFun () {
       track('bargin_box_redpack_use')
-      wepy.navigateTo( {
-        url: '/pages/cutinfo/cutinfo'
-      } );
+      this.popshow = false;
+      // wepy.navigateTo( {
+      //   url: '/pages/cutinfo/cutinfo'
+      // } );
     },
     mecutFun () {
         track('bargin_box_bargin_too')

@@ -78,10 +78,9 @@ export default class upgrade extends wepy.page {
     this.$apply();
   }
   async onLoad ( options ) {
-    console.log( options );
     this.initQrcodeFrom( options );
     await auth.SilReady();
-    this.$invoke('report', 'change')
+    this.$invoke( 'report', 'change' );
     await auth.ready();
     track( 'fission_ticket_upgrade_page_enter' );
     await this.init( options );
@@ -96,10 +95,8 @@ export default class upgrade extends wepy.page {
   }
 
   initQrcodeFrom ( options ) {
-    console.log( options );
     var qf = options.qrcode_from || getParamV( options, 'qf' );
     this.$parent.globalData.qrcode_from = qf;
     this.qrcode_from = qf;
-    console.log( this.qrcode_from );
   }
 }

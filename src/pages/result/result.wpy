@@ -286,7 +286,6 @@
     computed = {}
     methods = {
       alert () {
-        console.log( 1111 );
       },
       bindKeyInput ( e ) {
         this.num = e.detail.value;
@@ -300,7 +299,6 @@
         }
       },
       async submit () {
-        console.log( Result );
         if ( this.isFull ) {
           tips.loading();
           track( 'result_page_submit' );

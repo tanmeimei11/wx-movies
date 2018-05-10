@@ -96,7 +96,6 @@ const ACTION_PURCHASE = 'ACTION_PURCHASE'; // 3.购买成功
 
 // 获得商品
 function getProduct ( _product ) {
-  console.log( _product );
   return new Product()
     .setId( _product.id )
     .setName( _product.name )
