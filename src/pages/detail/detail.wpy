@@ -131,7 +131,7 @@
         <view class="scrollTitle" id="comment"></view>
         <view class="topic">{{content.comment_new.title}}</view>
          <image src="{{content.comment_new.tags_img}}" mode="widthFix" class="title-image"></image>
-        <swiper autoplay >
+        <swiper autoplay indicator-dots indicator-color="#b4b4b4" indicator-active-color="#666">
             <swiper-item wx:for="{{content.comment_new.pics}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
               <image src="{{loadHeight[3] ? item : ''}}" mode="widthFix" ></image>
             </swiper-item>

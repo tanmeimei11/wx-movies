@@ -930,7 +930,7 @@ export default class detail extends wepy.page {
       curIndx = ++curIndx % len;
       that.imgChange[0] = pictures[curIndx];
       show();
-      await setTimeoutPromise( 2 * 1000 );
+      await setTimeoutPromise( 1 * 1000 );
       await hide();
       loopBubble();
     }
