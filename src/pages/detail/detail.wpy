@@ -122,7 +122,7 @@
         <view class="scrollTitle" id="cinema_live"></view>
         <view class="topic">{{content.cinema_live_new.title}}</view>
         <view class="image-change-items">
-           <image class="title-image" src="{{imgChange[0]}}" mode="aspectFit" animation="{{animationIf[0]}}"></image>
+           <image class="title-image" src="{{loadHeight[2] ? imgChange[0] : ''}}" mode="aspectFit" animation="{{animationIf[0]}}"></image>
         </view>
         <view class="area">{{content.cinema_live_new.area}}</view>
       </view>
