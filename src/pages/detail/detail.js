@@ -430,7 +430,7 @@ export default class detail extends wepy.page {
     this.$apply();
     await auth.ready();
     track( 'page_entry1' );
-    this.detailStatus = await Detail.getDetailStatus( this.productId, this.statusQuery, options.cutId ? options.cutId : '' );
+    this.detailStatus = await Detail.getDetailStatus( this.productId, {...this.statusQuery, ...this.detailCode} );
     this.setLocation();
     this.cutFun( options );
     this.initGaProductInfo( this.detailStatus );

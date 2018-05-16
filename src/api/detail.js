@@ -12,9 +12,6 @@ export default class Detail extends Pagebase {
       product_id: productId,
       ...queryObj
     };
-    // if ( shareCode ) {
-    //   _data.share_code = shareCode;
-    // }
     return await this.request( {
       url: '/stc/product/detail_common',
       data: _data

@@ -166,7 +166,7 @@ ticket页面收集gps功能
 5.调整图片展示的时间
 6.加上点点点 swiper
 
-## part-41 上海&杭州 @xiangxiang
+## part-41 上海&杭州 @xiangxiang _v:0.6.11
 1.加上参数
-2.换图
+2.添加上海领票页面增加电影院图片
 

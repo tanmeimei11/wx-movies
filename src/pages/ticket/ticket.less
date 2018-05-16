@@ -8,23 +8,7 @@ page{
   overflow: hidden;
   background-color:#fff;
   padding-bottom: 30rpx;
-  .location{
-    width: 100%;
-    white-space: nowrap;
-    position: absolute;
-    top: 450rpx;
-    left: 0rpx;
-    font-size: 24rpx;
-    text-align: center;
-    color:#fff;
-    display:flex;
-    align-items: center;
-    justify-content: center;
-    image{
-      width: 22rpx;
-      margin-right:3rpx;
-    }
-  }
+  
   .noTicket{
     width: 690rpx;
     height: 580rpx;
@@ -87,12 +71,47 @@ page{
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
+    .cinema-view{display: none}
+  .location{
+    width: 100%;
+    white-space: nowrap;
+    position: absolute;
+    top: 450rpx;
+    left: 0rpx;
+    font-size: 24rpx;
+    text-align: center;
+    color:#fff;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    image{
+      width: 22rpx;
+      margin-right:3rpx;
+    }
+  }
     .rule{
       width: 238rpx;
       height: 72rpx;
       position: absolute;
       top: 287rpx;
       left: 251rpx;
+    }
+  }
+  .banner.shanghai{
+    .location{
+      top: 395rpx;
+    }
+    .cinema-view{
+      display: block;
+      position: absolute;
+      top: 460rpx;
+      left: 25rpx;
+      width: 698rpx;
+      height: 52rpx;
+      background-image: url('https://inimg01.jiuyan.info/in/2018/05/16/C05DFA97-F1BE-C1C8-1908-FBDB08D1FE20.jpg');
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
     }
   }
   .myTicket{

@@ -8,6 +8,7 @@ import receiveFaildModal from '@/components/detail/receiveFaildModal';
 import adBanner from '@/components/adBanner';
 import track from '@/utils/track';
 import {getParamV} from '@/utils/common';
+import {station} from '@/utils/config';
 
 export default class ticket extends wepy.page {
   config = {
@@ -16,6 +17,7 @@ export default class ticket extends wepy.page {
   components = { report, receiveFaildModal, adBanner}
   mixins = [shareConnectMixin]
   data = {
+    station: station,
     bannerInfo: [], // 头部广告
     rulesShow: false,
     type: '',
