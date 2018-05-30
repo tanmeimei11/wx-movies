@@ -1,0 +1,134 @@
+<template>
+  <!-- <report> -->
+    <view class="top">
+      <view class="ruleBtn" @tap="openRule"></view>
+      <view class="total">限量{{detailInfo.total_card_count}}张</view>
+      <view class="origin">现价低至<text>{{detailInfo.origin_price}}元/月</text></view>
+      <view class="present">{{detailInfo.double_present_price}}</view>
+      <view class="yuan">元</view>
+      <view class="rate">
+        <view class="txt">已有 <text> {{detailInfo.current_card_count}}</text>/{{detailInfo.total_card_count}} 人抢购</view>
+        <view class="line">
+          <view class="bought" style="width: {{width}}"></view>
+        </view>
+      </view>
+      <view class="equitybar">
+        <view wx:for="{{detailInfo.equitybar}}" class="equityItem" wx:for-index="idx" wx:for-item="item" wx:key="idx">
+          <view class="div" style="background-image: url({{item.img}})"></view>
+          <view class="p">{{item.name}}</view>
+        </view>
+      </view>
+    </view>
+    <view class="detail">
+      <view class="cinema">
+        <view class="title">{{detailInfo.cinema_title?detailInfo.cinema_title:"全杭州19家影城全能看"}}</view>
+        <view class="cinemaList">
+          <swiper indicator-dots='true' indicator-color='rgba(255, 101, 101, 0.2)' indicator-active-color='#ff6565'>
+            <swiper-item class="date-slide" wx:for="{{detailInfo.cinemas}}" wx:for-index="idx" wx:for-item="item" wx:key="idx">
+              <view class="slide-item">
+                <view style="background-image:url({{item}})" class="cinemas"></view>
+              </view>
+            </swiper-item>
+          </swiper>
+        </view>
+        <view class="content">
+          <view>*更多合作院线即将上线</view>
+        </view>
+      </view>
+    
+      <view class="moviebox">
+        <view class="title">同步上映，专属影厅无限观影</view>
+        <view class="movieList">
+          <block wx:for="{{detailInfo.movies}}" wx:key="idx">
+            <view class="item">
+              <view style="background-image: url({{item.movie_img_url}})" class="movie"></view>
+              <view class="name">{{item.name}}</view>
+            </view>
+          </block>
+        </view>
+      </view>
+      <view class="rule">
+        <view class="title">电影王卡使用须知</view>
+        <view class="topic">{{rule[0].title}}</view>
+        <view class="p" wx:for="{{rule[0].desc}}" wx:key="idx">{{item}}</view>
+        <view class="topic">{{rule[1].title}}</view>
+        <view class="p" wx:for="{{rule[1].desc}}" wx:key="idx">{{item}}</view>
+        <view class="topic">{{rule[2].title}}</view>
+        <view class="p" wx:for="{{rule[2].desc}}" wx:key="idx">{{item}}</view>
+      </view>
+    </view>
+    <view class="btn">
+      <view class="btn-icon btn-index" @tap="toIndex">首页</view>
+      <view class="btn-icon btn-contract"> <contact-button session-from="wx_movie_contract"></contact-button>客服</view>
+      <view class="submit" @tap="openPay">立即购买 ></view>
+    </view>
+    <view class="c-modal c-buymuti-modal payModal" wx:if="{{payModal}}">
+      <view class="bg" @tap="closePay"></view>
+      <view class="c-wrap">
+        <view class="s-close" @tap="closePay"></view>
+        <view class="s-btn">
+          <text>{{detailInfo.present_price}}元（一个月无限观影权限）</text>
+          <view class="pay">
+            <button open-type="getUserInfo" lang="zh_CN" bindgetuserinfo="onGotUserInfo" data-num='1'></button>
+            ￥{{detailInfo.present_price}}
+          </view>
+          <!-- <text class="pay" @tap="submit" data-num='1'>￥{{detailInfo.present_price}}</text> -->
+        </view>
+        <view class="s-btn">
+          <text>{{detailInfo.double_present_price}}元（一个月无限观影权限）*2张</text>
+          <view class="pay">
+            <button open-type="getUserInfo" lang="zh_CN" bindgetuserinfo="onGotUserInfo" data-num='2'></button>
+            ￥{{detailInfo.double_present_price*2}}
+          </view>
+          <!-- <text class="pay" @tap="submit" data-num='2'>￥{{detailInfo.double_present_price*2}}</text> -->
+        </view>
+      </view>
+    </view>
+    <view class="c-modal c-buymuti-modal ruleModal" wx:if="{{ruleModal}}">
+      <view class="c-wrap">
+        <view class="s-close" @tap="closePay"></view>
+        <view class="title">亲爱的用户</view>
+        <!-- <view class="desc">由于之前持卡用户超过<text>12万人</text>，造成很多用户不太良好的观影体验，我们本着从用户体验的角度出发，本月只限量提供<text>3万张</text>月卡，售完为止。</view> -->
+        <view class="desc">in·同城趴电影五月持卡用户破10万啦！感谢大家的支持！因用户激增，导致选座困难，小in深感抱歉。本月起，<text>为保障观影体验，限量3万</text>张电影月卡，影迷们快上车！</view>
+        <view class="bottom">
+          <view class="title">包月三大特权</view>
+          <view class="list">
+            <view class="movie">
+              <view class="icon"></view>
+              <view>在线选座</view>
+              <view>不限观影次数</view>
+            </view>
+            <view class="month">
+              <view class="icon"></view>
+              <view>2D/3D</view>
+              <view>电影通用</view>
+            </view>
+            <view class="seat">
+              <view class="icon"></view>
+              <view>15家合作影院</view>
+              <view>随心看~</view>
+            </view>
+          </view>
+        </view>
+        <view class="ok" @tap="startBuy">点击立即抢购</view>
+      </view>
+    </view>
+    <view class="c-modal c-buymuti-modal succOne" wx:if="{{succOne}}">
+      <view class="c-wrap">
+        <view class="txt1">appstore 或者各大应用市场搜索下载</view>
+        <view class="txt2"><text>in同城趴</text>，观影选座</view>
+        <view class="ok" @tap="closePay">确定</view>
+      </view>
+    </view>
+    <view class="c-modal c-buymuti-modal succTwo" wx:if="{{succTwo}}">
+      <view class="c-wrap">
+        <view class="txt1">购买2张包月卡的用户，请在支付宝小程序搜索”in同城趴电影”小程序，底部菜单(我的-电影卡)赠送给他/她人。</view>
+        <view class="txt2">如有问题请拨打客服热线</view>
+        <view class="txt3" @tap="call">0571-86009012</view>
+        <view class="ok" @tap="closePay">我知道了</view>
+      </view>
+    </view>
+  <!-- </report> -->
+</template>
+<style lang="less" src="./last.less"></style>
+<script src="./last.js"></script>

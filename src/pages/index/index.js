@@ -35,7 +35,7 @@ export default class index extends wepy.page {
 
       track( 'immediately_buy' );
       wepy.navigateTo( {
-        url: '/pages/detail/detail'
+        url: '/pages/last/last'
       } );
     }
   }

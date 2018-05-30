@@ -186,7 +186,8 @@ export default class extends wepy.app {
       'pages/order/order', 
       'pages/coupon/coupon', 
       'pages/cutinfo/cutinfo',
-      'pages/cut/cut'
+      'pages/cut/cut',
+      'pages/last/last'
     ],
     tabBar: {
       'color': '#4A4A4A',
